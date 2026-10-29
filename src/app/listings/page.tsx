@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "매물검색 | 구해줘창업" };
 export default function ListingsPage() {
   return (
     <>
-      <Header active="매물보기" />
+      <Header active="매물탐색" />
       <main className="min-h-[70vh]">
         <Suspense>
           <ListingsView />

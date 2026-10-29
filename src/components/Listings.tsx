@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { listings, type Listing } from "@/lib/data";
+import { ListingCard } from "./ListingCard";
 
 const categories = ["한식·분식", "카페·음료", "베이커리·디저트", "프랜차이즈", "기타 업종"];
 const ops = ["직접운영", "반오토", "풀오토"];
@@ -13,14 +14,14 @@ const costRanges = [
   { label: "1억~2억", test: (v: number) => v >= 10000 && v < 20000 },
   { label: "2억 이상", test: (v: number) => v >= 20000 },
 ];
+const kindColor: Record<string, string> = {
+  프랜차이즈: "bg-orange-50 text-brand",
+  상가매물: "bg-emerald-50 text-emerald-700",
+  전수창업: "bg-[#f4ebe4] text-[#7a4a2b]",
+  신규창업: "bg-blue-50 text-blue-700",
+};
 const sorts = ["최신순", "인기순", "추천순", "금액순", "면적순"] as const;
 type Sort = (typeof sorts)[number];
-
-const won = (v: number) => {
-  const eok = Math.floor(v / 10000);
-  const man = v % 10000;
-  return [eok ? `${eok}억` : "", man ? `${man.toLocaleString()}만` : ""].filter(Boolean).join(" ");
-};
 
 const selectCls = "h-9 rounded border border-neutral-300 bg-white px-3 text-[12px] text-neutral-600 outline-none focus:border-brand";
 
@@ -29,9 +30,9 @@ export function ListingsView() {
   const [kind, setKind] = useState(params.get("type") ?? "");
   const [q, setQ] = useState("");
   const [region, setRegion] = useState(params.get("region") ?? "");
-  const [category, setCategory] = useState("");
-  const [cost, setCost] = useState("");
-  const [op, setOp] = useState("");
+  const [category, setCategory] = useState(params.get("category") ?? "");
+  const [cost, setCost] = useState(params.get("cost") ?? "");
+  const [op, setOp] = useState(params.get("op") ?? "");
   const [sort, setSort] = useState<Sort>("최신순");
   const [desc, setDesc] = useState(true);
   const [wide, setWide] = useState(false);
@@ -92,7 +93,7 @@ export function ListingsView() {
         {/* 목록 */}
         <section>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-[12px] text-neutral-500">{[kind, region].filter(Boolean).map((t) => <b key={t} className="mr-2 text-ink">{t}</b>)}총 <b className="text-brand">{list.length}</b>건</p>
+            <p className="text-[12px] text-neutral-500">{kind && <b className={`mr-2 rounded px-2 py-1 text-[13px] ${kindColor[kind] ?? "text-ink"}`}>{kind}</b>}{region && <b className="mr-2 text-ink">{region}</b>}총 <b className="text-brand">{list.length}</b>건</p>
             <div className="flex divide-x divide-neutral-300 overflow-hidden rounded border border-neutral-300 text-[12px]">
               {sorts.map((s) => (
                 <button key={s} onClick={() => { if (s === sort && sortable(s)) setDesc(!desc); else { setSort(s); setDesc(true); } }} className={`px-4 py-2 transition ${sort === s ? "bg-neutral-100 font-bold text-ink" : "bg-white text-neutral-500 hover:text-brand"}`}>
@@ -108,29 +109,7 @@ export function ListingsView() {
             <motion.div layout className={`grid gap-4 ${wide ? "md:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
               <AnimatePresence mode="popLayout">
                 {list.map((l, i) => (
-                  <motion.a
-                    key={l.id} href="/#consult" layout
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.35, delay: Math.min(i, 8) * 0.04 }}
-                    whileHover={{ y: -5 }}
-                    className={`block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg ${wide ? "flex" : ""}`}
-                  >
-                    <div className={`relative bg-neutral-100 ${wide ? "w-[200px] shrink-0" : "h-[150px]"}`}>
-                      <div className="absolute left-2 top-2 flex gap-1 text-[10px] font-bold text-white">
-                        {l.rec && <span className="rounded bg-brand px-1.5 py-0.5">추천</span>}
-                        {l.isNew && <span className="rounded bg-blue-800 px-1.5 py-0.5">NEW</span>}
-                        <span className="rounded bg-ink/70 px-1.5 py-0.5">{l.kind}</span>
-                      </div>
-                      {l.sold && <div className="absolute inset-0 grid place-items-center bg-black/55 text-[15px] font-bold text-white">계약완료</div>}
-                    </div>
-                    <div className="min-h-[104px] flex-1 p-3.5">
-                      <p className="text-[16px] font-black">
-                        {won(l.price)}원
-                      </p>
-                      <h3 className="mt-2 line-clamp-2 text-[12.5px] leading-snug text-neutral-700">{l.title}</h3>
-                      <p className="mt-2 text-[10.5px] text-neutral-400">[{l.id}] 대구 {l.region} | {l.category} | {l.op} | {l.area}㎡</p>
-                    </div>
-                  </motion.a>
+                  <ListingCard key={l.id} l={l} i={i} wide={wide} />
                 ))}
               </AnimatePresence>
             </motion.div>

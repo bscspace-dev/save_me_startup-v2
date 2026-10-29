@@ -10,12 +10,6 @@ export const categories = [
   { tag: "신규창업", icon: "spark", title: "신규창업", desc: "처음 창업하는 분들을 위한 단계별 안내. 업종 선택부터 오픈까지 전 과정을 함께합니다.", foot: "초보 창업자 맞춤 안내", img: "cat-4", tone: "blue" },
 ] as const;
 
-export const newListings = [
-  { img: "new-1", tag: "전수창업", meta: "수성구 · 한식", title: "골목 안 작은 국밥집", info: "약 33㎡ · 단골 고객 보유 · 레시피 전수", price: "전수비 협의" },
-  { img: "new-2", tag: "상가매물", meta: "달서구 · 카페 · 음료", title: "대로변 1층 테이크아웃 자리", info: "약 26㎡ · 즉시 입점 가능 · 인테리어 협의", price: "보증금·월세 협의" },
-  { img: "new-3", tag: "전수창업", meta: "북구 · 베이커리", title: "주택가 소형 베이커리", info: "약 40㎡ · 오븐·장비 일부 포함 · 레시피 전수", price: "전수비 협의" },
-] as const;
-
 export type Listing = {
   id: number; price: number; title: string; region: string; category: string;
   op: "직접운영" | "반오토" | "풀오토"; cost: number; area: number;
@@ -39,4 +33,34 @@ export const listings: Listing[] = [
   { id: 10021, price: 5000, title: "입지 좋은 소형 매장, 시설 상태 양호", region: "중구", category: "카페·음료", op: "풀오토", cost: 5500, area: 22, views: 59, kind: "상가매물" },
   { id: 10020, price: 18000, title: "대로변 베이커리 매장, 시설 일체 인수", region: "북구", category: "베이커리·디저트", op: "직접운영", cost: 10000, area: 38, sold: true, views: 160, kind: "전수창업" },
   { id: 10018, price: 10000, title: "수성구 코너 상권, 월 매출 안정적", region: "수성구", category: "프랜차이즈", op: "직접운영", cost: 8500, area: 35, sold: true, views: 99, kind: "프랜차이즈" },
+  { id: 10040, price: 4000, title: "처음 창업하는 분께 추천, 소자본 소형 카페 자리", region: "중구", category: "카페·음료", op: "직접운영", cost: 4000, area: 20, isNew: true, views: 83, kind: "신규창업" },
+  { id: 10039, price: 6000, title: "오픈 전 상권 분석과 인테리어 상담 포함", region: "수성구", category: "한식·분식", op: "반오토", cost: 7000, area: 30, isNew: true, views: 67, kind: "신규창업" },
+  { id: 10038, price: 9000, title: "주택가 신규 오픈 베이커리 자리, 장비 일부 보유", region: "북구", category: "베이커리·디저트", op: "직접운영", cost: 9000, area: 36, views: 54, kind: "신규창업" },
 ];
+
+export type Brand = { name: string; category: string; cost: string; ops: string[]; desc: string; area: string };
+
+export const brands: Brand[] = [
+  { name: "단골국밥", category: "한식·분식", cost: "5천만~1억", ops: ["직접운영", "반오토"], desc: "25년 단골 기반 국밥 노하우와 육수 레시피를 그대로 전수합니다.", area: "소형 · 약 33㎡~" },
+  { name: "골목분식", category: "한식·분식", cost: "5천만 미만", ops: ["직접운영"], desc: "소자본으로 시작하는 분식 전수창업. 메뉴 구성부터 원가 관리까지 교육합니다.", area: "소형 · 약 20㎡~" },
+  { name: "온기 도시락", category: "한식·분식", cost: "5천만 미만", ops: ["직접운영", "반오토"], desc: "배달·포장 중심 도시락 모델. 주방 동선과 운영 매뉴얼을 전수합니다.", area: "소형 · 약 16㎡~" },
+  { name: "로스트노트 커피", category: "카페·음료", cost: "5천만~1억", ops: ["직접운영", "반오토", "풀오토"], desc: "원두 선정부터 메뉴 개발, 매장 운영까지 한 번에 배우는 카페 전수창업.", area: "중형 · 약 26㎡~" },
+  { name: "담소 카페", category: "카페·음료", cost: "1억~2억", ops: ["반오토", "풀오토"], desc: "인력 효율화에 초점을 맞춘 운영 시스템으로 소수 인원 운영이 가능합니다.", area: "중형 · 약 40㎡~" },
+  { name: "온기 베이커리", category: "베이커리·디저트", cost: "1억~2억", ops: ["직접운영"], desc: "인기 제빵 레시피와 오븐 운영 노하우, 단골 관리 방식을 전수합니다.", area: "중형 · 약 40㎡~" },
+  { name: "달콤상점", category: "베이커리·디저트", cost: "5천만~1억", ops: ["직접운영", "반오토"], desc: "소규모 디저트 전문점. 시즌 메뉴 개발 가이드와 포장 노하우를 제공합니다.", area: "소형 · 약 23㎡~" },
+  { name: "숯불한끼", category: "기타 업종", cost: "2억 이상", ops: ["직접운영", "풀오토"], desc: "점심·저녁 모두 강한 고깃집 모델. 매장 설계와 인력 운영 교육까지 지원합니다.", area: "대형 · 약 66㎡~" },
+];
+
+// 유형별 뱃지 색상 (업종별 창업 카드와 동일)
+export const kindBadge: Record<string, string> = {
+  프랜차이즈: "bg-brand",
+  상가매물: "bg-emerald-700",
+  전수창업: "bg-[#7a4a2b]",
+  신규창업: "bg-blue-700",
+};
+
+export const won = (v: number) => {
+  const eok = Math.floor(v / 10000);
+  const man = v % 10000;
+  return [eok ? `${eok}억` : "", man ? `${man.toLocaleString()}만` : ""].filter(Boolean).join(" ");
+};

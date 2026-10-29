@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 import { motion } from "motion/react";
-import { categories, newListings } from "@/lib/data";
+import Link from "next/link";
+import { categories, kindBadge, listings } from "@/lib/data";
+import { ListingCard } from "./ListingCard";
 import { Reveal } from "./Reveal";
 
 const toneCls = {
@@ -23,7 +25,7 @@ function SectionHead({ eyebrow, title, sub, more, badge }: { eyebrow?: string; t
         <h2 className="mt-2 text-[30px] font-black tracking-tight">{title}</h2>
         {sub && <p className="mt-2 text-[13px] text-neutral-500">{sub}</p>}
       </div>
-      <a href="/listings" className="pb-1 text-[12px] font-bold text-brand">{more} →</a>
+      <Link href="/listings" className="pb-1 text-[12px] font-bold text-brand">{more} →</Link>
     </div>
   );
 }
@@ -37,7 +39,7 @@ export function Categories() {
           const t = toneCls[c.tone];
           return (
             <Reveal key={c.title} delay={i * 0.08}>
-              <motion.a href="/listings" whileHover={{ y: -6 }} className="block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg">
+              <motion.a href={`/listings?type=${c.tag}`} whileHover={{ y: -6 }} className="block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg">
                 <div className="relative h-[178px] overflow-hidden">
                   <Placeholder />
                   <span className={`absolute left-2.5 top-2.5 rounded px-2 py-0.5 text-[10px] font-bold text-white ${t.badge}`}>{c.tag}</span>
@@ -79,7 +81,7 @@ export function Picks() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/10" />
                 <div className="absolute left-3 top-3 flex gap-1.5 text-[10px] font-bold text-white">
                   <span className="rounded bg-brand px-2 py-0.5">PICK</span>
-                  <span className="rounded bg-black/55 px-2 py-0.5">전수창업</span>
+                  <span className={`rounded px-2 py-0.5 ${kindBadge["전수창업"]}`}>전수창업</span>
                 </div>
                 <div className="absolute bottom-4 left-5 text-white">
                   <p className="text-[11px] text-white/70">수성구 · 전세전문점</p>
@@ -107,7 +109,7 @@ export function Picks() {
                   <div className="w-[120px] shrink-0"><Placeholder /></div>
                   <div className="flex flex-col justify-center p-4">
                     <div className="flex gap-1.5 text-[9.5px] font-bold">
-                      <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-600">{p.tag}</span>
+                      <span className={`rounded px-1.5 py-0.5 text-white ${kindBadge[p.tag]}`}>{p.tag}</span>
                       <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-600">{p.loc}</span>
                     </div>
                     <h3 className="mt-2 text-[14px] font-black">{p.title}</h3>
@@ -125,13 +127,12 @@ export function Picks() {
 }
 
 const filters = ["전체", "한식·분식", "카페·음료", "베이커리·디저트", "프랜차이즈", "기타 업종"];
-const filterOf: Record<string, string[]> = {
-  "한식·분식": ["한식"], "카페·음료": ["카페"], "베이커리·디저트": ["베이커리"], 프랜차이즈: ["프랜차이즈"], "기타 업종": [],
-};
-
 export function NewListings() {
   const [active, setActive] = useState("전체");
-  const list = newListings.filter((l) => active === "전체" || (filterOf[active] ?? []).some((k) => l.meta.includes(k)));
+  const list = [...listings]
+    .sort((a, b) => b.id - a.id)
+    .filter((l) => !l.sold && (active === "전체" || (active === "기타 업종" ? !filters.slice(1, 5).includes(l.category) : l.category === active)))
+    .slice(0, 6);
 
   return (
     <section id="new" className="mx-auto max-w-[1280px] px-6 py-16">
@@ -147,28 +148,9 @@ export function NewListings() {
           <button key={f} onClick={() => setActive(f)} className={`rounded-full border px-4 py-1.5 text-[12px] transition ${active === f ? "border-ink bg-ink font-bold text-white" : "border-neutral-300 text-neutral-600 hover:border-brand hover:text-brand"}`}>{f}</button>
         ))}
       </div>
-      <div className="mt-6 grid min-h-[300px] gap-4 md:grid-cols-3">
+      <div className="mt-6 grid min-h-[300px] items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {list.length === 0 && <p className="col-span-3 py-20 text-center text-[13px] text-neutral-400">해당 업종의 신규 매물이 아직 없습니다.</p>}
-        {list.map((l, i) => (
-          <motion.article key={l.title} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }} whileHover={{ y: -6 }} className="self-start overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg">
-            <div className="relative h-[170px] overflow-hidden">
-              <Placeholder />
-              <div className="absolute left-2.5 top-2.5 flex gap-1.5 text-[10px] font-bold text-white">
-                <span className="rounded bg-blue-800 px-2 py-0.5">NEW</span>
-                <span className="rounded bg-black/55 px-2 py-0.5">{l.tag}</span>
-              </div>
-            </div>
-            <div className="p-4">
-              <p className="text-[10.5px] text-neutral-400">{l.meta}</p>
-              <h3 className="mt-1.5 text-[15px] font-black">{l.title}</h3>
-              <p className="mt-1.5 text-[11px] text-neutral-500">{l.info}</p>
-              <div className="mt-4 flex items-center justify-between border-t border-neutral-100 pt-3 text-[10.5px] text-neutral-400">
-                <span>{l.price}</span>
-                <a href="#consult" className="rounded bg-orange-50 px-2.5 py-1 font-bold text-brand">문의하기</a>
-              </div>
-            </div>
-          </motion.article>
-        ))}
+        {list.map((l, i) => <ListingCard key={l.id} l={l} i={i} />)}
       </div>
     </section>
   );

@@ -1,9 +1,16 @@
 "use client";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { regions } from "@/lib/data";
+import { useState } from "react";
 import { Icon } from "./Icons";
+import { MatchPopup, categoryOptions, costOptions } from "./MatchPopup";
 
 export function Hero() {
+  const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState("");
+  const [cost, setCost] = useState("");
+
   return (
     <section className="relative overflow-hidden bg-[#1c1512]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,rgba(217,120,50,.45),transparent_55%),radial-gradient(ellipse_at_20%_90%,rgba(120,60,20,.5),transparent_50%)]" />
@@ -13,7 +20,7 @@ export function Hero() {
           <div className="flex items-center gap-2 bg-brand px-4 py-2.5 text-[12px] font-bold"><Icon name="pin" className="size-3.5" />대구 지역 검색</div>
           <ul className="px-4 py-2 text-[12px]">
             {regions.map(([r, n]) => (
-              <li key={r}><a href={`/listings?region=${r}`} className="flex justify-between border-b border-white/10 py-[7px] transition hover:text-brand"><span>{r}</span><span className="text-white/50">{n}건</span></a></li>
+              <li key={r}><Link href={`/listings?region=${r}`} className="flex justify-between border-b border-white/10 py-[7px] transition hover:text-brand"><span>{r}</span><span className="text-white/50">{n}건</span></Link></li>
             ))}
           </ul>
         </motion.aside>
@@ -27,7 +34,7 @@ export function Hero() {
             매물 탐색부터 전수창업·신규창업까지<br />구해줘창업이 함께합니다.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mt-7 flex gap-3 text-[14px] font-bold">
-            <a href="/listings" className="rounded bg-brand px-6 py-3 transition hover:bg-brand-dark">매물 바로 보기</a>
+            <Link href="/listings" className="rounded bg-brand px-6 py-3 transition hover:bg-brand-dark">매물 바로 보기</Link>
             <a href="#consult" className="rounded border border-white/30 bg-black/40 px-6 py-3 transition hover:bg-black/60">무료 창업상담</a>
           </motion.div>
         </div>
@@ -35,21 +42,26 @@ export function Hero() {
         <motion.div initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="space-y-3">
           <div className="rounded-lg bg-white p-5 shadow-xl">
             <p className="flex items-center gap-1.5 text-[11px] font-bold text-brand"><Icon name="search" className="size-3.5" />내 조건에 맞는 창업?</p>
-            <h2 className="mt-2 text-[16px] font-black leading-snug">원하는 조건을 입력하면<br />맞춤 매물을 찾아드려요</h2>
+            <h2 className="mt-2 text-[16px] font-black leading-snug">원하는 조건을 입력하면<br />맞춤 창업을 찾아드려요</h2>
             <div className="mt-4 space-y-2 text-[12px]">
-              {["업종 선택", "지역 선택 (대구)"].map((p) => (
-                <div key={p} className="relative">
-                  <select defaultValue="" className="w-full appearance-none rounded border border-neutral-200 px-3 py-2.5 text-neutral-400 outline-none focus:border-brand">
-                    <option value="" disabled>{p}</option>
+              {[
+                { ph: "업종 선택", value: category, set: setCategory, options: categoryOptions },
+                { ph: "창업비용 선택", value: cost, set: setCost, options: costOptions },
+              ].map((f) => (
+                <div key={f.ph} className="relative">
+                  <select value={f.value} onChange={(e) => f.set(e.target.value)} className={`w-full appearance-none rounded border border-neutral-200 px-3 py-2.5 outline-none focus:border-brand ${f.value ? "text-ink" : "text-neutral-400"}`}>
+                    <option value="">{f.ph}</option>
+                    {f.options.map((o) => <option key={o}>{o}</option>)}
                   </select>
                   <Icon name="chevron" className="pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
                 </div>
               ))}
-              <a href="/listings" className="block rounded bg-brand py-3 text-center text-[13px] font-bold text-white transition hover:bg-brand-dark">맞춤 매물 검색</a>
+              <button onClick={() => setOpen(true)} disabled={!category || !cost} className="block w-full rounded bg-brand py-3 text-center text-[13px] font-bold text-white transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:bg-neutral-300">맞춤 창업 검색</button>
             </div>
           </div>
         </motion.div>
       </div>
+      <MatchPopup open={open} onClose={() => setOpen(false)} initial={{ category, cost }} />
     </section>
   );
 }

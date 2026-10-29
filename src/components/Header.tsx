@@ -2,11 +2,10 @@ import Link from "next/link";
 import { Logo } from "./Icons";
 
 const nav = [
-  { label: "매물보기", href: "/listings" },
-  { label: "전수창업", href: "/listings?type=전수창업" },
-  { label: "신규창업", href: "/#consult" },
+  { label: "매물탐색", href: "/listings" },
+  { label: "전수창업", href: "/transfer" },
+  { label: "신규창업", href: "/identity" },
   { label: "창업상담", href: "/#consult" },
-  { label: "창업노하우", href: "/" },
 ];
 
 export function Header({ active }: { active?: string }) {
