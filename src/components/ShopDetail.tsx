@@ -50,7 +50,7 @@ export function ShopDetail({ l, s }: { l: Listing; s: ShopInfo }) {
 
         {/* 상단 요약 */}
         <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white lg:grid-cols-[1.35fr_1fr]">
-          <FranchiseGallery slides={GALLERY} badges={[l.rec ? "추천 상가" : "상가매물", "실매물 확인"]} />
+          <FranchiseGallery slides={GALLERY} badges={[l.rec ? "추천 상가" : "상가매물", "실매물 확인"]} photos={{ id: l.id, count: l.photos ?? 0 }} />
           <div className="p-8 md:p-10">
             <p className="text-[11px] text-neutral-400">{s.address} | {s.shortType}</p>
             <h1 className="mt-3 text-[30px] font-black leading-[1.25] tracking-tight">{s.headline[0]}<br /><span className="text-brand">{s.headline[1]}</span></h1>

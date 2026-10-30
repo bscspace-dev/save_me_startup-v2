@@ -13,8 +13,11 @@ export const categories = [
 export type Listing = {
   id: number; price: number; title: string; region: string; category: string;
   op: "직접운영" | "반오토" | "풀오토"; cost: number; area: number;
-  rec?: boolean; isNew?: boolean; sold?: boolean; views: number; kind: string;
+  date?: string; photos?: number; rec?: boolean; isNew?: boolean; sold?: boolean; views: number; kind: string;
 };
+
+// 사진: public/listings/<매물번호>/1.jpg, 2.jpg … 에 넣고 photos 에 장수를 적는다
+export const photoSrc = (id: number, n: number) => `/listings/${id}/${n}.jpg`;
 
 export const listings: Listing[] = [
   { id: 10036, price: 15000, title: "점주님은 정성껏 운영하셨고 단골이 많습니다", region: "달서구", category: "카페·음료", op: "직접운영", cost: 8000, area: 33, isNew: true, views: 120, kind: "전수창업" },

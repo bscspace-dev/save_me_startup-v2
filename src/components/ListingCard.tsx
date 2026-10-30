@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import { kindBadge, won, type Listing } from "@/lib/data";
+import { kindBadge, photoSrc, won, type Listing } from "@/lib/data";
 import { shops } from "@/lib/shop";
 
 export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number; wide?: boolean }) {
@@ -14,6 +14,10 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
       className={`block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg ${wide ? "flex" : ""}`}
     >
       <div className={`relative bg-neutral-100 ${wide ? "w-[200px] shrink-0" : "h-[150px]"}`}>
+        {l.photos ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={photoSrc(l.id, 1)} alt={l.title} className="absolute inset-0 size-full object-cover" />
+        ) : null}
         <div className="absolute left-2 top-2 flex gap-1 text-[10px] font-bold text-white">
           {l.rec && <span className="rounded bg-brand px-1.5 py-0.5">추천</span>}
           {l.isNew && <span className="rounded bg-blue-800 px-1.5 py-0.5">NEW</span>}

@@ -46,7 +46,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
 
         {/* 상단 요약 */}
         <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white lg:grid-cols-[1.35fr_1fr]">
-          <FranchiseGallery slides={f.gallery} badges={[l.rec ? "추천 브랜드" : "프랜차이즈", "신규 가맹 모집"]} />
+          <FranchiseGallery slides={f.gallery} badges={[l.rec ? "추천 브랜드" : "프랜차이즈", "신규 가맹 모집"]} photos={{ id: l.id, count: l.photos ?? 0 }} />
           <div className="p-8 md:p-10">
             <p className="text-[11px] font-bold tracking-[0.14em] text-brand">{f.eyebrow}</p>
             <h1 className="mt-4 text-[30px] font-black leading-[1.25] tracking-tight">{f.headline[0]}<br /><span className="text-brand">{f.headline[1]}</span></h1>

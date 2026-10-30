@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 const popups = [
-  { src: "/main-popup-2.png", alt: "레시피를 전수할 사부님을 모집합니다" },
   { src: "/main-popup-1.png", alt: "사부님 참여는 이렇게 진행돼요" },
 ];
 
@@ -30,7 +29,7 @@ export function MainPopups() {
           exit={{ opacity: 0 }}
           onClick={() => setShown(popups.map(() => false))}
         >
-          <div className="mx-auto flex min-h-full max-w-[920px] flex-col items-center justify-start gap-4 pt-[76px] md:flex-row md:items-start">
+          <div className="mx-auto flex min-h-full max-w-[920px] flex-col items-center justify-start gap-4 md:justify-center pt-[76px] md:flex-row md:items-start">
             <AnimatePresence>
               {popups.map((p, i) => shown[i] && (
                 <motion.div
