@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 // .env.local 에서 설정: 채널 주소(필수), 대표 영상 주소(선택)
-const CHANNEL_URL = process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_URL ?? "https://www.youtube.com/";
+const CHANNEL_URL = process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_URL ?? "https://www.youtube.com/channel/UC0Y0tolZw8UPefvbxQgMOPg";
 const VIDEO_URL = process.env.NEXT_PUBLIC_YOUTUBE_URL ?? "";
 
 function toEmbed(url: string) {
