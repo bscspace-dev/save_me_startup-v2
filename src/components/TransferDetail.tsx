@@ -7,7 +7,7 @@ import { Head, card, man } from "./DetailParts";
 
 const tabs = [
   ["진행 프로세스", "#process"],
-  ["전수자 소개", "#expert"],
+  ["스승(전수자) 소개", "#expert"],
   ["교육 과정", "#curriculum"],
   ["비용·제공자료", "#fee"],
   ["창업 홍보 서비스", "#package"],
@@ -16,7 +16,7 @@ const tabs = [
 // 전수창업 안내 페이지(/transfer)의 진행 과정과 같은 5단계
 const steps = (days: number, menus: number) => [
   ["01", "메뉴 및 전수조건 확인", "설문", "배우고 싶은 메뉴와 희망 전수 조건, 준비 예산과 지역을 설문으로 확인합니다."],
-  ["02", "조건 확인 · 전수자 검증", "현장답사", "전수자 매장을 직접 방문해 전수 조건을 확인하고 전수자를 검증합니다."],
+  ["02", "조건 확인 · 스승(전수자) 검증", "현장답사", "스승(전수자) 매장을 직접 방문해 전수 조건을 확인하고 스승(전수자)를 검증합니다."],
   ["03", "홍보영상 · 영업 · 광고 대행", "지원사업", "홍보영상 영업대행(홈페이지 게시)과 광고대행(유료)으로 오픈 이후까지 지원합니다."],
   ["04", "전수 기간 협의 후 계약", "제자 계약", `교육 범위와 일정을 협의하고 ${days}일 전수 과정을 계약합니다.`],
   ["05", "메뉴 및 조리 노하우 교육", "레시피 전수", `대표 메뉴 ${menus}종의 레시피와 운영 노하우를 ${days}일간 1:1로 교육합니다.`],
@@ -43,7 +43,7 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
   const m = t.master;
   const photo = l.photos ? photoSrc(l.id, 1) : null;
   const stats = [
-    ["전수자 경력", `${m.years}년`],
+    ["스승(전수자) 경력", `${m.years}년`],
     ["교육 기간", `${t.days}일`],
     ["교육 방식", "1:1 실습"],
     ["전수 메뉴", `${t.menus}종`],
@@ -61,7 +61,7 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
           <div className="grid gap-6 lg:grid-cols-[1.45fr_0.8fr_0.7fr]">
             <div className="flex flex-col">
               <div className="flex flex-wrap gap-1.5 text-[10.5px] font-bold">
-                <span className="rounded-full bg-brand px-3 py-1">{m.name} 전수자의 기술전수</span>
+                <span className="rounded-full bg-brand px-3 py-1">{m.name} 스승(전수자)의 기술전수</span>
                 <span className="rounded-full bg-white/15 px-3 py-1">1:1 현장 교육</span>
                 <span className="rounded-full bg-white/15 px-3 py-1">영업·홍보 실행 연계</span>
               </div>
@@ -72,7 +72,7 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
                 {l.sold ? (
                   <span className="rounded-lg bg-white/15 px-6 py-3.5 text-[13px] font-bold text-white/80">계약이 완료된 매물입니다</span>
                 ) : (
-                  <ListingConsultButton id={l.id} title={`${m.name} 전수자 ${l.title} (교육 일정 + 실행 패키지 통합 상담)`} label="교육 일정·실행 패키지 통합 상담  →" className={btn} />
+                  <ListingConsultButton id={l.id} title={`${m.name} 스승(전수자) ${l.title} (전수창업 상담)`} label="전수창업 상담  →" className={btn} />
                 )}
                 <a href="#curriculum" className="block rounded-lg border border-white/30 px-6 py-3.5 text-center text-[13px] font-bold transition hover:bg-white/10">커리큘럼 먼저 보기</a>
               </div>
@@ -85,9 +85,9 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
 
             <div className="relative min-h-[300px] overflow-hidden rounded-2xl bg-gradient-to-b from-[#6b4a2e] via-[#3f2a18] to-[#1b120b]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              {photo && <img src={photo} alt={`${m.name} 전수자`} className="absolute inset-0 size-full object-cover" />}
+              {photo && <img src={photo} alt={`${m.name} 스승(전수자)`} className="absolute inset-0 size-full object-cover" />}
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-14">
-                <p className="text-[13px] font-black">{m.name} 전수자</p>
+                <p className="text-[13px] font-black">{m.name} 스승(전수자)</p>
                 <p className="mt-0.5 text-[10.5px] text-white/70">{m.career}</p>
               </div>
             </div>
@@ -97,7 +97,7 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
                 <Icon name="user" className="size-6 text-[#ff7a45]" />
                 <div>
                   <p className="text-[10px] text-white/50">교육 방식</p>
-                  <p className="mt-1 text-[16px] font-black">전수자 1:1 실습</p>
+                  <p className="mt-1 text-[16px] font-black">스승(전수자) 1:1 실습</p>
                 </div>
               </div>
               <div className="flex flex-col justify-between rounded-2xl bg-brand p-5">
@@ -134,8 +134,8 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
         <div className="mt-5 space-y-5">
           {/* 진행 프로세스 */}
           <section id="process" className={`${card} scroll-mt-24`}>
-            <Head eyebrow="PROCESS" title="예비 창업자의 전수창업 과정" />
-            <p className="mt-2 text-[12px] text-neutral-500">기술을 배우고 내 매장을 시작하려는 예비 창업자 기준의 진행 순서입니다.</p>
+            <Head eyebrow="PROCESS" title="제자(창업자)의 전수창업 과정" />
+            <p className="mt-2 text-[12px] text-neutral-500">기술을 배우고 내 매장을 시작하려는 제자(창업자) 기준의 진행 순서입니다.</p>
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
               {steps(t.days, t.menus).map(([no, title, tag, desc], i) => (
                 <div key={no} className={`rounded-xl border p-5 ${i === 2 ? "border-orange-200 bg-[#fff4ea]" : "border-neutral-200 bg-[#faf9f7]"}`}>
@@ -154,17 +154,17 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
             </div>
           </section>
 
-          {/* 전수자 소개 */}
+          {/* 스승(전수자) 소개 */}
           <section id="expert" className={`${card} scroll-mt-24`}>
-            <Head eyebrow="EXPERT" title="기술 전수자 소개" />
+            <Head eyebrow="EXPERT" title="기술 스승(전수자) 소개" />
             <div className="mt-7 grid gap-4 lg:grid-cols-[1.2fr_1fr]">
               <div className="relative flex min-h-[260px] items-end overflow-hidden rounded-2xl bg-gradient-to-br from-[#33231a] to-[#0f0a07] text-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {photo && <img src={photo} alt={`${m.name} 전수자`} className="absolute inset-y-0 left-0 w-1/2 object-cover" />}
+                {photo && <img src={photo} alt={`${m.name} 스승(전수자)`} className="absolute inset-y-0 left-0 w-1/2 object-cover" />}
                 <div className="relative ml-auto flex h-full w-full flex-col justify-center p-8 sm:w-1/2">
                   <p className="text-[10px] font-bold tracking-[0.14em] text-[#ff7a45]">MASTER PROFILE</p>
-                  <p className="mt-2 text-[22px] font-black">{m.name} 전수자</p>
-                  <p className="mt-3 text-[11.5px] leading-relaxed text-white/70">{m.career}을 쌓은 현장 전문가입니다. 누적 {m.teams}팀의 예비 창업자를 교육했습니다.</p>
+                  <p className="mt-2 text-[22px] font-black">{m.name} 스승(전수자)</p>
+                  <p className="mt-3 text-[11.5px] leading-relaxed text-white/70">{m.career}을 쌓은 현장 전문가입니다. 누적 {m.teams}팀의 제자(창업자)를 교육했습니다.</p>
                 </div>
               </div>
               <ul className="divide-y divide-neutral-100 rounded-2xl border border-neutral-200 px-6 text-[12.5px]">
@@ -257,7 +257,7 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
                 <p className="text-[13px] font-black">전수 교육부터 오픈 홍보까지 구해줘창업이 함께 실행합니다</p>
                 <p className="mt-1 text-[10.5px] text-white/60">영업·홍보·광고 실행 비용은 기술 전수비와 별도이며, 업종·지역·광고 범위·광고 예산에 따라 교육 일정 상담과 함께 통합 견적을 제공합니다.</p>
               </div>
-              {!l.sold && <ListingConsultButton id={l.id} title={`${m.name} 전수자 ${l.title} (교육 일정 + 실행 패키지 통합 상담)`} label="교육 일정·실행 패키지 통합 상담  →" className={`${btn} shrink-0`} />}
+              {!l.sold && <ListingConsultButton id={l.id} title={`${m.name} 스승(전수자) ${l.title} (전수창업 상담)`} label="전수창업 상담  →" className={`${btn} shrink-0`} />}
             </div>
           </section>
         </div>
