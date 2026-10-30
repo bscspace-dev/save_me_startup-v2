@@ -17,7 +17,7 @@ function Placeholder({ dark = false }: { dark?: boolean }) {
   return <div className={`size-full ${dark ? "bg-neutral-800" : "bg-neutral-100"}`} />;
 }
 
-function SectionHead({ eyebrow, title, sub, more, badge }: { eyebrow?: string; title: string; sub?: string; more: string; badge?: React.ReactNode }) {
+function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: { eyebrow?: string; title: string; sub?: string; more: string; badge?: React.ReactNode; href?: string }) {
   return (
     <div className="flex items-end justify-between">
       <div>
@@ -25,7 +25,7 @@ function SectionHead({ eyebrow, title, sub, more, badge }: { eyebrow?: string; t
         <h2 className="mt-2 text-[30px] font-black tracking-tight">{title}</h2>
         {sub && <p className="mt-2 text-[13px] text-neutral-500">{sub}</p>}
       </div>
-      <Link href="/listings" className="pb-1 text-[12px] font-bold text-brand">{more} →</Link>
+      <Link href={href} className="pb-1 text-[12px] font-bold text-brand">{more} →</Link>
     </div>
   );
 }
@@ -126,12 +126,18 @@ export function Picks() {
   );
 }
 
-const filters = ["전체", "한식·분식", "카페·음료", "베이커리·디저트", "프랜차이즈", "기타 업종"];
+// 버튼 이름 → 매물 유형(kind). 전수창업이 가장 먼저 노출된다
+const filters = [
+  { label: "전수창업", kind: "전수창업" },
+  { label: "프랜차이즈창업", kind: "프랜차이즈" },
+  { label: "상가매물", kind: "상가매물" },
+  { label: "신규창업", kind: "신규창업" },
+];
 export function NewListings() {
-  const [active, setActive] = useState("전체");
+  const [active, setActive] = useState(filters[0].kind);
   const list = [...listings]
     .sort((a, b) => b.id - a.id)
-    .filter((l) => !l.sold && (active === "전체" || (active === "기타 업종" ? !filters.slice(1, 5).includes(l.category) : l.category === active)))
+    .filter((l) => !l.sold && l.kind === active)
     .slice(0, 6);
 
   return (
@@ -141,15 +147,16 @@ export function NewListings() {
           badge={<p className="flex items-center gap-2 text-[11px]"><span className="rounded bg-blue-800 px-2 py-0.5 font-bold text-white">NEW</span><span className="text-neutral-400">최근 7일 내 등록</span></p>}
           title="신규 등록"
           more="전체 매물 보기"
+          href={`/listings?type=${active}`}
         />
       </Reveal>
       <div className="mt-6 flex flex-wrap gap-2">
         {filters.map((f) => (
-          <button key={f} onClick={() => setActive(f)} className={`rounded-full border px-4 py-1.5 text-[12px] transition ${active === f ? "border-ink bg-ink font-bold text-white" : "border-neutral-300 text-neutral-600 hover:border-brand hover:text-brand"}`}>{f}</button>
+          <button key={f.kind} onClick={() => setActive(f.kind)} className={`rounded-full border px-4 py-1.5 text-[12px] transition ${active === f.kind ? "border-ink bg-ink font-bold text-white" : "border-neutral-300 text-neutral-600 hover:border-brand hover:text-brand"}`}>{f.label}</button>
         ))}
       </div>
       <div className="mt-6 grid min-h-[300px] items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {list.length === 0 && <p className="col-span-3 py-20 text-center text-[13px] text-neutral-400">해당 업종의 신규 매물이 아직 없습니다.</p>}
+        {list.length === 0 && <p className="col-span-3 py-20 text-center text-[13px] text-neutral-400">해당 유형의 신규 매물이 아직 없습니다.</p>}
         {list.map((l, i) => <ListingCard key={l.id} l={l} i={i} />)}
       </div>
     </section>

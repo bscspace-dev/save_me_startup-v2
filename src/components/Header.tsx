@@ -2,11 +2,14 @@ import Link from "next/link";
 import { Logo } from "./Icons";
 
 const nav = [
-  { label: "매물탐색", href: "/listings" },
-  { label: "전수창업", href: "/transfer" },
-  { label: "신규창업", href: "/identity" },
-  { label: "창업상담", href: "/#consult" },
+  { label: "프랜차이즈창업", href: "/listings?type=프랜차이즈" },
+  { label: "상가매물", href: "/listings?type=상가매물" },
+  { label: "전수창업", href: "/listings?type=전수창업" },
+  { label: "신규창업", href: "/listings?type=신규창업" },
 ];
+
+// 매물 유형 → 상단 메뉴 이름
+export const navLabel = (kind?: string) => (kind === "프랜차이즈" ? "프랜차이즈창업" : kind);
 
 export function Header({ active }: { active?: string }) {
   return (

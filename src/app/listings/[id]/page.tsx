@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Header } from "@/components/Header";
+import { Header, navLabel } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ListingConsultButton } from "@/components/ListingConsultButton";
 import { Reveal } from "@/components/Reveal";
@@ -31,7 +31,7 @@ export default async function ListingDetail({ params }: Props) {
   if (franchise) {
     return (
       <>
-        <Header active="매물탐색" />
+        <Header active={navLabel(l.kind)} />
         <FranchiseDetail l={l} f={franchise} />
         <Footer />
         <YoutubePopup />
@@ -51,7 +51,7 @@ export default async function ListingDetail({ params }: Props) {
 
   return (
     <>
-      <Header active="매물탐색" />
+      <Header active={navLabel(l.kind)} />
       <main className="mx-auto max-w-[1100px] px-6 py-10">
         <Link href="/listings" className="text-[12px] text-neutral-500 transition hover:text-brand">← 매물 목록으로</Link>
 
