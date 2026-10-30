@@ -144,7 +144,7 @@ ${mn}
           <F k="id" label="매물 번호 (다른 매물과 겹치면 안 됨)" />
           <F k="title" label="제목" wide />
           <F k="price" label="총 금액 (만원)" ph="7000" />
-          <F k="cost" label="창업비용 (만원)" ph="6000" />
+          {kind !== "상가매물" && kind !== "프랜차이즈" && <F k="cost" label="창업비용 (만원)" ph="6000" />}
           <F k="area" label="전용면적 (㎡)" ph="30" />
           <F k="date" label="등록일 (YYYY-MM-DD, 기본값 오늘)" ph="2026-10-30" />
           <F k="photos" label="사진 장수 (없으면 비움)" ph="5" />
