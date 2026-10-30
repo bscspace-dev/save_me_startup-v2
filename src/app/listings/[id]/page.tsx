@@ -11,6 +11,8 @@ import { FranchiseDetail } from "@/components/FranchiseDetail";
 import { franchises } from "@/lib/franchise";
 import { ShopDetail } from "@/components/ShopDetail";
 import { shops } from "@/lib/shop";
+import { TransferDetail } from "@/components/TransferDetail";
+import { transfers } from "@/lib/transfer";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -47,6 +49,18 @@ export default async function ListingDetail({ params }: Props) {
       <>
         <Header active={navLabel(l.kind)} />
         <ShopDetail l={l} s={shop} />
+        <Footer />
+        <YoutubePopup />
+      </>
+    );
+  }
+
+  const transfer = l.kind === "전수창업" ? transfers[l.id] : undefined;
+  if (transfer) {
+    return (
+      <>
+        <Header active={navLabel(l.kind)} />
+        <TransferDetail l={l} t={transfer} />
         <Footer />
         <YoutubePopup />
       </>

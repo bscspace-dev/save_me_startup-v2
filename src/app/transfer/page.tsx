@@ -6,7 +6,8 @@ import { Faq } from "@/components/Faq";
 import { Icon } from "@/components/Icons";
 import { Reveal } from "@/components/Reveal";
 import { YoutubePopup } from "@/components/YoutubePopup";
-import { TransferVideoPopup } from "@/components/TransferVideoPopup";
+import { TransferGuideVideo } from "@/components/TransferGuideVideo";
+import { MainPopups } from "@/components/MainPopups";
 
 export const metadata: Metadata = {
   title: "전수창업 | 구해줘창업",
@@ -81,6 +82,11 @@ export default function TransferPage() {
           <p className="mt-6 text-[12px] text-neutral-400">구해줘창업은 나에게 맞는 전수창업을 찾도록 돕습니다.</p>
         </section>
 
+        {/* 안내 영상 */}
+        <section className="mx-auto max-w-[1280px] px-6 pb-20">
+          <Reveal><TransferGuideVideo /></Reveal>
+        </section>
+
         {/* 이런 분께 맞습니다 */}
         <section className="bg-sand">
           <div className="mx-auto max-w-[1280px] px-6 py-20">
@@ -147,7 +153,7 @@ export default function TransferPage() {
       </main>
       <Footer />
       <YoutubePopup />
-      <TransferVideoPopup />
+      <MainPopups />
     </>
   );
 }

@@ -3,8 +3,6 @@ import { Hero } from "@/components/Hero";
 import { Categories, Picks, NewListings } from "@/components/Sections";
 import { Consult } from "@/components/ConsultForm";
 import { Footer } from "@/components/Footer";
-import { YoutubePopup } from "@/components/YoutubePopup";
-import { MainPopups } from "@/components/MainPopups";
 
 export default function Home() {
   return (
@@ -18,8 +16,6 @@ export default function Home() {
         <Consult />
       </main>
       <Footer />
-      <YoutubePopup />
-      <MainPopups />
     </>
   );
 }
