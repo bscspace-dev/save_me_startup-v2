@@ -4,8 +4,8 @@ import { Logo } from "./Icons";
 const nav = [
   { label: "프랜차이즈창업", href: "/listings?type=프랜차이즈" },
   { label: "상가매물", href: "/listings?type=상가매물" },
-  { label: "전수창업", href: "/listings?type=전수창업" },
-  { label: "신규창업", href: "/listings?type=신규창업" },
+  { label: "전수창업", href: "/transfer" },
+  { label: "신규창업", href: "/identity" },
 ];
 
 // 매물 유형 → 상단 메뉴 이름

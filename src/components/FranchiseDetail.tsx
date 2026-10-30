@@ -4,8 +4,7 @@ import type { FranchiseInfo } from "@/lib/franchise";
 import { FranchiseGallery } from "./FranchiseGallery";
 import { ListingConsultButton } from "./ListingConsultButton";
 import { Icon } from "./Icons";
-
-const man = (v: number) => `${v.toLocaleString()}만원`;
+import { Head, ProfitPanel, card, inner, man } from "./DetailParts";
 const sum = (rows: { amount: number }[]) => rows.reduce((a, r) => a + r.amount, 0);
 
 const tabs = [
@@ -16,28 +15,7 @@ const tabs = [
   ["창업 비용", "#cost"],
 ] as const;
 
-const card = "rounded-3xl border border-neutral-200 bg-white p-8 md:p-10";
-const inner = "rounded-xl border border-neutral-200 bg-[#faf9f7]";
-
-function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
-  return (
-    <>
-      <p className="text-[11px] font-bold tracking-[0.14em] text-brand">{eyebrow}</p>
-      <h2 className="mt-2 text-[26px] font-black tracking-tight">{title}</h2>
-    </>
-  );
-}
-
 export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
-  const costRows = [
-    { label: "재료비", amount: f.costs.material },
-    { label: "인건비", amount: f.costs.labor },
-    { label: "임차·관리비", amount: f.costs.rent },
-    { label: "기타 운영비", amount: f.costs.etc },
-  ];
-  const costTotal = sum(costRows);
-  const net = f.revenue - costTotal;
-  const rate = Math.round((net / f.revenue) * 100);
   const startupTotal = sum(f.startupLeft) + sum(f.startupRight);
   const infoRows = [
     ["브랜드", f.brand],
@@ -152,29 +130,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
           {/* 월 예상 순수익 */}
           <section id="profit" className={`${card} scroll-mt-24`}>
             <Head eyebrow="PROFIT ANALYSIS" title="월 예상 순수익" />
-            <div className="mt-7 grid overflow-hidden rounded-xl border border-neutral-200 lg:grid-cols-[1fr_2.1fr]">
-              <div className="flex flex-col justify-between bg-[#fff4ea] p-7">
-                <div>
-                  <p className="text-[11px] font-bold text-brand">예상 월 순수익</p>
-                  <p className="mt-4 text-[34px] font-black leading-none tracking-tight">{man(net)}</p>
-                </div>
-                <div className="mt-12">
-                  <span className="inline-block rounded-full bg-brand px-3 py-1 text-[11px] font-bold text-white">예상 수익률 {rate}%</span>
-                  <p className="mt-2 text-[11px] text-brand">점주 직접 운영 기준</p>
-                </div>
-              </div>
-              <div className="divide-y divide-neutral-100 bg-white text-[12.5px]">
-                {[{ label: "매출액", amount: f.revenue, sign: "" }, ...costRows.map((c) => ({ ...c, sign: "-" }))].map((r) => (
-                  <div key={r.label} className="flex items-center justify-between px-6 py-4">
-                    <span className={r.sign ? "text-neutral-500" : "font-bold"}>{r.label}</span>
-                    <span className="flex items-baseline gap-6">
-                      <b>{r.sign}{man(r.amount)}</b>
-                      <span className="w-9 text-right text-[10.5px] text-neutral-300">{Math.round((r.amount / f.revenue) * 100)}%</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+<ProfitPanel revenue={f.revenue} costs={f.costs} title="예상 월 순수익" rateLabel="예상 수익률" caption="점주 직접 운영 기준" />
             <p className="mt-4 text-[10.5px] text-neutral-400">{f.profitNote}</p>
           </section>
 

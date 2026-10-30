@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { listings, type Listing } from "@/lib/data";
 import { ListingCard } from "./ListingCard";
 import { ListingInquiryPopup } from "./ListingInquiryPopup";
+import { ConsultPopup } from "./ConsultPopup";
 
 const categories = ["한식·분식", "카페·음료", "베이커리·디저트", "프랜차이즈", "기타 업종"];
 const kindColor: Record<string, string> = {
@@ -30,6 +31,7 @@ export function ListingsView() {
   const [desc, setDesc] = useState(true);
   const [wide, setWide] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
+  const [consultOpen, setConsultOpen] = useState(false);
 
   const reset = () => { setKind(""); setRegion(""); setCategory(""); setSort("최신순"); setDesc(true); };
 
@@ -126,11 +128,11 @@ export function ListingsView() {
 
         {/* 우측 배너 */}
         <aside className="hidden space-y-3 self-start lg:block">
-          <Link href="/#consult" className="block rounded-lg bg-brand p-4 text-white transition hover:bg-brand-dark">
+          <button onClick={() => setConsultOpen(true)} className="block w-full rounded-lg bg-brand p-4 text-left text-white transition hover:bg-brand-dark">
             <p className="text-[10px] text-white/80">구해줘창업</p>
             <p className="mt-1 text-[16px] font-black leading-snug">내 조건에 맞는<br />매장 찾기</p>
             <span className="mt-3 inline-block rounded bg-white px-2 py-1 text-[10px] font-bold text-brand">무료 상담 신청하기 →</span>
-          </Link>
+          </button>
           <Link href="/transfer" className="block rounded-lg border border-orange-200 bg-cream p-4 transition hover:shadow-md">
             <p className="text-[10px] text-neutral-500">구해줘창업</p>
             <p className="mt-1 text-[15px] font-black leading-snug">창업 전,<br />이건 알고 가세요</p>
@@ -138,6 +140,7 @@ export function ListingsView() {
         </aside>
       </div>
       <ListingInquiryPopup open={inquiryOpen} onClose={() => setInquiryOpen(false)} />
+      <ConsultPopup open={consultOpen} onClose={() => setConsultOpen(false)} />
     </>
   );
 }

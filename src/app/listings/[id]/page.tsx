@@ -9,6 +9,8 @@ import { YoutubePopup } from "@/components/YoutubePopup";
 import { kindBadge, listings, won } from "@/lib/data";
 import { FranchiseDetail } from "@/components/FranchiseDetail";
 import { franchises } from "@/lib/franchise";
+import { ShopDetail } from "@/components/ShopDetail";
+import { shops } from "@/lib/shop";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -33,6 +35,18 @@ export default async function ListingDetail({ params }: Props) {
       <>
         <Header active={navLabel(l.kind)} />
         <FranchiseDetail l={l} f={franchise} />
+        <Footer />
+        <YoutubePopup />
+      </>
+    );
+  }
+
+  const shop = l.kind === "상가매물" ? shops[l.id] : undefined;
+  if (shop) {
+    return (
+      <>
+        <Header active={navLabel(l.kind)} />
+        <ShopDetail l={l} s={shop} />
         <Footer />
         <YoutubePopup />
       </>
