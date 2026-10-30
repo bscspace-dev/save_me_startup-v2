@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
+import { TestNoticePopup } from "@/components/TestNoticePopup";
 
 const noto = Noto_Sans_KR({ subsets: ["latin"], weight: ["400", "500", "700", "900"], variable: "--font-noto" });
 
@@ -12,7 +13,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" className={noto.variable}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <TestNoticePopup />
+      </body>
     </html>
   );
 }
