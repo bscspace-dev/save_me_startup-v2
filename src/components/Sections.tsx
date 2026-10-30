@@ -18,7 +18,7 @@ function Placeholder({ dark = false }: { dark?: boolean }) {
   return <div className={`size-full ${dark ? "bg-neutral-800" : "bg-neutral-100"}`} />;
 }
 
-function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: { eyebrow?: string; title: string; sub?: string; more: string; badge?: React.ReactNode; href?: string }) {
+function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: { eyebrow?: string; title: string; sub?: string; more?: string; badge?: React.ReactNode; href?: string }) {
   return (
     <div className="flex items-end justify-between">
       <div>
@@ -26,7 +26,7 @@ function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: {
         <h2 className="mt-2 text-[30px] font-black tracking-tight">{title}</h2>
         {sub && <p className="mt-2 text-[13px] text-neutral-500">{sub}</p>}
       </div>
-      <Link href={href} className="pb-1 text-[12px] font-bold text-brand">{more} →</Link>
+      {more && <Link href={href} className="pb-1 text-[12px] font-bold text-brand">{more} →</Link>}
     </div>
   );
 }
@@ -34,7 +34,7 @@ function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: {
 export function Categories() {
   return (
     <section className="mx-auto max-w-[1280px] px-6 py-16">
-      <Reveal><SectionHead eyebrow="창업 유형별 탐색" title="업종별 창업 매물" more="전체 매물 보기" /></Reveal>
+      <Reveal><SectionHead eyebrow="창업 유형별 탐색" title="업종별 창업 매물" /></Reveal>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {categories.map((c, i) => {
           const t = toneCls[c.tone];

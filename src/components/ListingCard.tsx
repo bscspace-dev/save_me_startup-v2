@@ -2,9 +2,12 @@
 import { motion } from "motion/react";
 import { kindBadge, photoSrc, won, type Listing } from "@/lib/data";
 import { shops } from "@/lib/shop";
+import { transfers } from "@/lib/transfer";
 
 export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number; wide?: boolean }) {
   const premium = l.kind === "상가매물" ? shops[l.id]?.premium : undefined;
+  const t = l.kind === "전수창업" ? transfers[l.id] : undefined;
+  const desc = t ? `${t.headline[0]} ${t.headline[1]} · ${t.days}일 1:1 교육` : l.title;
   return (
     <motion.a
       href={`/listings/${l.id}`} layout
@@ -28,7 +31,7 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
       <div className="min-h-[104px] flex-1 p-3.5">
         <p className="text-[16px] font-black">{won(l.price)}원</p>
         {premium !== undefined && <p className="mt-1 text-[11.5px] font-bold text-brand">권리금 {won(premium)}원</p>}
-        <h3 className="mt-2 line-clamp-2 text-[12.5px] leading-snug text-neutral-700">{l.title}</h3>
+        <h3 className="mt-2 line-clamp-2 text-[12.5px] leading-snug text-neutral-700">{desc}</h3>
         <p className="mt-2 text-[10.5px] text-neutral-400">[{l.id}] 대구 {l.region} | {l.category} | {l.op} | {l.area}㎡</p>
       </div>
     </motion.a>

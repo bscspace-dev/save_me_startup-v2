@@ -1,6 +1,6 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { Categories, Picks, NewListings } from "@/components/Sections";
+import { Categories, NewListings } from "@/components/Sections";
 import { Consult } from "@/components/ConsultForm";
 import { Footer } from "@/components/Footer";
 
@@ -11,7 +11,6 @@ export default function Home() {
       <main>
         <Hero />
         <Categories />
-        <Picks />
         <NewListings />
         <Consult />
       </main>

@@ -13,13 +13,13 @@ const tabs = [
   ["창업 홍보 서비스", "#package"],
 ] as const;
 
-const steps = (days: number) => [
-  ["01", "업종 탐색", "배우고 싶은 업종 확인", "창업하려는 업종과 필요한 기술, 희망 지역과 준비 예산을 정합니다."],
-  ["02", "전수자 비교", "전수자 선택", "경력, 전문 분야와 교육 내용을 비교해 나에게 맞는 전수자를 선택합니다."],
-  ["03", "교육 신청", "상담 및 교육 신청", "궁금한 점을 확인하고 교육 범위, 비용과 가능한 일정을 결정합니다."],
-  ["04", "기술 습득", "1:1 기술 교육 수강", `조리 기술, 메뉴 구성과 운영 방법을 ${days}일간 현장에서 직접 배웁니다.`],
-  ["05", "매장 준비", "내 매장 창업 준비", "배운 기술을 기준으로 점포, 인테리어, 장비와 인허가를 준비합니다."],
-  ["06", "창업 실행", "오픈 홍보 실행", "구해줘창업과 영업, 광고, 콘텐츠와 홍보영상 제작을 진행합니다."],
+// 전수창업 안내 페이지(/transfer)의 진행 과정과 같은 5단계
+const steps = (days: number, menus: number) => [
+  ["01", "메뉴 및 전수조건 확인", "설문", "배우고 싶은 메뉴와 희망 전수 조건, 준비 예산과 지역을 설문으로 확인합니다."],
+  ["02", "조건 확인 · 전수자 검증", "현장답사", "전수자 매장을 직접 방문해 전수 조건을 확인하고 전수자를 검증합니다."],
+  ["03", "홍보영상 · 영업 · 광고 대행", "지원사업", "홍보영상 영업대행(홈페이지 게시)과 광고대행(유료)으로 오픈 이후까지 지원합니다."],
+  ["04", "전수 기간 협의 후 계약", "제자 계약", `교육 범위와 일정을 협의하고 ${days}일 전수 과정을 계약합니다.`],
+  ["05", "메뉴 및 조리 노하우 교육", "레시피 전수", `대표 메뉴 ${menus}종의 레시피와 운영 노하우를 ${days}일간 1:1로 교육합니다.`],
 ];
 
 const provided = (menus: number) => [
@@ -136,11 +136,11 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
           <section id="process" className={`${card} scroll-mt-24`}>
             <Head eyebrow="PROCESS" title="예비 창업자의 전수창업 과정" />
             <p className="mt-2 text-[12px] text-neutral-500">기술을 배우고 내 매장을 시작하려는 예비 창업자 기준의 진행 순서입니다.</p>
-            <div className="mt-7 grid gap-3 md:grid-cols-3">
-              {steps(t.days).map(([no, tag, title, desc], i) => (
-                <div key={no} className={`rounded-xl border p-5 ${i === 5 ? "border-orange-200 bg-[#fff4ea]" : "border-neutral-200 bg-[#faf9f7]"}`}>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {steps(t.days, t.menus).map(([no, title, tag, desc], i) => (
+                <div key={no} className={`rounded-xl border p-5 ${i === 2 ? "border-orange-200 bg-[#fff4ea]" : "border-neutral-200 bg-[#faf9f7]"}`}>
                   <div className="flex items-center justify-between">
-                    <span className={`grid size-7 place-items-center rounded-full text-[10.5px] font-black text-white ${i === 5 ? "bg-brand" : "bg-ink"}`}>{no}</span>
+                    <span className={`grid size-7 place-items-center rounded-full text-[10.5px] font-black text-white ${i === 2 ? "bg-brand" : "bg-ink"}`}>{no}</span>
                     <span className="rounded bg-white px-2 py-0.5 text-[9.5px] text-neutral-400">{tag}</span>
                   </div>
                   <p className="mt-4 text-[14px] font-black">{title}</p>
