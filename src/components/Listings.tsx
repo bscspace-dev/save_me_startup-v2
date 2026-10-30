@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { listings, type Listing } from "@/lib/data";
+import { listings as staticListings, withNew, type Listing } from "@/lib/data";
+import { fetchRemoteListings } from "@/lib/remote";
 import { ListingCard } from "./ListingCard";
 import { ListingInquiryPopup } from "./ListingInquiryPopup";
 import { ConsultPopup } from "./ConsultPopup";
@@ -30,6 +31,10 @@ export function ListingsView() {
   const [wide, setWide] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
   const [consultOpen, setConsultOpen] = useState(false);
+  // 관리자에서 등록한 상가매물을 정적 매물 앞에 합친다
+  const [remote, setRemote] = useState<Listing[]>([]);
+  useEffect(() => { fetchRemoteListings().then(setRemote); }, []);
+  const listings = useMemo(() => withNew([...remote, ...staticListings]), [remote]);
 
   const list = useMemo(() => {
     const out = listings.filter((l) =>
@@ -41,7 +46,7 @@ export function ListingsView() {
       최신순: (l) => l.id, 인기순: (l) => l.views, 추천순: (l) => (l.rec ? 1e6 : 0) + l.id, 금액순: (l) => l.price, 면적순: (l) => l.area,
     };
     return out.sort((a, b) => (desc ? key[sort](b) - key[sort](a) : key[sort](a) - key[sort](b)));
-  }, [kind, region, category, sort, desc]);
+  }, [listings, kind, region, category, sort, desc]);
 
   const filterKey = [kind, region, category, sort, desc].join("|");
   const [pageState, setPageState] = useState({ key: filterKey, n: 1 });

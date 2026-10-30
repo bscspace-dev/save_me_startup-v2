@@ -6,10 +6,13 @@ import { Footer } from "@/components/Footer";
 import { ListingConsultButton } from "@/components/ListingConsultButton";
 import { Reveal } from "@/components/Reveal";
 import { YoutubePopup } from "@/components/YoutubePopup";
-import { kindBadge, listings, won } from "@/lib/data";
+import { kindBadge, listings as rawListings, withNew, won } from "@/lib/data";
+
+const listings = withNew(rawListings);
 import { FranchiseDetail } from "@/components/FranchiseDetail";
 import { franchises } from "@/lib/franchise";
 import { ShopDetail } from "@/components/ShopDetail";
+import { RemoteShopDetail } from "@/components/RemoteShopDetail";
 import { shops } from "@/lib/shop";
 import { TransferDetail } from "@/components/TransferDetail";
 import { transfers } from "@/lib/transfer";
@@ -29,7 +32,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ListingDetail({ params }: Props) {
   const { id } = await params;
   const l = listings.find((x) => String(x.id) === id);
-  if (!l) notFound();
+  // 정적 매물에 없으면 관리자에서 등록한 매물(Supabase)인지 브라우저에서 조회한다
+  if (!l) {
+    if (!/^\d+$/.test(id)) notFound();
+    return <RemoteShopDetail id={Number(id)} />;
+  }
 
   const franchise = l.kind === "프랜차이즈" ? franchises[l.id] : undefined;
   if (franchise) {

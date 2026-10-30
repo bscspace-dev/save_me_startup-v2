@@ -15,9 +15,9 @@ const tones = [
 ];
 
 // photos 가 있으면 실제 사진으로, 없으면 자리표시 배경으로 보여준다
-export function FranchiseGallery({ slides: base, badges, photos }: { slides: Slide[]; badges: string[]; photos?: { id: number; count: number } }) {
+export function FranchiseGallery({ slides: base, badges, photos }: { slides: Slide[]; badges: string[]; photos?: { id: number; count: number; srcs?: string[] } }) {
   const slides: Slide[] = photos?.count
-    ? Array.from({ length: photos.count }, (_, k) => ({ label: `사진 ${k + 1}`, caption: base[k]?.caption ?? "", sub: base[k]?.sub ?? "", src: photoSrc(photos.id, k + 1) }))
+    ? Array.from({ length: photos.count }, (_, k) => ({ label: `사진 ${k + 1}`, caption: base[k]?.caption ?? "", sub: base[k]?.sub ?? "", src: photos.srcs?.[k] ?? photoSrc(photos.id, k + 1) }))
     : base;
   const [i, setI] = useState(0);
   const n = slides.length;

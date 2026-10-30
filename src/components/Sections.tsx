@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { categories, kindBadge, listings } from "@/lib/data";
+import { categories, kindBadge, listings, withNew, type Listing } from "@/lib/data";
+import { fetchRemoteListings } from "@/lib/remote";
 import { useToday } from "@/lib/today";
 import { ListingCard } from "./ListingCard";
 import { Reveal } from "./Reveal";
@@ -136,11 +137,14 @@ const filters = [
 ];
 export function NewListings() {
   const [active, setActive] = useState(filters[0].kind);
+  // 관리자에서 등록한 상가매물도 함께 보여준다
+  const [remote, setRemote] = useState<Listing[]>([]);
+  useEffect(() => { fetchRemoteListings().then(setRemote); }, []);
   // 등록일(date)이 있는 매물은 7일이 지나면 제외, 없는 매물은 그대로 노출 (날짜 비교는 브라우저에서만)
   const today = useToday();
   const fresh = (d?: string) => !d || !today || (new Date(today).getTime() - new Date(d).getTime()) / 86400000 <= 7;
 
-  const list = [...listings]
+  const list = withNew([...remote, ...listings])
     .sort((a, b) => b.id - a.id)
     .filter((l) => !l.sold && l.kind === active && fresh(l.date))
     .slice(0, 6);
