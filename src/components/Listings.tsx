@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { listings, type Listing } from "@/lib/data";
 import { ListingCard } from "./ListingCard";
+import { ListingInquiryPopup } from "./ListingInquiryPopup";
 
 const categories = ["한식·분식", "카페·음료", "베이커리·디저트", "프랜차이즈", "기타 업종"];
 const ops = ["직접운영", "반오토", "풀오토"];
@@ -23,6 +24,8 @@ const kindColor: Record<string, string> = {
 const sorts = ["최신순", "인기순", "추천순", "금액순", "면적순"] as const;
 type Sort = (typeof sorts)[number];
 
+const PAGE_SIZE = 8;
+
 const selectCls = "h-9 rounded border border-neutral-300 bg-white px-3 text-[12px] text-neutral-600 outline-none focus:border-brand";
 
 export function ListingsView() {
@@ -36,6 +39,7 @@ export function ListingsView() {
   const [sort, setSort] = useState<Sort>("최신순");
   const [desc, setDesc] = useState(true);
   const [wide, setWide] = useState(false);
+  const [inquiryOpen, setInquiryOpen] = useState(false);
 
   const reset = () => { setKind(""); setQ(""); setRegion(""); setCategory(""); setCost(""); setOp(""); setSort("최신순"); setDesc(true); };
 
@@ -54,6 +58,16 @@ export function ListingsView() {
     };
     return out.sort((a, b) => (desc ? key[sort](b) - key[sort](a) : key[sort](a) - key[sort](b)));
   }, [kind, q, region, category, cost, op, sort, desc]);
+
+  const filterKey = [kind, q, region, category, cost, op, sort, desc].join("|");
+  const [pageState, setPageState] = useState({ key: filterKey, n: 1 });
+  const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  const page = Math.min(pageState.key === filterKey ? pageState.n : 1, totalPages);
+  const goPage = (n: number) => {
+    setPageState({ key: filterKey, n });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const pageList = list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const sortable = (s: Sort) => s === "금액순" || s === "면적순";
 
@@ -106,13 +120,33 @@ export function ListingsView() {
           {list.length === 0 ? (
             <p className="py-32 text-center text-[13px] text-neutral-400">조건에 맞는 매물이 없습니다. 필터를 초기화해 보세요.</p>
           ) : (
-            <motion.div layout className={`grid gap-4 ${wide ? "md:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
+            <motion.div key={page} layout className={`grid gap-4 ${wide ? "md:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
               <AnimatePresence mode="popLayout">
-                {list.map((l, i) => (
+                {pageList.map((l, i) => (
                   <ListingCard key={l.id} l={l} i={i} wide={wide} />
                 ))}
               </AnimatePresence>
+                <button
+                  onClick={() => setInquiryOpen(true)}
+                  aria-label="매물 등록 문의"
+                  className={`grid place-items-center rounded-lg border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-brand hover:text-brand ${wide ? "min-h-[104px]" : "min-h-[254px]"}`}
+                >
+                  <span className="text-center">
+                    <span className="block text-[44px] font-light leading-none">+</span>
+                    <span className="mt-2 block text-[12px] font-bold">매물 등록 문의</span>
+                  </span>
+                </button>
             </motion.div>
+          )}
+
+          {totalPages > 1 && (
+            <nav aria-label="페이지 이동" className="mt-10 flex items-center justify-center gap-1.5 text-[13px]">
+              <button onClick={() => goPage(page - 1)} disabled={page === 1} className="h-9 rounded border border-neutral-300 bg-white px-3 text-neutral-600 transition hover:border-brand hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-300 disabled:hover:text-neutral-600">이전</button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button key={n} onClick={() => goPage(n)} aria-current={n === page ? "page" : undefined} className={`size-9 rounded border font-bold transition ${n === page ? "border-brand bg-brand text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>{n}</button>
+              ))}
+              <button onClick={() => goPage(page + 1)} disabled={page === totalPages} className="h-9 rounded border border-neutral-300 bg-white px-3 text-neutral-600 transition hover:border-brand hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-300 disabled:hover:text-neutral-600">다음</button>
+            </nav>
           )}
         </section>
 
@@ -129,6 +163,7 @@ export function ListingsView() {
             <span className="mt-3 inline-block text-[10px] font-bold text-brand">자세히 보기 →</span>          </Link>
         </aside>
       </div>
+      <ListingInquiryPopup open={inquiryOpen} onClose={() => setInquiryOpen(false)} />
     </>
   );
 }

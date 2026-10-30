@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Consult } from "@/components/ConsultForm";
+import { ListingConsultButton } from "@/components/ListingConsultButton";
 import { Reveal } from "@/components/Reveal";
 import { YoutubePopup } from "@/components/YoutubePopup";
 import { kindBadge, listings, won } from "@/lib/data";
@@ -67,7 +67,7 @@ export default async function ListingDetail({ params }: Props) {
             {l.sold ? (
               <p className="mt-6 rounded bg-neutral-100 py-3.5 text-center text-[13px] font-bold text-neutral-500">계약이 완료된 매물입니다</p>
             ) : (
-              <a href="#consult" className="mt-6 block rounded bg-brand py-3.5 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark">이 매물 상담하기</a>
+              <ListingConsultButton id={l.id} title={l.title} />
             )}
           </Reveal>
         </div>
@@ -97,7 +97,7 @@ export default async function ListingDetail({ params }: Props) {
           </section>
         )}
       </main>
-      <div className="mt-16"><Consult /></div>
+      <div className="mt-16" />
       <Footer />
       <YoutubePopup />
     </>
