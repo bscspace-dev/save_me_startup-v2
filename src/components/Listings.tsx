@@ -157,9 +157,9 @@ export function ListingsView() {
             <p className="mt-1 text-[16px] font-black leading-snug">내 조건에 맞는<br />매장 찾기</p>
             <span className="mt-3 inline-block rounded bg-white px-2 py-1 text-[10px] font-bold text-brand">무료 상담 신청하기 →</span>
           </Link>
-          <Link href="/#consult" className="block rounded-lg border border-orange-200 bg-cream p-4 transition hover:shadow-md">
+          <Link href="/transfer" className="block rounded-lg border border-orange-200 bg-cream p-4 transition hover:shadow-md">
             <p className="text-[10px] text-neutral-500">구해줘창업</p>
-            <p className="mt-1 text-[15px] font-black leading-snug">인수 전,<br />이건 알고 가세요</p>
+            <p className="mt-1 text-[15px] font-black leading-snug">창업 전,<br />이건 알고 가세요</p>
             <span className="mt-3 inline-block text-[10px] font-bold text-brand">자세히 보기 →</span>          </Link>
         </aside>
       </div>

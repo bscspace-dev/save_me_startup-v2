@@ -11,6 +11,9 @@ export function Icon({ name, className }: { name: string; className?: string }) 
     case "check": return <svg {...P} className={className}><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>;
     case "chevron": return <svg {...P} className={className}><path d="M6 9l6 6 6-6" /></svg>;
     case "warn": return <svg {...P} className={className}><path d="M12 4l9 16H3L12 4zM12 10v4M12 17v.5" /></svg>;
+    case "user": return <svg {...P} className={className}><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M17 4.5a3.5 3.5 0 010 7M18.5 14.3c1.8.7 3 2.5 3 5.2" /></svg>;
+    case "clock": return <svg {...P} className={className}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>;
+    case "pan": return <svg {...P} className={className}><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M4 9h16M8 6h.01M12 6h.01M9 14h6M9 17h4" /></svg>;
     default: return null;
   }
 }

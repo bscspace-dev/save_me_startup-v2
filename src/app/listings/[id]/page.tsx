@@ -7,6 +7,8 @@ import { ListingConsultButton } from "@/components/ListingConsultButton";
 import { Reveal } from "@/components/Reveal";
 import { YoutubePopup } from "@/components/YoutubePopup";
 import { kindBadge, listings, won } from "@/lib/data";
+import { FranchiseDetail } from "@/components/FranchiseDetail";
+import { franchises } from "@/lib/franchise";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -24,6 +26,18 @@ export default async function ListingDetail({ params }: Props) {
   const { id } = await params;
   const l = listings.find((x) => String(x.id) === id);
   if (!l) notFound();
+
+  const franchise = l.kind === "프랜차이즈" ? franchises[l.id] : undefined;
+  if (franchise) {
+    return (
+      <>
+        <Header active="매물탐색" />
+        <FranchiseDetail l={l} f={franchise} />
+        <Footer />
+        <YoutubePopup />
+      </>
+    );
+  }
 
   const rows = [
     ["매물번호", String(l.id)],

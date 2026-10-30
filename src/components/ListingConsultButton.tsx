@@ -59,11 +59,11 @@ function ConsultForm({ id, title, onClose }: { id: number; title: string; onClos
   );
 }
 
-export function ListingConsultButton({ id, title }: { id: number; title: string }) {
+export function ListingConsultButton({ id, title, label = "이 매물 상담하기", className = "mt-6 block w-full rounded bg-brand py-3.5 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark" }: { id: number; title: string; label?: string; className?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setOpen(true)} className="mt-6 block w-full rounded bg-brand py-3.5 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark">이 매물 상담하기</button>
+      <button onClick={() => setOpen(true)} className={className}>{label}</button>
       <AnimatePresence>{open && <ConsultForm id={id} title={title} onClose={() => setOpen(false)} />}</AnimatePresence>
     </>
   );

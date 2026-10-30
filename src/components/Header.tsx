@@ -19,7 +19,6 @@ export function Header({ active }: { active?: string }) {
           ))}
         </nav>
         <div className="flex items-center gap-2 text-[13px] font-bold">
-          <a href="#" className="rounded border border-neutral-300 px-4 py-2 text-neutral-700 transition hover:bg-neutral-50">로그인</a>
           <Link href="/#consult" className="rounded bg-brand px-4 py-2 text-white transition hover:bg-brand-dark">무료 창업상담</Link>
         </div>
       </div>
