@@ -2,25 +2,15 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-const KEY = "test-notice-seen";
-
 export function TestNoticePopup() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   useEffect(() => {
-    try {
-      if (!sessionStorage.getItem(KEY)) setOpen(true);
-    } catch {
-      setOpen(true);
-    }
-  }, []);
-
-  const close = () => {
-    setOpen(false);
-    try {
-      sessionStorage.setItem(KEY, "1");
-    } catch {}
-  };
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
   return (
     <AnimatePresence>
@@ -30,7 +20,7 @@ export function TestNoticePopup() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={close}
+          onClick={() => setOpen(false)}
         >
           <motion.div
             role="dialog"
@@ -46,7 +36,7 @@ export function TestNoticePopup() {
             <p className="mt-3 text-[13px] leading-relaxed text-neutral-600">
               본 사이트는 정식 오픈 전 테스트 운영 중이며,<br />게시된 내용은 실제와 다를 수 있습니다.
             </p>
-            <button onClick={close} className="mt-6 w-full rounded-lg bg-brand py-3.5 text-[14px] font-bold text-white">확인</button>
+            <button onClick={() => setOpen(false)} className="mt-6 w-full rounded-lg bg-brand py-3.5 text-[14px] font-bold text-white">확인</button>
           </motion.div>
         </motion.div>
       )}
