@@ -8,13 +8,6 @@ import { ListingCard } from "./ListingCard";
 import { ListingInquiryPopup } from "./ListingInquiryPopup";
 
 const categories = ["한식·분식", "카페·음료", "베이커리·디저트", "프랜차이즈", "기타 업종"];
-const ops = ["직접운영", "반오토", "풀오토"];
-const costRanges = [
-  { label: "5천만 미만", test: (v: number) => v < 5000 },
-  { label: "5천만~1억", test: (v: number) => v >= 5000 && v < 10000 },
-  { label: "1억~2억", test: (v: number) => v >= 10000 && v < 20000 },
-  { label: "2억 이상", test: (v: number) => v >= 20000 },
-];
 const kindColor: Record<string, string> = {
   프랜차이즈: "bg-orange-50 text-brand",
   상가매물: "bg-emerald-50 text-emerald-700",
@@ -31,35 +24,28 @@ const selectCls = "h-9 rounded border border-neutral-300 bg-white px-3 text-[12p
 export function ListingsView() {
   const params = useSearchParams();
   const [kind, setKind] = useState(params.get("type") ?? "");
-  const [q, setQ] = useState("");
   const [region, setRegion] = useState(params.get("region") ?? "");
   const [category, setCategory] = useState(params.get("category") ?? "");
-  const [cost, setCost] = useState(params.get("cost") ?? "");
-  const [op, setOp] = useState(params.get("op") ?? "");
   const [sort, setSort] = useState<Sort>("최신순");
   const [desc, setDesc] = useState(true);
   const [wide, setWide] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
-  const reset = () => { setKind(""); setQ(""); setRegion(""); setCategory(""); setCost(""); setOp(""); setSort("최신순"); setDesc(true); };
+  const reset = () => { setKind(""); setRegion(""); setCategory(""); setSort("최신순"); setDesc(true); };
 
   const list = useMemo(() => {
-    const costTest = costRanges.find((c) => c.label === cost)?.test;
     const out = listings.filter((l) =>
-      (!q || l.title.includes(q) || String(l.id).includes(q) || l.region.includes(q)) &&
       (!kind || l.kind === kind) &&
       (!region || l.region === region) &&
-      (!category || (category === "기타 업종" ? !categories.slice(0, 4).includes(l.category) : l.category === category)) &&
-      (!costTest || costTest(l.cost)) &&
-      (!op || l.op === op),
+      (!category || (category === "기타 업종" ? !categories.slice(0, 4).includes(l.category) : l.category === category)),
     );
     const key: Record<Sort, (l: Listing) => number> = {
       최신순: (l) => l.id, 인기순: (l) => l.views, 추천순: (l) => (l.rec ? 1e6 : 0) + l.id, 금액순: (l) => l.price, 면적순: (l) => l.area,
     };
     return out.sort((a, b) => (desc ? key[sort](b) - key[sort](a) : key[sort](a) - key[sort](b)));
-  }, [kind, q, region, category, cost, op, sort, desc]);
+  }, [kind, region, category, sort, desc]);
 
-  const filterKey = [kind, q, region, category, cost, op, sort, desc].join("|");
+  const filterKey = [kind, region, category, sort, desc].join("|");
   const [pageState, setPageState] = useState({ key: filterKey, n: 1 });
   const totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   const page = Math.min(pageState.key === filterKey ? pageState.n : 1, totalPages);
@@ -76,21 +62,9 @@ export function ListingsView() {
       {/* 검색 필터 바 */}
       <div className="border-b border-neutral-200 bg-neutral-50">
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-2 px-6 py-3">
-          <div className="flex">
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="관심지역 또는 매물번호를 입력해 주세요" className="h-9 w-[260px] rounded-l border border-r-0 border-neutral-300 bg-white px-3 text-[12px] outline-none placeholder:text-neutral-400 focus:border-brand" />
-            <span className="grid h-9 w-11 place-items-center rounded-r bg-brand text-[12px] font-bold text-white">검색</span>
-          </div>
           <select value={category} onChange={(e) => setCategory(e.target.value)} className={selectCls}>
             <option value="">업종</option>
             {categories.map((c) => <option key={c}>{c}</option>)}
-          </select>
-          <select value={cost} onChange={(e) => setCost(e.target.value)} className={selectCls}>
-            <option value="">창업비용</option>
-            {costRanges.map((c) => <option key={c.label}>{c.label}</option>)}
-          </select>
-          <select value={op} onChange={(e) => setOp(e.target.value)} className={selectCls}>
-            <option value="">운영방식</option>
-            {ops.map((c) => <option key={c}>{c}</option>)}
           </select>
           <button onClick={reset} className="h-9 rounded border border-neutral-300 bg-white px-3 text-[12px] text-neutral-600 transition hover:border-brand hover:text-brand">초기화</button>
 
