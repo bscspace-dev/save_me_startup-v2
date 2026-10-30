@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 
 export function TestNoticePopup() {
   const [open, setOpen] = useState(true);
+  const isAdmin = usePathname().startsWith("/admin");
 
   useEffect(() => {
     if (!open) return;
@@ -14,7 +16,7 @@ export function TestNoticePopup() {
 
   return (
     <AnimatePresence>
-      {open && (
+      {open && !isAdmin && (
         <motion.div
           className="fixed inset-0 z-[120] grid place-items-center bg-black/70 p-4"
           initial={{ opacity: 0 }}
