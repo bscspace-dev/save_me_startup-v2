@@ -7,11 +7,20 @@ import { YoutubePopup } from "@/components/YoutubePopup";
 
 export const metadata: Metadata = { title: "매물검색 | 구해줘창업" };
 
-export default async function ListingsPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
+type SearchParams = Promise<{ type?: string }>;
+
+// searchParams는 요청 시점 데이터라 Suspense 안에서 읽는다
+async function ListingsHeader({ searchParams }: { searchParams: SearchParams }) {
   const { type } = await searchParams;
+  return <Header active={navLabel(type)} />;
+}
+
+export default function ListingsPage({ searchParams }: { searchParams: SearchParams }) {
   return (
     <>
-      <Header active={navLabel(type)} />
+      <Suspense fallback={<Header />}>
+        <ListingsHeader searchParams={searchParams} />
+      </Suspense>
       <main className="min-h-[70vh]">
         <Suspense>
           <ListingsView />
