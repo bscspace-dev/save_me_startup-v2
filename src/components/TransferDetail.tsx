@@ -8,7 +8,6 @@ import { Head, card, man } from "./DetailParts";
 const tabs = [
   ["진행 프로세스", "#process"],
   ["스승(전수자) 소개", "#expert"],
-  ["교육 과정", "#curriculum"],
   ["비용·제공자료", "#fee"],
   ["창업 홍보 서비스", "#package"],
 ] as const;
@@ -74,7 +73,6 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
                 ) : (
                   <ListingConsultButton id={l.id} title={`${m.name} 스승(전수자) ${l.title} (전수창업 상담)`} label="전수창업 상담  →" className={btn} />
                 )}
-                <a href="#curriculum" className="block rounded-lg border border-white/30 px-6 py-3.5 text-center text-[13px] font-bold transition hover:bg-white/10">커리큘럼 먼저 보기</a>
               </div>
               <dl className="mt-auto grid grid-cols-3 gap-3 border-t border-white/10 pt-5 text-[12px] max-lg:mt-8">
                 {[["전문 분야", m.field], ["현장 경력", `${m.years}년`], ["교육 이력", `누적 ${m.teams}팀`]].map(([k, v]) => (
@@ -125,7 +123,7 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
         </div>
 
         {/* 섹션 이동 */}
-        <nav className="mt-5 grid grid-cols-2 divide-neutral-200 overflow-hidden rounded-2xl border border-neutral-200 bg-white text-center text-[13px] font-bold sm:grid-cols-5 sm:divide-x">
+        <nav className="mt-5 grid grid-cols-2 divide-neutral-200 overflow-hidden rounded-2xl border border-neutral-200 bg-white text-center text-[13px] font-bold sm:grid-cols-4 sm:divide-x">
           {tabs.map(([label, href]) => (
             <a key={href} href={href} className="py-4 transition hover:bg-neutral-50 hover:text-brand">{label}</a>
           ))}
@@ -137,20 +135,15 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
             <Head eyebrow="PROCESS" title="제자(창업자)의 전수창업 과정" />
             <p className="mt-2 text-[12px] text-neutral-500">기술을 배우고 내 매장을 시작하려는 제자(창업자) 기준의 진행 순서입니다.</p>
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-              {steps(t.days, t.menus).map(([no, title, tag, desc], i) => (
-                <div key={no} className={`rounded-xl border p-5 ${i === 2 ? "border-orange-200 bg-[#fff4ea]" : "border-neutral-200 bg-[#faf9f7]"}`}>
+              {steps(t.days, t.menus).map(([no, title, tag]) => (
+                <div key={no} className={`rounded-xl border p-5 border-neutral-200 bg-[#faf9f7]`}>
                   <div className="flex items-center justify-between">
-                    <span className={`grid size-7 place-items-center rounded-full text-[10.5px] font-black text-white ${i === 2 ? "bg-brand" : "bg-ink"}`}>{no}</span>
+                    <span className={`grid size-7 place-items-center rounded-full text-[10.5px] font-black text-white bg-ink`}>{no}</span>
                     <span className="rounded bg-white px-2 py-0.5 text-[9.5px] text-neutral-400">{tag}</span>
                   </div>
                   <p className="mt-4 text-[14px] font-black">{title}</p>
-                  <p className="mt-2 text-[11.5px] leading-relaxed text-neutral-500">{desc}</p>
                 </div>
               ))}
-            </div>
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              <p className="rounded-lg bg-neutral-100 px-5 py-3.5 text-[11px] leading-relaxed text-neutral-600">기술 전수 계약은 4단계 교육과 자료 전달까지이며, 교육을 마치면 직접 창업 준비를 시작합니다.</p>
-              <p className="rounded-lg bg-[#fff4ea] px-5 py-3.5 text-[11px] leading-relaxed font-bold text-brand">6단계 영업·홍보·광고 실행은 구해줘창업과 별도 비용으로 진행합니다.</p>
             </div>
           </section>
 
@@ -178,51 +171,26 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
             </div>
           </section>
 
-          {/* 교육 과정 */}
-          <section id="curriculum" className={`${card} scroll-mt-24`}>
-            <Head eyebrow="CURRICULUM" title={`${t.days}일 교육 과정`} />
-            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {t.curriculum.map((c, i) => (
-                <div key={c.title} className="rounded-xl border border-neutral-200 bg-[#faf9f7] p-5">
-                  <div className="flex items-center justify-between">
-                    <span className="grid size-6 place-items-center rounded bg-[#fff4ea] text-[10px] font-black text-brand">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="text-[10px] text-neutral-400">{c.range}</span>
-                  </div>
-                  <p className="mt-6 text-[15px] font-black">{c.title}</p>
-                  <p className="mt-2 text-[11.5px] leading-relaxed text-neutral-500">{c.desc}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-[#fff4ea] px-5 py-3.5 text-[11.5px] font-bold text-brand">
-              <span>총 {t.days}일 · {t.hours}시간 · 1:1 현장 실습</span>
-              <span className="font-normal">세부 일정은 상담 후 조율합니다.</span>
-            </div>
-          </section>
-
           {/* 비용 및 제공 자료 */}
           <section id="fee" className={`${card} scroll-mt-24`}>
             <Head eyebrow="PROGRAM FEE" title="전수 비용 및 제공 자료" />
-            <div className="mt-7 grid gap-4 lg:grid-cols-[1fr_2fr]">
-              <div className="flex flex-col justify-between rounded-2xl bg-[#0f0a07] p-7 text-white">
-                <div>
-                  <p className="text-[11px] text-white/60">총 기술 전수비</p>
-                  <p className="mt-3 text-[32px] font-black leading-none tracking-tight">{man(l.price)}</p>
-                  <p className="mt-2 text-[10px] text-white/50">VAT 별도</p>
-                </div>
-                <div className="mt-12 border-t border-white/10 pt-4">
-                  <p className="text-[10px] text-white/50">결제 방식</p>
-                  <p className="mt-1 text-[12px] font-bold">계약금 30% · 교육 시작 전 잔금 70%</p>
-                </div>
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-x-10 gap-y-4 rounded-2xl bg-[#0f0a07] px-7 py-6 text-white">
+              <div>
+                <p className="text-[11px] text-white/60">총 기술 전수비 <span className="text-white/40">· VAT 별도</span></p>
+                <p className="mt-2 text-[32px] font-black leading-none tracking-tight">{man(l.price)}</p>
               </div>
-              <ul className="grid gap-3 sm:grid-cols-2">
-                {provided(t.menus).map(([k, v]) => (
-                  <li key={k} className="rounded-xl border border-neutral-200 px-5 py-4">
-                    <p className="flex items-center gap-1.5 text-[12.5px] font-black"><Icon name="check" className="size-3.5 text-brand" />{k}</p>
-                    <p className="mt-1.5 text-[11px] text-neutral-500">{v}</p>
-                  </li>
-                ))}
-              </ul>
+              <div className="border-white/15 sm:border-l sm:pl-10">
+                <p className="text-[10px] text-white/50">결제 방식</p>
+                <p className="mt-1.5 text-[13px] font-bold">계약금 30% · 교육 시작 전 잔금 70%</p>
+              </div>
             </div>
+            <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {provided(t.menus).map(([k]) => (
+                <li key={k} className="flex items-center gap-2.5 rounded-xl border border-neutral-200 bg-[#faf9f7] px-5 py-4 text-[13px] font-black">
+                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#fff4ea]"><Icon name="check" className="size-3.5 text-brand" /></span>{k}
+                </li>
+              ))}
+            </ul>
             <p className="mt-4 rounded-lg border border-neutral-200 bg-[#faf9f7] px-5 py-3 text-[10.5px] leading-relaxed text-neutral-500">점포 임차비, 인테리어, 주방 장비, 식자재 및 영업 인허가 비용은 기술 전수비에 포함되지 않습니다. 조리 영상과 식자재 거래처 목록은 별도로 제공하지 않습니다.</p>
             <p className="mt-3 rounded-lg bg-[#fff4ea] px-5 py-3 text-[10.5px] leading-relaxed font-bold text-brand">기술 전수는 {t.days}일 교육과 자료 전달로 종료됩니다. 교육 종료 후 운영 지원은 포함되지 않으며, 추가 교육이 필요한 경우 별도 일정과 비용으로 협의합니다.</p>
           </section>

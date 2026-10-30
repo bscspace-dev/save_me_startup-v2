@@ -5,13 +5,14 @@ import { shops } from "@/lib/shop";
 import { transfers } from "@/lib/transfer";
 
 export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number; wide?: boolean }) {
-  const premium = l.kind === "상가매물" ? shops[l.id]?.premium : undefined;
+  const shop = l.kind === "상가매물" ? shops[l.id] : undefined;
+  const premium = shop?.premium;
   const t = l.kind === "전수창업" ? transfers[l.id] : undefined;
   const desc = t ? `${t.master.name} 스승(전수자)` : l.title;
   return (
     <motion.a
-      href={`/listings/${l.id}`} layout
-      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
+      href={`/listings/${l.id}`}
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: Math.min(i, 8) * 0.04 }}
       whileHover={{ y: -5 }}
       className={`block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg ${wide ? "flex" : ""}`}
@@ -30,9 +31,9 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
       </div>
       <div className="min-h-[104px] flex-1 p-3.5">
         <p className="text-[16px] font-black">{t ? `${l.category} · ${t.master.store}` : `${won(l.price)}원`}</p>
-        {premium !== undefined && <p className="mt-1 text-[11.5px] font-bold text-brand">권리금 {won(premium)}원</p>}
+        {premium !== undefined && <p className="mt-1 text-[11.5px] font-bold text-brand">{shop?.premiumLabel ? `권리금 ${shop.premiumLabel}` : premium === 0 ? "무권리" : `권리금 ${won(premium)}원`}</p>}
         <h3 className="mt-2 line-clamp-2 text-[12.5px] leading-snug text-neutral-700">{desc}</h3>
-        {!t && <p className="mt-2 text-[10.5px] text-neutral-400">[{l.id}] 대구 {l.region} | {l.category} | {l.op} | {l.area}㎡</p>}
+        {!t && <p className="mt-2 text-[10.5px] text-neutral-400">{shop ? `${shop.address} | ${shop.buildingType} | ${Math.round(l.area / 3.3058)}평 | ${shop.floor.split(" / ")[0]}` : `[${l.id}] 대구 ${l.region} | ${l.category} | ${l.op} | ${l.area}㎡`}</p>}
       </div>
     </motion.a>
   );

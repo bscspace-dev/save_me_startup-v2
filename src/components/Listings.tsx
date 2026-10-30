@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { AnimatePresence, motion } from "motion/react";
 import { listings, type Listing } from "@/lib/data";
 import { ListingCard } from "./ListingCard";
 import { ListingInquiryPopup } from "./ListingInquiryPopup";
@@ -20,20 +19,17 @@ type Sort = (typeof sorts)[number];
 
 const PAGE_SIZE = 8;
 
-const selectCls = "h-9 rounded border border-neutral-300 bg-white px-3 text-[12px] text-neutral-600 outline-none focus:border-brand";
 
 export function ListingsView() {
   const params = useSearchParams();
-  const [kind, setKind] = useState(params.get("type") ?? "");
-  const [region, setRegion] = useState(params.get("region") ?? "");
-  const [category, setCategory] = useState(params.get("category") ?? "");
+  const kind = params.get("type") ?? "";
+  const region = params.get("region") ?? "";
+  const category = params.get("category") ?? "";
   const [sort, setSort] = useState<Sort>("최신순");
   const [desc, setDesc] = useState(true);
   const [wide, setWide] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
   const [consultOpen, setConsultOpen] = useState(false);
-
-  const reset = () => { setKind(""); setRegion(""); setCategory(""); setSort("최신순"); setDesc(true); };
 
   const list = useMemo(() => {
     const out = listings.filter((l) =>
@@ -64,12 +60,15 @@ export function ListingsView() {
       {/* 검색 필터 바 */}
       <div className="border-b border-neutral-200 bg-neutral-50">
         <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-2 px-6 py-3">
-          <select value={category} onChange={(e) => setCategory(e.target.value)} className={selectCls}>
-            <option value="">업종</option>
-            {categories.map((c) => <option key={c}>{c}</option>)}
-          </select>
-          <button onClick={reset} className="h-9 rounded border border-neutral-300 bg-white px-3 text-[12px] text-neutral-600 transition hover:border-brand hover:text-brand">초기화</button>
-
+          {["", "프랜차이즈", "상가매물", "전수창업", "신규창업"].map((k) => {
+            const on = kind === k;
+            const n = k ? listings.filter((l) => l.kind === k).length : listings.length;
+            return (
+              <Link key={k} href={k ? `/listings?type=${k}` : "/listings"} className={`rounded-full border px-4 py-2 text-[12.5px] font-bold transition ${on ? "border-brand bg-brand text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>
+                {k || "전체"} <span className={on ? "text-white/80" : "text-neutral-400"}>{n}</span>
+              </Link>
+            );
+          })}
           <div className="ml-auto flex overflow-hidden rounded border border-neutral-300 bg-white text-[12px] font-bold">
             {[["목록", false], ["와이드", true]].map(([label, w]) => (
               <button key={label as string} onClick={() => setWide(w as boolean)} className={`px-4 py-2 transition ${wide === w ? "bg-brand text-white" : "text-neutral-500 hover:text-brand"}`}>{label as string}</button>
@@ -94,14 +93,12 @@ export function ListingsView() {
           </div>
 
           {list.length === 0 ? (
-            <p className="py-32 text-center text-[13px] text-neutral-400">조건에 맞는 매물이 없습니다. 필터를 초기화해 보세요.</p>
+            <p className="py-32 text-center text-[13px] text-neutral-400">조건에 맞는 매물이 없습니다.</p>
           ) : (
-            <motion.div key={page} layout className={`grid gap-4 ${wide ? "md:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
-              <AnimatePresence mode="popLayout">
-                {pageList.map((l, i) => (
-                  <ListingCard key={l.id} l={l} i={i} wide={wide} />
-                ))}
-              </AnimatePresence>
+            <div key={`${filterKey}-${page}`} className={`grid gap-4 ${wide ? "md:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
+              {pageList.map((l, i) => (
+                <ListingCard key={l.id} l={l} i={i} wide={wide} />
+              ))}
                 <button
                   onClick={() => setInquiryOpen(true)}
                   aria-label="매물 등록 문의"
@@ -112,7 +109,7 @@ export function ListingsView() {
                     <span className="mt-2 block text-[12px] font-bold">매물 등록 문의</span>
                   </span>
                 </button>
-            </motion.div>
+            </div>
           )}
 
           {totalPages > 1 && (
