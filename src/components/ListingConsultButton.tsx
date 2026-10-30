@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { supabase } from "@/lib/supabase";
+import { NameInput } from "./NameInput";
+import { PhoneInput } from "./PhoneInput";
 
 const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[13px] outline-none transition placeholder:text-neutral-300 focus:border-brand";
 
@@ -19,7 +21,7 @@ function ConsultForm({ id, title, onClose }: { id: number; title: string; onClos
     const f = new FormData(e.currentTarget);
     setStatus("sending");
     const row = { name: f.get("name"), phone: f.get("phone"), type: `매물상담[${id}]`, region: "", message: f.get("message") };
-    if (!supabase) { console.warn("Supabase 환경변수가 설정되지 않았습니다."); setStatus("done"); return; }
+    if (!supabase) { console.warn("Supabase 환경변수가 설정되지 않았습니다."); setStatus("error"); return; } // 저장되지 않았는데 접수된 것처럼 보이지 않게 한다
     const { error } = await supabase.from("consultations").insert(row);
     setStatus(error ? "error" : "done");
   }
@@ -38,10 +40,10 @@ function ConsultForm({ id, title, onClose }: { id: number; title: string; onClos
         <p className="mt-2 rounded bg-neutral-50 px-3 py-2 text-[12px] text-neutral-600"><b className="mr-1 text-neutral-400">[{id}]</b>{title}</p>
 
         <label className="mt-5 block text-[12px] font-bold">이름 *</label>
-        <input name="name" required placeholder="성함을 입력해주세요" className={`${field} mt-1.5`} />
+        <NameInput className={`${field} mt-1.5`} />
 
         <label className="mt-4 block text-[12px] font-bold">연락처 *</label>
-        <input name="phone" required inputMode="tel" placeholder="010-0000-0000" className={`${field} mt-1.5`} />
+        <PhoneInput className={`${field} mt-1.5`} />
 
         <label className="mt-4 block text-[12px] font-bold">문의 내용 (선택)</label>
         <textarea name="message" rows={3} placeholder="궁금한 점을 자유롭게 적어주세요" className={`${field} mt-1.5 resize-none`} />

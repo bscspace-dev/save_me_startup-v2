@@ -4,6 +4,8 @@ import { motion } from "motion/react";
 import { supabase } from "@/lib/supabase";
 import { Icon } from "./Icons";
 import { Reveal } from "./Reveal";
+import { NameInput } from "./NameInput";
+import { PhoneInput } from "./PhoneInput";
 
 const types = ["프랜차이즈", "상가매물", "전수창업", "신규창업"];
 const regions = ["중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"];
@@ -18,7 +20,7 @@ export function ConsultCard() {
     const f = new FormData(e.currentTarget);
     setStatus("sending");
     const row = { name: f.get("name"), phone: f.get("phone"), type, region: f.get("region"), message: f.get("message") };
-    if (!supabase) { console.warn("Supabase 환경변수가 설정되지 않았습니다."); setStatus("done"); return; }
+    if (!supabase) { console.warn("Supabase 환경변수가 설정되지 않았습니다."); setStatus("error"); return; } // 저장되지 않았는데 접수된 것처럼 보이지 않게 한다
     const { error } = await supabase.from("consultations").insert(row);
     setStatus(error ? "error" : "done");
   }
@@ -29,10 +31,10 @@ export function ConsultCard() {
         <p className="mt-1.5 text-[11px] text-neutral-400">신청 내용 확인 후 1영업일 내 연락드립니다.</p>
 
         <label className="mt-5 block text-[12px] font-bold">이름 *</label>
-        <input name="name" required placeholder="성함을 입력해주세요" className={`${field} mt-1.5`} />
+        <NameInput className={`${field} mt-1.5`} />
 
         <label className="mt-4 block text-[12px] font-bold">연락처 *</label>
-        <input name="phone" required inputMode="tel" placeholder="010-0000-0000" className={`${field} mt-1.5`} />
+        <PhoneInput className={`${field} mt-1.5`} />
 
         <p className="mt-4 text-[12px] font-bold">관심 창업 유형</p>
         <div className="mt-1.5 flex flex-wrap gap-2">
