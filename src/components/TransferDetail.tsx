@@ -63,6 +63,7 @@ export function TransferDetail({ l, t }: { l: Listing; t: TransferInfo }) {
                 <span className="rounded-full bg-brand px-3 py-1">{m.name} 스승(전수자)의 기술전수</span>
                 <span className="rounded-full bg-white/15 px-3 py-1">1:1 현장 교육</span>
                 <span className="rounded-full bg-white/15 px-3 py-1">영업·홍보 실행 연계</span>
+                <span className="rounded-full bg-white/15 px-3 py-1">매물번호 {l.id}</span>
               </div>
               <p className="mt-6 text-[10.5px] font-bold tracking-[0.14em] text-[#ff7a45]">MASTER {m.en}</p>
               <h1 className="mt-3 text-[34px] font-black leading-[1.2] tracking-tight">{t.headline[0]}<br /><span className="text-[#ff5a1f]">{t.headline[1]}</span></h1>

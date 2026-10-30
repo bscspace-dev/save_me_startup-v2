@@ -52,6 +52,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
             <h1 className="mt-4 text-[30px] font-black leading-[1.25] tracking-tight">{f.headline[0]}<br /><span className="text-brand">{f.headline[1]}</span></h1>
             <p className="mt-4 text-[13px] leading-relaxed text-neutral-500">{f.desc}</p>
             <dl className="mt-7 divide-y divide-neutral-100 border-t border-neutral-100 text-[12.5px]">
+              <div className="flex py-3.5"><dt className="w-[84px] shrink-0 text-neutral-400">매물번호</dt><dd className="font-bold">{l.id}</dd></div>
               {infoRows.map(([k, v]) => (
                 <div key={k} className="flex py-3.5"><dt className="w-[84px] shrink-0 text-neutral-400">{k}</dt><dd className="font-bold">{v}</dd></div>
               ))}

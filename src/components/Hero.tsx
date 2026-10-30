@@ -1,9 +1,6 @@
 "use client";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useState } from "react";
-import { Icon } from "./Icons";
-import { MatchPopup, categoryOptions, costOptions } from "./MatchPopup";
 
 const paths = [
   { no: "01", title: "매물 탐색", desc: "대구 상가·프랜차이즈 매물", href: "/listings" },
@@ -12,10 +9,6 @@ const paths = [
 ];
 
 export function Hero() {
-  const [open, setOpen] = useState(false);
-  const [category, setCategory] = useState("");
-  const [cost, setCost] = useState("");
-
   return (
     <section className="relative overflow-hidden bg-[#1c1512]">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)]" />
@@ -44,30 +37,7 @@ export function Hero() {
             ))}
           </motion.div>
         </div>
-
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}>
-          <div className="rounded-2xl bg-white p-7 shadow-2xl">
-            <p className="flex items-center gap-1.5 text-[11.5px] font-bold text-brand"><Icon name="search" className="size-3.5" />내 조건에 맞는 창업?</p>
-            <h2 className="mt-2 text-[20px] font-black leading-snug">원하는 조건을 입력하면<br />맞춤 창업을 찾아드려요</h2>
-            <div className="mt-5 space-y-2.5 text-[13px]">
-              {[
-                { ph: "업종 선택", value: category, set: setCategory, options: categoryOptions },
-                { ph: "창업비용 선택", value: cost, set: setCost, options: costOptions },
-              ].map((f) => (
-                <div key={f.ph} className="relative">
-                  <select value={f.value} onChange={(e) => f.set(e.target.value)} className={`w-full appearance-none rounded-lg border border-neutral-200 px-3.5 py-3 outline-none focus:border-brand ${f.value ? "text-ink" : "text-neutral-400"}`}>
-                    <option value="">{f.ph}</option>
-                    {f.options.map((o) => <option key={o}>{o}</option>)}
-                  </select>
-                  <Icon name="chevron" className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
-                </div>
-              ))}
-              <button onClick={() => setOpen(true)} disabled={!category || !cost} className="block w-full rounded-lg bg-brand py-3.5 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:hover:bg-neutral-300">맞춤 창업 검색</button>
-            </div>
-          </div>
-        </motion.div>
       </div>
-      <MatchPopup open={open} onClose={() => setOpen(false)} initial={{ category, cost }} />
     </section>
   );
 }
