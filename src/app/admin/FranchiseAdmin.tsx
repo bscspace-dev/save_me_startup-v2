@@ -182,7 +182,7 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
         <h2 className="mb-4 text-[15px] font-black">브랜드 정보</h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          <Label text="브랜드명" req><input required value={f.brand} onChange={(e) => set("brand", e.target.value)} placeholder="픽스테이션" className={inputCls} /></Label>
+          <Label text="브랜드명" req><input required value={f.brand} onChange={(e) => set("brand", e.target.value)} placeholder="브랜드 이름" className={inputCls} /></Label>
           <Label text="모집지역 (선택)"><input value={f.area} onChange={(e) => set("area", e.target.value)} placeholder="전국 · 대구 우선 모집" className={inputCls} /></Label>
           <div className="sm:col-span-2"><Label text="제목 (목록 카드와 상세의 큰 제목)" req><input required value={f.title} onChange={(e) => set("title", e.target.value)} placeholder="회사 다니면서도 도전할 수 있는 무인 인형뽑기 창업" className={inputCls} /></Label></div>
           <div className="sm:col-span-2"><Label text="소개 문구 (한 줄)" req><input required maxLength={100} value={f.desc} onChange={(e) => set("desc", e.target.value)} placeholder="월 순수익 800만원, 본사 직접 책임 시공과 A/S" className={inputCls} /></Label></div>
