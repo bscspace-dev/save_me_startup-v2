@@ -12,19 +12,19 @@ import { TransferAdmin } from "./TransferAdmin";
 type Row = { id: string; name: string; phone: string; type: string | null; region: string | null; message: string | null; created_at: string; done: boolean };
 type Cred = { u: string; p: string };
 type Filter = "all" | "todo" | "done";
-type Kind = "all" | "listing" | "franchise" | "startup" | "register";
+type Kind = "all" | "listing" | "franchise" | "startup" | "newbiz" | "transfer" | "register";
 
-// 상담 유형(type)으로 구분: 매물 상담 / 가맹 상담 / 매물 등록 문의 / 그 외는 창업 문의(메인 간편 상담)
-const kindOf = (t: string | null): Exclude<Kind, "all"> => (t?.startsWith("매물상담[") ? "listing" : t?.startsWith("가맹상담[") ? "franchise" : t?.startsWith("매물등록문의") ? "register" : "startup");
-// 구분 라벨이 이미 "매물 등록 문의"이므로 유형 칸에는 "매물등록문의(전수창업)" 대신 "전수창업"만 보여준다
+// 상담 유형(type)으로 구분. 메인 간편 상담은 고른 유형대로 들어간다: 프랜차이즈 → 가맹 상담, 상가매물 → 매물 상담, 신규창업, 전수창업 (그 외는 기타)
+const kindOf = (t: string | null): Exclude<Kind, "all"> => (t?.startsWith("매물상담[") || t === "상가매물" ? "listing" : t?.startsWith("가맹상담[") || t === "프랜차이즈" ? "franchise" : t?.startsWith("매물등록문의") ? "register" : t === "신규창업" ? "newbiz" : t === "전수창업" ? "transfer" : "startup");
+// 구분 라벨이 이미 "등록 문의"이므로 유형 칸에는 "매물등록문의(전수창업)" 대신 "전수창업"만 보여준다
 const typeText = (t: string | null) => {
   const m = t?.match(/^(매물|가맹)상담\[(\d+)\]\s*(.*)$/);
   if (m) return m[1] === "가맹" ? `등록번호 ${m[2]}` : `매물번호 ${m[2]}`; // 매물상담[20001] → 매물번호 20001, 가맹상담[20002] → 등록번호 20002
   return t?.replace(/^매물등록문의\((.*)\)$/, "$1") ?? "";
 };
-const kinds: [Kind, string][] = [["all", "전체"], ["startup", "창업 문의"], ["franchise", "가맹 상담"], ["listing", "매물 상담"], ["register", "매물 등록 문의"]];
-const kindName = Object.fromEntries(kinds) as Record<Kind, string>;
-const kindTone: Record<Exclude<Kind, "all">, string> = { listing: "bg-emerald-50 text-emerald-700", franchise: "bg-orange-50 text-brand", startup: "bg-blue-50 text-blue-700", register: "bg-purple-50 text-purple-700" };
+const kinds: [Kind, string][] = [["all", "전체"], ["franchise", "프랜차이즈"], ["listing", "상가매물"], ["transfer", "전수창업"], ["newbiz", "신규창업"], ["register", "등록 문의"]];
+const kindName: Record<Kind, string> = { ...(Object.fromEntries(kinds) as Record<Kind, string>), startup: "기타" }; // 유형이 비었거나 모르는 값
+const kindTone: Record<Exclude<Kind, "all">, string> = { listing: "bg-emerald-50 text-emerald-700", franchise: "bg-orange-50 text-brand", startup: "bg-blue-50 text-blue-700", newbiz: "bg-sky-50 text-sky-700", transfer: "bg-amber-50 text-amber-800", register: "bg-purple-50 text-purple-700" };
 
 const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-brand";
 // 매물 상담·가맹 상담의 유형("매물상담[20001]", "가맹상담[20002]")에서 번호를 뽑는다
@@ -116,7 +116,8 @@ function ChangePassword({ cred, onClose }: { cred: Cred; onClose: () => void }) 
 
 function Dashboard({ cred }: { cred: Cred }) {
   const [pwOpen, setPwOpen] = useState(false);
-  const [tab, setTab] = useState<"consult" | "shop" | "franchise" | "startup" | "transfer">("consult");
+  const [tab, setTab] = useState<"consult" | "register">("consult");
+  const [reg, setReg] = useState<"franchise" | "shop" | "transfer" | "startup">("franchise"); // 등록 하위 구분
   const [rows, setRows] = useState<Row[] | null>(null);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
@@ -201,11 +202,18 @@ function Dashboard({ cred }: { cred: Cred }) {
 
       <div className="mx-auto max-w-[1100px] px-4 py-6">
         <div className="mb-5 flex gap-1 border-b border-neutral-200 text-[14px] font-bold">
-          {([["consult", "상담 관리"], ["shop", "상가매물 등록"], ["franchise", "프랜차이즈 등록"], ["transfer", "전수창업 등록"], ["startup", "신규창업 등록"]] as const).map(([k, t]) => (
+          {([["consult", "상담"], ["register", "등록"]] as const).map(([k, t]) => (
             <button key={k} onClick={() => setTab(k)} className={`-mb-px border-b-2 px-4 py-3 transition ${tab === k ? "border-brand text-brand" : "border-transparent text-neutral-400 hover:text-ink"}`}>{t}</button>
           ))}
         </div>
-        {tab === "shop" ? <ShopAdmin cred={cred} /> : tab === "franchise" ? <FranchiseAdmin cred={cred} /> : tab === "transfer" ? <TransferAdmin cred={cred} /> : tab === "startup" ? <StartupAdmin cred={cred} /> : (<>
+        {tab === "register" ? (<>
+          <div className="mb-5 flex flex-wrap gap-2">
+            {([["franchise", "프랜차이즈"], ["shop", "상가매물"], ["transfer", "전수창업"], ["startup", "신규창업"]] as const).map(([k, n]) => (
+              <button key={k} onClick={() => setReg(k)} className={`rounded-full border px-4 py-2 text-[13px] font-bold transition ${reg === k ? "border-ink bg-ink text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>{n}</button>
+            ))}
+          </div>
+          {reg === "franchise" ? <FranchiseAdmin cred={cred} /> : reg === "shop" ? <ShopAdmin cred={cred} /> : reg === "transfer" ? <TransferAdmin cred={cred} /> : <StartupAdmin cred={cred} />}
+        </>) : (<>
         <div className="mb-4 flex flex-wrap gap-2">
           {kinds.map(([k, t]) => {
             const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다

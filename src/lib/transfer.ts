@@ -8,6 +8,7 @@ export type TransferInfo = {
   hours: number;
   menus: number;
   menuNames?: string[]; // 교육 대표 메뉴 (관리자에서 입력)
+  menuDesc?: string; // 대표 메뉴 한두 줄 설명 (관리자에서 입력)
   timeline: [string, string][];
   curriculum: { title: string; range: string; desc: string }[];
 };
@@ -42,6 +43,31 @@ const presets: Record<string, Preset> = {
     field: "제과·제빵", noun: "베이커리", role: "파티시에", career: "베이커리",
     timeline: ["제과제빵 입문", "호텔 베이커리 근무", "대로변 베이커리 직접 운영", "제자(창업자) 교육 시작"],
     menuNames: ["소금빵", "크루아상", "식빵", "마들렌", "휘낭시에", "파운드케이크"],
+  },
+  "치킨·피자": {
+    field: "치킨·피자 전문점", noun: "치킨·피자", role: "사부(전수자)", career: "치킨·피자 외식업",
+    timeline: ["치킨·피자 조리 입문", "프랜차이즈 매장 점장", "개인 매장 직접 창업", "제자(창업자) 교육 시작"],
+    menuNames: ["후라이드 치킨", "양념 치킨", "콤비네이션 피자", "치즈 피자", "치킨 순살", "감자튀김"],
+  },
+  "주점·호프": {
+    field: "주점·호프", noun: "주점", role: "사부(전수자)", career: "주점·호프 운영",
+    timeline: ["주점 주방 입문", "호프·이자카야 주방장", "개인 주점 직접 창업", "제자(창업자) 교육 시작"],
+    menuNames: ["오징어 튀김", "치즈 감자전", "골뱅이 무침", "어묵탕", "닭똥집", "모둠 안주"],
+  },
+  "고기·구이": {
+    field: "고기·구이 전문점", noun: "고기·구이", role: "사부(전수자)", career: "고기·구이 외식업",
+    timeline: ["정육·구이 입문", "고깃집 총괄 주방장", "개인 고깃집 직접 창업", "제자(창업자) 교육 시작"],
+    menuNames: ["삼겹살", "목살", "갈비살", "양념 갈비", "된장찌개", "냉면"],
+  },
+  "일식·중식": {
+    field: "일식·중식 전문점", noun: "일식·중식", role: "사부(전수자)", career: "일식·중식 외식업",
+    timeline: ["일식·중식 주방 입문", "전문점 수석 조리사", "개인 매장 직접 창업", "제자(창업자) 교육 시작"],
+    menuNames: ["돈카츠", "우동", "초밥", "짜장면", "짬뽕", "탕수육"],
+  },
+  "아이스크림·간식": {
+    field: "아이스크림·간식", noun: "간식", role: "사부(전수자)", career: "아이스크림·간식",
+    timeline: ["간식 제조 입문", "디저트 전문점 근무", "개인 매장 직접 운영", "제자(창업자) 교육 시작"],
+    menuNames: ["수제 아이스크림", "소프트콘", "와플", "호떡", "붕어빵", "츄러스"],
   },
 };
 
@@ -87,10 +113,10 @@ export const transferOf = (l: Listing): TransferInfo | undefined => {
   const r = l.transfer;
   if (!r) return undefined;
   const t = makeTransfer(l.category, { ...r, en: "" });
-  // 관리자가 직접 적은 경력 문구·이력이 있으면 기본 문구 대신 사용한다
-  if (r.career) t.master.career = r.career;
-  if (r.timeline?.length) t.timeline = r.timeline;
+  // 관리자가 입력한 이력만 보여준다 (비어 있으면 상세에서 "경력없음"으로 나온다)
+  t.timeline = r.timeline ?? [];
   if (r.menuNames?.length) t.menuNames = r.menuNames;
+  if (r.menuDesc) t.menuDesc = r.menuDesc;
   return t;
 };
 

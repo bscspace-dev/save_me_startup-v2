@@ -8,7 +8,6 @@ import { NameInput } from "./NameInput";
 import { PhoneInput } from "./PhoneInput";
 
 const types = ["프랜차이즈", "상가매물", "전수창업", "신규창업"];
-const regions = ["중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"];
 const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[13px] outline-none transition placeholder:text-neutral-300 focus:border-brand";
 
 export function ConsultCard({ title = "간편 상담 신청", only }: { title?: string; only?: string }) {
@@ -19,7 +18,7 @@ export function ConsultCard({ title = "간편 상담 신청", only }: { title?: 
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     setStatus("sending");
-    const row = { name: f.get("name"), phone: f.get("phone"), type, region: f.get("region"), message: f.get("message") };
+    const row = { name: f.get("name"), phone: f.get("phone"), type, region: "", message: f.get("message") };
     if (!supabase) { console.warn("Supabase 환경변수가 설정되지 않았습니다"); setStatus("error"); return; } // 저장되지 않았는데 접수된 것처럼 보이지 않게 한다
     const { error } = await supabase.from("consultations").insert(row);
     setStatus(error ? "error" : "done");
@@ -41,15 +40,6 @@ export function ConsultCard({ title = "간편 상담 신청", only }: { title?: 
           {(only ? [only] : types).map((t) => (
             <button type="button" key={t} disabled={!!only} onClick={() => setType(t)} className={`rounded-full border px-3.5 py-1.5 text-[11.5px] transition ${type === t ? "border-brand bg-orange-50 font-bold text-brand" : "border-neutral-300 text-neutral-500 hover:border-brand"} disabled:cursor-default`}>{t}</button>
           ))}
-        </div>
-
-        <label className="mt-4 block text-[12px] font-bold">희망 지역 (대구)</label>
-        <div className="relative mt-1.5">
-          <select name="region" defaultValue="" className={`${field} appearance-none text-neutral-500`}>
-            <option value="">구·군 선택</option>
-            {regions.map((r) => <option key={r}>{r}</option>)}
-          </select>
-          <Icon name="chevron" className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
         </div>
 
         <label className="mt-4 block text-[12px] font-bold">상담 내용 (선택)</label>

@@ -54,11 +54,14 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
           <div className="grid gap-6 lg:grid-cols-[1.45fr_0.8fr_0.7fr]">
             <div className="flex flex-col">
               <span className="self-start rounded-full bg-white/15 px-3 py-1 text-[10.5px] font-bold">등록번호 {l.id}</span>
-              <p className="mt-2 text-[15px] font-bold text-[#ff7a45]">전문 분야 {m.field}</p>
               <div className="my-auto max-lg:mt-6">
-              <h1 className="text-[34px] font-black leading-[1.2] tracking-tight">{t.headline[0]}<br />{t.headline[1]}</h1>
-              <p className="mt-6 max-w-[420px] text-[12.5px] leading-relaxed text-white/70">{t.desc}</p>
-              <div className="mt-6 flex flex-wrap gap-2.5">
+              <p className="text-[13px] font-bold tracking-wide text-white/55">{l.category}</p>
+              {m.store && <p className="mt-2 text-[22px] font-black tracking-tight text-white">{m.store}</p>}
+              <div className="my-6 h-px w-14 bg-white/25" />
+              <p className="text-[13px] font-bold text-[#ff7a45]">{m.name} 사부의 전수메뉴</p>
+              <h1 className="mt-2 text-[36px] font-semibold leading-[1.15] tracking-tight text-white/90 md:text-[46px]">{names[0] ?? menuText}</h1>
+              {t.menuDesc && <p className="mt-3 line-clamp-2 max-w-[420px] text-[13px] leading-relaxed text-white/70">{t.menuDesc}</p>}
+              <div className="mt-9 flex flex-wrap gap-2.5">
                 <ListingConsultButton id={l.id} title={`${m.name} 사부(전수자) ${l.title} (전수창업 상담)`} label="전수창업 상담  →" className={btn} />
               </div>
               </div>
@@ -118,6 +121,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
                 </div>
               </div>
               <ul className="divide-y divide-neutral-100 rounded-2xl border border-neutral-200 px-6 text-[12.5px]">
+                {t.timeline.length === 0 && <li className="py-3.5 font-bold text-neutral-400">경력없음</li>}
                 {t.timeline.map(([y, text], i) => (
                   <li key={i} className="flex gap-6 py-3.5">
                     <span className={`w-10 shrink-0 font-black ${i === t.timeline.length - 1 ? "text-brand" : "text-brand/70"}`}>{y}</span>

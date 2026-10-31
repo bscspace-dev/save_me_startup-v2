@@ -5,6 +5,9 @@ export const regions = [
   ["수성구", 84], ["달서구", 93], ["달성군", 36], ["군위군", 32],
 ] as const;
 
+// 업종 목록 (관리자 등록 화면과 매물 목록 필터에서 함께 쓴다). 마지막 "기타 업종"은 목록에 없는 업종을 모두 묶는다
+export const businessCategories = ["한식·분식", "카페·음료", "베이커리·디저트", "치킨·피자", "주점·호프", "고기·구이", "일식·중식", "아이스크림·간식", "기타 업종"];
+
 export const categories = [
   { tag: "프랜차이즈", icon: "store", title: "프랜차이즈 창업", desc: "검증된 브랜드로 빠르게 시작. 본사 지원 시스템과 가맹 조건을 한눈에 비교해보세요", foot: "대구 지역 가맹 매물 다수", img: "cat-1", tone: "brand" },
   { tag: "상가매물", icon: "pin", title: "상가매물", desc: "대구 전 지역 상가 매물 정보. 위치·면적·보증금·월세 조건을 투명하게 공개합니다", foot: "대구 9개 구·군 전체", img: "cat-2", tone: "green" },
@@ -24,7 +27,7 @@ export type Listing = {
 export type Startup = { story: string; done: string[]; address?: string };
 
 // 전수창업: 사부(전수자) 정보. 나머지 상세 문구는 업종별 기본 문구로 만든다 (관리자에서 등록)
-export type TransferData = { name: string; store: string; years: number; days: number; menus: number; address?: string; career?: string; timeline?: [string, string][]; menuNames?: string[]; menuPhotos?: number };
+export type TransferData = { name: string; store: string; years: number; days: number; menus: number; address?: string; career?: string; timeline?: [string, string][]; menuNames?: string[]; menuPhotos?: number; menuDesc?: string };
 
 // 프랜차이즈 홍보 매물: 가맹본부가 준 홍보 이미지를 상세에 그대로 보여준다 (관리자에서 등록)
 export type Promo = { brand: string; desc: string; area?: string; sponsored?: boolean };

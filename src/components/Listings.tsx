@@ -2,13 +2,12 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { listings as staticListings, withNew, type Listing } from "@/lib/data";
+import { businessCategories, listings as staticListings, withNew, type Listing } from "@/lib/data";
 import { fetchRemoteListings } from "@/lib/remote";
 import { ListingCard } from "./ListingCard";
 import { ListingInquiryPopup } from "./ListingInquiryPopup";
 import { ConsultPopup } from "./ConsultPopup";
 
-const categories = ["한식·분식", "카페·음료", "베이커리·디저트", "프랜차이즈", "기타 업종"];
 const kindColor: Record<string, string> = {
   프랜차이즈: "bg-orange-50 text-brand",
   상가매물: "bg-emerald-50 text-emerald-700",
@@ -40,7 +39,7 @@ export function ListingsView() {
     const out = listings.filter((l) =>
       (!kind || l.kind === kind) &&
       (!region || l.region === region) &&
-      (!category || (category === "기타 업종" ? !categories.slice(0, 4).includes(l.category) : l.category === category)),
+      (!category || (category === "기타 업종" ? !businessCategories.slice(0, -1).includes(l.category) : l.category === category)),
     );
     const key: Record<Sort, (l: Listing) => number> = {
       최신순: (l) => l.id, 인기순: (l) => l.views, 추천순: (l) => (l.rec ? 1e6 : 0) + l.id, 금액순: (l) => l.price, 면적순: (l) => l.area,

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { regions, won, type Listing } from "@/lib/data";
+import { businessCategories, regions, won, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import { consultItems } from "@/lib/startup";
 import { supabase } from "@/lib/supabase";
@@ -10,7 +10,7 @@ import { Photos } from "./ShopAdmin";
 
 type Cred = { u: string; p: string };
 
-const categories = ["한식·분식", "카페·음료", "베이커리·디저트", "기타 업종"];
+const categories = businessCategories;
 const ops = ["직접운영", "반오토", "풀오토"];
 const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-brand";
 // 지역 필터용 구·군은 입력한 주소("대구 중구 계양동")에서 자동으로 가져온다
