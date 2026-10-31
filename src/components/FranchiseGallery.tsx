@@ -15,7 +15,7 @@ const tones = [
 ];
 
 // photos 가 있으면 실제 사진으로, 없으면 자리표시 배경으로 보여준다
-export function FranchiseGallery({ slides: base, badges, photos }: { slides: Slide[]; badges: string[]; photos?: { id: number; count: number; srcs?: string[] } }) {
+export function FranchiseGallery({ slides: base, badges, photos, hideLabels, ratio = "aspect-[1/0.92]" }: { slides: Slide[]; badges: string[]; photos?: { id: number; count: number; srcs?: string[] }; hideLabels?: boolean; ratio?: string }) {
   const slides: Slide[] = photos?.count
     ? Array.from({ length: photos.count }, (_, k) => ({ label: `사진 ${k + 1}`, caption: base[k]?.caption ?? "", sub: base[k]?.sub ?? "", src: photos.srcs?.[k] ?? photoSrc(photos.id, k + 1) }))
     : base;
@@ -27,7 +27,7 @@ export function FranchiseGallery({ slides: base, badges, photos }: { slides: Sli
 
   return (
     <div>
-      <div className={`relative aspect-[1/0.92] overflow-hidden bg-gradient-to-br ${tones[i % tones.length]}`}>
+      <div className={`relative ${ratio} overflow-hidden bg-gradient-to-br ${tones[i % tones.length]}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {s.src && <img src={s.src} alt={s.label} className="absolute inset-0 size-full object-cover" />}
         <div className="absolute left-4 top-4 flex gap-1.5 text-[11px] font-bold text-white">
@@ -54,7 +54,7 @@ export function FranchiseGallery({ slides: base, badges, photos }: { slides: Sli
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {t.src && <img src={t.src} alt="" className="absolute inset-0 size-full object-cover" />}
-            <span className="absolute inset-x-0 bottom-0 bg-black/55 py-0.5 text-center text-[8.5px] font-bold text-white">{t.label}</span>
+            {!hideLabels && <span className="absolute inset-x-0 bottom-0 bg-black/55 py-0.5 text-center text-[8.5px] font-bold text-white">{t.label}</span>}
           </button>
         ))}
       </div>

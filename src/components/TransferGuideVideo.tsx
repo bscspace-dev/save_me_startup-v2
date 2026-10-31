@@ -18,7 +18,7 @@ export function TransferGuideVideo() {
       <div>
         <span className="inline-block rounded-full bg-brand px-3 py-1 text-[11px] font-bold text-white">{dur ? `${Math.max(1, Math.ceil(dur / 60))}분 ` : ""}핵심 가이드</span>
         <h2 className="mt-5 text-[30px] font-black leading-[1.25] tracking-tight">기술을 배우고<br />내 매장을 시작하는 방법</h2>
-        <p className="mt-4 text-[13.5px] leading-relaxed text-neutral-600">스승(전수자) 선택부터 교육과 창업 실행까지 핵심 내용을 짧게 확인해 보세요.</p>
+        <p className="mt-4 text-[13.5px] leading-relaxed text-neutral-600">사부(전수자) 선택부터 교육과 창업 실행까지 핵심 내용을 짧게 확인해 보세요</p>
       </div>
 
       <div className="relative aspect-video overflow-hidden rounded-2xl bg-black shadow-2xl">

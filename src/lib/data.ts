@@ -6,10 +6,10 @@ export const regions = [
 ] as const;
 
 export const categories = [
-  { tag: "프랜차이즈", icon: "store", title: "프랜차이즈 창업", desc: "검증된 브랜드로 빠르게 시작. 본사 지원 시스템과 가맹 조건을 한눈에 비교해보세요.", foot: "대구 지역 가맹 매물 다수", img: "cat-1", tone: "brand" },
-  { tag: "상가매물", icon: "pin", title: "상가매물", desc: "대구 전 지역 상가 매물 정보. 위치·면적·보증금·월세 조건을 투명하게 공개합니다.", foot: "대구 9개 구·군 전체", img: "cat-2", tone: "green" },
-  { tag: "전수창업", icon: "bag", title: "전수창업", desc: "기존 가게의 레시피·운영 노하우를 배워 내 사업에 적용. 전문 컨설팅으로 함께 준비합니다.", foot: "한식·카페·베이커리 다수", img: "cat-3", tone: "brown" },
-  { tag: "신규창업", icon: "spark", title: "신규창업", desc: "처음 창업하는 분들을 위한 단계별 안내. 업종 선택부터 오픈까지 전 과정을 함께합니다.", foot: "초보 창업자 맞춤 안내", img: "cat-4", tone: "blue" },
+  { tag: "프랜차이즈", icon: "store", title: "프랜차이즈 창업", desc: "검증된 브랜드로 빠르게 시작. 본사 지원 시스템과 가맹 조건을 한눈에 비교해보세요", foot: "대구 지역 가맹 매물 다수", img: "cat-1", tone: "brand" },
+  { tag: "상가매물", icon: "pin", title: "상가매물", desc: "대구 전 지역 상가 매물 정보. 위치·면적·보증금·월세 조건을 투명하게 공개합니다", foot: "대구 9개 구·군 전체", img: "cat-2", tone: "green" },
+  { tag: "전수창업", icon: "bag", title: "전수창업", desc: "기존 가게의 레시피·운영 노하우를 배워 내 사업에 적용. 전문 컨설팅으로 함께 준비합니다", foot: "한식·카페·베이커리 다수", img: "cat-3", tone: "brown" },
+  { tag: "신규창업", icon: "spark", title: "신규창업", desc: "처음 창업하는 분들을 위한 단계별 안내. 업종 선택부터 오픈까지 전 과정을 함께합니다", foot: "초보 창업자 맞춤 안내", img: "cat-4", tone: "blue" },
 ] as const;
 
 export type Listing = {
@@ -17,8 +17,17 @@ export type Listing = {
   op: "직접운영" | "반오토" | "풀오토"; cost: number; area: number;
   date?: string; photos?: number; rec?: boolean; isNew?: boolean; sold?: boolean; views: number; kind: string;
   // 관리자에서 등록한 매물(Supabase)만 가진다: 목록용 작은 이미지와 상세 정보
-  thumb?: string; shop?: ShopInfo;
+  thumb?: string; shop?: ShopInfo; promo?: Promo; startup?: Startup; transfer?: TransferData;
 };
+
+// 신규창업(창업컨설팅 상가): 소개 글과, 구해줘창업이 진행한 컨설팅 항목 (관리자에서 등록)
+export type Startup = { story: string; done: string[]; address?: string };
+
+// 전수창업: 사부(전수자) 정보. 나머지 상세 문구는 업종별 기본 문구로 만든다 (관리자에서 등록)
+export type TransferData = { name: string; store: string; years: number; days: number; menus: number; address?: string; career?: string; timeline?: [string, string][]; menuNames?: string[]; menuPhotos?: number };
+
+// 프랜차이즈 홍보 매물: 가맹본부가 준 홍보 이미지를 상세에 그대로 보여준다 (관리자에서 등록)
+export type Promo = { brand: string; desc: string; area?: string; sponsored?: boolean };
 
 // 사진: public/listings/<매물번호>/1.jpg, 2.jpg … 에 넣고 photos 에 장수를 적는다
 export const photoSrc = (id: number, n: number) => `/listings/${id}/${n}.jpg`;
@@ -43,14 +52,14 @@ export const listings: Listing[] = [
 export type Brand = { name: string; category: string; cost: string; ops: string[]; desc: string; area: string };
 
 export const brands: Brand[] = [
-  { name: "단골국밥", category: "한식·분식", cost: "5천만~1억", ops: ["직접운영", "반오토"], desc: "25년 단골 기반 국밥 노하우와 육수 레시피를 그대로 전수합니다.", area: "소형 · 약 33㎡~" },
-  { name: "골목분식", category: "한식·분식", cost: "5천만 미만", ops: ["직접운영"], desc: "소자본으로 시작하는 분식 전수창업. 메뉴 구성부터 원가 관리까지 교육합니다.", area: "소형 · 약 20㎡~" },
-  { name: "온기 도시락", category: "한식·분식", cost: "5천만 미만", ops: ["직접운영", "반오토"], desc: "배달·포장 중심 도시락 모델. 주방 동선과 운영 매뉴얼을 전수합니다.", area: "소형 · 약 16㎡~" },
-  { name: "로스트노트 커피", category: "카페·음료", cost: "5천만~1억", ops: ["직접운영", "반오토", "풀오토"], desc: "원두 선정부터 메뉴 개발, 매장 운영까지 한 번에 배우는 카페 전수창업.", area: "중형 · 약 26㎡~" },
-  { name: "담소 카페", category: "카페·음료", cost: "1억~2억", ops: ["반오토", "풀오토"], desc: "인력 효율화에 초점을 맞춘 운영 시스템으로 소수 인원 운영이 가능합니다.", area: "중형 · 약 40㎡~" },
-  { name: "온기 베이커리", category: "베이커리·디저트", cost: "1억~2억", ops: ["직접운영"], desc: "인기 제빵 레시피와 오븐 운영 노하우, 단골 관리 방식을 전수합니다.", area: "중형 · 약 40㎡~" },
-  { name: "달콤상점", category: "베이커리·디저트", cost: "5천만~1억", ops: ["직접운영", "반오토"], desc: "소규모 디저트 전문점. 시즌 메뉴 개발 가이드와 포장 노하우를 제공합니다.", area: "소형 · 약 23㎡~" },
-  { name: "숯불한끼", category: "기타 업종", cost: "2억 이상", ops: ["직접운영", "풀오토"], desc: "점심·저녁 모두 강한 고깃집 모델. 매장 설계와 인력 운영 교육까지 지원합니다.", area: "대형 · 약 66㎡~" },
+  { name: "단골국밥", category: "한식·분식", cost: "5천만~1억", ops: ["직접운영", "반오토"], desc: "25년 단골 기반 국밥 노하우와 육수 레시피를 그대로 전수합니다", area: "소형 · 약 33㎡~" },
+  { name: "골목분식", category: "한식·분식", cost: "5천만 미만", ops: ["직접운영"], desc: "소자본으로 시작하는 분식 전수창업. 메뉴 구성부터 원가 관리까지 교육합니다", area: "소형 · 약 20㎡~" },
+  { name: "온기 도시락", category: "한식·분식", cost: "5천만 미만", ops: ["직접운영", "반오토"], desc: "배달·포장 중심 도시락 모델. 주방 동선과 운영 매뉴얼을 전수합니다", area: "소형 · 약 16㎡~" },
+  { name: "로스트노트 커피", category: "카페·음료", cost: "5천만~1억", ops: ["직접운영", "반오토", "풀오토"], desc: "원두 선정부터 메뉴 개발, 매장 운영까지 한 번에 배우는 카페 전수창업", area: "중형 · 약 26㎡~" },
+  { name: "담소 카페", category: "카페·음료", cost: "1억~2억", ops: ["반오토", "풀오토"], desc: "인력 효율화에 초점을 맞춘 운영 시스템으로 소수 인원 운영이 가능합니다", area: "중형 · 약 40㎡~" },
+  { name: "온기 베이커리", category: "베이커리·디저트", cost: "1억~2억", ops: ["직접운영"], desc: "인기 제빵 레시피와 오븐 운영 노하우, 단골 관리 방식을 전수합니다", area: "중형 · 약 40㎡~" },
+  { name: "달콤상점", category: "베이커리·디저트", cost: "5천만~1억", ops: ["직접운영", "반오토"], desc: "소규모 디저트 전문점. 시즌 메뉴 개발 가이드와 포장 노하우를 제공합니다", area: "소형 · 약 23㎡~" },
+  { name: "숯불한끼", category: "기타 업종", cost: "2억 이상", ops: ["직접운영", "풀오토"], desc: "점심·저녁 모두 강한 고깃집 모델. 매장 설계와 인력 운영 교육까지 지원합니다", area: "대형 · 약 66㎡~" },
 ];
 
 // 유형별 뱃지 색상 (업종별 창업 카드와 동일)

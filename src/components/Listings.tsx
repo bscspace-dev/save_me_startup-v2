@@ -98,13 +98,13 @@ export function ListingsView() {
           </div>
 
           {list.length === 0 ? (
-            <p className="py-32 text-center text-[13px] text-neutral-400">조건에 맞는 매물이 없습니다.</p>
+            <p className="py-32 text-center text-[13px] text-neutral-400">조건에 맞는 매물이 없습니다</p>
           ) : (
             <div key={`${filterKey}-${page}`} className={`grid gap-4 ${wide ? "md:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
               {pageList.map((l, i) => (
                 <ListingCard key={l.id} l={l} i={i} wide={wide} />
               ))}
-                <button
+                {kind !== "신규창업" && <button
                   onClick={() => setInquiryOpen(true)}
                   aria-label="매물 등록 문의"
                   className={`grid place-items-center rounded-lg border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-brand hover:text-brand ${wide ? "min-h-[104px]" : "min-h-[254px]"}`}
@@ -113,7 +113,7 @@ export function ListingsView() {
                     <span className="block text-[44px] font-light leading-none">+</span>
                     <span className="mt-2 block text-[12px] font-bold">매물 등록 문의</span>
                   </span>
-                </button>
+                </button>}
             </div>
           )}
 
@@ -141,7 +141,7 @@ export function ListingsView() {
             <span className="mt-3 inline-block text-[10px] font-bold text-brand">자세히 보기 →</span>          </Link>
         </aside>
       </div>
-      <ListingInquiryPopup open={inquiryOpen} onClose={() => setInquiryOpen(false)} />
+      <ListingInquiryPopup open={inquiryOpen} onClose={() => setInquiryOpen(false)} only={kind || undefined} />
       <ConsultPopup open={consultOpen} onClose={() => setConsultOpen(false)} />
     </>
   );

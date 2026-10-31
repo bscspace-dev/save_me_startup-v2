@@ -1,29 +1,34 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { franchises } from "@/lib/franchise";
+import { fetchRemoteListings } from "@/lib/remote";
 import { supabase } from "@/lib/supabase";
+import { FranchiseAdmin } from "./FranchiseAdmin";
 import { ShopAdmin } from "./ShopAdmin";
+import { StartupAdmin } from "./StartupAdmin";
+import { TransferAdmin } from "./TransferAdmin";
 
 type Row = { id: string; name: string; phone: string; type: string | null; region: string | null; message: string | null; created_at: string; done: boolean };
 type Cred = { u: string; p: string };
 type Filter = "all" | "todo" | "done";
-type Kind = "all" | "listing" | "startup" | "register";
+type Kind = "all" | "listing" | "franchise" | "startup" | "register";
 
-// 상담 유형(type)으로 구분: 매물 상담 / 매물 등록 문의 / 그 외는 창업 문의(메인 간편 상담)
-const kindOf = (t: string | null): Exclude<Kind, "all"> => (t?.startsWith("매물상담[") ? "listing" : t?.startsWith("매물등록문의") ? "register" : "startup");
+// 상담 유형(type)으로 구분: 매물 상담 / 가맹 상담 / 매물 등록 문의 / 그 외는 창업 문의(메인 간편 상담)
+const kindOf = (t: string | null): Exclude<Kind, "all"> => (t?.startsWith("매물상담[") ? "listing" : t?.startsWith("가맹상담[") ? "franchise" : t?.startsWith("매물등록문의") ? "register" : "startup");
 // 구분 라벨이 이미 "매물 등록 문의"이므로 유형 칸에는 "매물등록문의(전수창업)" 대신 "전수창업"만 보여준다
 const typeText = (t: string | null) => {
-  const m = t?.match(/^매물상담\[(\d+)\]\s*(.*)$/);
-  if (m) return `매물번호 ${m[1]}`; // 매물상담[20001] (제목) → 매물번호 20001
+  const m = t?.match(/^(매물|가맹)상담\[(\d+)\]\s*(.*)$/);
+  if (m) return m[1] === "가맹" ? `등록번호 ${m[2]}` : `매물번호 ${m[2]}`; // 매물상담[20001] → 매물번호 20001, 가맹상담[20002] → 등록번호 20002
   return t?.replace(/^매물등록문의\((.*)\)$/, "$1") ?? "";
 };
-const kinds: [Kind, string][] = [["all", "전체"], ["startup", "창업 문의"], ["listing", "매물 상담"], ["register", "매물 등록 문의"]];
+const kinds: [Kind, string][] = [["all", "전체"], ["startup", "창업 문의"], ["franchise", "가맹 상담"], ["listing", "매물 상담"], ["register", "매물 등록 문의"]];
 const kindName = Object.fromEntries(kinds) as Record<Kind, string>;
-const kindTone: Record<Exclude<Kind, "all">, string> = { listing: "bg-emerald-50 text-emerald-700", startup: "bg-blue-50 text-blue-700", register: "bg-purple-50 text-purple-700" };
+const kindTone: Record<Exclude<Kind, "all">, string> = { listing: "bg-emerald-50 text-emerald-700", franchise: "bg-orange-50 text-brand", startup: "bg-blue-50 text-blue-700", register: "bg-purple-50 text-purple-700" };
 
 const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-brand";
-// 매물 상담의 유형("매물상담[20001] 제목")에서 매물번호를 뽑는다
-const listingId = (type: string | null) => type?.match(/^매물상담\[(\d+)\]/)?.[1];
+// 매물 상담·가맹 상담의 유형("매물상담[20001]", "가맹상담[20002]")에서 번호를 뽑는다
+const listingId = (type: string | null) => type?.match(/^(?:매물|가맹)상담\[(\d+)\]/)?.[1];
 const fmt = (iso: string) => new Date(iso).toLocaleString("ko-KR", { year: "2-digit", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
 
 // 로그인 정보는 탭을 닫으면 사라지도록 sessionStorage에만 보관한다
@@ -111,13 +116,18 @@ function ChangePassword({ cred, onClose }: { cred: Cred; onClose: () => void }) 
 
 function Dashboard({ cred }: { cred: Cred }) {
   const [pwOpen, setPwOpen] = useState(false);
-  const [tab, setTab] = useState<"consult" | "shop">("consult");
+  const [tab, setTab] = useState<"consult" | "shop" | "franchise" | "startup" | "transfer">("consult");
   const [rows, setRows] = useState<Row[] | null>(null);
   const [error, setError] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [kind, setKind] = useState<Kind>("all");
   const [q, setQ] = useState("");
   const [tick, setTick] = useState(0);
+  // 가맹 상담 카드에 프랜차이즈명을 보여주기 위한 번호 → 브랜드명 (관리자 등록 브랜드)
+  const [brands, setBrands] = useState<Record<number, string>>({});
+  useEffect(() => {
+    fetchRemoteListings().then((ls) => setBrands(Object.fromEntries(ls.filter((l) => l.promo).map((l) => [l.id, l.promo!.brand]))));
+  }, []);
   const load = () => setTick((t) => t + 1);
 
   useEffect(() => {
@@ -191,16 +201,16 @@ function Dashboard({ cred }: { cred: Cred }) {
 
       <div className="mx-auto max-w-[1100px] px-4 py-6">
         <div className="mb-5 flex gap-1 border-b border-neutral-200 text-[14px] font-bold">
-          {([["consult", "상담 관리"], ["shop", "상가매물 등록"]] as const).map(([k, t]) => (
+          {([["consult", "상담 관리"], ["shop", "상가매물 등록"], ["franchise", "프랜차이즈 등록"], ["transfer", "전수창업 등록"], ["startup", "신규창업 등록"]] as const).map(([k, t]) => (
             <button key={k} onClick={() => setTab(k)} className={`-mb-px border-b-2 px-4 py-3 transition ${tab === k ? "border-brand text-brand" : "border-transparent text-neutral-400 hover:text-ink"}`}>{t}</button>
           ))}
         </div>
-        {tab === "shop" ? <ShopAdmin cred={cred} /> : (<>
+        {tab === "shop" ? <ShopAdmin cred={cred} /> : tab === "franchise" ? <FranchiseAdmin cred={cred} /> : tab === "transfer" ? <TransferAdmin cred={cred} /> : tab === "startup" ? <StartupAdmin cred={cred} /> : (<>
         <div className="mb-4 flex flex-wrap gap-2">
           {kinds.map(([k, t]) => {
-            const n = (rows ?? []).filter((r) => k === "all" || kindOf(r.type) === k).length;
+            const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다
             return (
-              <button key={k} onClick={() => setKind(k)} className={`rounded-full border px-4 py-2 text-[13px] font-bold transition ${kind === k ? "border-ink bg-ink text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>{t} <span className={kind === k ? "text-white/70" : "text-neutral-400"}>{n}</span></button>
+              <button key={k} onClick={() => setKind(k)} className={`rounded-full border px-4 py-2 text-[13px] font-bold transition ${kind === k ? "border-ink bg-ink text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>{t} <span className={kind === k ? "text-white/70" : n ? "text-brand" : "text-neutral-300"}>{n}</span></button>
             );
           })}
         </div>
@@ -240,7 +250,7 @@ function Dashboard({ cred }: { cred: Cred }) {
                     <span className={`rounded px-1.5 py-0.5 font-bold ${r.done ? "bg-neutral-100 text-neutral-500" : "bg-orange-50 text-brand"}`}>{r.done ? "처리 완료" : "대기"}</span>
                     <span className={`rounded px-1.5 py-0.5 font-bold ${kindTone[kindOf(r.type)]}`}>{kindName[kindOf(r.type)]}</span>
                     {r.type && <span className="max-w-full truncate rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-600">{typeText(r.type)}</span>}
-                    {listingId(r.type) && <Link href={`/listings/${listingId(r.type)}`} target="_blank" className="rounded border border-brand px-1.5 py-0.5 font-bold text-brand hover:bg-brand hover:text-white">매물 보기 →</Link>}
+                    {listingId(r.type) && <Link href={`/listings/${listingId(r.type)}`} target="_blank" className="rounded border border-brand px-1.5 py-0.5 font-bold text-brand hover:bg-brand hover:text-white">{r.type?.startsWith("가맹상담[") ? `${brands[Number(listingId(r.type))] ?? franchises[Number(listingId(r.type))]?.brand ?? "프랜차이즈"}` : "매물 보기 →"}</Link>}
                     {r.region && <span className="text-neutral-400">{r.region}</span>}
                     <span className="text-neutral-300">{fmt(r.created_at)}</span>
                   </div>

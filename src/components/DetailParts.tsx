@@ -4,10 +4,10 @@ export const man = (v: number) => `${v.toLocaleString()}만원`;
 export const card = "rounded-3xl border border-neutral-200 bg-white p-8 md:p-10";
 export const inner = "rounded-xl border border-neutral-200 bg-[#faf9f7]";
 
-export function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
+export function Head({ eyebrow, title }: { eyebrow?: string; title: React.ReactNode }) {
   return (
     <>
-      <p className="text-[11px] font-bold tracking-[0.14em] text-brand">{eyebrow}</p>
+      {eyebrow && <p className="text-[11px] font-bold tracking-[0.14em] text-brand">{eyebrow}</p>}
       <h2 className="mt-2 text-[26px] font-black tracking-tight">{title}</h2>
     </>
   );

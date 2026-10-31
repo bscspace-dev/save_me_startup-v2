@@ -143,7 +143,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
               <div className="flex items-center justify-between px-6 py-4 text-[12px]"><span>월 고정비 (월세 + 관리비)</span><b className="text-[15px]">{s.maintenance ? man(fixed) : s.maintenanceLabel === "0원" || s.maintenanceLabel === "없음" ? man(s.rent) : `${man(s.rent)} + 관리비`}</b></div>
               <div className="flex items-center justify-between px-6 py-4 text-[12px]"><span className="text-white/80">보증금 + 권리금</span><b className="text-[15px] text-[#ff7a45]">{s.premiumLabel ? `${won(s.deposit)}원 + 권리금` : `${won(s.deposit + s.premium)}원`}</b></div>
             </div>
-            <p className="mt-3 text-[10.5px] text-neutral-400">* 권리금 협의 범위와 시설 포함 여부는 임대인·현 임차인 확인 후 최종 결정됩니다.</p>
+            <p className="mt-3 text-[10.5px] text-neutral-400">* 권리금 협의 범위와 시설 포함 여부는 임대인·현 임차인 확인 후 최종 결정됩니다</p>
           </section>
 
           {/* 현재 사용 현황 */}

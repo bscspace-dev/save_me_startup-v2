@@ -36,7 +36,7 @@ export function TestNoticePopup() {
             <span className="inline-block rounded bg-orange-50 px-2.5 py-1 text-[11px] font-bold text-brand">TEST</span>
             <h3 className="mt-4 text-[22px] font-black">현재 테스트 중입니다</h3>
             <p className="mt-3 text-[13px] leading-relaxed text-neutral-600">
-              본 사이트는 정식 오픈 전 테스트 운영 중이며,<br />게시된 내용은 실제와 다를 수 있습니다.
+              본 사이트는 정식 오픈 전 테스트 운영 중이며,<br />게시된 내용은 실제와 다를 수 있습니다
             </p>
             <button onClick={() => setOpen(false)} className="mt-6 w-full rounded-lg bg-brand py-3.5 text-[14px] font-bold text-white">확인</button>
           </motion.div>

@@ -2,12 +2,14 @@ import Link from "next/link";
 import { won, type Listing } from "@/lib/data";
 import type { FranchiseInfo } from "@/lib/franchise";
 import { FranchiseGallery } from "./FranchiseGallery";
+import { BrandLogo } from "./BrandLogo";
+import { MenuPhoto } from "./MenuPhoto";
 import { ListingConsultButton } from "./ListingConsultButton";
 import { Icon } from "./Icons";
 import { Head, ProfitPanel, card, inner, man } from "./DetailParts";
 const sum = (rows: { amount: number }[]) => rows.reduce((a, r) => a + r.amount, 0);
 
-const tabs = [
+const baseTabs = [
   ["브랜드 경쟁력", "#strengths"],
   ["대표 메뉴", "#menu"],
   ["창업 모델", "#model"],
@@ -15,7 +17,10 @@ const tabs = [
   ["창업 비용", "#cost"],
 ] as const;
 
+const FTC = "https://franchise.ftc.go.kr"; // 공정거래위원회 가맹사업정보제공시스템
+
 export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
+  const tabs: (readonly [string, string])[] = f.facts ? [["브랜드 현황", "#facts"], ...baseTabs] : [...baseTabs];
   const startupTotal = sum(f.startupLeft) + sum(f.startupRight);
   const infoRows = [
     ["브랜드", f.brand],
@@ -46,13 +51,14 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
 
         {/* 상단 요약 */}
         <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white lg:grid-cols-[1.35fr_1fr]">
-          <FranchiseGallery slides={f.gallery} badges={[l.rec ? "추천 브랜드" : "프랜차이즈", "신규 가맹 모집"]} photos={{ id: l.id, count: l.photos ?? 0 }} />
+          <FranchiseGallery slides={f.gallery} badges={[l.rec ? "추천 브랜드" : "프랜차이즈", "신규 가맹 모집", ...(f.sponsored ? ["광고"] : [])]} photos={{ id: l.id, count: l.photos ?? 0 }} />
           <div className="p-8 md:p-10">
+            <BrandLogo src={`/listings/${l.id}/logo.png`} alt={`${f.brand} 로고`} />
             <p className="text-[11px] font-bold tracking-[0.14em] text-brand">{f.eyebrow}</p>
             <h1 className="mt-4 text-[30px] font-black leading-[1.25] tracking-tight">{f.headline[0]}<br /><span className="text-brand">{f.headline[1]}</span></h1>
             <p className="mt-4 text-[13px] leading-relaxed text-neutral-500">{f.desc}</p>
             <dl className="mt-7 divide-y divide-neutral-100 border-t border-neutral-100 text-[12.5px]">
-              <div className="flex py-3.5"><dt className="w-[84px] shrink-0 text-neutral-400">매물번호</dt><dd className="font-bold">{l.id}</dd></div>
+              <div className="flex py-3.5"><dt className="w-[84px] shrink-0 text-neutral-400">등록번호</dt><dd className="font-bold">{l.id}</dd></div>
               {infoRows.map(([k, v]) => (
                 <div key={k} className="flex py-3.5"><dt className="w-[84px] shrink-0 text-neutral-400">{k}</dt><dd className="font-bold">{v}</dd></div>
               ))}
@@ -60,19 +66,52 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
             {l.sold ? (
               <p className="mt-5 rounded-lg bg-neutral-100 py-4 text-center text-[13.5px] font-bold text-neutral-500">모집이 마감된 브랜드입니다</p>
             ) : (
-              <ListingConsultButton id={l.id} title={`${f.brand} (${l.title})`} label="가맹 상담 신청하기  →" className="mt-5 block w-full rounded-lg bg-brand py-4 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark" />
+              <ListingConsultButton id={l.id} kind="가맹상담" title={`${f.brand} (${l.title})`} label="가맹 상담 신청하기  →" className="mt-5 block w-full rounded-lg bg-brand py-4 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark" />
             )}
           </div>
         </section>
 
         {/* 섹션 이동 */}
-        <nav className="mt-5 grid grid-cols-2 divide-neutral-200 overflow-hidden rounded-2xl border border-neutral-200 bg-white text-center text-[13px] font-bold sm:grid-cols-5 sm:divide-x">
+        <nav className={`mt-5 grid grid-cols-2 divide-neutral-200 overflow-hidden rounded-2xl border border-neutral-200 bg-white text-center text-[13px] font-bold ${tabs.length > 5 ? "sm:grid-cols-6" : "sm:grid-cols-5"} sm:divide-x`}>
           {tabs.map(([label, href]) => (
             <a key={href} href={href} className="py-4 transition hover:bg-neutral-50 hover:text-brand">{label}</a>
           ))}
         </nav>
 
         <div className="mt-5 space-y-5">
+          {/* 브랜드 현황 (정보공개서 기준, 제공된 경우에만) */}
+          {f.facts && (
+            <section id="facts" className={`${card} scroll-mt-24`}>
+              <Head eyebrow="BRAND FACTS" title="브랜드 현황" />
+              <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {([
+                  ["설립", f.facts.since],
+                  ["가맹점", `${f.facts.stores.toLocaleString()}개`],
+                  ["직영점", `${f.facts.direct.toLocaleString()}개`],
+                  ["본사", f.facts.hq],
+                  ...(f.facts.opened !== undefined ? [["최근 1년 신규 개점", `${f.facts.opened.toLocaleString()}개`]] : []),
+                  ...(f.facts.closed !== undefined ? [["최근 1년 계약 종료·해지", `${f.facts.closed.toLocaleString()}개`]] : []),
+                ] as [string, string][]).map(([k, v]) => (
+                  <div key={k} className={`${inner} p-5`}>
+                    <p className="text-[10.5px] text-neutral-400">{k}</p>
+                    <p className="mt-2 text-[16px] font-black">{v}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 text-[11px] text-neutral-400">정보공개서 {f.facts.disclosure} 기준 · <a href={FTC} target="_blank" rel="noopener noreferrer" className="font-bold text-brand underline underline-offset-2">공정거래위원회 가맹사업정보제공시스템에서 확인 →</a></p>
+            </section>
+          )}
+
+          {/* 브랜드 영상 */}
+          {f.video && (
+            <section className={card}>
+              <Head eyebrow="BRAND FILM" title="브랜드 영상" />
+              <div className="mt-7 aspect-video overflow-hidden rounded-xl bg-black">
+                <iframe src={`https://www.youtube-nocookie.com/embed/${f.video}`} title={`${f.brand} 브랜드 영상`} loading="lazy" allow="encrypted-media; picture-in-picture" allowFullScreen className="size-full" />
+              </div>
+            </section>
+          )}
+
           {/* 브랜드 경쟁력 */}
           <section id="strengths" className={`${card} scroll-mt-24`}>
             <Head eyebrow="WHY THIS BRAND" title="이 브랜드의 경쟁력" />
@@ -91,8 +130,9 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
           <section id="menu" className={`${card} scroll-mt-24`}>
             <Head eyebrow="SIGNATURE MENU" title="대표 메뉴" />
             <div className="mt-7 grid gap-4 md:grid-cols-3">
-              {f.menus.map((m) => (
-                <div key={m.name} className="flex flex-col rounded-xl border border-neutral-200 bg-white p-6">
+              {f.menus.map((m, i) => (
+                <div key={m.name} className="flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white p-6">
+                  <MenuPhoto src={`/listings/${l.id}/menu-${i + 1}.jpg`} alt={m.name} />
                   <h3 className="flex items-center gap-2 text-[14.5px] font-black">
                     {m.name}
                     {m.badge && <span className="rounded bg-orange-50 px-1.5 py-0.5 text-[9px] font-bold text-brand">{m.badge}</span>}
@@ -171,6 +211,12 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
             </div>
             <p className="mt-4 rounded-lg bg-[#faf9f7] px-5 py-3.5 text-[10.5px] text-neutral-400">{f.startupNote}</p>
           </section>
+
+          {/* 광고·정보공개서 안내 */}
+          <aside className="rounded-2xl border border-neutral-200 bg-white px-6 py-5 text-[11px] leading-relaxed text-neutral-400">
+            {f.sponsored && <p className="mb-1.5 font-bold text-neutral-600">이 페이지는 가맹본부의 의뢰로 제작된 광고입니다</p>}
+            <p>표시된 예상 수익·비용 등 수치는 가맹본부가 제공한 자료와 예상치이며 실제와 다를 수 있습니다. 가맹계약 전 반드시 가맹본부의 정보공개서를 확인하세요. (<a href={FTC} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-brand">가맹사업정보제공시스템 franchise.ftc.go.kr</a>)</p>
+          </aside>
         </div>
       </div>
     </main>

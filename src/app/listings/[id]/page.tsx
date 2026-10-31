@@ -16,6 +16,8 @@ import { RemoteShopDetail } from "@/components/RemoteShopDetail";
 import { shops } from "@/lib/shop";
 import { TransferDetail } from "@/components/TransferDetail";
 import { transfers } from "@/lib/transfer";
+import { StartupDetail } from "@/components/StartupDetail";
+import { startups } from "@/lib/startup";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -74,6 +76,18 @@ export default async function ListingDetail({ params }: Props) {
     );
   }
 
+  const startup = l.kind === "신규창업" ? startups[l.id] : undefined;
+  if (startup) {
+    return (
+      <>
+        <Header active={navLabel(l.kind)} />
+        <StartupDetail l={l} c={startup} />
+        <Footer />
+        <YoutubePopup />
+      </>
+    );
+  }
+
   const rows = [
     ["매물번호", String(l.id)],
     ["지역", `대구 ${l.region}`],
@@ -126,7 +140,7 @@ export default async function ListingDetail({ params }: Props) {
             <h2 className="text-[18px] font-black">매물 소개</h2>
             <p className="mt-3 text-[13.5px] leading-relaxed text-neutral-600">
               대구 {l.region}에 위치한 {l.category} {l.kind} 매물입니다. 약 {l.area}㎡ 규모이며 {l.op} 방식으로 운영할 수 있습니다.
-              자세한 현장 상황과 조건은 상담을 통해 안내해 드립니다.
+              자세한 현장 상황과 조건은 상담을 통해 안내해 드립니다
             </p>
           </section>
         </Reveal>

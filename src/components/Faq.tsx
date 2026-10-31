@@ -9,7 +9,7 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
     <ul className="mx-auto mt-10 max-w-[720px] space-y-3">
       {items.map((it, i) => (
         <li key={it.q} className="overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
-          <button onClick={() => setOpen(open === i ? null : i)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-[14px] font-bold">
+          <button onClick={() => setOpen(open === i ? null : i)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-[14px] font-bold text-ink">
             {it.q}
             <motion.span animate={{ rotate: open === i ? 45 : 0 }} className="text-[20px] font-normal leading-none text-brand">+</motion.span>
           </button>

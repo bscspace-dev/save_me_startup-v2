@@ -1,14 +1,14 @@
 import { supabase } from "./supabase";
-import type { Listing } from "./data";
+import type { Listing, Promo, Startup, TransferData } from "./data";
 import type { ShopInfo } from "./shop";
 
-// 관리자에서 등록한 상가매물(Supabase) → 기존 Listing 형태로 변환
-type Row = { id: number; data: Omit<Listing, "id" | "photos" | "thumb" | "sold" | "kind" | "views" | "shop"> & { shop: ShopInfo }; thumb: string | null; photo_count: number; sold: boolean };
+// 관리자에서 등록한 매물(상가매물·프랜차이즈 홍보, Supabase) → 기존 Listing 형태로 변환
+type Row = { id: number; data: Omit<Listing, "id" | "photos" | "thumb" | "sold" | "kind" | "views" | "shop" | "promo" | "startup" | "transfer"> & { kind?: string; shop?: ShopInfo; promo?: Promo; startup?: Startup; transfer?: TransferData }; thumb: string | null; photo_count: number; sold: boolean };
 
 const toListing = (r: Row): Listing => ({
   ...r.data,
   id: r.id,
-  kind: "상가매물",
+  kind: r.data.kind ?? "상가매물",
   views: 0,
   photos: r.photo_count,
   thumb: r.thumb ?? undefined,

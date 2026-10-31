@@ -35,7 +35,7 @@ export function YoutubePopup() {
         transition={{ delay: 1, type: "spring", stiffness: 120 }}
         whileHover={{ x: -4 }}
         aria-label="유튜브 채널 보기"
-        className="fixed right-0 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-l-xl bg-[#e62117] px-3 py-4 text-white shadow-xl"
+        className="fixed right-0 top-[calc(50%-43px)] z-40 flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-l-xl bg-[#e62117] px-3 py-4 text-white shadow-xl"
       >
         <YtLogo />
         <span className="text-[10px] font-bold leading-tight">유튜브<br />채널</span>
@@ -78,7 +78,7 @@ export function YoutubePopup() {
                   </div>
                 )}
                 <p className="text-[13px] leading-relaxed text-neutral-600">
-                  전수창업·신규창업·프랜차이즈 창업 노하우와 대구 상가 매물 소식을 영상으로 만나보세요. 구독하고 창업 정보를 가장 먼저 받아보세요.
+                  전수창업·신규창업·프랜차이즈 창업 노하우와 대구 상가 매물 소식을 영상으로 만나보세요. 구독하고 창업 정보를 가장 먼저 받아보세요
                 </p>
                 <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="mt-5 flex items-center justify-center gap-2 rounded-lg bg-[#e62117] py-3.5 text-[14px] font-bold text-white transition hover:bg-[#c71a11]">
                   <YtLogo size={20} />채널 구독하러 가기

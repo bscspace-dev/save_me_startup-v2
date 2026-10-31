@@ -71,7 +71,7 @@ export function Picks() {
           <SectionHead
             badge={<span className="inline-block rounded bg-brand px-2 py-0.5 text-[10px] font-bold text-white">구해줘창업 PICK</span>}
             title="이달의 추천 창업"
-            sub="전문 컨설턴트가 직접 선별한 이번 달의 추천 창업 컨텐츠입니다."
+            sub="전문 컨설턴트가 직접 선별한 이번 달의 추천 창업 컨텐츠입니다"
             more="전체 Pick 보기"
           />
         </Reveal>
@@ -91,7 +91,7 @@ export function Picks() {
                 </div>
               </div>
               <div className="p-5">
-                <p className="text-[12.5px] text-neutral-600">25년 운영 노하우와 단골 고객을 함께 이어받을 수 있는 전수창업 매물. 레시피·운영방식 상세 교육 포함.</p>
+                <p className="text-[12.5px] text-neutral-600">25년 운영 노하우와 단골 고객을 함께 이어받을 수 있는 전수창업 매물. 레시피·운영방식 상세 교육 포함</p>
                 <dl className="mt-4 flex gap-8 text-[11px]">
                   {[["면적", "약 49㎡"], ["전수비", "협의 후 결정"], ["업종", "한식·탕·국밥"]].map(([k, v]) => (
                     <div key={k}><dt className="text-neutral-400">{k}</dt><dd className="mt-0.5 text-[13px] font-bold">{v}</dd></div>
@@ -103,8 +103,8 @@ export function Picks() {
           </Reveal>
           <div className="flex flex-col gap-4">
             {[
-              { img: "pick-1", tag: "전수창업", loc: "달서구", title: "분위기 좋은 베이커리 카페", desc: "소규모 제조·카페 겸업. 레시피 및 인테리어 가이드 포함.", cta: "상담 문의" },
-              { img: "pick-2", tag: "상가매물", loc: "중구", title: "대구 도심 코너 상가 1층", desc: "유동인구 多, 카페·음식점 적합. 즉시 입점 가능.", cta: "상담 문의" },
+              { img: "pick-1", tag: "전수창업", loc: "달서구", title: "분위기 좋은 베이커리 카페", desc: "소규모 제조·카페 겸업. 레시피 및 인테리어 가이드 포함", cta: "상담 문의" },
+              { img: "pick-2", tag: "상가매물", loc: "중구", title: "대구 도심 코너 상가 1층", desc: "유동인구 多, 카페·음식점 적합. 즉시 입점 가능", cta: "상담 문의" },
             ].map((p, i) => (
               <Reveal key={p.title} delay={0.1 + i * 0.1} className="flex-1">
                 <motion.article whileHover={{ x: 4 }} className="flex h-full overflow-hidden rounded-lg bg-white shadow-sm">
@@ -165,7 +165,7 @@ export function NewListings() {
         ))}
       </div>
       <div className="mt-6 grid min-h-[300px] items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {list.length === 0 && <p className="col-span-3 py-20 text-center text-[13px] text-neutral-400">해당 유형의 신규 매물이 아직 없습니다.</p>}
+        {list.length === 0 && <p className="col-span-3 py-20 text-center text-[13px] text-neutral-400">해당 유형의 신규 매물이 아직 없습니다</p>}
         {list.map((l, i) => <ListingCard key={l.id} l={l} i={i} />)}
       </div>
     </section>

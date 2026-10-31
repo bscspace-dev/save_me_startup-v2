@@ -7,7 +7,7 @@ import { PhoneInput } from "./PhoneInput";
 
 const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[13px] outline-none transition placeholder:text-neutral-300 focus:border-brand";
 
-function ConsultForm({ id, title, onClose }: { id: number; title: string; onClose: () => void }) {
+function ConsultForm({ id, title, kind, onClose }: { id: number; title: string; kind: string; onClose: () => void }) {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
 
   useEffect(() => {
@@ -20,8 +20,9 @@ function ConsultForm({ id, title, onClose }: { id: number; title: string; onClos
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     setStatus("sending");
-    const row = { name: f.get("name"), phone: f.get("phone"), type: `매물상담[${id}]`, region: "", message: f.get("message") };
-    if (!supabase) { console.warn("Supabase 환경변수가 설정되지 않았습니다."); setStatus("error"); return; } // 저장되지 않았는데 접수된 것처럼 보이지 않게 한다
+    const row = { name: f.get("name"), phone: f.get("phone"), type: `${kind}[${id}]`, // 관리자 상담 목록에서 매물 상담 / 가맹 상담으로 나뉜다
+     region: "", message: f.get("message") };
+    if (!supabase) { console.warn("Supabase 환경변수가 설정되지 않았습니다"); setStatus("error"); return; } // 저장되지 않았는데 접수된 것처럼 보이지 않게 한다
     const { error } = await supabase.from("consultations").insert(row);
     setStatus(error ? "error" : "done");
   }
@@ -49,24 +50,24 @@ function ConsultForm({ id, title, onClose }: { id: number; title: string; onClos
         <textarea name="message" rows={3} placeholder="궁금한 점을 자유롭게 적어주세요" className={`${field} mt-1.5 resize-none`} />
 
         <label className="mt-4 flex items-center gap-2 text-[11px] text-neutral-400">
-          <input type="checkbox" required className="accent-[#d9480f]" />개인정보 수집 및 이용에 동의합니다.
+          <input type="checkbox" required className="accent-[#d9480f]" />개인정보 수집 및 이용에 동의합니다
         </label>
 
         <motion.button whileTap={{ scale: 0.98 }} disabled={status === "sending" || status === "done"} className="mt-5 w-full rounded bg-brand py-3.5 text-[14px] font-bold text-white transition hover:bg-brand-dark disabled:opacity-70">
           {status === "sending" ? "전송 중..." : status === "done" ? "문의가 접수되었습니다 ✓" : "이 매물 상담 신청하기"}
         </motion.button>
-        {status === "error" && <p className="mt-2 text-center text-[11px] text-red-600">전송에 실패했습니다. 잠시 후 다시 시도해주세요.</p>}
+        {status === "error" && <p className="mt-2 text-center text-[11px] text-red-600">전송에 실패했습니다. 잠시 후 다시 시도해주세요</p>}
       </motion.form>
     </motion.div>
   );
 }
 
-export function ListingConsultButton({ id, title, label = "이 매물 상담하기", className = "mt-6 block w-full rounded bg-brand py-3.5 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark" }: { id: number; title: string; label?: string; className?: string }) {
+export function ListingConsultButton({ id, title, kind = "매물상담", label = "이 매물 상담하기", className = "mt-6 block w-full rounded bg-brand py-3.5 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark" }: { id: number; title: string; kind?: "매물상담" | "가맹상담"; label?: string; className?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <>
       <button onClick={() => setOpen(true)} className={className}>{label}</button>
-      <AnimatePresence>{open && <ConsultForm id={id} title={title} onClose={() => setOpen(false)} />}</AnimatePresence>
+      <AnimatePresence>{open && <ConsultForm id={id} title={title} kind={kind} onClose={() => setOpen(false)} />}</AnimatePresence>
     </>
   );
 }

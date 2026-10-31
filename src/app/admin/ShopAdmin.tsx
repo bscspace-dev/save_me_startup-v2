@@ -5,6 +5,7 @@ import { regions, won, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import type { ShopInfo } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
+import { dataUrlToBlob, shrink } from "./imageTools";
 
 type Cred = { u: string; p: string };
 type Form = Record<string, string>;
@@ -97,25 +98,7 @@ function fromListing(l: Listing): Form {
   };
 }
 
-// 이미지를 줄여서 data URL 로 만든다 (목록 용량을 가볍게 하기 위해 WebP, 최대 maxChars 이하로 품질을 낮춘다)
-async function shrink(src: Blob, max: number, q: number, maxChars: number): Promise<string> {
-  const bmp = await createImageBitmap(src);
-  const r = Math.min(1, max / Math.max(bmp.width, bmp.height));
-  const c = document.createElement("canvas");
-  c.width = Math.max(1, Math.round(bmp.width * r)); c.height = Math.max(1, Math.round(bmp.height * r));
-  c.getContext("2d")!.drawImage(bmp, 0, 0, c.width, c.height);
-  bmp.close();
-  let url = "";
-  for (let quality = q; quality >= 0.4; quality -= 0.1) {
-    url = c.toDataURL("image/webp", quality);
-    if (!url.startsWith("data:image/webp")) url = c.toDataURL("image/jpeg", quality); // WebP 미지원 브라우저
-    if (url.length <= maxChars) break;
-  }
-  return url;
-}
-const dataUrlToBlob = async (u: string) => (await fetch(u)).blob();
-
-function Photos({ photos, setPhotos }: { photos: string[]; setPhotos: (p: string[]) => void }) {
+export function Photos({ photos, setPhotos, title = "사진", lead = true }: { photos: string[]; setPhotos: (p: string[]) => void; title?: string; lead?: boolean }) {
   const ref = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
@@ -144,14 +127,14 @@ function Photos({ photos, setPhotos }: { photos: string[]; setPhotos: (p: string
 
   return (
     <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-      <h2 className="text-[15px] font-black">사진 <span className="ml-1 text-[12px] font-normal text-neutral-400">{photos.length} / {MAX_PHOTOS}장 · 첫 번째 사진이 대표 사진입니다</span></h2>
+      <h2 className="text-[15px] font-black">{title} <span className="ml-1 text-[12px] font-normal text-neutral-400">{photos.length} / {MAX_PHOTOS}장{lead && " · 첫 번째 사진이 대표 사진입니다"}</span></h2>
       <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
         {photos.map((p, i) => (
           <div key={i} className="overflow-hidden rounded-lg border border-neutral-200">
             <div className="relative aspect-[1.5/1] bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={p} alt="" className="size-full object-cover" />
-              {i === 0 && <span className="absolute left-1.5 top-1.5 rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold text-white">대표</span>}
+              {lead && i === 0 && <span className="absolute left-1.5 top-1.5 rounded bg-brand px-1.5 py-0.5 text-[10px] font-bold text-white">대표</span>}
             </div>
             <div className="flex divide-x divide-neutral-200 text-[12px] font-bold">
               <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="flex-1 py-1.5 hover:bg-neutral-50 disabled:opacity-30">←</button>
@@ -181,7 +164,7 @@ export function ShopAdmin({ cred }: { cred: Cred }) {
 
   useEffect(() => {
     let alive = true;
-    fetchRemoteListings().then((l) => { if (alive) setItems(l); });
+    fetchRemoteListings().then((l) => { if (alive) setItems(l.filter((x) => x.shop)); }); // 상가매물만
     return () => { alive = false; };
   }, [tick]);
 
