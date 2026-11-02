@@ -26,6 +26,12 @@ function Label({ text, req, children }: { text: string; req?: boolean; children:
 }
 
 // 전수창업 등록: 사부(전수자) 정보와 사진을 입력하면 상세 문구는 업종별 기본 문구로 만들어진다
+// 이력 년도: "2012~2019"로 저장하고, 종료를 비워 두면 "2012~현재" (지금도 이어지는 경력)
+const yearPair = (a: string, b?: string) => {
+  const x = a.replace(/[^0-9]/g, ""), y = (b ?? "").replace(/[^0-9]/g, "");
+  return x || y ? `${x}~${y || "현재"}` : "";
+};
+
 export function TransferAdmin({ cred }: { cred: Cred }) {
   const [items, setItems] = useState<Listing[] | null>(null);
   const [editing, setEditing] = useState<number | "new" | null>(null);
@@ -34,14 +40,20 @@ export function TransferAdmin({ cred }: { cred: Cred }) {
 
   useEffect(() => {
     let alive = true;
-    fetchRemoteListings().then((l) => { if (alive) setItems(l.filter((x) => x.transfer)); }); // 전수창업만
+    fetchRemoteListings(true).then((l) => { if (alive) setItems(l.filter((x) => x.transfer)); }); // 전수창업만
     return () => { alive = false; };
   }, [tick]);
 
   const reload = () => setTick((t) => t + 1);
 
+  async function toggleHidden(l: Listing) {
+    const { data, error } = await supabase!.rpc("admin_shop_set_hidden", { ...cred, listing_id: l.id, v: !l.hidden });
+    if (error || !data) return setNote("변경하지 못했습니다. (hide-listings.sql 실행 여부를 확인해주세요)");
+    setNote(""); reload();
+  }
+
   async function remove(l: Listing) {
-    if (!confirm(`${l.transfer!.store || l.transfer!.name} (${l.id}번)을 삭제할까요? 사진도 함께 삭제되며 되돌릴 수 없습니다.`)) return;
+    if (!confirm(`${l.transfer!.name} 사부 (${l.id}번)을 삭제할까요? 사진도 함께 삭제되며 되돌릴 수 없습니다.`)) return;
     const { data, error } = await supabase!.rpc("admin_shop_delete", { ...cred, listing_id: l.id });
     if (error || !data) return setNote("삭제하지 못했습니다.");
     setNote(""); reload();
@@ -66,15 +78,17 @@ export function TransferAdmin({ cred }: { cred: Cred }) {
             <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
+              {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[10px] font-bold text-white">숨김</span>}
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] text-neutral-400">[{l.id}] {l.date} · 사진 {l.photos}장</p>
-              <p className="truncate text-[14px] font-black">{l.category}{l.transfer!.store && ` · ${l.transfer!.store}`}</p>
+              <p className="truncate text-[14px] font-black">{l.category}</p>
               <p className="text-[12px] text-neutral-500">{l.transfer!.name} 사부 · {l.transfer!.address ?? `대구 ${l.region}`} · 전수 비용 약 {won(l.price)}원</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[11.5px]">
               <Link href={`/listings/${l.id}`} target="_blank" className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</Link>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
+              <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>
               <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>
             </div>
           </li>
@@ -123,15 +137,16 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
     if (!region) return setErr("주소에 구·군 이름이 필요합니다. 예) 대구 중구 계양동");
     // 이력은 항상 "년도(4자리) + 내용"이 한 쌍이어야 한다
     const rows = history.map(([y, x]) => [y.trim(), x.trim()] as [string, string]).filter(([y, x]) => y || x);
-    if (rows.some(([y, x]) => !/^\d{4}$/.test(y) || !x)) return setErr("이력은 년도(예: 2012)와 내용을 함께 입력해주세요. 한쪽만 입력된 줄이 있습니다.");
+    if (rows.some(([y, x]) => !/^\d{4}(~(\d{4}|현재))?$/.test(y) || !x)) return setErr("이력은 시작 년도(예: 2012)와 내용을 함께 입력해주세요. 종료 년도를 비우면 현재로 표시됩니다. 한쪽만 입력된 줄이 있습니다.");
+    if (rows.some(([y]) => /~\d{4}$/.test(y) && Number(y.slice(5)) < Number(y.slice(0, 4)))) return setErr("이력의 종료 년도는 시작 년도보다 빠를 수 없습니다.");
     const price = Number(f.price) || 0;
     setBusy(true); setErr("");
     try {
       const thumb = await shrink(await dataUrlToBlob(menuPhotos[0]), 480, 0.7, 40_000);
       const d = {
-        title: `${f.store.trim() || f.name.trim()} 전수창업`, region, category: f.category, op: "직접운영" as const, area: 0, // 운영방식은 입력받지 않는다
+        title: `${f.name.trim()} 사부 전수창업`, region, category: f.category, op: "직접운영" as const, area: 0, // 운영방식은 입력받지 않는다
          price, cost: price, date: date || today(), kind: "전수창업",
-        transfer: { name: f.name.trim(), store: f.store.trim(), address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, menuDesc: f.menuDesc.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => Number(a[0]) - Number(b[0])) }, // 년도 순으로 저장
+        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, menuDesc: f.menuDesc.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
       };
       const { data, error } = await supabase.rpc("admin_shop_save", { ...cred, listing_id: id, d, t: thumb, photos: [...photos, ...menuPhotos], is_sold: false });
       if (error) throw new Error(error.message);
@@ -158,7 +173,6 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
         <h2 className="mb-4 text-[15px] font-black">사부(전수자) 정보</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <Label text="사부(전수자) 이름" req><input required value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="이정훈" className={inputCls} /></Label>
-          <Label text="점포명 (없으면 비워 두세요)"><input value={f.store} onChange={(e) => set("store", e.target.value)} placeholder="온기 베이커리" className={inputCls} /></Label>
           <Label text="현장 경력 (년)" req><input required inputMode="numeric" value={f.years} onChange={(e) => set("years", num(e.target.value))} placeholder="14" className={inputCls} /></Label>
           <Label text="교육 대표 메뉴 (쉼표로 구분)"><input value={f.menuNames} onChange={(e) => set("menuNames", e.target.value)} placeholder="소금빵, 크루아상, 식빵, 마들렌" className={inputCls} /></Label>
           <div className="sm:col-span-2"><Label text="대표 메뉴 설명 (한두 줄, 상세 상단 메뉴 이름 아래에 표시)"><textarea rows={2} maxLength={100} value={f.menuDesc} onChange={(e) => set("menuDesc", e.target.value)} placeholder="20년 손맛을 담은 구수한 된장찌개, 육수부터 간 맞추기까지 전수합니다" className={`${inputCls} resize-none`} /></Label></div>
@@ -167,11 +181,13 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
         <h2 className="text-[15px] font-black">이력 <span className="ml-1 text-[12px] font-normal text-neutral-400">비워두면 경력없음으로 나옵니다</span></h2>
-        <p className="mb-2 mt-4 text-[11px] font-bold text-neutral-500">이력 (년도와 내용을 한 쌍으로, 저장하면 년도 순으로 정렬됩니다)</p>
+        <p className="mb-2 mt-4 text-[11px] font-bold text-neutral-500">이력 (년도와 내용을 한 쌍으로, 종료 년도를 비우면 현재로 표시 · 저장하면 시작 년도 순으로 정렬됩니다)</p>
         <ul className="space-y-2">
           {history.map(([y, x], i) => (
             <li key={i} className="flex gap-2">
-              <input value={y} inputMode="numeric" maxLength={4} onChange={(e) => setHistory(history.map((r, k) => (k === i ? [e.target.value.replace(/[^0-9]/g, ""), r[1]] : r)))} placeholder="2012" className={`${inputCls} !w-[90px] shrink-0`} />
+              <input value={y.split("~")[0]} inputMode="numeric" maxLength={4} onChange={(e) => setHistory(history.map((r, k) => (k === i ? [yearPair(e.target.value, y.split("~")[1]), r[1]] : r)))} placeholder="2012" className={`${inputCls} !w-[76px] shrink-0`} />
+              <span className="grid shrink-0 place-items-center text-neutral-400">~</span>
+              <input value={/^\d+$/.test(y.split("~")[1] ?? "") ? y.split("~")[1] : ""} inputMode="numeric" maxLength={4} onChange={(e) => setHistory(history.map((r, k) => (k === i ? [yearPair(y.split("~")[0], e.target.value), r[1]] : r)))} placeholder="현재" className={`${inputCls} !w-[104px] shrink-0`} />
               <input value={x} onChange={(e) => setHistory(history.map((r, k) => (k === i ? [r[0], e.target.value] : r)))} placeholder="호텔 베이커리 근무" className={inputCls} />
               <button type="button" onClick={() => setHistory(history.filter((_, k) => k !== i))} className="shrink-0 rounded border border-neutral-300 px-3 text-[12px] font-bold text-red-600 hover:border-red-400">삭제</button>
             </li>

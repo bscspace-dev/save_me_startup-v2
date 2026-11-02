@@ -1,4 +1,5 @@
 "use client";
+import { RichText } from "./RichText";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -115,7 +116,7 @@ export function Picks() {
                       <span className="rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-600">{p.loc}</span>
                     </div>
                     <h3 className="mt-2 text-[14px] font-black">{p.title}</h3>
-                    <p className="mt-1.5 text-[11px] text-neutral-500">{p.desc}</p>
+                    <p className="mt-1.5 text-[11px] text-neutral-500"><RichText text={p.desc} /></p>
                     <a href="#consult" className="mt-2 text-[11px] font-bold text-brand">{p.cta} →</a>
                   </div>
                 </motion.article>

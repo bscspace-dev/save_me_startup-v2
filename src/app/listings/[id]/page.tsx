@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { ListingConsultButton } from "@/components/ListingConsultButton";
 import { Reveal } from "@/components/Reveal";
 import { YoutubePopup } from "@/components/YoutubePopup";
-import { kindBadge, listings as rawListings, withNew, won } from "@/lib/data";
+import { kindBadge, listings as rawListings, withNew, won, costText } from "@/lib/data";
 
 const listings = withNew(rawListings);
 import { FranchiseDetail } from "@/components/FranchiseDetail";
@@ -22,7 +22,9 @@ import { startups } from "@/lib/startup";
 type Props = { params: Promise<{ id: string }> };
 
 export function generateStaticParams() {
-  return listings.map((l) => ({ id: String(l.id) }));
+  // Cache Components는 빈 목록을 허용하지 않으므로 정적 매물이 없을 때는 자리표시용 값을 하나 둔다
+  // (실제 매물은 관리자에서 등록한 것을 브라우저에서 조회한다)
+  return listings.length ? listings.map((l) => ({ id: String(l.id) })) : [{ id: "0" }];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -93,7 +95,7 @@ export default async function ListingDetail({ params }: Props) {
     ["지역", `대구 ${l.region}`],
     ["업종", l.category],
     ["운영방식", l.op],
-    ["창업비용", `약 ${won(l.cost)}원`],
+    ["창업비용", costText(l.cost)],
     ["면적", `약 ${l.area}㎡`],
   ];
   const related = listings.filter((x) => x.kind === l.kind && x.id !== l.id && !x.sold).slice(0, 3);

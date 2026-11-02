@@ -1,4 +1,5 @@
 "use client";
+import { RichText } from "./RichText";
 import { motion } from "motion/react";
 import { kindBadge, photoSrc, won, type Listing } from "@/lib/data";
 import { franchises } from "@/lib/franchise";
@@ -16,11 +17,11 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
   const c = l.kind === "신규창업" ? startupOf(l) : undefined;
   const menus = t?.menuNames?.[0]; // 전수메뉴가 여러 개여도 첫 번째만 보여준다
   const title = brand ?? (c ? c.title : t ? undefined : `${won(l.price)}원`);
-  const accent = brand ? `창업비용 약 ${won(l.price)}원`
+  const accent = brand ? (l.price > 0 ? `창업비용 약 ${won(l.price)}원` : "창업비용 본사와 협의")
     : c ? `컨설팅 비용 약 ${won(l.cost)}원`
     : t ? `${t.master.name} 사부의 전수메뉴`
     : premium !== undefined ? (shop?.premiumLabel ? `권리금 ${shop.premiumLabel}` : premium === 0 ? (shop?.showZero ? "권리금 없음" : "무권리") : `권리금 ${won(premium)}원`) : "";
-  const body = c ? c.summary : t ? (menus ?? "") : l.title;
+  const body = c ? c.summary : t ? (menus ?? "") : brand ? (l.promo?.desc || l.title) : l.title;
   const meta = t ? (l.transfer?.address ?? `대구 ${l.region}`)
     : c ? (l.startup?.address ?? `대구 ${l.region}`)
     : l.promo ? `${l.category} | ${l.op}`
@@ -50,10 +51,10 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
       <div className="min-h-[104px] flex-1 p-3.5">
         {/* 모든 유형이 같은 구성: 작은 분류 / 큰 제목 / 선 / 강조 문구 / 본문 / 정보 */}
         <p className="text-[11px] font-bold tracking-wide text-neutral-400">{t || brand || c ? l.category : `${l.region} · ${shop?.buildingType ?? l.category}`}</p>
-        {title && <p className="mt-1 text-[16px] font-black tracking-tight">{title}</p>}
+        {title && <p className={`mt-1 ${c ? "text-[16px] font-black" : "text-[17px] font-semibold"} tracking-tight`}>{title}</p>}
         {(title || accent) && <div className="my-2.5 h-px w-8 bg-neutral-300" />}
         {accent && <p className="text-[11px] font-bold text-brand">{accent}</p>}
-        <h3 className={`${accent ? "mt-1" : ""} line-clamp-2 ${t ? "text-[17px] font-semibold tracking-tight text-neutral-700" : "text-[12.5px] leading-snug text-neutral-700"}`}>{body}</h3>
+        <h3 className={`${accent ? "mt-1" : ""} line-clamp-2 ${t ? "text-[17px] font-semibold tracking-tight text-neutral-700" : "text-[12.5px] leading-snug text-neutral-700"}`}>{brand ? <RichText text={body.replace(/\s*\n\s*/g, " ")} max={50} /> : body}</h3>
         <p className="mt-2 text-[10.5px] text-neutral-400">{meta}</p>
       </div>
     </motion.a>

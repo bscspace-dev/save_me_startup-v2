@@ -114,7 +114,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
             <div className="mt-7 grid gap-4 lg:grid-cols-2">
               <div className="relative flex min-h-[260px] items-end overflow-hidden rounded-2xl bg-gradient-to-br from-[#33231a] to-[#0f0a07] text-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {photo && <img src={photo} alt={`${m.name} 사부(전수자)`} className="absolute inset-0 size-full object-cover" />}
+                {photo && <img src={photo} alt={`${m.name} 사부(전수자)`} className="absolute inset-0 size-full object-cover object-top" />}
                 <div className="relative w-full bg-gradient-to-t from-black/80 to-transparent p-8 pt-20">
                   <p className="text-[22px] font-black">{m.name} 사부(전수자)</p>
                 </div>
@@ -123,7 +123,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
                 {t.timeline.length === 0 && <li className="py-3.5 font-bold text-neutral-400">경력없음</li>}
                 {t.timeline.map(([y, text], i) => (
                   <li key={i} className="flex gap-6 py-3.5">
-                    <span className={`w-10 shrink-0 font-black ${i === t.timeline.length - 1 ? "text-brand" : "text-brand/70"}`}>{y}</span>
+                    <span className={`${t.timeline.some(([yy]) => yy.includes("~")) ? "w-[92px]" : "w-10"} shrink-0 whitespace-nowrap font-black ${i === t.timeline.length - 1 ? "text-brand" : "text-brand/70"}`}>{y.replace(/^(\d{4})~\1$/, "$1")}</span>
                     <span className="font-bold">{text}</span>
                   </li>
                 ))}

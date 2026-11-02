@@ -36,11 +36,17 @@ export function StartupAdmin({ cred }: { cred: Cred }) {
 
   useEffect(() => {
     let alive = true;
-    fetchRemoteListings().then((l) => { if (alive) setItems(l.filter((x) => x.startup)); }); // 신규창업만
+    fetchRemoteListings(true).then((l) => { if (alive) setItems(l.filter((x) => x.startup)); }); // 신규창업만
     return () => { alive = false; };
   }, [tick]);
 
   const reload = () => setTick((t) => t + 1);
+
+  async function toggleHidden(l: Listing) {
+    const { data, error } = await supabase!.rpc("admin_shop_set_hidden", { ...cred, listing_id: l.id, v: !l.hidden });
+    if (error || !data) return setNote("변경하지 못했습니다. (hide-listings.sql 실행 여부를 확인해주세요)");
+    setNote(""); reload();
+  }
 
   async function remove(l: Listing) {
     if (!confirm(`${l.title} (${l.id}번)을 삭제할까요? 사진도 함께 삭제되며 되돌릴 수 없습니다.`)) return;
@@ -68,6 +74,7 @@ export function StartupAdmin({ cred }: { cred: Cred }) {
             <div className="h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
+              {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[10px] font-bold text-white">숨김</span>}
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] text-neutral-400">[{l.id}] {l.date} · 사진 {l.photos}장 · 컨설팅 {l.startup!.done.length}/{consultItems.length}항목</p>
@@ -77,6 +84,7 @@ export function StartupAdmin({ cred }: { cred: Cred }) {
             <div className="flex shrink-0 gap-2 text-[11.5px]">
               <Link href={`/listings/${l.id}`} target="_blank" className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</Link>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
+              <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>
               <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>
             </div>
           </li>

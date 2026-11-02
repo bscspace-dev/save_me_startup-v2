@@ -51,12 +51,11 @@ function Login() {
     e.preventDefault();
     if (!supabase) return;
     setBusy(true); setErr("");
-    const c = { u: id.trim(), p: pw };
-    const { data, error } = await supabase.rpc("admin_login", c);
+    const { data, error } = await supabase.rpc("admin_login", { u: id.trim(), p: pw });
     setBusy(false);
     if (error) return setErr("로그인할 수 없습니다. 관리자 설정(admin.sql)을 확인해주세요.");
     if (!data) return setErr("아이디 또는 비밀번호가 올바르지 않습니다. (5회 연속 실패 시 10분간 잠깁니다)");
-    save(c);
+    save({ u: id.trim(), p: typeof data === "string" ? data : pw }); // 세션 토큰. admin-single-session.sql 실행 전(true 반환)에는 예전처럼 비밀번호
   }
 
   return (
@@ -117,6 +116,7 @@ function ChangePassword({ cred, onClose }: { cred: Cred; onClose: () => void }) 
 function Dashboard({ cred }: { cred: Cred }) {
   const [pwOpen, setPwOpen] = useState(false);
   const [tab, setTab] = useState<"consult" | "register">("consult");
+  const [openG, setOpenG] = useState({ consult: true, register: false }); // 메뉴 펼침
   const [reg, setReg] = useState<"franchise" | "shop" | "transfer" | "startup">("franchise"); // 등록 하위 구분
   const [rows, setRows] = useState<Row[] | null>(null);
   const [error, setError] = useState("");
@@ -127,16 +127,21 @@ function Dashboard({ cred }: { cred: Cred }) {
   // 가맹 상담 카드에 프랜차이즈명을 보여주기 위한 번호 → 브랜드명 (관리자 등록 브랜드)
   const [brands, setBrands] = useState<Record<number, string>>({});
   useEffect(() => {
-    fetchRemoteListings().then((ls) => setBrands(Object.fromEntries(ls.filter((l) => l.promo).map((l) => [l.id, l.promo!.brand]))));
+    fetchRemoteListings(true).then((ls) => setBrands(Object.fromEntries(ls.filter((l) => l.promo).map((l) => [l.id, l.promo!.brand]))));
   }, []);
   const load = () => setTick((t) => t + 1);
+  // 같은 아이디로 다른 곳에서 로그인하면 이쪽은 로그아웃되어야 하므로 주기적으로 확인한다 (상담 목록 갱신 겸)
+  useEffect(() => {
+    const t = setInterval(load, 30000);
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     let alive = true;
     supabase?.rpc("admin_list", cred).then(({ data, error }) => {
       if (!alive) return;
       if (error) { setError(`불러오지 못했습니다: ${error.message}`); setRows([]); return; }
-      if (data === null) { save(null); return; } // 아이디/비밀번호가 더 이상 유효하지 않음
+      if (data === null) { alert("로그인이 만료되었거나 다른 곳에서 같은 아이디로 로그인되어 로그아웃되었습니다."); save(null); return; } // 아이디/비밀번호가 더 이상 유효하지 않음
       setError(""); setRows(data as Row[]);
     });
     return () => { alive = false; };
@@ -194,34 +199,51 @@ function Dashboard({ cred }: { cred: Cred }) {
           <div className="flex items-center gap-2 text-[12px]">
             <Link href="/" className="rounded border border-neutral-300 px-3 py-2 font-bold hover:border-brand hover:text-brand">사이트 보기</Link>
             <button onClick={() => setPwOpen(true)} className="rounded border border-neutral-300 px-3 py-2 font-bold hover:border-brand hover:text-brand">비밀번호 변경</button>
-            <button onClick={() => save(null)} className="rounded bg-ink px-3 py-2 font-bold text-white hover:bg-black">로그아웃</button>
+            <button onClick={() => { supabase?.rpc("admin_logout", cred).then(() => save(null), () => save(null)); }} className="rounded bg-ink px-3 py-2 font-bold text-white hover:bg-black">로그아웃</button>
           </div>
         </div>
       </header>
       {pwOpen && <ChangePassword cred={cred} onClose={() => setPwOpen(false)} />}
 
-      <div className="mx-auto max-w-[1100px] px-4 py-6">
-        <div className="mb-5 flex gap-1 border-b border-neutral-200 text-[14px] font-bold">
-          {([["consult", "상담"], ["register", "등록"]] as const).map(([k, t]) => (
-            <button key={k} onClick={() => setTab(k)} className={`-mb-px border-b-2 px-4 py-3 transition ${tab === k ? "border-brand text-brand" : "border-transparent text-neutral-400 hover:text-ink"}`}>{t}</button>
-          ))}
-        </div>
-        {tab === "register" ? (<>
-          <div className="mb-5 flex flex-wrap gap-2">
-            {([["franchise", "프랜차이즈"], ["shop", "상가매물"], ["transfer", "전수창업"], ["startup", "신규창업"]] as const).map(([k, n]) => (
-              <button key={k} onClick={() => setReg(k)} className={`rounded-full border px-4 py-2 text-[13px] font-bold transition ${reg === k ? "border-ink bg-ink text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>{n}</button>
-            ))}
-          </div>
-          {reg === "franchise" ? <FranchiseAdmin cred={cred} /> : reg === "shop" ? <ShopAdmin cred={cred} /> : reg === "transfer" ? <TransferAdmin cred={cred} /> : <StartupAdmin cred={cred} />}
-        </>) : (<>
-        <div className="mb-4 flex flex-wrap gap-2">
-          {kinds.map(([k, t]) => {
-            const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다
+      <div className="mx-auto flex max-w-[1240px] flex-col gap-5 px-4 py-6 lg:flex-row lg:items-start">
+        <nav className="shrink-0 space-y-2 lg:sticky lg:top-6 lg:w-[230px]">
+          {([
+            ["consult", "상담 관리", kinds.map(([k, t]) => {
+              const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다
+              return { id: "c-" + k, label: t, n, on: tab === "consult" && kind === k, go: () => { setTab("consult"); setKind(k); } };
+            })],
+            ["register", "등록 관리", ([["franchise", "프랜차이즈"], ["shop", "상가매물"], ["transfer", "전수창업"], ["startup", "신규창업"]] as const).map(([k, t]) => (
+              { id: "r-" + k, label: t, n: 0, on: tab === "register" && reg === k, go: () => { setTab("register"); setReg(k); } }
+            ))],
+          ] as const).map(([g, title, items]) => {
+            const isOpen = openG[g];
+            const todoN = g === "consult" ? items.reduce((a, m) => a + (m.id === "c-all" ? 0 : m.n), 0) : 0;
             return (
-              <button key={k} onClick={() => setKind(k)} className={`rounded-full border px-4 py-2 text-[13px] font-bold transition ${kind === k ? "border-ink bg-ink text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>{t} <span className={kind === k ? "text-white/70" : n ? "text-brand" : "text-neutral-300"}>{n}</span></button>
+              <div key={g} className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+                <button onClick={() => setOpenG((o) => ({ ...o, [g]: !o[g] }))} aria-expanded={isOpen} className={`flex w-full items-center justify-between px-4 py-4 text-[17px] font-black transition ${tab === g ? "text-brand" : "text-ink"}`}>
+                  <span className="flex items-center gap-2">{title}{todoN > 0 && <span className="rounded-full bg-orange-50 px-2 py-0.5 text-[12px] text-brand">{todoN}</span>}</span>
+                  <span className={`text-[13px] text-neutral-400 transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
+                </button>
+                {isOpen && (
+                  <ul className="space-y-1 border-t border-neutral-100 p-2">
+                    {items.map((m) => (
+                      <li key={m.id}>
+                        <button onClick={m.go} className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-[14px] font-bold transition ${m.on ? "bg-ink text-white" : "text-neutral-600 hover:bg-neutral-50 hover:text-brand"}`}>
+                          {m.label}
+                          {m.n > 0 && <span className={`rounded-full px-1.5 text-[11px] ${m.on ? "bg-white/20 text-white" : "bg-orange-50 text-brand"}`}>{m.n}</span>}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             );
           })}
-        </div>
+        </nav>
+        <div className="min-w-0 flex-1">
+        {tab === "register" ? (<>
+          {reg === "franchise" ? <FranchiseAdmin cred={cred} /> : reg === "shop" ? <ShopAdmin cred={cred} /> : reg === "transfer" ? <TransferAdmin cred={cred} /> : <StartupAdmin cred={cred} />}
+        </>) : (<>
 
         <div className="grid grid-cols-3 gap-3">
           {[["전체", scoped.length], ["대기", todo], ["처리 완료", scoped.length - todo]].map(([t, n]) => (
@@ -274,6 +296,7 @@ function Dashboard({ cred }: { cred: Cred }) {
           ))}
         </ul>
         </>)}
+        </div>
       </div>
     </main>
   );

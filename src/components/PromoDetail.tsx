@@ -1,5 +1,6 @@
+import { RichText } from "./RichText";
 import Link from "next/link";
-import { won, type Listing } from "@/lib/data";
+import { costText, type Listing } from "@/lib/data";
 import { ListingConsultButton } from "./ListingConsultButton";
 
 const FTC = "https://franchise.ftc.go.kr"; // 공정거래위원회 가맹사업정보제공시스템
@@ -40,11 +41,11 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
             {/* 카드와 같은 순서: 브랜드 → 제목·설명 → 창업비용 */}
             <h1 className="break-keep text-[32px] font-black leading-[1.2] tracking-tight sm:text-[36px]">{p.brand}</h1>
             <p className="mt-3 break-keep text-[16px] font-bold leading-snug text-neutral-800">{l.title}</p>
-            <p className="mt-2 break-keep text-[13px] leading-relaxed text-neutral-500">{p.desc}</p>
+            <p className="mt-2 whitespace-pre-line break-keep text-[13px] leading-relaxed text-neutral-500"><RichText text={p.desc} /></p>
 
             <div className="mt-5 flex items-baseline justify-between gap-3 rounded-xl bg-[#fff4ea] px-5 py-3">
               <p className="text-[11px] font-bold text-neutral-500">창업비용</p>
-              <p className="text-[17px] font-black tracking-tight text-brand">약 {won(l.price)}원</p>
+              <p className="text-[17px] font-black tracking-tight text-brand">{costText(l.price)}</p>
             </div>
             <dl className="mt-3 divide-y divide-neutral-100 text-[12.5px]">
               {rows.map(([k, v]) => (

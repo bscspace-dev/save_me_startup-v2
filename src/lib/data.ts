@@ -18,7 +18,7 @@ export const categories = [
 export type Listing = {
   id: number; price: number; title: string; region: string; category: string;
   op: "직접운영" | "반오토" | "풀오토"; cost: number; area: number;
-  date?: string; photos?: number; rec?: boolean; isNew?: boolean; sold?: boolean; views: number; kind: string;
+  date?: string; photos?: number; rec?: boolean; isNew?: boolean; sold?: boolean; hidden?: boolean; views: number; kind: string;
   // 관리자에서 등록한 매물(Supabase)만 가진다: 목록용 작은 이미지와 상세 정보
   thumb?: string; shop?: ShopInfo; promo?: Promo; startup?: Startup; transfer?: TransferData;
 };
@@ -35,22 +35,7 @@ export type Promo = { brand: string; desc: string; area?: string; sponsored?: bo
 // 사진: public/listings/<매물번호>/1.jpg, 2.jpg … 에 넣고 photos 에 장수를 적는다
 export const photoSrc = (id: number, n: number) => `/listings/${id}/${n}.jpg`;
 
-export const listings: Listing[] = [
-  { id: 10036, price: 15000, title: "점주님은 정성껏 운영하셨고 단골이 많습니다", region: "달서구", category: "카페·음료", op: "직접운영", cost: 8000, area: 33, isNew: true, views: 120, kind: "전수창업" },
-  { id: 10035, price: 15000, title: "직접 운영으로 월 1,000만원을 목표로 하는 분께", region: "수성구", category: "카페·음료", op: "반오토", cost: 9000, area: 26, isNew: true, views: 98, kind: "전수창업" },
-  { id: 10034, price: 7000, title: "주4일, 오후 1시반 퇴근하는 여유로운 운영", region: "수성구", category: "프랜차이즈", op: "반오토", cost: 6000, area: 30, rec: true, views: 210, kind: "프랜차이즈" },
-  { id: 10033, price: 19000, title: "월 순수익 약 800만원 이상, 직접 제빵하면 더 높아요", region: "북구", category: "베이커리·디저트", op: "직접운영", cost: 12000, area: 40, rec: true, views: 180, kind: "전수창업" },
-  { id: 10030, price: 8000, title: "단골 위주 국밥집, 레시피 전수 가능", region: "동구", category: "한식·분식", op: "직접운영", cost: 5000, area: 36, views: 64, kind: "전수창업" },
-  { id: 10029, price: 6500, title: "직접 운영·인력 효율화로 순수익 극대화", region: "서구", category: "카페·음료", op: "직접운영", cost: 6500, area: 24, views: 52, kind: "전수창업" },
-  { id: 10024, price: 3000, title: "주 5일 · 하루 6시간 근무 가능한 소형 매장", region: "달서구", category: "카페·음료", op: "반오토", cost: 3500, area: 20, views: 71, kind: "전수창업" },
-  { id: 10023, price: 15000, title: "매출은 갖췄습니다, 운영을 다듬을 차례", region: "수성구", category: "베이커리·디저트", op: "직접운영", cost: 11000, area: 42, views: 105, kind: "전수창업" },
-  { id: 10022, price: 25000, title: "주차 약 10대 확보, 월평균 매출 안정", region: "수성구", category: "프랜차이즈", op: "직접운영", cost: 14000, area: 50, rec: true, views: 230, kind: "프랜차이즈" },
-  { id: 10020, price: 18000, title: "대로변 베이커리 매장, 시설 일체 인수", region: "북구", category: "베이커리·디저트", op: "직접운영", cost: 10000, area: 38, sold: true, views: 160, kind: "전수창업" },
-  { id: 10018, price: 10000, title: "수성구 코너 상권, 월 매출 안정적", region: "수성구", category: "프랜차이즈", op: "직접운영", cost: 8500, area: 35, sold: true, views: 99, kind: "프랜차이즈" },
-  { id: 10040, price: 4000, title: "처음 창업하는 분께 추천, 소자본 소형 카페 자리", region: "중구", category: "카페·음료", op: "직접운영", cost: 4000, area: 20, isNew: true, views: 83, kind: "신규창업" },
-  { id: 10039, price: 6000, title: "오픈 전 상권 분석과 인테리어 상담 포함", region: "수성구", category: "한식·분식", op: "반오토", cost: 7000, area: 30, isNew: true, views: 67, kind: "신규창업" },
-  { id: 10038, price: 9000, title: "주택가 신규 오픈 베이커리 자리, 장비 일부 보유", region: "북구", category: "베이커리·디저트", op: "직접운영", cost: 9000, area: 36, views: 54, kind: "신규창업" },
-];
+export const listings: Listing[] = []; // 매물은 관리자에서 등록한 것만 표시한다 (DB)
 
 export type Brand = { name: string; category: string; cost: string; ops: string[]; desc: string; area: string };
 
@@ -84,3 +69,6 @@ export const won = (v: number) => {
   const man = v % 10000;
   return [eok ? `${eok}억` : "", man ? `${man.toLocaleString()}만` : ""].filter(Boolean).join(" ");
 };
+
+// 창업비용 표기: 금액을 알 수 없어 0으로 등록한 경우 "본사와 협의"
+export const costText = (v: number) => (v > 0 ? `약 ${won(v)}원` : "본사와 협의");

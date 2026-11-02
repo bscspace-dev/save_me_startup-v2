@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { businessCategories, won, type Listing } from "@/lib/data";
+import { businessCategories, costText, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import { supabase } from "@/lib/supabase";
 import { shrink, slicePromo } from "./imageTools";
@@ -32,11 +32,17 @@ export function FranchiseAdmin({ cred }: { cred: Cred }) {
 
   useEffect(() => {
     let alive = true;
-    fetchRemoteListings().then((l) => { if (alive) setItems(l.filter((x) => x.promo)); }); // 프랜차이즈 홍보만
+    fetchRemoteListings(true).then((l) => { if (alive) setItems(l.filter((x) => x.promo)); }); // 프랜차이즈 홍보만
     return () => { alive = false; };
   }, [tick]);
 
   const reload = () => setTick((t) => t + 1);
+
+  async function toggleHidden(l: Listing) {
+    const { data, error } = await supabase!.rpc("admin_shop_set_hidden", { ...cred, listing_id: l.id, v: !l.hidden });
+    if (error || !data) return setNote("변경하지 못했습니다. (hide-listings.sql 실행 여부를 확인해주세요)");
+    setNote(""); reload();
+  }
 
   async function toggleSold(l: Listing) {
     const { data, error } = await supabase!.rpc("admin_shop_set_sold", { ...cred, listing_id: l.id, v: !l.sold });
@@ -70,17 +76,19 @@ export function FranchiseAdmin({ cred }: { cred: Cred }) {
             <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
+              {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[10px] font-bold text-white">숨김</span>}
               {l.sold && <span className="absolute inset-0 grid place-items-center bg-black/55 text-[11px] font-bold text-white">모집마감</span>}
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] text-neutral-400">[{l.id}] {l.promo!.brand} · {l.date} · 이미지 {l.photos}장{l.promo!.sponsored && " · 광고"}</p>
               <p className="truncate text-[14px] font-black">{l.title}</p>
-              <p className="text-[12px] text-neutral-500">{l.category} · {l.op} · 예상 창업비 약 {won(l.price)}원</p>
+              <p className="text-[12px] text-neutral-500">{l.category} · {l.op} · 예상 창업비 {costText(l.price)}</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[11.5px]">
               <Link href={`/listings/${l.id}`} target="_blank" className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</Link>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "모집마감 해제" : "모집마감"}</button>
+              <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>
               <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>
             </div>
           </li>
@@ -185,14 +193,14 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
           <Label text="브랜드명" req><input required value={f.brand} onChange={(e) => set("brand", e.target.value)} placeholder="브랜드 이름" className={inputCls} /></Label>
           <Label text="모집지역 (선택)"><input value={f.area} onChange={(e) => set("area", e.target.value)} placeholder="전국 · 대구 우선 모집" className={inputCls} /></Label>
           <div className="sm:col-span-2"><Label text="제목 (목록 카드와 상세의 큰 제목)" req><input required value={f.title} onChange={(e) => set("title", e.target.value)} placeholder="회사 다니면서도 도전할 수 있는 무인 인형뽑기 창업" className={inputCls} /></Label></div>
-          <div className="sm:col-span-2"><Label text="소개 문구 (한 줄)" req><input required maxLength={100} value={f.desc} onChange={(e) => set("desc", e.target.value)} placeholder="월 순수익 800만원, 본사 직접 책임 시공과 A/S" className={inputCls} /></Label></div>
+          <div className="sm:col-span-2"><Label text="소개 문구 (300자까지 · Enter로 줄바꿈 · **글자** 로 감싸면 진하게)" req><textarea required rows={3} maxLength={300} value={f.desc} onChange={(e) => set("desc", e.target.value)} placeholder="월 순수익 800만원, 본사 직접 책임 시공과 A/S" className={inputCls} /></Label></div>
           <Label text="업종">
             <select value={f.category} onChange={(e) => set("category", e.target.value)} className={inputCls}>{categories.map((c) => <option key={c}>{c}</option>)}</select>
           </Label>
           <Label text="운영모델">
             <select value={f.op} onChange={(e) => set("op", e.target.value)} className={inputCls}>{ops.map((o) => <option key={o}>{o}</option>)}</select>
           </Label>
-          <Label text="예상 창업비 (만원)" req><input required inputMode="numeric" value={f.cost} onChange={(e) => set("cost", e.target.value.replace(/[^0-9,]/g, ""))} placeholder="4900" className={inputCls} /></Label>
+          <Label text="예상 창업비 (만원, 모르면 0 → 본사와 협의로 표시)" req><input required inputMode="numeric" value={f.cost} onChange={(e) => set("cost", e.target.value.replace(/[^0-9,]/g, ""))} placeholder="4900" className={inputCls} /></Label>
         </div>
         <div className="mt-4 flex flex-wrap gap-6 text-[13px]">
           <label className="flex items-center gap-2"><input type="checkbox" checked={f.sponsored} onChange={(e) => set("sponsored", e.target.checked)} className="accent-[#d9480f]" />유료 홍보 (상세에 광고 표시)</label>

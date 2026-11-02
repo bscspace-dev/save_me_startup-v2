@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { won, type Listing } from "@/lib/data";
+import { costText, type Listing } from "@/lib/data";
 import type { FranchiseInfo } from "@/lib/franchise";
 import { FranchiseGallery } from "./FranchiseGallery";
 import { BrandLogo } from "./BrandLogo";
@@ -28,7 +28,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
     ["모집지역", f.area],
     ["추천상권", f.place],
     ["운영모델", f.opModel],
-    ["예상 창업비", `약 ${won(startupTotal)}원`],
+    ["예상 창업비", costText(startupTotal)],
   ];
   const modelStats = [
     ["표준 면적", f.model.size],
@@ -206,7 +206,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
                   <p className="text-[11px] font-bold">총 예상 창업비</p>
                   <p className="mt-0.5 text-[10px] text-white/60">VAT·점포 임차비 별도</p>
                 </div>
-                <p className="text-[22px] font-black">약 {won(startupTotal)}원</p>
+                <p className="text-[22px] font-black">{costText(startupTotal)}</p>
               </div>
             </div>
             <p className="mt-4 rounded-lg bg-[#faf9f7] px-5 py-3.5 text-[10.5px] text-neutral-400">{f.startupNote}</p>

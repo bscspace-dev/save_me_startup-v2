@@ -1,4 +1,5 @@
 "use client";
+import { RichText } from "./RichText";
 import Link from "next/link";
 import { motion } from "motion/react";
 
@@ -28,7 +29,7 @@ export function Hero() {
               <Link key={p.no} href={p.href} className="group rounded-xl border border-white/15 bg-white/[0.07] p-4 backdrop-blur transition hover:-translate-y-0.5 hover:border-brand hover:bg-white/15">
                 <p className="text-[10.5px] font-bold text-[#ff7a45]">{p.no}</p>
                 <p className="mt-1.5 text-[15px] font-black">{p.title}</p>
-                <p className="mt-1 text-[11.5px] text-white/60">{p.desc}</p>
+                <p className="mt-1 text-[11.5px] text-white/60"><RichText text={p.desc} /></p>
               </Link>
             ))}
           </motion.div>
