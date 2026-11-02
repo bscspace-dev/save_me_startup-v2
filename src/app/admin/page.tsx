@@ -8,6 +8,9 @@ import { FranchiseAdmin } from "./FranchiseAdmin";
 import { ShopAdmin } from "./ShopAdmin";
 import { StartupAdmin } from "./StartupAdmin";
 import { TransferAdmin } from "./TransferAdmin";
+import { AccountAdmin } from "./AccountAdmin";
+import { MainAdmin } from "./MainAdmin";
+import { usePeriod } from "./period";
 
 type Row = { id: string; name: string; phone: string; type: string | null; region: string | null; message: string | null; created_at: string; done: boolean };
 type Cred = { u: string; p: string };
@@ -115,7 +118,11 @@ function ChangePassword({ cred, onClose }: { cred: Cred; onClose: () => void }) 
 
 function Dashboard({ cred }: { cred: Cred }) {
   const [pwOpen, setPwOpen] = useState(false);
-  const [tab, setTab] = useState<"consult" | "register">("consult");
+  const [tab, setTab] = useState<"consult" | "register" | "accounts" | "main">("consult");
+  // 내 메뉴 권한: undefined=불러오는 중, "legacy"=권한 SQL(admin-roles.sql) 실행 전이라 전부 허용
+  const [me, setMe] = useState<{ super: boolean; perms: string[]; name?: string | null } | "legacy" | undefined>(undefined);
+  const can = (k: string) => me === "legacy" || (!!me && (me.super || me.perms.includes(k)));
+  const canDelete = me === "legacy" || (!!me && me.super); // 게시물(매물) 삭제는 최고 관리자만
   const [openG, setOpenG] = useState({ consult: true, register: false }); // 메뉴 펼침
   const [reg, setReg] = useState<"franchise" | "shop" | "transfer" | "startup">("franchise"); // 등록 하위 구분
   const [rows, setRows] = useState<Row[] | null>(null);
@@ -135,6 +142,29 @@ function Dashboard({ cred }: { cred: Cred }) {
     const t = setInterval(load, 30000);
     return () => clearInterval(t);
   }, []);
+
+  useEffect(() => {
+    let alive = true;
+    supabase?.rpc("admin_me", cred).then(({ data, error }) => {
+      if (!alive) return;
+      if (error) { setMe("legacy"); return; }
+      if (data === null) { alert("로그인이 만료되었거나 다른 곳에서 같은 아이디로 로그인되어 로그아웃되었습니다."); save(null); return; }
+      setMe(data as { super: boolean; perms: string[]; name?: string | null });
+    });
+    return () => { alive = false; };
+  }, [tick, cred]);
+
+  // 권한이 없는 메뉴에 있으면 허용된 첫 메뉴로 옮긴다
+  useEffect(() => {
+    if (me === undefined) return;
+    const ok = tab === "consult" ? can("consult") : tab === "accounts" ? me !== "legacy" && me.super : tab === "main" ? can("main") : can("reg_" + reg);
+    if (ok) return;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (can("consult")) setTab("consult");
+    else { const r = (["franchise", "shop", "transfer", "startup"] as const).find((k) => can("reg_" + k)); if (r) { setTab("register"); setReg(r); setOpenG((o) => ({ ...o, register: true })); } else if (can("main")) setTab("main"); }
+    /* eslint-enable react-hooks/set-state-in-effect */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me]);
 
   useEffect(() => {
     let alive = true;
@@ -171,13 +201,14 @@ function Dashboard({ cred }: { cred: Cred }) {
       (!k || r.name.includes(k) || r.phone.includes(k) || (r.message ?? "").includes(k) || (r.type ?? "").includes(k)),
     );
   }, [scoped, filter, q]);
+  const period = usePeriod(list, (r) => r.created_at); // 접수 기간(년·월)과 쪽 나누기
 
   const todo = scoped.filter((r) => !r.done).length;
 
   function csv() {
     const esc = (s: string) => `"${s.replace(/"/g, '""')}"`;
     const head = ["접수일시", "구분", "이름", "연락처", "유형", "지역", "내용", "처리"];
-    const body = list.map((r) => [fmt(r.created_at), kindName[kindOf(r.type)], r.name, r.phone, typeText(r.type), r.region ?? "", r.message ?? "", r.done ? "완료" : "대기"].map(esc).join(","));
+    const body = period.filtered.map((r) => [fmt(r.created_at), kindName[kindOf(r.type)], r.name, r.phone, typeText(r.type), r.region ?? "", r.message ?? "", r.done ? "완료" : "대기"].map(esc).join(","));
     const blob = new Blob(["﻿" + [head.join(","), ...body].join("\r\n")], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -192,9 +223,10 @@ function Dashboard({ cred }: { cred: Cred }) {
     <main className="min-h-screen bg-neutral-50">
       <header className="border-b border-neutral-200 bg-white">
         <div className="mx-auto flex max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-4">
-          <div>
-            <h1 className="text-[17px] font-black">관리자</h1>
-            <p className="text-[11px] text-neutral-400">{cred.u}</p>
+          <div className="flex flex-wrap items-baseline gap-x-3">
+            <h1 className="text-[17px] font-black">구해줘창업 관리자</h1>
+            <span className="text-neutral-300">/</span>
+            <p className="text-[14px] font-bold">{typeof me === "object" ? <><span className="text-ink">{me.name || cred.u}</span> <span className="text-brand">{me.super ? "최고 관리자" : "일반 관리자"}님</span></> : <span className="text-ink">{cred.u}</span>}</p>
           </div>
           <div className="flex items-center gap-2 text-[12px]">
             <Link href="/" className="rounded border border-neutral-300 px-3 py-2 font-bold hover:border-brand hover:text-brand">사이트 보기</Link>
@@ -207,14 +239,20 @@ function Dashboard({ cred }: { cred: Cred }) {
 
       <div className="mx-auto flex max-w-[1240px] flex-col gap-5 px-4 py-6 lg:flex-row lg:items-start">
         <nav className="shrink-0 space-y-2 lg:sticky lg:top-6 lg:w-[230px]">
+          {me !== undefined && me !== "legacy" && me.super && (
+            <button onClick={() => setTab("accounts")} className={`flex w-full items-center justify-between rounded-xl border px-4 py-4 text-[17px] font-black transition ${tab === "accounts" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>계정 관리</button>
+          )}
+          {can("main") && (
+            <button onClick={() => setTab("main")} className={`flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-4 text-[17px] font-black transition ${tab === "main" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>메인 페이지 관리</button>
+          )}
           {([
-            ["consult", "상담 관리", kinds.map(([k, t]) => {
+            ...(can("consult") ? [["consult", "상담 관리", kinds.map(([k, t]) => {
               const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다
               return { id: "c-" + k, label: t, n, on: tab === "consult" && kind === k, go: () => { setTab("consult"); setKind(k); } };
-            })],
-            ["register", "등록 관리", ([["franchise", "프랜차이즈"], ["shop", "상가매물"], ["transfer", "전수창업"], ["startup", "신규창업"]] as const).map(([k, t]) => (
+            })]] as const : []),
+            ...(["franchise", "shop", "transfer", "startup"].some((k) => can("reg_" + k)) ? [["register", "등록 관리", ([["franchise", "프랜차이즈"], ["shop", "상가매물"], ["transfer", "전수창업"], ["startup", "신규창업"]] as const).filter(([k]) => can("reg_" + k)).map(([k, t]) => (
               { id: "r-" + k, label: t, n: 0, on: tab === "register" && reg === k, go: () => { setTab("register"); setReg(k); } }
-            ))],
+            ))]] as const : []),
           ] as const).map(([g, title, items]) => {
             const isOpen = openG[g];
             const todoN = g === "consult" ? items.reduce((a, m) => a + (m.id === "c-all" ? 0 : m.n), 0) : 0;
@@ -241,8 +279,8 @@ function Dashboard({ cred }: { cred: Cred }) {
           })}
         </nav>
         <div className="min-w-0 flex-1">
-        {tab === "register" ? (<>
-          {reg === "franchise" ? <FranchiseAdmin cred={cred} /> : reg === "shop" ? <ShopAdmin cred={cred} /> : reg === "transfer" ? <TransferAdmin cred={cred} /> : <StartupAdmin cred={cred} />}
+        {tab === "accounts" ? <AccountAdmin cred={cred} /> : tab === "main" ? <MainAdmin cred={cred} /> : tab === "register" ? (<>
+          {reg === "franchise" ? <FranchiseAdmin cred={cred} canDelete={canDelete} /> : reg === "shop" ? <ShopAdmin cred={cred} canDelete={canDelete} /> : reg === "transfer" ? <TransferAdmin cred={cred} canDelete={canDelete} /> : <StartupAdmin cred={cred} canDelete={canDelete} />}
         </>) : (<>
 
         <div className="grid grid-cols-3 gap-3">
@@ -254,7 +292,8 @@ function Dashboard({ cred }: { cred: Cred }) {
           ))}
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center gap-2">
+        <div className="mt-5">{period.bar}</div>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
           <div className="flex rounded-lg bg-white p-1 text-[12px] ring-1 ring-neutral-200">
             {tabs.map(([k, t]) => (
               <button key={k} onClick={() => setFilter(k)} className={`rounded px-3 py-1.5 font-bold transition ${filter === k ? "bg-brand text-white" : "text-neutral-500 hover:text-ink"}`}>{t}</button>
@@ -263,7 +302,7 @@ function Dashboard({ cred }: { cred: Cred }) {
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="이름·연락처·내용 검색" className={`${inputCls} max-w-[260px]`} />
           <div className="ml-auto flex gap-2 text-[12px]">
             <button onClick={load} className="rounded border border-neutral-300 bg-white px-3 py-2 font-bold hover:border-brand hover:text-brand">새로고침</button>
-            <button onClick={csv} disabled={!list.length} className="rounded border border-neutral-300 bg-white px-3 py-2 font-bold hover:border-brand hover:text-brand disabled:opacity-40">CSV 내려받기</button>
+            <button onClick={csv} disabled={!period.filtered.length} className="rounded border border-neutral-300 bg-white px-3 py-2 font-bold hover:border-brand hover:text-brand disabled:opacity-40">CSV 내려받기</button>
           </div>
         </div>
 
@@ -272,7 +311,8 @@ function Dashboard({ cred }: { cred: Cred }) {
         <ul className="mt-4 space-y-3">
           {rows === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
           {rows && list.length === 0 && !error && <li className="py-16 text-center text-[13px] text-neutral-400">상담 신청이 없습니다.</li>}
-          {list.map((r) => (
+          {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">선택한 기간에 접수된 상담이 없습니다.</li>}
+          {period.view.map((r) => (
             <li key={r.id} className={`rounded-xl border bg-white p-4 ${r.done ? "border-neutral-200 opacity-70" : "border-orange-200"}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
@@ -295,6 +335,7 @@ function Dashboard({ cred }: { cred: Cred }) {
             </li>
           ))}
         </ul>
+        {period.pager}
         </>)}
         </div>
       </div>

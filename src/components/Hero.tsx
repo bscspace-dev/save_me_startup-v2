@@ -2,6 +2,8 @@
 import { RichText } from "./RichText";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+import { fetchBanners } from "@/lib/remote";
 
 const paths = [
   { no: "01", title: "매물 탐색", desc: "대구 상가·프랜차이즈 매물", href: "/listings" },
@@ -10,9 +12,23 @@ const paths = [
 ];
 
 export function Hero() {
+  // 관리자(메인 페이지 관리)에서 올린 배너 이미지. 없으면 기본 그라데이션 배경
+  const [banners, setBanners] = useState<string[]>([]);
+  const [cur, setCur] = useState(0);
+  useEffect(() => { fetchBanners().then(setBanners); }, []);
+  useEffect(() => {
+    if (banners.length < 2) return;
+    const t = setInterval(() => setCur((c) => (c + 1) % banners.length), 5000);
+    return () => clearInterval(t);
+  }, [banners.length]);
+
   return (
     <section className="relative overflow-hidden bg-[#1c1512]">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)]" />
+      {banners.map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img key={i} src={src} alt="" aria-hidden className={`absolute inset-0 size-full object-cover transition-opacity duration-1000 ${i === cur % banners.length ? "opacity-100" : "opacity-0"}`} />
+      ))}
+      <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)] ${banners.length ? "opacity-25" : ""}`} />
       <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/50" />
       <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-6 py-16 lg:grid-cols-[1fr_380px] lg:py-24">
         <div className="text-white">

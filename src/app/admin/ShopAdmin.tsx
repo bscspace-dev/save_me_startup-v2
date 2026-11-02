@@ -5,6 +5,7 @@ import { regions, won, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import type { ShopInfo } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
+import { usePeriod } from "./period";
 import { dataUrlToBlob, shrink } from "./imageTools";
 
 type Cred = { u: string; p: string };
@@ -156,8 +157,9 @@ export function Photos({ photos, setPhotos, title = "사진", lead = true }: { p
   );
 }
 
-export function ShopAdmin({ cred }: { cred: Cred }) {
+export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: boolean }) {
   const [items, setItems] = useState<Listing[] | null>(null);
+  const period = usePeriod(items, (l) => l.date);
   const [editing, setEditing] = useState<number | "new" | null>(null);
   const [tick, setTick] = useState(0);
   const [note, setNote] = useState("");
@@ -200,10 +202,12 @@ export function ShopAdmin({ cred }: { cred: Cred }) {
         <button onClick={() => setEditing("new")} className="rounded bg-brand px-4 py-2.5 text-[13px] font-bold text-white hover:bg-brand-dark">+ 상가매물 등록</button>
       </div>
       {note && <p className="mt-3 rounded-lg bg-red-50 p-3 text-[12px] text-red-700">{note}</p>}
-      <ul className="mt-4 space-y-3">
+      <div className="mt-4">{period.bar}</div>
+      <ul className="mt-3 space-y-3">
         {items === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
         {items && items.length === 0 && <li className="py-16 text-center text-[13px] text-neutral-400">등록된 상가매물이 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
-        {items?.map((l) => (
+        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">선택한 기간에 등록된 자료가 없습니다.</li>}
+        {period.view.map((l) => (
           <li key={l.id} className="flex flex-wrap items-center gap-4 rounded-xl border border-neutral-200 bg-white p-3">
             <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -221,11 +225,12 @@ export function ShopAdmin({ cred }: { cred: Cred }) {
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "계약완료 해제" : "계약완료"}</button>
               <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>
-              <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>
+              {canDelete && <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>}
             </div>
           </li>
         ))}
       </ul>
+      {period.pager}
     </div>
   );
 }
