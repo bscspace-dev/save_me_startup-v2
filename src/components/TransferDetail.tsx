@@ -56,7 +56,6 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
               <span className="self-start rounded-full bg-white/15 px-3 py-1 text-[10.5px] font-bold">등록번호 {l.id}</span>
               <div className="my-auto max-lg:mt-6">
               <p className="text-[13px] font-bold tracking-wide text-white/55">{l.category}</p>
-              {m.store && <p className="mt-2 text-[22px] font-black tracking-tight text-white">{m.store}</p>}
               <div className="my-6 h-px w-14 bg-white/25" />
               <p className="text-[13px] font-bold text-[#ff7a45]">{m.name} 사부의 전수메뉴</p>
               <h1 className="mt-2 text-[36px] font-semibold leading-[1.15] tracking-tight text-white/90 md:text-[46px]">{names[0] ?? menuText}</h1>

@@ -15,7 +15,7 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
   // 신규창업은 매물이 아니라 창업컨설팅 상가로 보여준다 (매물번호·금액 없음)
   const c = l.kind === "신규창업" ? startupOf(l) : undefined;
   const menus = t?.menuNames?.[0]; // 전수메뉴가 여러 개여도 첫 번째만 보여준다
-  const title = brand ?? (c ? c.title : t ? t.master.store : `${won(l.price)}원`);
+  const title = brand ?? (c ? c.title : t ? undefined : `${won(l.price)}원`);
   const accent = brand ? `창업비용 약 ${won(l.price)}원`
     : c ? `컨설팅 비용 약 ${won(l.cost)}원`
     : t ? `${t.master.name} 사부의 전수메뉴`
