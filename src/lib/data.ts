@@ -8,11 +8,12 @@ export const regions = [
 // 업종 목록 (관리자 등록 화면과 매물 목록 필터에서 함께 쓴다). 마지막 "기타 업종"은 목록에 없는 업종을 모두 묶는다
 export const businessCategories = ["한식·분식", "카페·음료", "베이커리·디저트", "치킨·피자", "주점·호프", "고기·구이", "일식·중식", "아이스크림·간식", "기타 업종"];
 
+// 메인 "어떤 창업을 찾고 계신가요?" 카드. tag 는 눌렀을 때 열리는 매물 목록 유형, img 는 public/categories/ 의 3D 아이콘
 export const categories = [
-  { tag: "프랜차이즈", icon: "store", title: "프랜차이즈 창업", desc: "검증된 브랜드로 빠르게 시작. 본사 지원 시스템과 가맹 조건을 한눈에 비교해보세요", foot: "대구 지역 가맹 매물 다수", img: "cat-1", tone: "brand" },
-  { tag: "상가매물", icon: "pin", title: "상가매물", desc: "대구 전 지역 상가 매물 정보. 위치·면적·보증금·월세 조건을 투명하게 공개합니다", foot: "대구 9개 구·군 전체", img: "cat-2", tone: "green" },
-  { tag: "전수창업", icon: "bag", title: "전수창업", desc: "기존 가게의 레시피·운영 노하우를 배워 내 사업에 적용. 전문 컨설팅으로 함께 준비합니다", foot: "한식·카페·베이커리 다수", img: "cat-3", tone: "brown" },
-  { tag: "신규창업", icon: "spark", title: "신규창업", desc: "처음 창업하는 분들을 위한 단계별 안내. 업종 선택부터 오픈까지 전 과정을 함께합니다", foot: "초보 창업자 맞춤 안내", img: "cat-4", tone: "blue" },
+  { tag: "프랜차이즈", en: "FRANCHISE", title: "프랜차이즈 창업", desc: "검증된 브랜드와 가맹 시스템을 비교하고 빠르게 시작해보세요", foot: "대구 지역 가맹 매물 다수", img: "/categories/franchise.png" },
+  { tag: "상가매물", en: "STORE", title: "점포 찾기", desc: "지역 · 보증금 · 월세 · 면적 등 원하는 조건의 점포를 확인해보세요", foot: "대구 9개 구·군 전체", img: "/categories/store.png" },
+  { tag: "전수창업", en: "TRANSFER", title: "전수창업", desc: "기존 매장의 운영 노하우와 시설을 이어받아 안정적으로 준비하세요", foot: "한식·카페·베이커리 다수", img: "/categories/transfer.png" },
+  { tag: "신규창업", en: "NEW BUSINESS", title: "신규창업", desc: "업종 선택부터 브랜딩, 공간설계까지 처음부터 확실하게 준비합니다", foot: "초보 창업자 맞춤 안내", img: "/categories/newbiz.png" },
 ] as const;
 
 export type Listing = {

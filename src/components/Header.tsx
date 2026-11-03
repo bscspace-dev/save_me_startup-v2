@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Logo } from "./Icons";
+import { HomeLogo } from "./HomeLogo";
 
 const nav = [
   { label: "프랜차이즈창업", href: "/listings?type=프랜차이즈" },
@@ -11,20 +11,38 @@ const nav = [
 // 매물 유형 → 상단 메뉴 이름
 export const navLabel = (kind?: string) => (kind === "프랜차이즈" ? "프랜차이즈창업" : kind);
 
+// 로고: 홈으로 (이미 홈이면 맨 위로)
+const Wordmark = HomeLogo;
+
+const cta = "rounded bg-brand px-4 py-2 text-[13px] font-bold text-white transition hover:bg-brand-dark";
+
 export function Header({ active }: { active?: string }) {
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-6">
-        <Logo />
-        <nav className="hidden gap-9 text-[14px] font-medium text-neutral-600 md:flex">
-          {nav.map((n) => (
-            <a key={n.label} href={n.href} className={n.label === active ? "font-bold text-brand" : "transition hover:text-brand"}>{n.label}</a>
-          ))}
-        </nav>
-        <div className="flex items-center gap-2 text-[13px] font-bold">
-          <Link href="/#consult" className="rounded bg-brand px-4 py-2 text-white transition hover:bg-brand-dark">무료 창업상담</Link>
+    <>
+      {/* 데스크톱 윗줄: 양옆 문구 + 가운데 로고 (스크롤하면 올라가 사라진다) */}
+      <div className="hidden border-b border-black/5 bg-white font-header md:block">
+        <div className="mx-auto grid h-[72px] max-w-[1280px] grid-cols-[1fr_auto_1fr] items-center px-6">
+          <span className="text-[11px] font-medium tracking-[0.14em] text-neutral-700">ALL-IN-ONE STARTUP PLATFORM</span>
+          <Wordmark className="h-10 w-auto" />
+          <span className="justify-self-end text-[12.5px] font-medium text-neutral-700">상가창업 전문 컨설팅 플랫폼</span>
         </div>
       </div>
-    </header>
+
+      <header className="sticky top-0 z-50 border-b border-black/5 bg-white/95 font-header backdrop-blur">
+        {/* 모바일: 로고 + 상담 버튼 */}
+        <div className="mx-auto flex h-[60px] max-w-[1280px] items-center justify-between px-6 md:hidden">
+          <Wordmark className="h-8 w-auto" />
+          <Link href="/#consult" className={cta}>무료 창업상담</Link>
+        </div>
+        {/* 데스크톱: 가운데 메뉴 (스크롤해도 위에 붙어 있다) */}
+        <div className="relative mx-auto hidden h-[52px] max-w-[1280px] items-center justify-center px-6 md:flex">
+          <nav className="flex gap-12 text-[15px] font-medium text-neutral-700">
+            {nav.map((n) => (
+              <a key={n.label} href={n.href} className={n.label === active ? "font-bold text-brand" : "transition hover:text-brand"}>{n.label}</a>
+            ))}
+          </nav>
+        </div>
+      </header>
+    </>
   );
 }

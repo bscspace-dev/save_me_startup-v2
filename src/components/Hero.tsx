@@ -1,21 +1,64 @@
 "use client";
-import { RichText } from "./RichText";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { fetchBanners } from "@/lib/remote";
+import { ConsultPopup } from "./ConsultPopup";
+
+const BANNER_CACHE = "hero-banners-v1";
+const NEON = "#d3ff31"; // 배너의 포인트(네온) 색
 
 const paths = [
-  { no: "01", title: "매물 탐색", desc: "대구 상가·프랜차이즈 매물", href: "/listings" },
-  { no: "02", title: "전수창업", desc: "검증된 기술을 배워 시작", href: "/transfer" },
-  { no: "03", title: "신규창업", desc: "브랜딩부터 오픈까지", href: "/identity" },
-];
+  { icon: "store", title: "프랜차이즈 창업", href: "/listings?type=프랜차이즈" },
+  { icon: "pin", title: "상가매물 찾기", href: "/listings?type=상가매물" },
+  { icon: "swap", title: "전수창업", href: "/transfer" },
+  { icon: "bulb", title: "신규창업", href: "/identity" },
+] as const;
+
+// 알약 버튼 안의 선 아이콘 (글자색을 따라간다)
+function PathIcon({ k }: { k: (typeof paths)[number]["icon"] }) {
+  const d = {
+    store: <><path d="M3 9l1.5-5h15L21 9" /><path d="M3 9c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3" /><path d="M5 12v8h14v-8" /><path d="M10 20v-5h4v5" /></>,
+    pin: <><path d="M12 21s-7-6.2-7-11.2A7 7 0 0 1 19 9.8C19 14.8 12 21 12 21z" /><circle cx="12" cy="10" r="2.5" /></>,
+    swap: <><path d="M4 8h15M15 4l4 4-4 4" /><path d="M20 16H5M9 12l-4 4 4 4" /></>,
+    bulb: <><path d="M9 18h6M10 21h4" /><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" /></>,
+  }[k];
+  return <svg viewBox="0 0 24 24" aria-hidden className="size-[18px] shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{d}</svg>;
+}
+
+// 오른쪽 카드의 가게 3D 이미지 + 핀
+function ShopIcon() {
+  return (
+    <div className="pointer-events-none absolute right-5 top-9 size-[104px]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/categories/franchise.png" alt="" aria-hidden className="size-full object-contain" />
+      <svg viewBox="0 0 24 30" aria-hidden className="absolute -bottom-1 -right-1 h-[38px] w-[30px] drop-shadow-md">
+        <path d="M12 29S2 19.5 2 11.5a10 10 0 0 1 20 0C22 19.5 12 29 12 29z" fill={NEON} stroke="#9bc400" strokeWidth="1.2" />
+        <circle cx="12" cy="11.5" r="4" fill="#fff" />
+      </svg>
+    </div>
+  );
+}
 
 export function Hero() {
   // 관리자(메인 페이지 관리)에서 올린 배너 이미지. 없으면 기본 그라데이션 배경
   const [banners, setBanners] = useState<string[]>([]);
   const [cur, setCur] = useState(0);
-  useEffect(() => { fetchBanners().then(setBanners); }, []);
+  const [consult, setConsult] = useState(false);
+  const [ready, setReady] = useState(false); // 배너를 받아왔는지(받아오는 동안은 기본 배경을 보여주지 않는다)
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    // 지난번에 받아 둔 배너가 있으면 바로 보여주고, 그 사이 최신 배너를 받아와 바꾼다
+    try {
+      const c = JSON.parse(localStorage.getItem(BANNER_CACHE) ?? "[]");
+      if (Array.isArray(c) && c.length) { setBanners(c); setReady(true); }
+    } catch {}
+    fetchBanners().then((b) => {
+      setBanners(b); setReady(true);
+      try { localStorage.setItem(BANNER_CACHE, JSON.stringify(b)); } catch {} // 용량이 모자라면 캐시만 건너뛴다
+    });
+  }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (banners.length < 2) return;
     const t = setInterval(() => setCur((c) => (c + 1) % banners.length), 5000);
@@ -23,34 +66,56 @@ export function Hero() {
   }, [banners.length]);
 
   return (
-    <section className="relative overflow-hidden bg-[#1c1512]">
+    <section className={`relative overflow-hidden ${ready && !banners.length ? "bg-[#1c1512]" : "bg-[#2d2d2d]"}`}>
       {banners.map((src, i) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img key={i} src={src} alt="" aria-hidden className={`absolute inset-0 size-full object-cover transition-opacity duration-1000 ${i === cur % banners.length ? "opacity-100" : "opacity-0"}`} />
       ))}
-      <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)] ${banners.length ? "opacity-25" : ""}`} />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-black/50" />
-      <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-6 py-16 lg:grid-cols-[1fr_380px] lg:py-24">
+      {/* 올린 배너 이미지가 있으면 원본 그대로 보이게 덮개를 거의 없앤다 (글씨가 읽힐 정도만 살짝). 없으면 기본 그라데이션 배경 */}
+      {ready && !banners.length && <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)]" />}
+      <div className={`absolute inset-0 bg-gradient-to-r ${!ready || banners.length ? "from-black/20 via-transparent to-black/10" : "from-black/65 via-black/25 to-black/50"}`} />
+
+      <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 px-6 py-14 lg:grid-cols-[1fr_400px] lg:py-20">
         <div className="text-white">
-          <motion.span initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="inline-block rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-[11.5px] font-bold tracking-wide backdrop-blur">대구 상가창업 컨설팅 플랫폼</motion.span>
-          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.7 }} className="mt-6 text-[42px] font-black leading-[1.2] tracking-tight md:text-[60px]">
-            내 창업,<br /><span className="text-[#ff7a45]">제대로</span> 구해드립니다
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="font-gmarket text-[38px] font-medium leading-[1.25] tracking-tight md:text-[58px]">
+            {/* G마켓 산스 굵기: 창업 M · 을 L · 찾는 가장 M · SMART B · 한 L · 방법 M (M=500, L=300, B=700) */}
+            창업<span className="font-light">을</span> 찾는<br />
+            가장 <span className="font-bold" style={{ color: NEON }}>SMART</span><span className="font-light">한</span> 방법
           </motion.h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-6 max-w-[460px] text-[15px] leading-relaxed text-white/75">
-            매물 탐색부터 전수창업·신규창업까지<br />구해줘창업이 처음부터 끝까지 함께합니다
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="mt-6 max-w-[620px] font-gmarket text-[17px] font-medium leading-relaxed text-white/80 md:text-[20px]">
+            매물 탐색부터 전수창업·신규창업까지,<br />
+            당신에게 맞는 창업의 모든 순간을 <span style={{ color: NEON }}>구해줘창업</span>이 함께합니다.
           </motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-12 grid gap-3 sm:grid-cols-3">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mt-9 flex flex-wrap gap-2.5">
             {paths.map((p) => (
-              <Link key={p.no} href={p.href} className="group rounded-xl border border-white/15 bg-white/[0.07] p-4 backdrop-blur transition hover:-translate-y-0.5 hover:border-brand hover:bg-white/15">
-                <p className="text-[10.5px] font-bold text-[#ff7a45]">{p.no}</p>
-                <p className="mt-1.5 text-[15px] font-black">{p.title}</p>
-                <p className="mt-1 text-[11.5px] text-white/60"><RichText text={p.desc} /></p>
+              <Link key={p.title} href={p.href} className="group inline-flex min-w-[150px] items-center justify-center gap-2 rounded-full border border-white/70 bg-transparent px-7 py-2 font-gmarket text-[16px] font-medium text-white transition hover:-translate-y-0.5 hover:border-[#d3ff31] hover:bg-white/10 hover:text-[#d3ff31]">
+                <PathIcon k={p.icon} />
+                {p.title}
               </Link>
             ))}
           </motion.div>
         </div>
+
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.6 }} className="relative rounded-3xl bg-white p-6 shadow-2xl lg:p-7">
+          <span className="inline-block rounded-full px-4 py-0.5 font-gmarket text-[13.5px] font-bold text-ink" style={{ background: NEON }}>무료 1:1 창업 상담</span>
+          <ShopIcon />
+          <h2 className="mt-2 font-gmarket text-[29px] font-bold leading-[1.35] tracking-tight text-ink md:text-[31px]">
+            창업이 고민될 땐,<br />전문가와 먼저<br />상담해보세요.
+          </h2>
+          <p className="mt-3 font-sans text-[16px] leading-relaxed text-neutral-700">
+            매물·업종·예산·전수창업·신규창업까지<br />맞춤형으로 안내드립니다.
+          </p>
+          <button type="button" onClick={() => setConsult(true)} className="mt-6 flex w-full cursor-pointer items-center justify-between rounded-xl px-5 py-4 font-gmarket text-[16px] font-bold text-ink shadow-[0_10px_24px_-8px_rgba(160,200,0,.65)] transition hover:brightness-95" style={{ background: NEON }}>
+            <span className="flex items-center gap-2.5">
+              <svg viewBox="0 0 24 24" aria-hidden className="size-[24px]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 3v-3H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" /><path d="M8 11h.01M12 11h.01M16 11h.01" strokeWidth="2.6" /></svg>
+              상담 신청하기
+            </span>
+            <span aria-hidden className="text-[28px] font-bold leading-none">→</span>
+          </button>
+        </motion.div>
       </div>
+      <ConsultPopup open={consult} onClose={() => setConsult(false)} />
     </section>
   );
 }

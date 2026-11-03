@@ -9,12 +9,7 @@ import { useToday } from "@/lib/today";
 import { ListingCard } from "./ListingCard";
 import { Reveal } from "./Reveal";
 
-const toneCls = {
-  brand: { badge: "bg-brand", link: "bg-orange-50 text-brand", icon: "text-brand" },
-  brown: { badge: "bg-[#7a4a2b]", link: "bg-[#f4ebe4] text-[#7a4a2b]", icon: "text-[#7a4a2b]" },
-  green: { badge: "bg-emerald-700", link: "bg-emerald-50 text-emerald-700", icon: "text-emerald-700" },
-  blue: { badge: "bg-blue-700", link: "bg-blue-50 text-blue-700", icon: "text-blue-700" },
-} as const;
+const NEON = "#d3ff31"; // 업종별 카드의 포인트(네온) 색
 
 function Placeholder({ dark = false }: { dark?: boolean }) {
   return <div className={`size-full ${dark ? "bg-neutral-800" : "bg-neutral-100"}`} />;
@@ -35,30 +30,38 @@ function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: {
 
 export function Categories() {
   return (
-    <section className="mx-auto max-w-[1280px] px-6 py-16">
-      <Reveal><SectionHead eyebrow="창업 유형별 탐색" title="업종별 창업 매물" /></Reveal>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {categories.map((c, i) => {
-          const t = toneCls[c.tone];
-          return (
-            <Reveal key={c.title} delay={i * 0.08}>
-              <motion.a href={`/listings?type=${c.tag}`} whileHover={{ y: -6 }} className="block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg">
-                <div className="relative h-[178px] overflow-hidden">
-                  <Placeholder />
-                  <span className={`absolute left-2.5 top-2.5 rounded px-2 py-0.5 text-[10px] font-bold text-white ${t.badge}`}>{c.tag}</span>
+    <section className="bg-[#faf9f7]">
+      <div className="mx-auto max-w-[1280px] px-6 py-16">
+        <Reveal>
+          <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-neutral-700">
+            <span className="size-2 rounded-full" style={{ background: NEON }} />STARTUP CATEGORY
+          </p>
+          <h2 className="mt-3 text-[30px] font-black tracking-tight md:text-[36px]">
+            어떤 <span className="rounded px-1" style={{ background: NEON }}>창업</span>을 찾고 계신가요?
+          </h2>
+          <p className="mt-3 text-[14px] text-neutral-600">관심 있는 분야를 선택하고, 내게 맞는 창업 정보를 확인해보세요.</p>
+          <div className="mt-5 h-1.5 w-16 rounded-full" style={{ background: NEON }} />
+        </Reveal>
+        {/* 큰 화면은 4칸, 작은 화면은 옆으로 밀어서 본다 */}
+        <div className="-mx-6 mt-9 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0 lg:pb-0">
+          {categories.map((c, i) => (
+            <Reveal key={c.title} delay={i * 0.08} className="w-[260px] shrink-0 snap-start sm:w-[280px] lg:w-auto">
+              <motion.a href={`/listings?type=${c.tag}`} whileHover={{ y: -6 }} className="flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-xl">
+                <span className="self-start rounded bg-ink px-2 py-1 text-[10px] font-black tracking-wider" style={{ color: NEON }}>{c.en}</span>
+                <div className="grid h-[132px] place-items-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={c.img} alt="" aria-hidden className="size-[118px] object-contain" />
                 </div>
-                <div className="p-4">
-                  <h3 className="text-[16px] font-black">{c.title}</h3>
-                  <p className="mt-2.5 min-h-[58px] text-[11.5px] leading-relaxed text-neutral-500">{c.desc}</p>
-                  <div className="mt-3 flex items-center justify-between border-t border-neutral-100 pt-3 text-[10.5px] text-neutral-400">
-                    <span>{c.foot}</span>
-                    <span className={`rounded-full px-2.5 py-1 font-bold ${t.link}`}>보러가기</span>
-                  </div>
+                <h3 className="text-center text-[20px] font-black tracking-tight">{c.title}</h3>
+                <p className="mt-2.5 min-h-[58px] text-center text-[12.5px] leading-relaxed text-neutral-500">{c.desc}</p>
+                <div className="mt-auto flex items-center justify-between gap-2 border-t border-neutral-100 pt-3.5 text-[10.5px] text-neutral-400">
+                  <span className="flex min-w-0 items-center gap-1.5"><span className="size-1.5 shrink-0 rounded-full" style={{ background: NEON }} /><span className="truncate">{c.foot}</span></span>
+                  <span className="shrink-0 rounded-full px-3 py-1.5 text-[11px] font-black text-ink" style={{ background: NEON }}>둘러보기 →</span>
                 </div>
               </motion.a>
             </Reveal>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </section>
   );
