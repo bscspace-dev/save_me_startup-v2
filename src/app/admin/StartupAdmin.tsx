@@ -5,7 +5,7 @@ import { businessCategories, regions, won, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import { consultItems } from "@/lib/startup";
 import { supabase } from "@/lib/supabase";
-import { usePeriod } from "./period";
+import { StateBadges, listingSorts, listingStatuses, listingText, usePeriod } from "./period";
 import { dataUrlToBlob, shrink } from "./imageTools";
 import { Photos } from "./ShopAdmin";
 
@@ -31,7 +31,7 @@ function Label({ text, req, children }: { text: string; req?: boolean; children:
 // 신규창업(창업컨설팅 상가) 등록: 상가 사진·소개와 구해줘창업이 진행한 컨설팅 항목을 관리한다
 export function StartupAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: boolean }) {
   const [items, setItems] = useState<Listing[] | null>(null);
-  const period = usePeriod(items, (l) => l.date);
+  const period = usePeriod(items, (l) => l.date, { searchOf: listingText, statuses: listingStatuses(), sorts: listingSorts({ label: "컨설팅 비용", of: (l) => l.cost }) });
   const [editing, setEditing] = useState<number | "new" | null>(null);
   const [tick, setTick] = useState(0);
   const [note, setNote] = useState("");
@@ -72,17 +72,17 @@ export function StartupAdmin({ cred, canDelete = true }: { cred: Cred; canDelete
       <ul className="mt-3 space-y-3">
         {items === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
         {items && items.length === 0 && <li className="py-16 text-center text-[13px] text-neutral-400">등록된 신규창업이 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
-        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">선택한 기간에 등록된 자료가 없습니다.</li>}
+        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
         {period.view.map((l) => (
-          <li key={l.id} className="flex flex-wrap items-center gap-4 rounded-xl border border-neutral-200 bg-white p-3">
-            <div className="h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+          <li key={l.id} className={`flex flex-wrap items-center gap-4 rounded-xl border bg-white p-3 ${l.hidden ? "border-dashed border-neutral-300 bg-neutral-50" : "border-neutral-200"}`}>
+            <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
               {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[10px] font-bold text-white">숨김</span>}
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] text-neutral-400">[{l.id}] {l.date} · 사진 {l.photos}장 · 컨설팅 {l.startup!.done.length}/{consultItems.length}항목</p>
-              <p className="truncate text-[14px] font-black">{l.title}</p>
+              <p className="truncate text-[14px] font-black"><StateBadges l={l} />{l.title}</p>
               <p className="text-[12px] text-neutral-500">{l.startup!.address ?? `대구 ${l.region}`} · {l.category} · 컨설팅 비용 약 {won(l.cost)}원</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[11.5px]">

@@ -6,13 +6,11 @@ type Cred = { u: string; p: string };
 type Account = { username: string; name: string | null; super: boolean; perms: string[] };
 
 // 메뉴 권한 키 (admin-roles.sql 과 같아야 한다)
-export const PERMS: [string, string][] = [
-  ["consult", "상담 관리"],
-  ["reg_franchise", "프랜차이즈 등록"],
-  ["reg_shop", "상가매물 등록"],
-  ["reg_transfer", "전수창업 등록"],
-  ["reg_startup", "신규창업 등록"],
-  ["main", "메인 페이지 관리"],
+// 화면에는 묶음별로 보여준다: 상담 관리(구분별) · 등록 관리 · 메인 페이지
+export const PERM_GROUPS: { title: string; short: string; items: [string, string][] }[] = [
+  { title: "상담 관리", short: "상담", items: [["consult_franchise", "프랜차이즈"], ["consult_listing", "상가매물"], ["consult_transfer", "전수창업"], ["consult_newbiz", "신규창업"], ["consult_register", "등록 문의"], ["consult_other", "기타"]] },
+  { title: "등록 관리", short: "등록", items: [["reg_franchise", "프랜차이즈"], ["reg_shop", "상가매물"], ["reg_transfer", "전수창업"], ["reg_startup", "신규창업"]] },
+  { title: "메인 페이지", short: "", items: [["main", "메인 페이지 관리"]] },
 ];
 
 const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-brand";
@@ -39,13 +37,28 @@ function PermChecks({ sup, perms, onSup, onPerms }: { sup: boolean; perms: strin
           최고 관리자 <span className="font-normal text-neutral-400">(모든 메뉴 + 삭제 + 계정 관리)</span>
         </label>
       </div>
-      <div className={`flex flex-wrap gap-x-5 gap-y-2 ${sup ? "opacity-40" : ""}`}>
-        {PERMS.map(([k, t]) => (
-          <label key={k} className="flex items-center gap-2">
-            <input type="checkbox" disabled={sup} checked={sup || perms.includes(k)} onChange={(e) => onPerms(e.target.checked ? [...perms, k] : perms.filter((x) => x !== k))} className="size-4 accent-[#ff6a1a]" />
-            {t}
-          </label>
-        ))}
+      <div className={`space-y-2.5 ${sup ? "opacity-40" : ""}`}>
+        {PERM_GROUPS.map((g) => {
+          const keys = g.items.map(([k]) => k);
+          const all = keys.every((k) => sup || perms.includes(k));
+          const single = g.items.length === 1;
+          return (
+            <div key={g.title} className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-lg border border-neutral-200 bg-white px-3 py-2.5">
+              {!single && (
+                <label className="flex w-full items-center gap-2 font-bold sm:w-[110px]">
+                  <input type="checkbox" disabled={sup} checked={all} onChange={(e) => onPerms(e.target.checked ? [...new Set([...perms, ...keys])] : perms.filter((x) => !keys.includes(x)))} className="size-4 accent-[#ff6a1a]" />
+                  {g.title}
+                </label>
+              )}
+              {g.items.map(([k, t]) => (
+                <label key={k} className={single ? "flex items-center gap-2 font-bold" : "flex items-center gap-2"}>
+                  <input type="checkbox" disabled={sup} checked={sup || perms.includes(k)} onChange={(e) => onPerms(e.target.checked ? [...perms, k] : perms.filter((x) => x !== k))} className="size-4 accent-[#ff6a1a]" />
+                  {t}
+                </label>
+              ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -57,7 +70,8 @@ function AccountModal({ a, cred, me, items, onClose, onDone }: { a: Account | nu
   const [nm, setNm] = useState(a?.name ?? "");
   const [pw, setPw] = useState("");
   const [sup, setSup] = useState(a?.super ?? false);
-  const [perms, setPerms] = useState(a?.perms ?? []);
+  // 예전 통짜 상담 권한(consult)은 구분별 권한 전부로 펼쳐서 보여준다
+  const [perms, setPerms] = useState(() => { const p = a?.perms ?? []; return p.includes("consult") ? [...new Set([...p.filter((x) => x !== "consult"), ...PERM_GROUPS[0].items.map(([k]) => k)])] : p; });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [asking, setAsking] = useState(false); // 탈퇴 확인 팝업
@@ -145,7 +159,18 @@ function AccountModal({ a, cred, me, items, onClose, onDone }: { a: Account | nu
   );
 }
 
-const permText = (a: Account) => a.super ? "전체" : a.perms.length ? PERMS.filter(([k]) => a.perms.includes(k)).map(([, t]) => t.replace(" 등록", "").replace(" 관리", "")).join(" · ") : "없음";
+// 계정 목록에 보이는 권한 요약: 묶음 전체면 "상담 전체", 일부면 "상담(프랜차이즈·상가매물)"
+const permText = (a: Account) => {
+  if (a.super) return "전체";
+  const has = a.perms.includes("consult") ? (k: string) => k.startsWith("consult_") || a.perms.includes(k) : (k: string) => a.perms.includes(k); // 예전 통짜 상담 권한도 인식
+  const out = PERM_GROUPS.map((g) => {
+    const on = g.items.filter(([k]) => has(k));
+    if (!on.length) return "";
+    if (!g.short) return on[0][1];
+    return on.length === g.items.length ? `${g.short} 전체` : `${g.short}(${on.map(([, t]) => t).join("·")})`;
+  }).filter(Boolean);
+  return out.length ? out.join(" · ") : "없음";
+};
 
 // 최고 관리자 전용: 계정 목록. 행을 누르면 계정 설정 팝업(메뉴 권한, 비밀번호 재설정, 탈퇴)이 열린다
 export function AccountAdmin({ cred }: { cred: Cred }) {

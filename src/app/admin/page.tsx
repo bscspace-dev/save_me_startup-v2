@@ -25,7 +25,9 @@ const typeText = (t: string | null) => {
   if (m) return m[1] === "가맹" ? `등록번호 ${m[2]}` : `매물번호 ${m[2]}`; // 매물상담[20001] → 매물번호 20001, 가맹상담[20002] → 등록번호 20002
   return t?.replace(/^매물등록문의\((.*)\)$/, "$1") ?? "";
 };
-const kinds: [Kind, string][] = [["all", "전체"], ["franchise", "프랜차이즈"], ["listing", "상가매물"], ["transfer", "전수창업"], ["newbiz", "신규창업"], ["register", "등록 문의"]];
+const kinds: [Kind, string][] = [["all", "전체"], ["franchise", "프랜차이즈"], ["listing", "상가매물"], ["transfer", "전수창업"], ["newbiz", "신규창업"], ["register", "등록 문의"], ["startup", "기타"]];
+// 상담 구분별 권한 키 (admin-roles.sql 의 consultation_perm 과 같아야 한다)
+const kindPerm: Record<Exclude<Kind, "all">, string> = { franchise: "consult_franchise", listing: "consult_listing", transfer: "consult_transfer", newbiz: "consult_newbiz", register: "consult_register", startup: "consult_other" };
 const kindName: Record<Kind, string> = { ...(Object.fromEntries(kinds) as Record<Kind, string>), startup: "기타" }; // 유형이 비었거나 모르는 값
 const kindTone: Record<Exclude<Kind, "all">, string> = { listing: "bg-emerald-50 text-emerald-700", franchise: "bg-orange-50 text-brand", startup: "bg-blue-50 text-blue-700", newbiz: "bg-sky-50 text-sky-700", transfer: "bg-amber-50 text-amber-800", register: "bg-purple-50 text-purple-700" };
 
@@ -122,6 +124,10 @@ function Dashboard({ cred }: { cred: Cred }) {
   // 내 메뉴 권한: undefined=불러오는 중, "legacy"=권한 SQL(admin-roles.sql) 실행 전이라 전부 허용
   const [me, setMe] = useState<{ super: boolean; perms: string[]; name?: string | null } | "legacy" | undefined>(undefined);
   const can = (k: string) => me === "legacy" || (!!me && (me.super || me.perms.includes(k)));
+  // 상담은 구분별로 권한을 준다. 예전 통짜 권한(consult)이 남은 계정은 전부 허용 (consult-perms.sql 실행 전에도 동작)
+  const canKind = (k: Kind) => k === "all" || can("consult") || can(kindPerm[k]);
+  const myKinds = kinds.filter(([k]) => canKind(k));
+  const canConsult = myKinds.length > 1; // "전체" 말고 볼 수 있는 구분이 하나라도 있다
   const canDelete = me === "legacy" || (!!me && me.super); // 게시물(매물) 삭제는 최고 관리자만
   const [openG, setOpenG] = useState({ consult: true, register: false }); // 메뉴 펼침
   const [reg, setReg] = useState<"franchise" | "shop" | "transfer" | "startup">("franchise"); // 등록 하위 구분
@@ -157,10 +163,10 @@ function Dashboard({ cred }: { cred: Cred }) {
   // 권한이 없는 메뉴에 있으면 허용된 첫 메뉴로 옮긴다
   useEffect(() => {
     if (me === undefined) return;
-    const ok = tab === "consult" ? can("consult") : tab === "accounts" ? me !== "legacy" && me.super : tab === "main" ? can("main") : can("reg_" + reg);
+    const ok = tab === "consult" ? canConsult : tab === "accounts" ? me !== "legacy" && me.super : tab === "main" ? can("main") : can("reg_" + reg);
     if (ok) return;
     /* eslint-disable react-hooks/set-state-in-effect */
-    if (can("consult")) setTab("consult");
+    if (canConsult) setTab("consult");
     else { const r = (["franchise", "shop", "transfer", "startup"] as const).find((k) => can("reg_" + k)); if (r) { setTab("register"); setReg(r); setOpenG((o) => ({ ...o, register: true })); } else if (can("main")) setTab("main"); }
     /* eslint-enable react-hooks/set-state-in-effect */
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,9 +207,12 @@ function Dashboard({ cred }: { cred: Cred }) {
       (!k || r.name.includes(k) || r.phone.includes(k) || (r.message ?? "").includes(k) || (r.type ?? "").includes(k)),
     );
   }, [scoped, filter, q]);
-  const period = usePeriod(list, (r) => r.created_at); // 접수 기간(년·월)과 쪽 나누기
+  const period = usePeriod(list, (r) => r.created_at, { resetKey: `${kind}|${filter}|${q}` }); // 접수 기간(년·월)과 쪽 나누기
 
-  const todo = scoped.filter((r) => !r.done).length;
+  // 위 카드는 선택한 기간 기준, 기간 밖에 남은 미처리 건은 따로 알린다
+  const inRange = scoped.filter((r) => period.inPeriod(r));
+  const todo = inRange.filter((r) => !r.done).length;
+  const hiddenTodo = period.active ? scoped.filter((r) => !r.done && !period.inPeriod(r)).length : 0;
 
   function csv() {
     const esc = (s: string) => `"${s.replace(/"/g, '""')}"`;
@@ -246,7 +255,7 @@ function Dashboard({ cred }: { cred: Cred }) {
             <button onClick={() => setTab("main")} className={`flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-4 text-[17px] font-black transition ${tab === "main" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>메인 페이지 관리</button>
           )}
           {([
-            ...(can("consult") ? [["consult", "상담 관리", kinds.map(([k, t]) => {
+            ...(canConsult ? [["consult", "상담 관리", myKinds.map(([k, t]) => {
               const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다
               return { id: "c-" + k, label: t, n, on: tab === "consult" && kind === k, go: () => { setTab("consult"); setKind(k); } };
             })]] as const : []),
@@ -284,7 +293,7 @@ function Dashboard({ cred }: { cred: Cred }) {
         </>) : (<>
 
         <div className="grid grid-cols-3 gap-3">
-          {[["전체", scoped.length], ["대기", todo], ["처리 완료", scoped.length - todo]].map(([t, n]) => (
+          {[["전체", inRange.length], ["대기", todo], ["처리 완료", inRange.length - todo]].map(([t, n]) => (
             <div key={t} className="rounded-xl border border-neutral-200 bg-white p-4">
               <p className="text-[11px] text-neutral-400">{t}</p>
               <p className="mt-1 text-[24px] font-black">{n}</p>
@@ -293,6 +302,12 @@ function Dashboard({ cred }: { cred: Cred }) {
         </div>
 
         <div className="mt-5">{period.bar}</div>
+        {hiddenTodo > 0 && (
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-[13px]">
+            <p className="font-bold text-brand">선택한 기간 밖에 처리 대기 {hiddenTodo}건이 남아 있습니다.</p>
+            <button type="button" onClick={() => { period.reset(); setFilter("todo"); }} className="cursor-pointer rounded bg-brand px-3 py-1.5 text-[12px] font-bold text-white hover:opacity-90">대기 건 모두 보기</button>
+          </div>
+        )}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <div className="flex rounded-lg bg-white p-1 text-[12px] ring-1 ring-neutral-200">
             {tabs.map(([k, t]) => (

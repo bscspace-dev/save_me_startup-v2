@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { businessCategories, costText, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import { supabase } from "@/lib/supabase";
-import { usePeriod } from "./period";
+import { StateBadges, listingSorts, listingStatuses, listingText, usePeriod } from "./period";
 import { shrink, slicePromo } from "./imageTools";
 
 type Cred = { u: string; p: string };
@@ -27,7 +27,7 @@ function Label({ text, req, children }: { text: string; req?: boolean; children:
 
 export function FranchiseAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: boolean }) {
   const [items, setItems] = useState<Listing[] | null>(null);
-  const period = usePeriod(items, (l) => l.date);
+  const period = usePeriod(items, (l) => l.date, { searchOf: listingText, statuses: listingStatuses("모집마감"), sorts: listingSorts({ label: "창업비", of: (l) => l.price }) });
   const [editing, setEditing] = useState<number | "new" | null>(null);
   const [tick, setTick] = useState(0);
   const [note, setNote] = useState("");
@@ -74,9 +74,9 @@ export function FranchiseAdmin({ cred, canDelete = true }: { cred: Cred; canDele
       <ul className="mt-3 space-y-3">
         {items === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
         {items && items.length === 0 && <li className="py-16 text-center text-[13px] text-neutral-400">등록된 프랜차이즈 홍보가 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
-        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">선택한 기간에 등록된 자료가 없습니다.</li>}
+        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
         {period.view.map((l) => (
-          <li key={l.id} className="flex flex-wrap items-center gap-4 rounded-xl border border-neutral-200 bg-white p-3">
+          <li key={l.id} className={`flex flex-wrap items-center gap-4 rounded-xl border bg-white p-3 ${l.hidden ? "border-dashed border-neutral-300 bg-neutral-50" : "border-neutral-200"}`}>
             <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
@@ -85,7 +85,7 @@ export function FranchiseAdmin({ cred, canDelete = true }: { cred: Cred; canDele
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] text-neutral-400">[{l.id}] {l.promo!.brand} · {l.date} · 이미지 {l.photos}장{l.promo!.sponsored && " · 광고"}</p>
-              <p className="truncate text-[14px] font-black">{l.title}</p>
+              <p className="truncate text-[14px] font-black"><StateBadges l={l} soldLabel="모집마감" />{l.title}</p>
               <p className="text-[12px] text-neutral-500">{l.category} · {l.op} · 예상 창업비 {costText(l.price)}</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[11.5px]">

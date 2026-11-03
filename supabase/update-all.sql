@@ -79,7 +79,7 @@ grant execute on function admin_login(text, text), admin_logout(text, text),
 -- 관리자 계정별 메뉴 권한: admin.sql, shops.sql(, hide-listings.sql, admin-single-session.sql) 실행 후 SQL Editor에서 한 번 실행
 -- · 최고 관리자(is_super)는 모든 메뉴를 쓰고 "계정 관리"에서 아이디/비밀번호를 만들고 메뉴 권한을 체크로 줍니다.
 -- · 그 외 계정은 체크된 메뉴만 보이고, 서버(DB 함수)에서도 같은 권한을 다시 확인합니다.
--- 권한 키: consult(상담 관리), reg_franchise, reg_shop, reg_transfer, reg_startup, main(메인 페이지 관리)
+-- 권한 키: consult_franchise·consult_listing·consult_transfer·consult_newbiz·consult_register·consult_other(구분별 상담 관리), reg_franchise, reg_shop, reg_transfer, reg_startup, main(메인 페이지 관리)
 
 alter table admins add column if not exists is_super boolean not null default false;
 alter table admins add column if not exists perms text[] not null default '{}';
@@ -120,29 +120,41 @@ begin
   return jsonb_build_object('super', a.is_super, 'perms', to_jsonb(a.perms), 'name', a.display_name);
 end $$;
 
--- 상담 관리 (consult 권한)
+-- 상담 관리 (구분별 consult_* 권한)
+-- 상담 구분 → 필요한 권한. 관리자 화면(page.tsx 의 kindOf)과 같은 기준이다. 어디에도 안 맞으면 기타.
+create or replace function consultation_perm(t text) returns text
+language sql immutable set search_path = public as $$
+  select 'consult_' || case
+    when t like '매물상담[%' or t = '상가매물' then 'listing'
+    when t like '가맹상담[%' or t = '프랜차이즈' then 'franchise'
+    when t like '매물등록문의%' then 'register'
+    when t = '신규창업' then 'newbiz'
+    when t = '전수창업' then 'transfer'
+    else 'other' end;
+$$;
+revoke execute on function consultation_perm(text) from public, anon, authenticated;
+
 create or replace function admin_list(u text, p text) returns jsonb
 language plpgsql security definer set search_path = public, extensions as $$
 begin
   if not admin_check(u, p) then return null; end if;
-  if not admin_can(u, 'consult') then return '[]'::jsonb; end if;
-  return coalesce((select jsonb_agg(to_jsonb(c) order by c.created_at desc) from consultations c), '[]'::jsonb);
+  return coalesce((select jsonb_agg(to_jsonb(c) order by c.created_at desc) from consultations c where admin_can(u, consultation_perm(c.type))), '[]'::jsonb);
 end $$;
 
 create or replace function admin_set_done(u text, p text, row_id uuid, v boolean) returns boolean
 language plpgsql security definer set search_path = public, extensions as $$
 begin
-  if not admin_check(u, p) or not admin_can(u, 'consult') then return false; end if;
-  update consultations set done = v where id = row_id;
-  return true;
+  if not admin_check(u, p) then return false; end if;
+  update consultations set done = v where id = row_id and admin_can(u, consultation_perm(type));
+  return found;
 end $$;
 
 create or replace function admin_delete(u text, p text, row_id uuid) returns boolean
 language plpgsql security definer set search_path = public, extensions as $$
 begin
-  if not admin_check(u, p) or not admin_can(u, 'consult') then return false; end if;
-  delete from consultations where id = row_id;
-  return true;
+  if not admin_check(u, p) then return false; end if;
+  delete from consultations where id = row_id and admin_can(u, consultation_perm(type));
+  return found;
 end $$;
 
 -- 매물 등록·수정·삭제 (유형별 reg_* 권한)
@@ -250,7 +262,7 @@ begin
   if length(nm2) > 20 then return 'noname'; end if;
   if target = u then return 'self'; end if; -- 내 계정은 여기서 바꿀 수 없다 (비밀번호는 상단 "비밀번호 변경")
   clean := coalesce((select array_agg(x) from unnest(coalesce(pms, '{}')) x
-                     where x in ('consult', 'reg_franchise', 'reg_shop', 'reg_transfer', 'reg_startup', 'main')), '{}');
+                     where x in ('consult_franchise', 'consult_listing', 'consult_transfer', 'consult_newbiz', 'consult_register', 'consult_other', 'reg_franchise', 'reg_shop', 'reg_transfer', 'reg_startup', 'main')), '{}');
   select exists (select 1 from admins where username = target) into already;
 
   if already then
@@ -294,8 +306,13 @@ update admins set is_super = (username = 'minofe0426');
 
 -- kkbbss1841 은 모든 메뉴를 쓰되 게시물 삭제와 계정 관리는 못 하게 (이미 권한이 있으면 그대로 둠)
 update admins
-set perms = array['consult', 'reg_franchise', 'reg_shop', 'reg_transfer', 'reg_startup', 'main']
+set perms = array['consult_franchise', 'consult_listing', 'consult_transfer', 'consult_newbiz', 'consult_register', 'consult_other', 'reg_franchise', 'reg_shop', 'reg_transfer', 'reg_startup', 'main']
 where username = 'kkbbss1841' and not is_super and cardinality(perms) = 0;
+
+-- 예전 "상담 관리(consult)" 권한이 있던 계정은 구분별 상담 권한을 모두 받는다 (여러 번 실행해도 안전)
+update admins
+set perms = (select array_agg(distinct x) from unnest(array_remove(perms, 'consult') || array['consult_franchise', 'consult_listing', 'consult_transfer', 'consult_newbiz', 'consult_register', 'consult_other']) x)
+where 'consult' = any(perms);
 
 -- 이름 표시: 관리자 화면 위쪽에 "이름 최고 관리자님"으로 나옵니다. 이름이 비어 있으면 아이디가 나옵니다.
 -- 본인 계정은 화면에서 못 바꾸므로 필요하면 아래 이름을 고쳐서 실행하세요.

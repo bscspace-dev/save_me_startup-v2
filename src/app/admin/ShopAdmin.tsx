@@ -5,7 +5,7 @@ import { regions, won, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import type { ShopInfo } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
-import { usePeriod } from "./period";
+import { StateBadges, listingSorts, listingStatuses, listingText, usePeriod } from "./period";
 import { dataUrlToBlob, shrink } from "./imageTools";
 
 type Cred = { u: string; p: string };
@@ -159,7 +159,7 @@ export function Photos({ photos, setPhotos, title = "사진", lead = true }: { p
 
 export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: boolean }) {
   const [items, setItems] = useState<Listing[] | null>(null);
-  const period = usePeriod(items, (l) => l.date);
+  const period = usePeriod(items, (l) => l.date, { searchOf: listingText, statuses: listingStatuses("계약완료"), sorts: listingSorts({ label: "월세", of: (l) => l.shop?.rent ?? 0 }) });
   const [editing, setEditing] = useState<number | "new" | null>(null);
   const [tick, setTick] = useState(0);
   const [note, setNote] = useState("");
@@ -206,9 +206,9 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
       <ul className="mt-3 space-y-3">
         {items === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
         {items && items.length === 0 && <li className="py-16 text-center text-[13px] text-neutral-400">등록된 상가매물이 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
-        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">선택한 기간에 등록된 자료가 없습니다.</li>}
+        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
         {period.view.map((l) => (
-          <li key={l.id} className="flex flex-wrap items-center gap-4 rounded-xl border border-neutral-200 bg-white p-3">
+          <li key={l.id} className={`flex flex-wrap items-center gap-4 rounded-xl border bg-white p-3 ${l.hidden ? "border-dashed border-neutral-300 bg-neutral-50" : "border-neutral-200"}`}>
             <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
@@ -217,7 +217,7 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[11px] text-neutral-400">[{l.id}] {l.shop?.address} · {l.date} · 사진 {l.photos}장</p>
-              <p className="truncate text-[14px] font-black">{l.title}</p>
+              <p className="truncate text-[14px] font-black"><StateBadges l={l} soldLabel="계약완료" />{l.title}</p>
               <p className="text-[12px] text-neutral-500">보증금 {won(l.shop!.deposit)}원 · 월세 {won(l.shop!.rent)}원 · 권리금 {l.shop!.premium ? `${won(l.shop!.premium)}원` : "없음"}</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[11.5px]">
