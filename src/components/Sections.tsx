@@ -41,7 +41,7 @@ export function Categories() {
           <h2 className="mt-3 font-gmarket text-[38px] font-bold leading-[1.25] tracking-tight md:text-[58px]">
             어떤 <span style={{ color: NEON, textShadow: OUTLINE }}>창업</span>을 찾고 계신가요?
           </h2>
-          <p className="mt-4 font-gmarket text-[17px] font-medium leading-relaxed text-neutral-600 md:text-[20px]">관심 있는 분야를 선택하고, 내게 맞는 창업 정보를 확인해보세요.</p>
+          <p className="mt-4 font-gmarket text-[17px] font-medium leading-relaxed text-[#2d2d2d] md:text-[20px]">관심 있는 분야를 선택하고, 내게 맞는 창업 정보를 확인해보세요.</p>
           <div className="mt-5 h-1.5 w-16 rounded-full" style={{ background: NEON }} />
         </Reveal>
         {/* 큰 화면은 4칸, 작은 화면은 옆으로 밀어서 본다 */}
