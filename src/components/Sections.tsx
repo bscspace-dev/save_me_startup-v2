@@ -10,6 +10,8 @@ import { ListingCard } from "./ListingCard";
 import { Reveal } from "./Reveal";
 
 const NEON = "#d3ff31"; // 업종별 카드의 포인트(네온) 색
+// 글씨 테두리(어두운 색): 글자는 네온, 바깥을 8방향 그림자로 둘러싼다
+const OUTLINE = [[2,0],[-2,0],[0,2],[0,-2],[1.5,1.5],[-1.5,1.5],[1.5,-1.5],[-1.5,-1.5]].map(([x, y]) => `${x}px ${y}px 0 #1b1b1b`).join(", ");
 
 function Placeholder({ dark = false }: { dark?: boolean }) {
   return <div className={`size-full ${dark ? "bg-neutral-800" : "bg-neutral-100"}`} />;
@@ -33,13 +35,13 @@ export function Categories() {
     <section className="bg-[#faf9f7]">
       <div className="mx-auto max-w-[1280px] px-6 py-16">
         <Reveal>
-          <p className="flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-neutral-700">
-            <span className="size-2 rounded-full" style={{ background: NEON }} />STARTUP CATEGORY
+          <p className="flex items-center gap-2.5 text-[13px] font-bold tracking-[0.16em] text-neutral-700 md:text-[16px]">
+            <span className="h-[1.1em] w-[4px] rounded-sm" style={{ background: NEON }} />STARTUP CATEGORY
           </p>
-          <h2 className="mt-3 text-[30px] font-black tracking-tight md:text-[36px]">
-            어떤 <span className="rounded px-1" style={{ background: NEON }}>창업</span>을 찾고 계신가요?
+          <h2 className="mt-3 font-gmarket text-[38px] font-bold leading-[1.25] tracking-tight md:text-[58px]">
+            어떤 <span style={{ color: NEON, textShadow: OUTLINE }}>창업</span>을 찾고 계신가요?
           </h2>
-          <p className="mt-3 text-[14px] text-neutral-600">관심 있는 분야를 선택하고, 내게 맞는 창업 정보를 확인해보세요.</p>
+          <p className="mt-4 font-gmarket text-[17px] font-medium leading-relaxed text-neutral-600 md:text-[20px]">관심 있는 분야를 선택하고, 내게 맞는 창업 정보를 확인해보세요.</p>
           <div className="mt-5 h-1.5 w-16 rounded-full" style={{ background: NEON }} />
         </Reveal>
         {/* 큰 화면은 4칸, 작은 화면은 옆으로 밀어서 본다 */}
@@ -48,12 +50,12 @@ export function Categories() {
             <Reveal key={c.title} delay={i * 0.08} className="w-[260px] shrink-0 snap-start sm:w-[280px] lg:w-auto">
               <motion.a href={`/listings?type=${c.tag}`} whileHover={{ y: -6 }} className="flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-xl">
                 <span className="self-start rounded bg-ink px-2 py-1 text-[10px] font-black tracking-wider" style={{ color: NEON }}>{c.en}</span>
-                <div className="grid h-[132px] place-items-center">
+                <div className="grid h-[172px] place-items-center">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={c.img} alt="" aria-hidden className="size-[118px] object-contain" />
+                  <img src={c.img} alt="" aria-hidden className="size-[156px] object-contain" />
                 </div>
                 <h3 className="text-center text-[20px] font-black tracking-tight">{c.title}</h3>
-                <p className="mt-2.5 min-h-[58px] text-center text-[12.5px] leading-relaxed text-neutral-500">{c.desc}</p>
+                <p className="mt-2.5 min-h-[58px] text-center text-[14.5px] leading-relaxed text-neutral-500">{c.desc}</p>
                 <div className="mt-auto flex items-center justify-between gap-2 border-t border-neutral-100 pt-3.5 text-[10.5px] text-neutral-400">
                   <span className="flex min-w-0 items-center gap-1.5"><span className="size-1.5 shrink-0 rounded-full" style={{ background: NEON }} /><span className="truncate">{c.foot}</span></span>
                   <span className="shrink-0 rounded-full px-3 py-1.5 text-[11px] font-black text-ink" style={{ background: NEON }}>둘러보기 →</span>

@@ -23,7 +23,7 @@ function PathIcon({ k }: { k: (typeof paths)[number]["icon"] }) {
     swap: <><path d="M4 8h15M15 4l4 4-4 4" /><path d="M20 16H5M9 12l-4 4 4 4" /></>,
     bulb: <><path d="M9 18h6M10 21h4" /><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" /></>,
   }[k];
-  return <svg viewBox="0 0 24 24" aria-hidden className="size-[18px] shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{d}</svg>;
+  return <svg viewBox="0 0 24 24" aria-hidden className="size-[18px] shrink-0" style={{ color: NEON }} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{d}</svg>;
 }
 
 // 오른쪽 카드의 가게 3D 이미지 + 핀
@@ -82,7 +82,7 @@ export function Hero() {
             창업<span className="font-light">을</span> 찾는<br />
             가장 <span className="font-bold" style={{ color: NEON }}>SMART</span><span className="font-light">한</span> 방법
           </motion.h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="mt-6 max-w-[620px] font-gmarket text-[17px] font-medium leading-relaxed text-white/80 md:text-[20px]">
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="mt-6 max-w-[620px] font-gmarket text-[15px] font-medium leading-relaxed text-white/80 md:text-[18px]">
             매물 탐색부터 전수창업·신규창업까지,<br />
             당신에게 맞는 창업의 모든 순간을 <span style={{ color: NEON }}>구해줘창업</span>이 함께합니다.
           </motion.p>
