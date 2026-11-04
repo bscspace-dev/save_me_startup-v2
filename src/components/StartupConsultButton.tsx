@@ -20,7 +20,7 @@ export function StartupConsultButton({ className }: { className?: string }) {
       <AnimatePresence>
         {open && (
           <motion.div className="fixed inset-0 z-[100] grid place-items-center overflow-y-auto bg-black/70 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpen(false)}>
-            <motion.div className="relative w-full max-w-[460px]" initial={{ scale: 0.92, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.92, y: 20 }} onClick={(e) => e.stopPropagation()}>
+            <motion.div className="relative w-full max-w-[28.75rem]" initial={{ scale: 0.92, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.92, y: 20 }} onClick={(e) => e.stopPropagation()}>
               <button type="button" onClick={() => setOpen(false)} aria-label="닫기" className="absolute right-4 top-4 z-10 grid size-8 place-items-center rounded-full bg-neutral-100 hover:bg-neutral-200">✕</button>
               <ConsultCard title="신규창업 상담신청" only="신규창업" />
             </motion.div>

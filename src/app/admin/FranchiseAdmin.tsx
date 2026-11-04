@@ -12,14 +12,14 @@ type Cred = { u: string; p: string };
 const categories = businessCategories;
 const ops = ["직접운영", "반오토", "풀오토"];
 const MAX_SLICES = 24;
-const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-brand";
+const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[0.8125rem] outline-none focus:border-brand";
 const today = () => new Date().toLocaleDateString("sv-SE");
 const kb = (urls: string[]) => Math.round(urls.reduce((a, u) => a + u.length, 0) / 1024);
 
 function Label({ text, req, children }: { text: string; req?: boolean; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[11px] font-bold text-neutral-500">{text}{req && <b className="ml-0.5 text-brand">*</b>}</span>
+      <span className="mb-1 block text-[0.6875rem] font-bold text-neutral-500">{text}{req && <b className="ml-0.5 text-brand">*</b>}</span>
       {children}
     </label>
   );
@@ -66,29 +66,29 @@ export function FranchiseAdmin({ cred, canDelete = true }: { cred: Cred; canDele
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-[12px] text-neutral-500">관리자에서 등록한 프랜차이즈 홍보 {items ? `${items.length}건` : ""} <span className="text-neutral-300">· 기존 정적 브랜드(10022·10033 등)는 여기에 표시되지 않습니다</span></p>
-        <button onClick={() => setEditing("new")} className="rounded bg-brand px-4 py-2.5 text-[13px] font-bold text-white hover:bg-brand-dark">+ 프랜차이즈 등록</button>
+        <p className="text-[0.75rem] text-neutral-500">관리자에서 등록한 프랜차이즈 홍보 {items ? `${items.length}건` : ""} <span className="text-neutral-300">· 기존 정적 브랜드(10022·10033 등)는 여기에 표시되지 않습니다</span></p>
+        <button onClick={() => setEditing("new")} className="rounded bg-brand px-4 py-2.5 text-[0.8125rem] font-bold text-white hover:bg-brand-dark">+ 프랜차이즈 등록</button>
       </div>
-      {note && <p className="mt-3 rounded-lg bg-red-50 p-3 text-[12px] text-red-700">{note}</p>}
+      {note && <p className="mt-3 rounded-lg bg-red-50 p-3 text-[0.75rem] text-red-700">{note}</p>}
       <div className="mt-4">{period.bar}</div>
       <ul className="mt-3 space-y-3">
-        {items === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
-        {items && items.length === 0 && <li className="py-16 text-center text-[13px] text-neutral-400">등록된 프랜차이즈 홍보가 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
-        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
+        {items === null && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">불러오는 중...</li>}
+        {items && items.length === 0 && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">등록된 프랜차이즈 홍보가 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
+        {period.empty && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
         {period.view.map((l) => (
           <li key={l.id} className={`flex flex-wrap items-center gap-4 rounded-xl border bg-white p-3 ${l.hidden ? "border-dashed border-neutral-300 bg-neutral-50" : "border-neutral-200"}`}>
-            <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+            <div className="relative h-[4.25rem] w-[6.25rem] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
-              {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[10px] font-bold text-white">숨김</span>}
-              {l.sold && <span className="absolute inset-0 grid place-items-center bg-black/55 text-[11px] font-bold text-white">모집마감</span>}
+              {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[0.625rem] font-bold text-white">숨김</span>}
+              {l.sold && <span className="absolute inset-0 grid place-items-center bg-black/55 text-[0.6875rem] font-bold text-white">모집마감</span>}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-[11px] text-neutral-400">[{l.id}] {l.promo!.brand} · {l.date} · 이미지 {l.photos}장{l.promo!.sponsored && " · 광고"}</p>
-              <p className="truncate text-[14px] font-black"><StateBadges l={l} soldLabel="모집마감" />{l.title}</p>
-              <p className="text-[12px] text-neutral-500">{l.category} · {l.op} · 예상 창업비 {costText(l.price)}</p>
+              <p className="text-[0.6875rem] text-neutral-400">[{l.id}] {l.promo!.brand} · {l.date} · 이미지 {l.photos}장{l.promo!.sponsored && " · 광고"}</p>
+              <p className="truncate text-[0.875rem] font-black"><StateBadges l={l} soldLabel="모집마감" />{l.title}</p>
+              <p className="text-[0.75rem] text-neutral-500">{l.category} · {l.op} · 예상 창업비 {costText(l.price)}</p>
             </div>
-            <div className="flex shrink-0 gap-2 text-[11.5px]">
+            <div className="flex shrink-0 gap-2 text-[0.7188rem]">
               <Link href={`/listings/${l.id}`} target="_blank" className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</Link>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "모집마감 해제" : "모집마감"}</button>
@@ -183,17 +183,17 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
     }
   }
 
-  if (loading) return <p className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</p>;
+  if (loading) return <p className="py-16 text-center text-[0.8125rem] text-neutral-400">불러오는 중...</p>;
 
   return (
     <form onSubmit={submit} className="space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-[17px] font-black">{id === null ? "프랜차이즈 등록" : `프랜차이즈 수정 · ${id}번`}</h2>
-        <button type="button" onClick={() => onDone(false)} className="text-[12px] font-bold text-neutral-500 hover:text-brand">← 목록으로</button>
+        <h2 className="text-[1.0625rem] font-black">{id === null ? "프랜차이즈 등록" : `프랜차이즈 수정 · ${id}번`}</h2>
+        <button type="button" onClick={() => onDone(false)} className="text-[0.75rem] font-bold text-neutral-500 hover:text-brand">← 목록으로</button>
       </div>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="mb-4 text-[15px] font-black">브랜드 정보</h2>
+        <h2 className="mb-4 text-[0.9375rem] font-black">브랜드 정보</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <Label text="브랜드명" req><input required value={f.brand} onChange={(e) => set("brand", e.target.value)} placeholder="브랜드 이름" className={inputCls} /></Label>
           <Label text="모집지역 (선택)"><input value={f.area} onChange={(e) => set("area", e.target.value)} placeholder="전국 · 대구 우선 모집" className={inputCls} /></Label>
@@ -207,53 +207,53 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
           </Label>
           <Label text="예상 창업비 (만원, 모르면 0 → 본사와 협의로 표시)" req><input required inputMode="numeric" value={f.cost} onChange={(e) => set("cost", e.target.value.replace(/[^0-9,]/g, ""))} placeholder="4900" className={inputCls} /></Label>
         </div>
-        <div className="mt-4 flex flex-wrap gap-6 text-[13px]">
+        <div className="mt-4 flex flex-wrap gap-6 text-[0.8125rem]">
           <label className="flex items-center gap-2"><input type="checkbox" checked={f.sponsored} onChange={(e) => set("sponsored", e.target.checked)} className="accent-[#d9480f]" />유료 홍보 (상세에 광고 표시)</label>
         </div>
       </section>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="text-[15px] font-black">목록 카드 대표 이미지 <b className="text-brand">*</b> <span className="ml-1 text-[12px] font-normal text-neutral-400">매물 목록 카드와 상세 상단에 크게 나오는 대표 사진 · 가로형(4:3) 매장·제품 사진 권장</span></h2>
+        <h2 className="text-[0.9375rem] font-black">목록 카드 대표 이미지 <b className="text-brand">*</b> <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">매물 목록 카드와 상세 상단에 크게 나오는 대표 사진 · 가로형(4:3) 매장·제품 사진 권장</span></h2>
         <div className="mt-4 flex items-center gap-4">
-          <div className="grid h-[100px] w-[150px] shrink-0 place-items-center overflow-hidden rounded-lg bg-neutral-100 text-[11px] text-neutral-400">
+          <div className="grid h-[6.25rem] w-[9.375rem] shrink-0 place-items-center overflow-hidden rounded-lg bg-neutral-100 text-[0.6875rem] text-neutral-400">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {card ? <img src={card} alt="" className="size-full object-cover" /> : "미등록"}
           </div>
-          <button type="button" onClick={() => cardRef.current?.click()} className="rounded border border-neutral-300 px-4 py-2.5 text-[12.5px] font-bold hover:border-brand hover:text-brand">{card ? "이미지 바꾸기" : "이미지 선택"}</button>
+          <button type="button" onClick={() => cardRef.current?.click()} className="rounded border border-neutral-300 px-4 py-2.5 text-[0.7813rem] font-bold hover:border-brand hover:text-brand">{card ? "이미지 바꾸기" : "이미지 선택"}</button>
           <input ref={cardRef} type="file" accept="image/*" hidden onChange={(e) => pickCard(e.target.files)} />
         </div>
       </section>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="text-[15px] font-black">홍보 이미지 <b className="text-brand">*</b> <span className="ml-1 text-[12px] font-normal text-neutral-400">{slices.length} / {MAX_SLICES}조각 · 약 {kb(slices).toLocaleString()}KB</span></h2>
-        <p className="mt-1 text-[11.5px] leading-relaxed text-neutral-400">가맹본부가 만든 홍보 이미지(세로로 긴 한 장도 가능)를 올리면 자동으로 가로 1100px에 맞춰 알맞은 크기로 잘라서 저장하고, 상세에서 틈 없이 이어서 보여줍니다. 여러 장을 올리면 순서대로 이어 붙습니다.</p>
+        <h2 className="text-[0.9375rem] font-black">홍보 이미지 <b className="text-brand">*</b> <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">{slices.length} / {MAX_SLICES}조각 · 약 {kb(slices).toLocaleString()}KB</span></h2>
+        <p className="mt-1 text-[0.7188rem] leading-relaxed text-neutral-400">가맹본부가 만든 홍보 이미지(세로로 긴 한 장도 가능)를 올리면 자동으로 가로 1100px에 맞춰 알맞은 크기로 잘라서 저장하고, 상세에서 틈 없이 이어서 보여줍니다. 여러 장을 올리면 순서대로 이어 붙습니다.</p>
         <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
           {slices.map((s, i) => (
             <div key={i} className="overflow-hidden rounded-lg border border-neutral-200">
               <div className="relative aspect-[3/4] bg-neutral-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s} alt="" className="size-full object-cover object-top" />
-                <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">{i + 1}</span>
+                <span className="absolute left-1.5 top-1.5 rounded bg-black/60 px-1.5 py-0.5 text-[0.625rem] font-bold text-white">{i + 1}</span>
               </div>
-              <div className="flex divide-x divide-neutral-200 text-[12px] font-bold">
+              <div className="flex divide-x divide-neutral-200 text-[0.75rem] font-bold">
                 <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="flex-1 py-1.5 hover:bg-neutral-50 disabled:opacity-30">↑</button>
                 <button type="button" onClick={() => move(i, 1)} disabled={i === slices.length - 1} className="flex-1 py-1.5 hover:bg-neutral-50 disabled:opacity-30">↓</button>
                 <button type="button" onClick={() => setSlices(slices.filter((_, k) => k !== i))} className="flex-1 py-1.5 text-red-600 hover:bg-red-50">삭제</button>
               </div>
             </div>
           ))}
-          <button type="button" onClick={() => promoRef.current?.click()} disabled={working || slices.length >= MAX_SLICES} className="grid aspect-[3/4] place-items-center rounded-lg border-2 border-dashed border-neutral-300 text-[12px] font-bold text-neutral-400 hover:border-brand hover:text-brand disabled:opacity-50">
+          <button type="button" onClick={() => promoRef.current?.click()} disabled={working || slices.length >= MAX_SLICES} className="grid aspect-[3/4] place-items-center rounded-lg border-2 border-dashed border-neutral-300 text-[0.75rem] font-bold text-neutral-400 hover:border-brand hover:text-brand disabled:opacity-50">
             {working ? "처리 중..." : "+ 이미지 추가"}
           </button>
         </div>
         <input ref={promoRef} type="file" accept="image/*" multiple hidden onChange={(e) => addPromo(e.target.files)} />
-        {msg && <p className="mt-2 text-[12px] text-red-600">{msg}</p>}
+        {msg && <p className="mt-2 text-[0.75rem] text-red-600">{msg}</p>}
       </section>
 
-      {err && <p className="rounded-lg bg-red-50 p-3 text-[12px] leading-relaxed text-red-700">{err}</p>}
+      {err && <p className="rounded-lg bg-red-50 p-3 text-[0.75rem] leading-relaxed text-red-700">{err}</p>}
       <div className="flex gap-2">
-        <button type="button" onClick={() => onDone(false)} className="rounded border border-neutral-300 bg-white px-6 py-3.5 text-[14px] font-bold hover:bg-neutral-50">취소</button>
-        <button disabled={busy || working} className="flex-1 rounded bg-brand py-3.5 text-[14px] font-bold text-white hover:bg-brand-dark disabled:opacity-60">{busy ? "저장 중..." : id === null ? "등록하기" : "수정 저장"}</button>
+        <button type="button" onClick={() => onDone(false)} className="rounded border border-neutral-300 bg-white px-6 py-3.5 text-[0.875rem] font-bold hover:bg-neutral-50">취소</button>
+        <button disabled={busy || working} className="flex-1 rounded bg-brand py-3.5 text-[0.875rem] font-bold text-white hover:bg-brand-dark disabled:opacity-60">{busy ? "저장 중..." : id === null ? "등록하기" : "수정 저장"}</button>
       </div>
     </form>
   );

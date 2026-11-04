@@ -35,10 +35,10 @@ export function YoutubePopup() {
         transition={{ delay: 1, type: "spring", stiffness: 120 }}
         whileHover={{ x: -4 }}
         aria-label="유튜브 채널 보기"
-        className="fixed right-0 top-[calc(50%-43px)] z-40 flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-l-xl bg-[#e62117] px-3 py-4 text-white shadow-xl"
+        className="fixed right-0 top-[calc(50%-2.6875rem)] z-40 flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-l-xl bg-[#e62117] px-3 py-4 text-white shadow-xl"
       >
         <YtLogo />
-        <span className="text-[10px] font-bold leading-tight">유튜브<br />채널</span>
+        <span className="text-[0.625rem] font-bold leading-tight">유튜브<br />채널</span>
       </motion.button>
 
       <AnimatePresence>
@@ -51,7 +51,7 @@ export function YoutubePopup() {
             onClick={() => setOpen(false)}
           >
             <motion.div
-              className="relative w-full max-w-[480px] overflow-hidden rounded-2xl bg-white shadow-2xl"
+              className="relative w-full max-w-[30rem] overflow-hidden rounded-2xl bg-white shadow-2xl"
               initial={{ scale: 0.92, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.92, y: 20 }}
@@ -60,13 +60,13 @@ export function YoutubePopup() {
               <button onClick={() => setOpen(false)} aria-label="닫기" className="absolute right-3 top-3 z-10 grid size-8 place-items-center rounded-full bg-black/10 text-ink hover:bg-black/20">✕</button>
 
               <div className="bg-gradient-to-br from-[#e62117] to-[#b3150d] px-6 pb-5 pt-6 text-white">
-                <p className="flex items-center gap-1.5 text-[11px] font-bold text-white/80"><YtLogo size={16} />YouTube 공식 채널</p>
+                <p className="flex items-center gap-1.5 text-[0.6875rem] font-bold text-white/80"><YtLogo size={16} />YouTube 공식 채널</p>
                 <div className="mt-4 flex items-center gap-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/logo.png" alt="구해줘창업 로고" className="size-16 shrink-0 rounded-full ring-4 ring-white/30" />
                   <div>
-                    <h3 className="text-[22px] font-black">구해줘창업</h3>
-                    <p className="mt-0.5 text-[12px] text-white/80">상가창업 전문 컨설팅 · 대구</p>
+                    <h3 className="text-[1.375rem] font-black">구해줘창업</h3>
+                    <p className="mt-0.5 text-[0.75rem] text-white/80">상가창업 전문 컨설팅 · 대구</p>
                   </div>
                 </div>
               </div>
@@ -77,10 +77,10 @@ export function YoutubePopup() {
                     <iframe src={embed} title="구해줘창업 대표 영상" allow="encrypted-media; picture-in-picture" allowFullScreen className="size-full" />
                   </div>
                 )}
-                <p className="text-[13px] leading-relaxed text-neutral-600">
+                <p className="text-[0.8125rem] leading-relaxed text-neutral-600">
                   전수창업·신규창업·프랜차이즈 창업 노하우와 대구 상가 매물 소식을 영상으로 만나보세요. 구독하고 창업 정보를 가장 먼저 받아보세요
                 </p>
-                <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="mt-5 flex items-center justify-center gap-2 rounded-lg bg-[#e62117] py-3.5 text-[14px] font-bold text-white transition hover:bg-[#c71a11]">
+                <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="mt-5 flex items-center justify-center gap-2 rounded-lg bg-[#e62117] py-3.5 text-[0.875rem] font-bold text-white transition hover:bg-[#c71a11]">
                   <YtLogo size={20} />채널 구독하러 가기
                 </a>
               </div>

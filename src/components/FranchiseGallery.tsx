@@ -23,24 +23,24 @@ export function FranchiseGallery({ slides: base, badges, photos, hideLabels, rat
   const n = slides.length;
   const s = slides[i];
   const go = (d: number) => setI((v) => (v + d + n) % n);
-  const arrow = "absolute top-[44%] grid size-9 place-items-center rounded-full bg-black/55 text-[18px] text-white transition hover:bg-black/75";
+  const arrow = "absolute top-[44%] grid size-9 place-items-center rounded-full bg-black/55 text-[1.125rem] text-white transition hover:bg-black/75";
 
   return (
     <div>
       <div className={`relative ${ratio} overflow-hidden bg-gradient-to-br ${tones[i % tones.length]}`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {s.src && <img src={s.src} alt={s.label} className="absolute inset-0 size-full object-cover" />}
-        <div className="absolute left-4 top-4 flex gap-1.5 text-[11px] font-bold text-white">
+        <div className="absolute left-4 top-4 flex gap-1.5 text-[0.6875rem] font-bold text-white">
           {badges.map((b, k) => (
             <span key={b} className={`rounded px-2.5 py-1 ${k === 0 ? "bg-brand" : "bg-black/60"}`}>{b}</span>
           ))}
         </div>
-        <span className="absolute right-5 top-4 text-[12px] font-bold text-white/90">{String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}</span>
+        <span className="absolute right-5 top-4 text-[0.75rem] font-bold text-white/90">{String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}</span>
         <button onClick={() => go(-1)} aria-label="이전 사진" className={`${arrow} left-4`}>‹</button>
         <button onClick={() => go(1)} aria-label="다음 사진" className={`${arrow} right-4`}>›</button>
         {(s.caption || s.sub) && <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-5 pt-12 text-white">
-          <p className="text-[15px] font-black">{s.caption}</p>
-          <p className="mt-1 text-[12px] text-white/80">{s.sub}</p>
+          <p className="text-[0.9375rem] font-black">{s.caption}</p>
+          <p className="mt-1 text-[0.75rem] text-white/80">{s.sub}</p>
         </div>}
       </div>
       <div className="grid grid-cols-5 gap-2 p-3">
@@ -54,7 +54,7 @@ export function FranchiseGallery({ slides: base, badges, photos, hideLabels, rat
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {t.src && <img src={t.src} alt="" className="absolute inset-0 size-full object-cover" />}
-            {!hideLabels && <span className="absolute inset-x-0 bottom-0 bg-black/55 py-0.5 text-center text-[8.5px] font-bold text-white">{t.label}</span>}
+            {!hideLabels && <span className="absolute inset-x-0 bottom-0 bg-black/55 py-0.5 text-center text-[0.5313rem] font-bold text-white">{t.label}</span>}
           </button>
         ))}
       </div>

@@ -19,46 +19,46 @@ export function StartupDetail({ l, c, srcs }: { l: Listing; c: StartupCase; srcs
   ];
 
   return (
-    <main className="mx-auto max-w-[1100px] px-6 py-10">
-      <Link href="/listings?type=신규창업" className="text-[12px] text-neutral-500 transition hover:text-brand">← 목록으로</Link>
+    <main className="mx-auto max-w-[68.75rem] px-6 py-10">
+      <Link href="/listings?type=신규창업" className="text-[0.75rem] text-neutral-500 transition hover:text-brand">← 목록으로</Link>
 
-      <h1 className="mt-4 text-[28px] font-black leading-snug md:text-[34px]">{c.title}</h1>
+      <h1 className="mt-4 text-[1.75rem] font-black leading-snug md:text-[2.125rem]">{c.title}</h1>
 
-      <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_340px]">
+      <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_21.25rem]">
         <Reveal>
           <div className="overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
             <FranchiseGallery slides={placeholder} badges={["신규창업"]} hideLabels ratio="aspect-[16/10]" photos={{ id: l.id, count: srcs?.length ?? l.photos ?? 0, srcs }} />
           </div>
 
-          <dl className="mt-6 grid rounded-lg border border-neutral-200 bg-white px-5 text-[13px] shadow-sm sm:grid-cols-2 sm:gap-x-10">
+          <dl className="mt-6 grid rounded-lg border border-neutral-200 bg-white px-5 text-[0.8125rem] shadow-sm sm:grid-cols-2 sm:gap-x-10">
             {rows.map(([k, v]) => (
-              <div key={k} className="flex border-b border-neutral-100 py-3.5 last:border-b-0"><dt className="w-[88px] text-neutral-400">{k}</dt><dd className="font-bold">{v}</dd></div>
+              <div key={k} className="flex border-b border-neutral-100 py-3.5 last:border-b-0"><dt className="w-[5.5rem] text-neutral-400">{k}</dt><dd className="font-bold">{v}</dd></div>
             ))}
           </dl>
         </Reveal>
 
         <Reveal delay={0.1}>
 
-          <h2 className="text-[17px] font-black">컨설팅 리스트</h2>
+          <h2 className="text-[1.0625rem] font-black">컨설팅 리스트</h2>
           <ul className="mt-3 divide-y divide-neutral-100 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
             {consultItems.map((label) => {
               const s = c.steps.find((x) => x.label === label);
               return (
                 <li key={label} className={`flex items-center gap-4 px-4 py-3.5 ${s ? "bg-orange-50" : ""}`}>
-                  <span className={`grid size-6 shrink-0 place-items-center rounded-full text-[13px] font-black ${s ? "bg-brand text-white" : "border border-neutral-300 text-transparent"}`}>✓</span>
-                  <h3 className={`text-[14px] font-black ${s ? "text-brand" : "text-neutral-400"}`}>{label}</h3>
+                  <span className={`grid size-6 shrink-0 place-items-center rounded-full text-[0.8125rem] font-black ${s ? "bg-brand text-white" : "border border-neutral-300 text-transparent"}`}>✓</span>
+                  <h3 className={`text-[0.875rem] font-black ${s ? "text-brand" : "text-neutral-400"}`}>{label}</h3>
                 </li>
               );
             })}
           </ul>
-          <StartupConsultButton className="mt-4 block w-full rounded bg-brand py-3.5 text-center text-[14px] font-bold text-white transition hover:bg-brand-dark" />
+          <StartupConsultButton className="mt-4 block w-full rounded bg-brand py-3.5 text-center text-[0.875rem] font-bold text-white transition hover:bg-brand-dark" />
         </Reveal>
       </div>
 
       <Reveal>
         <div className="mt-10 rounded-lg border border-neutral-200 bg-white p-6 shadow-sm">
-          <h2 className="text-[20px] font-black">창업 상가 소개</h2>
-          <p className="mt-3 text-[14px] leading-relaxed text-neutral-600">{c.story}</p>
+          <h2 className="text-[1.25rem] font-black">창업 상가 소개</h2>
+          <p className="mt-3 text-[0.875rem] leading-relaxed text-neutral-600">{c.story}</p>
         </div>
       </Reveal>
 

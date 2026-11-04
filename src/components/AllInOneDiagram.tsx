@@ -23,7 +23,7 @@ export function AllInOneDiagram() {
 
   return (
     <div ref={ref}>
-      <div key={run} className="relative mx-auto aspect-[16/10] w-full max-w-[880px]">
+      <div key={run} className="relative mx-auto aspect-[16/10] w-full max-w-[55rem]">
         {/* 가운데: 작은 원들에서 올인원 시스템으로 이어지는 화살표 */}
         <motion.svg
           viewBox="0 0 40 24"
@@ -44,9 +44,9 @@ export function AllInOneDiagram() {
           transition={{ delay: 0.85, type: "spring", stiffness: 180, damping: 14 }}
         >
           <div>
-            <p className="text-[10px] font-bold tracking-wide text-white/80 sm:text-[13px]">ALL-IN-ONE</p>
-            <p className="mt-1 text-[22px] font-black leading-tight sm:text-[40px]">올인원<br />시스템</p>
-            <p className="mt-2 hidden text-[13px] text-white/80 sm:block">처음부터 끝까지 한 번에</p>
+            <p className="text-[0.625rem] font-bold tracking-wide text-white/80 sm:text-[0.8125rem]">ALL-IN-ONE</p>
+            <p className="mt-1 text-[1.375rem] font-black leading-tight sm:text-[2.5rem]">올인원<br />시스템</p>
+            <p className="mt-2 hidden text-[0.8125rem] text-white/80 sm:block">처음부터 끝까지 한 번에</p>
           </div>
         </motion.div>
 
@@ -60,12 +60,12 @@ export function AllInOneDiagram() {
             transition={{ ...move, delay: 0.6 }}
           >
             <div>
-              <p className="text-[11px] font-black leading-tight sm:text-[14px]">{it.label}</p>
+              <p className="text-[0.6875rem] font-black leading-tight sm:text-[0.875rem]">{it.label}</p>
               <span className="mx-auto my-1.5 hidden h-px w-6 bg-brand/40 md:block" />
-              <ul className="hidden max-w-[104px] space-y-0.5 text-left text-[10px] leading-snug text-neutral-600 md:block lg:max-w-[118px] lg:text-[11px]">
+              <ul className="hidden max-w-[6.5rem] space-y-0.5 text-left text-[0.625rem] leading-snug text-neutral-600 md:block lg:max-w-[7.375rem] lg:text-[0.6875rem]">
                 {it.points.map((t) => (
                   <li key={t} className="flex items-start gap-1">
-                    <span className="mt-[5px] size-1 shrink-0 rounded-full bg-brand" />
+                    <span className="mt-[0.3125rem] size-1 shrink-0 rounded-full bg-brand" />
                     <span>{t}</span>
                   </li>
                 ))}
@@ -76,20 +76,20 @@ export function AllInOneDiagram() {
       </div>
 
       {/* 모바일: 원이 작아 설명은 아래에 따로 표시 */}
-      <ul className="mx-auto mt-6 grid max-w-[420px] gap-3 text-left md:hidden">
+      <ul className="mx-auto mt-6 grid max-w-[26.25rem] gap-3 text-left md:hidden">
         {items.map((it) => (
           <li key={it.label} className="rounded-lg border border-neutral-200 bg-white p-4">
-            <p className="text-[14px] font-black">{it.label}</p>
-            <ul className="mt-2 space-y-1 text-[12.5px] text-neutral-600">
+            <p className="text-[0.875rem] font-black">{it.label}</p>
+            <ul className="mt-2 space-y-1 text-[0.7813rem] text-neutral-600">
               {it.points.map((t) => (
-                <li key={t} className="flex items-start gap-2"><span className="mt-[7px] size-1 shrink-0 rounded-full bg-brand" />{t}</li>
+                <li key={t} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1 shrink-0 rounded-full bg-brand" />{t}</li>
               ))}
             </ul>
           </li>
         ))}
       </ul>
 
-      <button type="button" onClick={() => setRun((r) => r + 1)} className="mt-6 rounded-full border border-neutral-300 px-4 py-2 text-[12px] font-bold text-neutral-500 transition hover:border-brand hover:text-brand">
+      <button type="button" onClick={() => setRun((r) => r + 1)} className="mt-6 rounded-full border border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 transition hover:border-brand hover:text-brand">
         ↻ 다시 보기
       </button>
     </div>

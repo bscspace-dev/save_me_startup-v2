@@ -16,7 +16,7 @@ export function HomeLogo({ className }: { className: string }) {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/logo-wordmark.svg" alt="구해줘창업" className={className} />
+      <img src="/logo-header.svg" alt="구해줘창업" className={className} />
     </Link>
   );
 }

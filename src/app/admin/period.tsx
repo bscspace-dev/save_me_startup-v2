@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import type { Listing } from "@/lib/data";
 
-const sel = "rounded border border-neutral-300 bg-white px-2.5 py-2 text-[12px] font-bold outline-none focus:border-brand";
+const sel = "rounded border border-neutral-300 bg-white px-2.5 py-2 text-[0.75rem] font-bold outline-none focus:border-brand";
 
 // 등록 관리 목록의 검색 대상 글자 (번호·제목·지역·업종·브랜드·사부·가게·주소)
 export const listingText = (l: Listing) =>
@@ -33,8 +33,8 @@ export const listingSorts = (cost?: { label: string; of: (l: Listing) => number 
 export function StateBadges({ l, soldLabel }: { l: Listing; soldLabel?: string }) {
   return (
     <>
-      {l.hidden && <span className="mr-1.5 shrink-0 rounded bg-neutral-800 px-1.5 py-0.5 align-middle text-[10.5px] font-bold text-white">숨김</span>}
-      {soldLabel && l.sold && <span className="mr-1.5 shrink-0 rounded bg-orange-100 px-1.5 py-0.5 align-middle text-[10.5px] font-bold text-brand">{soldLabel}</span>}
+      {l.hidden && <span className="mr-1.5 shrink-0 rounded bg-neutral-800 px-1.5 py-0.5 align-middle text-[0.6563rem] font-bold text-white">숨김</span>}
+      {soldLabel && l.sold && <span className="mr-1.5 shrink-0 rounded bg-orange-100 px-1.5 py-0.5 align-middle text-[0.6563rem] font-bold text-brand">{soldLabel}</span>}
     </>
   );
 }
@@ -99,7 +99,7 @@ export function usePeriod<T>(items: T[] | null, dateOf: (t: T) => string | null 
   const chip = (on: boolean) => `cursor-pointer rounded-full border px-3 py-1.5 font-bold transition ${on ? "border-ink bg-ink text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`;
 
   const bar = (
-    <div className="space-y-2.5 text-[12px]">
+    <div className="space-y-2.5 text-[0.75rem]">
       <div className="flex flex-wrap items-center gap-2">
         <span className="font-bold text-neutral-500">기간</span>
         <select value={year} onChange={(e) => { setYear(e.target.value); if (e.target.value === "all") setMonth("all"); setPage(1); }} className={sel} aria-label="년도">
@@ -111,7 +111,7 @@ export function usePeriod<T>(items: T[] | null, dateOf: (t: T) => string | null 
           {Array.from({ length: 12 }, (_, i) => <option key={i} value={String(i + 1)}>{i + 1}월</option>)}
         </select>
         <button type="button" onClick={thisMonth} className="cursor-pointer rounded border border-neutral-300 bg-white px-2.5 py-2 font-bold hover:border-brand hover:text-brand">이번 달</button>
-        {searchOf && <input value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} placeholder="제목·지역·업종·번호 검색" aria-label="검색" className={`${sel} w-[200px] font-normal`} />}
+        {searchOf && <input value={q} onChange={(e) => { setQ(e.target.value); setPage(1); }} placeholder="제목·지역·업종·번호 검색" aria-label="검색" className={`${sel} w-[12.5rem] font-normal`} />}
         {sorts && (
           <select value={sortKey} onChange={(e) => { setSortKey(e.target.value); setPage(1); }} className={`${sel} ml-auto`} aria-label="정렬">
             {sorts.map((s) => <option key={s.key} value={s.key}>{s.label}</option>)}
@@ -134,7 +134,7 @@ export function usePeriod<T>(items: T[] | null, dateOf: (t: T) => string | null 
   );
 
   const pager = pages > 1 && (
-    <div className="mt-4 flex items-center justify-center gap-1 text-[12px] font-bold">
+    <div className="mt-4 flex items-center justify-center gap-1 text-[0.75rem] font-bold">
       <button type="button" disabled={cur === 1} onClick={() => setPage(cur - 1)} className="cursor-pointer rounded border border-neutral-300 bg-white px-3 py-1.5 enabled:hover:border-brand disabled:opacity-40">이전</button>
       <span className="px-3 text-neutral-500">{cur} / {pages}</span>
       <button type="button" disabled={cur === pages} onClick={() => setPage(cur + 1)} className="cursor-pointer rounded border border-neutral-300 bg-white px-3 py-1.5 enabled:hover:border-brand disabled:opacity-40">다음</button>

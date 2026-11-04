@@ -24,8 +24,8 @@ export function Logo({ light = false }: { light?: boolean }) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/logo.png" alt="구해줘창업 로고" className="size-11 rounded-full" />
       <span className="leading-tight">
-        <span className={`block text-[19px] font-black ${light ? "text-white" : "text-ink"}`}>구해줘창업</span>
-        {!light && <span className="block text-[9px] font-medium text-brand">상가창업 전문 컨설팅 플랫폼</span>}
+        <span className={`block text-[1.1875rem] font-black ${light ? "text-white" : "text-ink"}`}>구해줘창업</span>
+        {!light && <span className="block text-[0.5625rem] font-medium text-brand">상가창업 전문 컨설팅 플랫폼</span>}
       </span>
     </Link>
   );

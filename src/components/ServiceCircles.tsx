@@ -32,7 +32,7 @@ export function ServiceCircles() {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <div className="mt-14 flex flex-col items-center gap-8 md:relative md:mx-auto md:block md:aspect-square md:max-w-[680px] md:mt-[120px] md:gap-0">
+    <div className="mt-14 flex flex-col items-center gap-8 md:relative md:mx-auto md:block md:aspect-square md:max-w-[42.5rem] md:mt-[7.5rem] md:gap-0">
       {/* 연결 링 */}
       <svg viewBox="0 0 100 100" className="absolute inset-0 hidden size-full md:block" aria-hidden>
         <polygon
@@ -47,7 +47,7 @@ export function ServiceCircles() {
       </svg>
 
       {/* 가운데 유튜브 영상 */}
-      <div className="relative aspect-video w-full max-w-[520px] overflow-hidden rounded-2xl bg-black shadow-2xl ring-8 ring-orange-100 md:absolute md:left-1/2 md:top-1/2 md:w-[46%] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2">
+      <div className="relative aspect-video w-full max-w-[32.5rem] overflow-hidden rounded-2xl bg-black shadow-2xl ring-8 ring-orange-100 md:absolute md:left-1/2 md:top-1/2 md:w-[46%] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2">
         {player && playing ? (
           <iframe
             src={player.src}
@@ -71,27 +71,27 @@ export function ServiceCircles() {
             <span className="relative grid size-16 place-items-center rounded-full bg-white shadow-xl transition hover:scale-105">
               <svg viewBox="0 0 10 10" className="ml-1 size-7 fill-[#e62117]"><path d="M2 1l7 4-7 4z" /></svg>
             </span>
-            <span className="relative text-[13px] font-bold">구해줘창업 YouTube</span>
+            <span className="relative text-[0.8125rem] font-bold">구해줘창업 YouTube</span>
           </button>
         )}
       </div>
 
       {/* 5가지 서비스 */}
-      <div className="grid w-full grid-cols-3 gap-3 sm:mx-auto sm:max-w-[420px] md:contents">
+      <div className="grid w-full grid-cols-3 gap-3 sm:mx-auto sm:max-w-[26.25rem] md:contents">
         {items.map((it, i) => (
           <div
             key={it.no}
             style={pos(i)}
-            className="grid aspect-square place-items-center rounded-full border border-orange-200 bg-cream p-2 text-center shadow-sm transition hover:-translate-y-1 hover:border-brand hover:shadow-lg md:absolute md:left-(--x) md:top-(--y) md:w-[26%] md:-translate-x-1/2 md:-translate-y-1/2 md:p-3 md:hover:-translate-y-[calc(50%+4px)]"
+            className="grid aspect-square place-items-center rounded-full border border-orange-200 bg-cream p-2 text-center shadow-sm transition hover:-translate-y-1 hover:border-brand hover:shadow-lg md:absolute md:left-(--x) md:top-(--y) md:w-[26%] md:-translate-x-1/2 md:-translate-y-1/2 md:p-3 md:hover:-translate-y-[calc(50%+0.25rem)]"
           >
             <div className="flex flex-col items-center">
-              <p className="text-[10px] font-bold text-brand md:text-[11px]">{it.no}</p>
-              <h3 className="mt-0.5 text-[12px] font-black leading-tight md:text-[15px]">{it.title}</h3>
+              <p className="text-[0.625rem] font-bold text-brand md:text-[0.6875rem]">{it.no}</p>
+              <h3 className="mt-0.5 text-[0.75rem] font-black leading-tight md:text-[0.9375rem]">{it.title}</h3>
               <span className="my-2 hidden h-px w-8 bg-brand/40 md:block" />
-              <ul className="hidden w-fit max-w-[132px] space-y-1 text-left text-[10.5px] leading-snug text-neutral-600 md:block">
+              <ul className="hidden w-fit max-w-[8.25rem] space-y-1 text-left text-[0.6563rem] leading-snug text-neutral-600 md:block">
                 {it.points.map((p) => (
                   <li key={p} className="flex items-start gap-1.5">
-                    <span className="mt-[5px] size-1 shrink-0 rounded-full bg-brand" />
+                    <span className="mt-[0.3125rem] size-1 shrink-0 rounded-full bg-brand" />
                     <span>{p}</span>
                   </li>
                 ))}
@@ -103,9 +103,9 @@ export function ServiceCircles() {
 
 
       {/* 모바일: 원이 작아 설명은 아래에 따로 표시 */}
-      <ul className="w-full max-w-[520px] space-y-3 text-left md:hidden">
+      <ul className="w-full max-w-[32.5rem] space-y-3 text-left md:hidden">
         {items.map((it) => (
-          <li key={it.no} className="flex gap-3 text-[13px] leading-relaxed">
+          <li key={it.no} className="flex gap-3 text-[0.8125rem] leading-relaxed">
             <span className="w-6 shrink-0 font-black text-brand">{it.no}</span>
             <span>
               <b className="block font-black">{it.title}</b>

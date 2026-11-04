@@ -10,10 +10,10 @@ export const businessCategories = ["한식·분식", "카페·음료", "베이�
 
 // 메인 "어떤 창업을 찾고 계신가요?" 카드. tag 는 눌렀을 때 열리는 매물 목록 유형, img 는 public/categories/ 의 3D 아이콘
 export const categories = [
-  { tag: "프랜차이즈", en: "FRANCHISE", title: "프랜차이즈 창업", desc: "검증된 브랜드와 가맹 시스템을 비교하고 빠르게 시작해보세요", foot: "대구 지역 가맹 매물 다수", img: "/categories/franchise.png" },
-  { tag: "상가매물", en: "STORE", title: "점포 찾기", desc: "지역 · 보증금 · 월세 · 면적 등 원하는 조건의 점포를 확인해보세요", foot: "대구 9개 구·군 전체", img: "/categories/store.png" },
-  { tag: "전수창업", en: "TRANSFER", title: "전수창업", desc: "기존 매장의 운영 노하우와 시설을 이어받아 안정적으로 준비하세요", foot: "한식·카페·베이커리 다수", img: "/categories/transfer.png" },
-  { tag: "신규창업", en: "NEW BUSINESS", title: "신규창업", desc: "업종 선택부터 브랜딩, 공간설계까지 처음부터 확실하게 준비합니다", foot: "초보 창업자 맞춤 안내", img: "/categories/newbiz.png" },
+  { tag: "프랜차이즈", en: "FRANCHISE", title: "프랜차이즈 창업", desc: "검증된 브랜드와 가맹 시스템을 비교하고 빠르게 시작해보세요", foot: "대구 지역 가맹 매물 다수", img: "/categories/franchise-2.png" },
+  { tag: "상가매물", en: "STORE", title: "점포 찾기", desc: "지역 · 보증금 · 월세 · 면적 등 원하는 조건의 점포를 확인해보세요", foot: "대구 9개 구·군 전체", img: "/categories/store-2.png" },
+  { tag: "전수창업", en: "TRANSFER", title: "전수창업", desc: "기존 매장의 운영 노하우와 시설을 이어받아 안정적으로 준비하세요", foot: "한식·카페·베이커리 다수", img: "/categories/transfer-2.png" },
+  { tag: "신규창업", en: "NEW BUSINESS", title: "신규창업", desc: "업종 선택부터 브랜딩, 공간설계까지 처음부터 확실하게 준비합니다", foot: "초보 창업자 맞춤 안내", img: "/categories/newbiz-2.png" },
 ] as const;
 
 export type Listing = {

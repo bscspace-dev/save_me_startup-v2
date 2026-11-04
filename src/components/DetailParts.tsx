@@ -7,8 +7,8 @@ export const inner = "rounded-xl border border-neutral-200 bg-[#faf9f7]";
 export function Head({ eyebrow, title }: { eyebrow?: string; title: React.ReactNode }) {
   return (
     <>
-      {eyebrow && <p className="text-[11px] font-bold tracking-[0.14em] text-brand">{eyebrow}</p>}
-      <h2 className="mt-2 text-[26px] font-black tracking-tight">{title}</h2>
+      {eyebrow && <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-brand">{eyebrow}</p>}
+      <h2 className="mt-2 text-[1.625rem] font-black tracking-tight">{title}</h2>
     </>
   );
 }
@@ -33,21 +33,21 @@ export function ProfitPanel({ revenue, costs, title, rateLabel, caption, revenue
     <div className="mt-7 grid overflow-hidden rounded-xl border border-neutral-200 lg:grid-cols-[1fr_2.1fr]">
       <div className="flex flex-col justify-between bg-[#fff4ea] p-7">
         <div>
-          <p className="text-[11px] font-bold text-brand">{title}</p>
-          <p className="mt-4 text-[34px] font-black leading-none tracking-tight">{man(net)}</p>
+          <p className="text-[0.6875rem] font-bold text-brand">{title}</p>
+          <p className="mt-4 text-[2.125rem] font-black leading-none tracking-tight">{man(net)}</p>
         </div>
         <div className="mt-12">
-          <span className="inline-block rounded-full bg-brand px-3 py-1 text-[11px] font-bold text-white">{rateLabel} {rate}%</span>
-          <p className="mt-2 text-[11px] text-brand">{caption}</p>
+          <span className="inline-block rounded-full bg-brand px-3 py-1 text-[0.6875rem] font-bold text-white">{rateLabel} {rate}%</span>
+          <p className="mt-2 text-[0.6875rem] text-brand">{caption}</p>
         </div>
       </div>
-      <div className="divide-y divide-neutral-100 bg-white text-[12.5px]">
+      <div className="divide-y divide-neutral-100 bg-white text-[0.7813rem]">
         {rows.map((r) => (
           <div key={r.label} className="flex items-center justify-between px-6 py-4">
             <span className={r.sign ? "text-neutral-500" : "font-bold"}>{r.label}</span>
             <span className="flex items-baseline gap-6">
               <b>{r.sign}{man(r.amount)}</b>
-              <span className="w-9 text-right text-[10.5px] text-neutral-300">{Math.round((r.amount / revenue) * 100)}%</span>
+              <span className="w-9 text-right text-[0.6563rem] text-neutral-300">{Math.round((r.amount / revenue) * 100)}%</span>
             </span>
           </div>
         ))}

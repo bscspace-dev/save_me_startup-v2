@@ -25,7 +25,7 @@ export function TransferSlider({ items }: { items: Listing[] }) {
     if (el) el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
   };
 
-  const arrow = "absolute top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral-300 bg-white text-[18px] font-bold shadow-md transition hover:border-brand hover:text-brand disabled:cursor-default disabled:opacity-30 disabled:hover:border-neutral-300 disabled:hover:text-inherit";
+  const arrow = "absolute top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-neutral-300 bg-white text-[1.125rem] font-bold shadow-md transition hover:border-brand hover:text-brand disabled:cursor-default disabled:opacity-30 disabled:hover:border-neutral-300 disabled:hover:text-inherit";
 
   return (
     <div>
@@ -36,7 +36,7 @@ export function TransferSlider({ items }: { items: Listing[] }) {
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth text-left [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((l, i) => (
-          <div key={l.id} className="shrink-0 basis-[82%] snap-start sm:basis-[calc((100%-16px)/2)] lg:basis-[calc((100%-32px)/3)]">
+          <div key={l.id} className="shrink-0 basis-[82%] snap-start sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)]">
             <ListingCard l={l} i={i} />
           </div>
         ))}
@@ -44,7 +44,7 @@ export function TransferSlider({ items }: { items: Listing[] }) {
       <button type="button" aria-label="이전 매물" onClick={() => move(-1)} disabled={edge.start} className={`${arrow} left-1 lg:-left-5`}>‹</button>
       <button type="button" aria-label="다음 매물" onClick={() => move(1)} disabled={edge.end} className={`${arrow} right-1 lg:-right-5`}>›</button>
       </div>
-      <a href="/listings?type=전수창업" className="mt-6 inline-block text-[13px] font-bold text-brand">전수창업 전체보기 →</a>
+      <a href="/listings?type=전수창업" className="mt-6 inline-block text-[0.8125rem] font-bold text-brand">전수창업 전체보기 →</a>
     </div>
   );
 }

@@ -35,27 +35,27 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
       whileHover={{ y: -5 }}
       className={`block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg ${wide ? "flex" : ""}`}
     >
-      <div className={`relative bg-neutral-100 ${wide ? "w-[200px] shrink-0" : "h-[150px]"}`}>
+      <div className={`relative bg-neutral-100 ${wide ? "w-[12.5rem] shrink-0" : "h-[9.375rem]"}`}>
         {l.photos ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={l.thumb ?? photoSrc(l.id, 1)} alt={l.title} className="absolute inset-0 size-full object-cover" />
         ) : null}
-        <div className="absolute left-2 top-2 flex gap-1 text-[10px] font-bold text-white">
+        <div className="absolute left-2 top-2 flex gap-1 text-[0.625rem] font-bold text-white">
           {!c && l.rec && <span className="rounded bg-brand px-1.5 py-0.5">추천</span>}
           {!c && l.isNew && <span className="rounded bg-blue-800 px-1.5 py-0.5">NEW</span>}
           <span className={`rounded px-1.5 py-0.5 ${kindBadge[l.kind] ?? "bg-ink/70"}`}>{c ? "신규창업" : l.kind}</span>
         </div>
-        {!c && <span className="absolute bottom-2 left-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-white">{l.kind === "프랜차이즈" || l.kind === "전수창업" ? "등록번호" : "매물번호"} {l.id}</span>}
-        {l.sold && l.kind !== "전수창업" && <div className="absolute inset-0 grid place-items-center bg-black/55 text-[15px] font-bold text-white">계약완료</div>}
+        {!c && <span className="absolute bottom-2 left-2 rounded bg-black/60 px-1.5 py-0.5 text-[0.625rem] font-bold text-white">{l.kind === "프랜차이즈" || l.kind === "전수창업" ? "등록번호" : "매물번호"} {l.id}</span>}
+        {l.sold && l.kind !== "전수창업" && <div className="absolute inset-0 grid place-items-center bg-black/55 text-[0.9375rem] font-bold text-white">계약완료</div>}
       </div>
-      <div className="min-h-[104px] flex-1 p-3.5">
+      <div className="min-h-[6.5rem] flex-1 p-3.5">
         {/* 모든 유형이 같은 구성: 작은 분류 / 큰 제목 / 선 / 강조 문구 / 본문 / 정보 */}
-        <p className="text-[11px] font-bold tracking-wide text-neutral-400">{t || brand || c ? l.category : `${l.region} · ${shop?.buildingType ?? l.category}`}</p>
-        {title && <p className={`mt-1 ${c ? "text-[16px] font-black" : "text-[17px] font-semibold"} tracking-tight`}>{title}</p>}
+        <p className="text-[0.6875rem] font-bold tracking-wide text-neutral-400">{t || brand || c ? l.category : `${l.region} · ${shop?.buildingType ?? l.category}`}</p>
+        {title && <p className={`mt-1 ${c ? "text-[1rem] font-black" : "text-[1.0625rem] font-semibold"} tracking-tight`}>{title}</p>}
         {(title || accent) && <div className="my-2.5 h-px w-8 bg-neutral-300" />}
-        {accent && <p className="text-[11px] font-bold text-brand">{accent}</p>}
-        <h3 className={`${accent ? "mt-1" : ""} line-clamp-2 ${t ? "text-[17px] font-semibold tracking-tight text-neutral-700" : "text-[12.5px] leading-snug text-neutral-700"}`}>{brand ? <RichText text={body.replace(/\s*\n\s*/g, " ")} max={50} /> : body}</h3>
-        <p className="mt-2 text-[10.5px] text-neutral-400">{meta}</p>
+        {accent && <p className="text-[0.6875rem] font-bold text-brand">{accent}</p>}
+        <h3 className={`${accent ? "mt-1" : ""} line-clamp-2 ${t ? "text-[1.0625rem] font-semibold tracking-tight text-neutral-700" : "text-[0.7813rem] leading-snug text-neutral-700"}`}>{brand ? <RichText text={body.replace(/\s*\n\s*/g, " ")} max={50} /> : body}</h3>
+        <p className="mt-2 text-[0.6563rem] text-neutral-400">{meta}</p>
       </div>
     </motion.a>
   );

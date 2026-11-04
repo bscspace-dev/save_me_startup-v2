@@ -31,21 +31,21 @@ export function RemoteShopDetail({ id }: { id: number }) {
   return (
     <>
       <Header active={typeof state === "object" ? (state.l.promo ? "프랜차이즈창업" : state.l.startup ? "신규창업" : state.l.transfer ? "전수창업" : "상가매물") : "상가매물"} />
-      {state === "loading" && <main className="grid min-h-[60vh] place-items-center text-[13px] text-neutral-400">불러오는 중...</main>}
+      {state === "loading" && <main className="grid min-h-[60vh] place-items-center text-[0.8125rem] text-neutral-400">불러오는 중...</main>}
       {state === "error" && (
         <main className="grid min-h-[60vh] place-items-center text-center">
           <div>
-            <p className="text-[15px] font-bold">자료를 불러오지 못했습니다</p>
-            <p className="mt-1 text-[12px] text-neutral-400">인터넷 연결을 확인한 뒤 다시 시도해주세요</p>
-            <button onClick={() => { setState("loading"); setAttempt((n) => n + 1); }} className="mt-4 rounded-lg bg-brand px-5 py-2.5 text-[13px] font-bold text-white">다시 시도</button>
+            <p className="text-[0.9375rem] font-bold">자료를 불러오지 못했습니다</p>
+            <p className="mt-1 text-[0.75rem] text-neutral-400">인터넷 연결을 확인한 뒤 다시 시도해주세요</p>
+            <button onClick={() => { setState("loading"); setAttempt((n) => n + 1); }} className="mt-4 rounded-lg bg-brand px-5 py-2.5 text-[0.8125rem] font-bold text-white">다시 시도</button>
           </div>
         </main>
       )}
       {state === "none" && (
         <main className="grid min-h-[60vh] place-items-center text-center">
           <div>
-            <p className="text-[15px] font-bold">매물을 찾을 수 없습니다</p>
-            <Link href="/listings" className="mt-3 inline-block text-[13px] text-brand underline underline-offset-4">매물 목록으로</Link>
+            <p className="text-[0.9375rem] font-bold">매물을 찾을 수 없습니다</p>
+            <Link href="/listings" className="mt-3 inline-block text-[0.8125rem] text-brand underline underline-offset-4">매물 목록으로</Link>
           </div>
         </main>
       )}

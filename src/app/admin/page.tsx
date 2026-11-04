@@ -31,7 +31,7 @@ const kindPerm: Record<Exclude<Kind, "all">, string> = { franchise: "consult_fra
 const kindName: Record<Kind, string> = { ...(Object.fromEntries(kinds) as Record<Kind, string>), startup: "기타" }; // 유형이 비었거나 모르는 값
 const kindTone: Record<Exclude<Kind, "all">, string> = { listing: "bg-emerald-50 text-emerald-700", franchise: "bg-orange-50 text-brand", startup: "bg-blue-50 text-blue-700", newbiz: "bg-sky-50 text-sky-700", transfer: "bg-amber-50 text-amber-800", register: "bg-purple-50 text-purple-700" };
 
-const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-brand";
+const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[0.8125rem] outline-none focus:border-brand";
 // 매물 상담·가맹 상담의 유형("매물상담[20001]", "가맹상담[20002]")에서 번호를 뽑는다
 const listingId = (type: string | null) => type?.match(/^(?:매물|가맹)상담\[(\d+)\]/)?.[1];
 const fmt = (iso: string) => new Date(iso).toLocaleString("ko-KR", { year: "2-digit", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
@@ -65,13 +65,13 @@ function Login() {
 
   return (
     <main className="grid min-h-screen place-items-center bg-neutral-50 p-4">
-      <form onSubmit={submit} className="w-full max-w-[360px] rounded-2xl border border-neutral-200 bg-white p-7 shadow-sm">
-        <h1 className="text-[18px] font-black">관리자 로그인</h1>
-        <p className="mt-1 text-[12px] text-neutral-400">구해줘창업 상담 관리</p>
+      <form onSubmit={submit} className="w-full max-w-[22.5rem] rounded-2xl border border-neutral-200 bg-white p-7 shadow-sm">
+        <h1 className="text-[1.125rem] font-black">관리자 로그인</h1>
+        <p className="mt-1 text-[0.75rem] text-neutral-400">구해줘창업 상담 관리</p>
         <input required autoComplete="username" autoCapitalize="none" value={id} onChange={(e) => setId(e.target.value)} placeholder="아이디" className={`${inputCls} mt-5`} />
         <input type="password" required autoComplete="current-password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="비밀번호" className={`${inputCls} mt-2.5`} />
-        {err && <p className="mt-2 text-[11.5px] leading-relaxed text-red-600">{err}</p>}
-        <button disabled={busy} className="mt-4 w-full rounded bg-brand py-3 text-[14px] font-bold text-white transition hover:bg-brand-dark disabled:opacity-60">{busy ? "확인 중..." : "로그인"}</button>
+        {err && <p className="mt-2 text-[0.7188rem] leading-relaxed text-red-600">{err}</p>}
+        <button disabled={busy} className="mt-4 w-full rounded bg-brand py-3 text-[0.875rem] font-bold text-white transition hover:bg-brand-dark disabled:opacity-60">{busy ? "확인 중..." : "로그인"}</button>
       </form>
     </main>
   );
@@ -103,15 +103,15 @@ function ChangePassword({ cred, onClose }: { cred: Cred; onClose: () => void }) 
 
   return (
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4" onClick={onClose}>
-      <form onSubmit={submit} onClick={(e) => e.stopPropagation()} className="w-full max-w-[360px] rounded-2xl bg-white p-7 shadow-2xl">
-        <h2 className="text-[17px] font-black">비밀번호 변경</h2>
+      <form onSubmit={submit} onClick={(e) => e.stopPropagation()} className="w-full max-w-[22.5rem] rounded-2xl bg-white p-7 shadow-2xl">
+        <h2 className="text-[1.0625rem] font-black">비밀번호 변경</h2>
         <input type="password" required autoComplete="current-password" value={cur} onChange={(e) => setCur(e.target.value)} placeholder="현재 비밀번호" className={`${inputCls} mt-5`} />
         <input type="password" required autoComplete="new-password" minLength={8} value={next} onChange={(e) => setNext(e.target.value)} placeholder="새 비밀번호 (8자 이상)" className={`${inputCls} mt-2.5`} />
         <input type="password" required autoComplete="new-password" value={again} onChange={(e) => setAgain(e.target.value)} placeholder="새 비밀번호 확인" className={`${inputCls} mt-2.5`} />
-        {err && <p className="mt-2 text-[11.5px] leading-relaxed text-red-600">{err}</p>}
+        {err && <p className="mt-2 text-[0.7188rem] leading-relaxed text-red-600">{err}</p>}
         <div className="mt-4 flex gap-2">
-          <button type="button" onClick={onClose} className="flex-1 rounded border border-neutral-300 py-3 text-[13px] font-bold hover:bg-neutral-50">취소</button>
-          <button disabled={busy} className="flex-1 rounded bg-brand py-3 text-[13px] font-bold text-white hover:bg-brand-dark disabled:opacity-60">{busy ? "변경 중..." : "변경"}</button>
+          <button type="button" onClick={onClose} className="flex-1 rounded border border-neutral-300 py-3 text-[0.8125rem] font-bold hover:bg-neutral-50">취소</button>
+          <button disabled={busy} className="flex-1 rounded bg-brand py-3 text-[0.8125rem] font-bold text-white hover:bg-brand-dark disabled:opacity-60">{busy ? "변경 중..." : "변경"}</button>
         </div>
       </form>
     </div>
@@ -231,13 +231,13 @@ function Dashboard({ cred }: { cred: Cred }) {
   return (
     <main className="min-h-screen bg-neutral-50">
       <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-[1100px] flex-wrap items-center justify-between gap-3 px-4 py-4">
+        <div className="mx-auto flex max-w-[68.75rem] flex-wrap items-center justify-between gap-3 px-4 py-4">
           <div className="flex flex-wrap items-baseline gap-x-3">
-            <h1 className="text-[17px] font-black">구해줘창업 관리자</h1>
+            <h1 className="text-[1.0625rem] font-black">구해줘창업 관리자</h1>
             <span className="text-neutral-300">/</span>
-            <p className="text-[14px] font-bold">{typeof me === "object" ? <><span className="text-ink">{me.name || cred.u}</span> <span className="text-brand">{me.super ? "최고 관리자" : "일반 관리자"}님</span></> : <span className="text-ink">{cred.u}</span>}</p>
+            <p className="text-[0.875rem] font-bold">{typeof me === "object" ? <><span className="text-ink">{me.name || cred.u}</span> <span className="text-brand">{me.super ? "최고 관리자" : "일반 관리자"}님</span></> : <span className="text-ink">{cred.u}</span>}</p>
           </div>
-          <div className="flex items-center gap-2 text-[12px]">
+          <div className="flex items-center gap-2 text-[0.75rem]">
             <Link href="/" className="rounded border border-neutral-300 px-3 py-2 font-bold hover:border-brand hover:text-brand">사이트 보기</Link>
             <button onClick={() => setPwOpen(true)} className="rounded border border-neutral-300 px-3 py-2 font-bold hover:border-brand hover:text-brand">비밀번호 변경</button>
             <button onClick={() => { supabase?.rpc("admin_logout", cred).then(() => save(null), () => save(null)); }} className="rounded bg-ink px-3 py-2 font-bold text-white hover:bg-black">로그아웃</button>
@@ -246,13 +246,13 @@ function Dashboard({ cred }: { cred: Cred }) {
       </header>
       {pwOpen && <ChangePassword cred={cred} onClose={() => setPwOpen(false)} />}
 
-      <div className="mx-auto flex max-w-[1240px] flex-col gap-5 px-4 py-6 lg:flex-row lg:items-start">
-        <nav className="shrink-0 space-y-2 lg:sticky lg:top-6 lg:w-[230px]">
+      <div className="mx-auto flex max-w-[77.5rem] flex-col gap-5 px-4 py-6 lg:flex-row lg:items-start">
+        <nav className="shrink-0 space-y-2 lg:sticky lg:top-6 lg:w-[14.375rem]">
           {me !== undefined && me !== "legacy" && me.super && (
-            <button onClick={() => setTab("accounts")} className={`flex w-full items-center justify-between rounded-xl border px-4 py-4 text-[17px] font-black transition ${tab === "accounts" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>계정 관리</button>
+            <button onClick={() => setTab("accounts")} className={`flex w-full items-center justify-between rounded-xl border px-4 py-4 text-[1.0625rem] font-black transition ${tab === "accounts" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>계정 관리</button>
           )}
           {can("main") && (
-            <button onClick={() => setTab("main")} className={`flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-4 text-[17px] font-black transition ${tab === "main" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>메인 페이지 관리</button>
+            <button onClick={() => setTab("main")} className={`flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-4 text-[1.0625rem] font-black transition ${tab === "main" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>메인 페이지 관리</button>
           )}
           {([
             ...(canConsult ? [["consult", "상담 관리", myKinds.map(([k, t]) => {
@@ -267,17 +267,17 @@ function Dashboard({ cred }: { cred: Cred }) {
             const todoN = g === "consult" ? items.reduce((a, m) => a + (m.id === "c-all" ? 0 : m.n), 0) : 0;
             return (
               <div key={g} className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-                <button onClick={() => setOpenG((o) => ({ ...o, [g]: !o[g] }))} aria-expanded={isOpen} className={`flex w-full items-center justify-between px-4 py-4 text-[17px] font-black transition ${tab === g ? "text-brand" : "text-ink"}`}>
-                  <span className="flex items-center gap-2">{title}{todoN > 0 && <span className="rounded-full bg-orange-50 px-2 py-0.5 text-[12px] text-brand">{todoN}</span>}</span>
-                  <span className={`text-[13px] text-neutral-400 transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
+                <button onClick={() => setOpenG((o) => ({ ...o, [g]: !o[g] }))} aria-expanded={isOpen} className={`flex w-full items-center justify-between px-4 py-4 text-[1.0625rem] font-black transition ${tab === g ? "text-brand" : "text-ink"}`}>
+                  <span className="flex items-center gap-2">{title}{todoN > 0 && <span className="rounded-full bg-orange-50 px-2 py-0.5 text-[0.75rem] text-brand">{todoN}</span>}</span>
+                  <span className={`text-[0.8125rem] text-neutral-400 transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
                 </button>
                 {isOpen && (
                   <ul className="space-y-1 border-t border-neutral-100 p-2">
                     {items.map((m) => (
                       <li key={m.id}>
-                        <button onClick={m.go} className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-[14px] font-bold transition ${m.on ? "bg-ink text-white" : "text-neutral-600 hover:bg-neutral-50 hover:text-brand"}`}>
+                        <button onClick={m.go} className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-[0.875rem] font-bold transition ${m.on ? "bg-ink text-white" : "text-neutral-600 hover:bg-neutral-50 hover:text-brand"}`}>
                           {m.label}
-                          {m.n > 0 && <span className={`rounded-full px-1.5 text-[11px] ${m.on ? "bg-white/20 text-white" : "bg-orange-50 text-brand"}`}>{m.n}</span>}
+                          {m.n > 0 && <span className={`rounded-full px-1.5 text-[0.6875rem] ${m.on ? "bg-white/20 text-white" : "bg-orange-50 text-brand"}`}>{m.n}</span>}
                         </button>
                       </li>
                     ))}
@@ -295,43 +295,43 @@ function Dashboard({ cred }: { cred: Cred }) {
         <div className="grid grid-cols-3 gap-3">
           {[["전체", inRange.length], ["대기", todo], ["처리 완료", inRange.length - todo]].map(([t, n]) => (
             <div key={t} className="rounded-xl border border-neutral-200 bg-white p-4">
-              <p className="text-[11px] text-neutral-400">{t}</p>
-              <p className="mt-1 text-[24px] font-black">{n}</p>
+              <p className="text-[0.6875rem] text-neutral-400">{t}</p>
+              <p className="mt-1 text-[1.5rem] font-black">{n}</p>
             </div>
           ))}
         </div>
 
         <div className="mt-5">{period.bar}</div>
         {hiddenTodo > 0 && (
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-[13px]">
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-orange-200 bg-orange-50 px-4 py-3 text-[0.8125rem]">
             <p className="font-bold text-brand">선택한 기간 밖에 처리 대기 {hiddenTodo}건이 남아 있습니다.</p>
-            <button type="button" onClick={() => { period.reset(); setFilter("todo"); }} className="cursor-pointer rounded bg-brand px-3 py-1.5 text-[12px] font-bold text-white hover:opacity-90">대기 건 모두 보기</button>
+            <button type="button" onClick={() => { period.reset(); setFilter("todo"); }} className="cursor-pointer rounded bg-brand px-3 py-1.5 text-[0.75rem] font-bold text-white hover:opacity-90">대기 건 모두 보기</button>
           </div>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <div className="flex rounded-lg bg-white p-1 text-[12px] ring-1 ring-neutral-200">
+          <div className="flex rounded-lg bg-white p-1 text-[0.75rem] ring-1 ring-neutral-200">
             {tabs.map(([k, t]) => (
               <button key={k} onClick={() => setFilter(k)} className={`rounded px-3 py-1.5 font-bold transition ${filter === k ? "bg-brand text-white" : "text-neutral-500 hover:text-ink"}`}>{t}</button>
             ))}
           </div>
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="이름·연락처·내용 검색" className={`${inputCls} max-w-[260px]`} />
-          <div className="ml-auto flex gap-2 text-[12px]">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="이름·연락처·내용 검색" className={`${inputCls} max-w-[16.25rem]`} />
+          <div className="ml-auto flex gap-2 text-[0.75rem]">
             <button onClick={load} className="rounded border border-neutral-300 bg-white px-3 py-2 font-bold hover:border-brand hover:text-brand">새로고침</button>
             <button onClick={csv} disabled={!period.filtered.length} className="rounded border border-neutral-300 bg-white px-3 py-2 font-bold hover:border-brand hover:text-brand disabled:opacity-40">CSV 내려받기</button>
           </div>
         </div>
 
-        {error && <p className="mt-4 rounded-lg bg-red-50 p-3 text-[12px] text-red-700">{error}</p>}
+        {error && <p className="mt-4 rounded-lg bg-red-50 p-3 text-[0.75rem] text-red-700">{error}</p>}
 
         <ul className="mt-4 space-y-3">
-          {rows === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
-          {rows && list.length === 0 && !error && <li className="py-16 text-center text-[13px] text-neutral-400">상담 신청이 없습니다.</li>}
-          {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">선택한 기간에 접수된 상담이 없습니다.</li>}
+          {rows === null && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">불러오는 중...</li>}
+          {rows && list.length === 0 && !error && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">상담 신청이 없습니다.</li>}
+          {period.empty && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">선택한 기간에 접수된 상담이 없습니다.</li>}
           {period.view.map((r) => (
             <li key={r.id} className={`rounded-xl border bg-white p-4 ${r.done ? "border-neutral-200 opacity-70" : "border-orange-200"}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 text-[11px]">
+                  <div className="flex flex-wrap items-center gap-2 text-[0.6875rem]">
                     <span className={`rounded px-1.5 py-0.5 font-bold ${r.done ? "bg-neutral-100 text-neutral-500" : "bg-orange-50 text-brand"}`}>{r.done ? "처리 완료" : "대기"}</span>
                     <span className={`rounded px-1.5 py-0.5 font-bold ${kindTone[kindOf(r.type)]}`}>{kindName[kindOf(r.type)]}</span>
                     {r.type && <span className="max-w-full truncate rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-600">{typeText(r.type)}</span>}
@@ -339,10 +339,10 @@ function Dashboard({ cred }: { cred: Cred }) {
                     {r.region && <span className="text-neutral-400">{r.region}</span>}
                     <span className="text-neutral-300">{fmt(r.created_at)}</span>
                   </div>
-                  <p className="mt-2 text-[15px] font-black">{r.name} <a href={`tel:${r.phone}`} className="ml-2 text-[14px] font-bold text-brand">{r.phone}</a></p>
-                  {r.message && <p className="mt-2 whitespace-pre-wrap break-words text-[12.5px] leading-relaxed text-neutral-600">{r.message}</p>}
+                  <p className="mt-2 text-[0.9375rem] font-black">{r.name} <a href={`tel:${r.phone}`} className="ml-2 text-[0.875rem] font-bold text-brand">{r.phone}</a></p>
+                  {r.message && <p className="mt-2 whitespace-pre-wrap break-words text-[0.7813rem] leading-relaxed text-neutral-600">{r.message}</p>}
                 </div>
-                <div className="flex shrink-0 gap-2 text-[11.5px]">
+                <div className="flex shrink-0 gap-2 text-[0.7188rem]">
                   <button onClick={() => toggle(r)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{r.done ? "대기로 되돌리기" : "처리 완료"}</button>
                   <button onClick={() => remove(r)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>
                 </div>
@@ -364,7 +364,7 @@ export default function AdminPage() {
     try { return stored ? (JSON.parse(stored) as Cred) : null; } catch { return null; }
   }, [stored]);
 
-  if (!supabase) return <main className="grid min-h-screen place-items-center p-6 text-center text-[13px] text-neutral-500">Supabase 환경변수가 설정되지 않았습니다.</main>;
-  if (stored === undefined) return <main className="grid min-h-screen place-items-center text-[13px] text-neutral-400">불러오는 중...</main>;
+  if (!supabase) return <main className="grid min-h-screen place-items-center p-6 text-center text-[0.8125rem] text-neutral-500">Supabase 환경변수가 설정되지 않았습니다.</main>;
+  if (stored === undefined) return <main className="grid min-h-screen place-items-center text-[0.8125rem] text-neutral-400">불러오는 중...</main>;
   return cred ? <Dashboard cred={cred} /> : <Login />;
 }

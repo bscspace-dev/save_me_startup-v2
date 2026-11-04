@@ -13,7 +13,7 @@ type Cred = { u: string; p: string };
 
 const categories = businessCategories;
 const ops = ["직접운영", "반오토", "풀오토"];
-const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[13px] outline-none focus:border-brand";
+const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[0.8125rem] outline-none focus:border-brand";
 // 지역 필터용 구·군은 입력한 주소("대구 중구 계양동")에서 자동으로 가져온다
 const regionOf = (address: string) => address.split(/s+/).find((w) => regions.some(([r]) => r === w)) ?? "";
 const PYEONG = 3.3058; // 1평 = 3.3058㎡ (저장은 ㎡, 화면 입력은 평)
@@ -22,7 +22,7 @@ const today = () => new Date().toLocaleDateString("sv-SE");
 function Label({ text, req, children }: { text: string; req?: boolean; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[11px] font-bold text-neutral-500">{text}{req && <b className="ml-0.5 text-brand">*</b>}</span>
+      <span className="mb-1 block text-[0.6875rem] font-bold text-neutral-500">{text}{req && <b className="ml-0.5 text-brand">*</b>}</span>
       {children}
     </label>
   );
@@ -64,28 +64,28 @@ export function StartupAdmin({ cred, canDelete = true }: { cred: Cred; canDelete
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-[12px] text-neutral-500">관리자에서 등록한 신규창업 {items ? `${items.length}건` : ""} <span className="text-neutral-300">· 기존 샘플(10038~10040)은 여기에 표시되지 않습니다</span></p>
-        <button onClick={() => setEditing("new")} className="rounded bg-brand px-4 py-2.5 text-[13px] font-bold text-white hover:bg-brand-dark">+ 신규창업 등록</button>
+        <p className="text-[0.75rem] text-neutral-500">관리자에서 등록한 신규창업 {items ? `${items.length}건` : ""} <span className="text-neutral-300">· 기존 샘플(10038~10040)은 여기에 표시되지 않습니다</span></p>
+        <button onClick={() => setEditing("new")} className="rounded bg-brand px-4 py-2.5 text-[0.8125rem] font-bold text-white hover:bg-brand-dark">+ 신규창업 등록</button>
       </div>
-      {note && <p className="mt-3 rounded-lg bg-red-50 p-3 text-[12px] text-red-700">{note}</p>}
+      {note && <p className="mt-3 rounded-lg bg-red-50 p-3 text-[0.75rem] text-red-700">{note}</p>}
       <div className="mt-4">{period.bar}</div>
       <ul className="mt-3 space-y-3">
-        {items === null && <li className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</li>}
-        {items && items.length === 0 && <li className="py-16 text-center text-[13px] text-neutral-400">등록된 신규창업이 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
-        {period.empty && <li className="py-16 text-center text-[13px] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
+        {items === null && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">불러오는 중...</li>}
+        {items && items.length === 0 && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">등록된 신규창업이 없습니다. 오른쪽 위 버튼으로 등록하세요.</li>}
+        {period.empty && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
         {period.view.map((l) => (
           <li key={l.id} className={`flex flex-wrap items-center gap-4 rounded-xl border bg-white p-3 ${l.hidden ? "border-dashed border-neutral-300 bg-neutral-50" : "border-neutral-200"}`}>
-            <div className="relative h-[68px] w-[100px] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+            <div className="relative h-[4.25rem] w-[6.25rem] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
-              {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[10px] font-bold text-white">숨김</span>}
+              {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[0.625rem] font-bold text-white">숨김</span>}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-[11px] text-neutral-400">[{l.id}] {l.date} · 사진 {l.photos}장 · 컨설팅 {l.startup!.done.length}/{consultItems.length}항목</p>
-              <p className="truncate text-[14px] font-black"><StateBadges l={l} />{l.title}</p>
-              <p className="text-[12px] text-neutral-500">{l.startup!.address ?? `대구 ${l.region}`} · {l.category} · 컨설팅 비용 약 {won(l.cost)}원</p>
+              <p className="text-[0.6875rem] text-neutral-400">[{l.id}] {l.date} · 사진 {l.photos}장 · 컨설팅 {l.startup!.done.length}/{consultItems.length}항목</p>
+              <p className="truncate text-[0.875rem] font-black"><StateBadges l={l} />{l.title}</p>
+              <p className="text-[0.75rem] text-neutral-500">{l.startup!.address ?? `대구 ${l.region}`} · {l.category} · 컨설팅 비용 약 {won(l.cost)}원</p>
             </div>
-            <div className="flex shrink-0 gap-2 text-[11.5px]">
+            <div className="flex shrink-0 gap-2 text-[0.7188rem]">
               <Link href={`/listings/${l.id}`} target="_blank" className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</Link>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>
@@ -150,17 +150,17 @@ function StartupForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDo
     }
   }
 
-  if (loading) return <p className="py-16 text-center text-[13px] text-neutral-400">불러오는 중...</p>;
+  if (loading) return <p className="py-16 text-center text-[0.8125rem] text-neutral-400">불러오는 중...</p>;
 
   return (
     <form onSubmit={submit} className="space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-[17px] font-black">{id === null ? "신규창업 등록" : `신규창업 수정 · ${id}번`}</h2>
-        <button type="button" onClick={() => onDone(false)} className="text-[12px] font-bold text-neutral-500 hover:text-brand">← 목록으로</button>
+        <h2 className="text-[1.0625rem] font-black">{id === null ? "신규창업 등록" : `신규창업 수정 · ${id}번`}</h2>
+        <button type="button" onClick={() => onDone(false)} className="text-[0.75rem] font-bold text-neutral-500 hover:text-brand">← 목록으로</button>
       </div>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="mb-4 text-[15px] font-black">상가 정보</h2>
+        <h2 className="mb-4 text-[0.9375rem] font-black">상가 정보</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="sm:col-span-2"><Label text="상가 이름 (상세 맨 위 제목)" req><input required value={f.title} onChange={(e) => set("title", e.target.value)} placeholder="온기 베이커리" className={inputCls} /></Label></div>
           <div className="sm:col-span-2"><Label text="지역 (구·군·동까지)" req><input required value={f.address} onChange={(e) => set("address", e.target.value)} placeholder="대구 중구 계양동" className={inputCls} /></Label></div>
@@ -178,25 +178,25 @@ function StartupForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDo
       <Photos photos={photos} setPhotos={setPhotos} />
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="mb-4 text-[15px] font-black">창업 상가 소개</h2>
+        <h2 className="mb-4 text-[0.9375rem] font-black">창업 상가 소개</h2>
         <textarea required rows={5} value={f.story} onChange={(e) => set("story", e.target.value)} placeholder="상가의 외관·분위기·규모 등을 소개해주세요" className={inputCls} />
       </section>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="text-[15px] font-black">컨설팅 리스트 <span className="ml-1 text-[12px] font-normal text-neutral-400">구해줘창업이 진행한 항목만 체크하세요 · 체크한 항목은 주황색으로 표시됩니다</span></h2>
+        <h2 className="text-[0.9375rem] font-black">컨설팅 리스트 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">구해줘창업이 진행한 항목만 체크하세요 · 체크한 항목은 주황색으로 표시됩니다</span></h2>
         <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {consultItems.map((label) => (
-            <label key={label} className={`flex cursor-pointer items-center gap-2.5 rounded-lg border px-4 py-3 text-[13px] font-bold transition ${done.includes(label) ? "border-brand bg-orange-50 text-brand" : "border-neutral-200 text-neutral-400"}`}>
+            <label key={label} className={`flex cursor-pointer items-center gap-2.5 rounded-lg border px-4 py-3 text-[0.8125rem] font-bold transition ${done.includes(label) ? "border-brand bg-orange-50 text-brand" : "border-neutral-200 text-neutral-400"}`}>
               <input type="checkbox" checked={done.includes(label)} onChange={() => toggle(label)} className="accent-[#d9480f]" />{label}
             </label>
           ))}
         </div>
       </section>
 
-      {err && <p className="rounded-lg bg-red-50 p-3 text-[12px] leading-relaxed text-red-700">{err}</p>}
+      {err && <p className="rounded-lg bg-red-50 p-3 text-[0.75rem] leading-relaxed text-red-700">{err}</p>}
       <div className="flex gap-2">
-        <button type="button" onClick={() => onDone(false)} className="rounded border border-neutral-300 bg-white px-6 py-3.5 text-[14px] font-bold hover:bg-neutral-50">취소</button>
-        <button disabled={busy} className="flex-1 rounded bg-brand py-3.5 text-[14px] font-bold text-white hover:bg-brand-dark disabled:opacity-60">{busy ? "저장 중..." : id === null ? "등록하기" : "수정 저장"}</button>
+        <button type="button" onClick={() => onDone(false)} className="rounded border border-neutral-300 bg-white px-6 py-3.5 text-[0.875rem] font-bold hover:bg-neutral-50">취소</button>
+        <button disabled={busy} className="flex-1 rounded bg-brand py-3.5 text-[0.875rem] font-bold text-white hover:bg-brand-dark disabled:opacity-60">{busy ? "저장 중..." : id === null ? "등록하기" : "수정 저장"}</button>
       </div>
     </form>
   );

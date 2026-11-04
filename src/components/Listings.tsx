@@ -63,17 +63,17 @@ export function ListingsView() {
     <>
       {/* 검색 필터 바 */}
       <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-2 px-6 py-3">
+        <div className="mx-auto flex max-w-[80rem] flex-wrap items-center gap-2 px-6 py-3">
           {["", "프랜차이즈", "상가매물", "전수창업", "신규창업"].map((k) => {
             const on = kind === k;
             const n = k ? listings.filter((l) => l.kind === k).length : listings.length;
             return (
-              <Link key={k} href={k ? `/listings?type=${k}` : "/listings"} className={`rounded-full border px-4 py-2 text-[12.5px] font-bold transition ${on ? "border-brand bg-brand text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>
+              <Link key={k} href={k ? `/listings?type=${k}` : "/listings"} className={`rounded-full border px-4 py-2 text-[0.7813rem] font-bold transition ${on ? "border-brand bg-brand text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>
                 {k || "전체"} <span className={on ? "text-white/80" : "text-neutral-400"}>{n}</span>
               </Link>
             );
           })}
-          <div className="ml-auto flex overflow-hidden rounded border border-neutral-300 bg-white text-[12px] font-bold">
+          <div className="ml-auto flex overflow-hidden rounded border border-neutral-300 bg-white text-[0.75rem] font-bold">
             {[["목록", false], ["와이드", true]].map(([label, w]) => (
               <button key={label as string} onClick={() => setWide(w as boolean)} className={`px-4 py-2 transition ${wide === w ? "bg-brand text-white" : "text-neutral-500 hover:text-brand"}`}>{label as string}</button>
             ))}
@@ -81,13 +81,13 @@ export function ListingsView() {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-[1280px] gap-6 px-6 py-8 lg:grid-cols-[1fr_180px]">
+      <div className="mx-auto grid max-w-[80rem] gap-6 px-6 py-8 lg:grid-cols-[1fr_11.25rem]">
 
         {/* 목록 */}
         <section>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-[12px] text-neutral-500">{kind && <b className={`mr-2 rounded px-2 py-1 text-[13px] ${kindColor[kind] ?? "text-ink"}`}>{kind}</b>}{region && <b className="mr-2 text-ink">{region}</b>}총 <b className="text-brand">{list.length}</b>건</p>
-            <div className="flex divide-x divide-neutral-300 overflow-hidden rounded border border-neutral-300 text-[12px]">
+            <p className="text-[0.75rem] text-neutral-500">{kind && <b className={`mr-2 rounded px-2 py-1 text-[0.8125rem] ${kindColor[kind] ?? "text-ink"}`}>{kind}</b>}{region && <b className="mr-2 text-ink">{region}</b>}총 <b className="text-brand">{list.length}</b>건</p>
+            <div className="flex divide-x divide-neutral-300 overflow-hidden rounded border border-neutral-300 text-[0.75rem]">
               {sorts.map((s) => (
                 <button key={s} onClick={() => { if (s === sort && sortable(s)) setDesc(!desc); else { setSort(s); setDesc(true); } }} className={`px-4 py-2 transition ${sort === s ? "bg-neutral-100 font-bold text-ink" : "bg-white text-neutral-500 hover:text-brand"}`}>
                   {s}{sortable(s) && sort === s ? (desc ? " ↓" : " ↑") : sortable(s) ? " ↑" : ""}
@@ -97,7 +97,7 @@ export function ListingsView() {
           </div>
 
           {list.length === 0 ? (
-            <p className="py-32 text-center text-[13px] text-neutral-400">조건에 맞는 매물이 없습니다</p>
+            <p className="py-32 text-center text-[0.8125rem] text-neutral-400">조건에 맞는 매물이 없습니다</p>
           ) : (
             <div key={`${filterKey}-${page}`} className={`grid gap-4 ${wide ? "md:grid-cols-2" : "sm:grid-cols-2 xl:grid-cols-3"}`}>
               {pageList.map((l, i) => (
@@ -106,18 +106,18 @@ export function ListingsView() {
                 {kind !== "신규창업" && <button
                   onClick={() => setInquiryOpen(true)}
                   aria-label="매물 등록 문의"
-                  className={`grid place-items-center rounded-lg border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-brand hover:text-brand ${wide ? "min-h-[104px]" : "min-h-[254px]"}`}
+                  className={`grid place-items-center rounded-lg border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-brand hover:text-brand ${wide ? "min-h-[6.5rem]" : "min-h-[15.875rem]"}`}
                 >
                   <span className="text-center">
-                    <span className="block text-[44px] font-light leading-none">+</span>
-                    <span className="mt-2 block text-[12px] font-bold">매물 등록 문의</span>
+                    <span className="block text-[2.75rem] font-light leading-none">+</span>
+                    <span className="mt-2 block text-[0.75rem] font-bold">매물 등록 문의</span>
                   </span>
                 </button>}
             </div>
           )}
 
           {totalPages > 1 && (
-            <nav aria-label="페이지 이동" className="mt-10 flex items-center justify-center gap-1.5 text-[13px]">
+            <nav aria-label="페이지 이동" className="mt-10 flex items-center justify-center gap-1.5 text-[0.8125rem]">
               <button onClick={() => goPage(page - 1)} disabled={page === 1} className="h-9 rounded border border-neutral-300 bg-white px-3 text-neutral-600 transition hover:border-brand hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-300 disabled:hover:text-neutral-600">이전</button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
                 <button key={n} onClick={() => goPage(n)} aria-current={n === page ? "page" : undefined} className={`size-9 rounded border font-bold transition ${n === page ? "border-brand bg-brand text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-brand hover:text-brand"}`}>{n}</button>
@@ -130,14 +130,14 @@ export function ListingsView() {
         {/* 우측 배너 */}
         <aside className="hidden space-y-3 self-start lg:block">
           <button onClick={() => setConsultOpen(true)} className="block w-full rounded-lg bg-brand p-4 text-left text-white transition hover:bg-brand-dark">
-            <p className="text-[10px] text-white/80">구해줘창업</p>
-            <p className="mt-1 text-[16px] font-black leading-snug">내 조건에 맞는<br />매장 찾기</p>
-            <span className="mt-3 inline-block rounded bg-white px-2 py-1 text-[10px] font-bold text-brand">무료 상담 신청하기 →</span>
+            <p className="text-[0.625rem] text-white/80">구해줘창업</p>
+            <p className="mt-1 text-[1rem] font-black leading-snug">내 조건에 맞는<br />매장 찾기</p>
+            <span className="mt-3 inline-block rounded bg-white px-2 py-1 text-[0.625rem] font-bold text-brand">무료 상담 신청하기 →</span>
           </button>
           <Link href="/transfer" className="block rounded-lg border border-orange-200 bg-cream p-4 transition hover:shadow-md">
-            <p className="text-[10px] text-neutral-500">구해줘창업</p>
-            <p className="mt-1 text-[15px] font-black leading-snug">창업 전,<br />이건 알고 가세요</p>
-            <span className="mt-3 inline-block text-[10px] font-bold text-brand">자세히 보기 →</span>          </Link>
+            <p className="text-[0.625rem] text-neutral-500">구해줘창업</p>
+            <p className="mt-1 text-[0.9375rem] font-black leading-snug">창업 전,<br />이건 알고 가세요</p>
+            <span className="mt-3 inline-block text-[0.625rem] font-bold text-brand">자세히 보기 →</span>          </Link>
         </aside>
       </div>
       <ListingInquiryPopup open={inquiryOpen} onClose={() => setInquiryOpen(false)} only={kind || undefined} />

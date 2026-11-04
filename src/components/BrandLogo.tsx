@@ -12,7 +12,7 @@ export function BrandLogo({ src, alt }: { src: string; alt: string }) {
       src={src}
       alt={alt}
       onLoad={() => setLoaded(true)}
-      className={`mb-5 h-11 w-auto max-w-[200px] object-contain object-left ${loaded ? "block" : "hidden"}`}
+      className={`mb-5 h-11 w-auto max-w-[12.5rem] object-contain object-left ${loaded ? "block" : "hidden"}`}
     />
   );
 }
