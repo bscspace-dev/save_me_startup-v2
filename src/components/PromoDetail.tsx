@@ -20,7 +20,7 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
   return (
     <main className="bg-[#f7f6f4] pb-32 md:pb-24">
       {/* 위 요약과 아래 이미지의 폭을 같은 열(960px)에 맞춘다 */}
-      <div className="mx-auto max-w-[60rem] px-4 pt-8 sm:px-6">
+      <div className="mx-auto max-w-[80rem] px-4 pt-8 sm:px-6">
         <p className="text-[0.7188rem] text-neutral-500">
           <Link href="/listings?type=프랜차이즈" className="transition hover:text-brand">← 목록으로</Link>
         </p>

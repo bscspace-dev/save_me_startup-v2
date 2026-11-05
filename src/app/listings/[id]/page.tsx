@@ -103,7 +103,7 @@ export default async function ListingDetail({ params }: Props) {
   return (
     <>
       <Header active={navLabel(l.kind)} />
-      <main className="mx-auto max-w-[68.75rem] px-6 py-10">
+      <main className="mx-auto max-w-[80rem] px-6 py-10">
         <Link href="/listings" className="text-[0.75rem] text-neutral-500 transition hover:text-brand">← 매물 목록으로</Link>
 
         <div className="mt-5 grid gap-8 lg:grid-cols-[1.2fr_1fr]">

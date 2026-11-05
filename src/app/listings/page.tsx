@@ -14,7 +14,7 @@ export default function ListingsPage() {
       <Suspense fallback={<Header />}>
         <ListingsHeader />
       </Suspense>
-      <main className="min-h-[70vh]">
+      <main className="min-h-[70vh] bg-[#f5f2f2]">
         <Suspense>
           <ListingsView />
         </Suspense>

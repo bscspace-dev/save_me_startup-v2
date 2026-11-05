@@ -103,8 +103,14 @@ export function FranchiseAdmin({ cred, canDelete = true }: { cred: Cred; canDele
   );
 }
 
+// 모집지역: "전국" 또는 지역(시·도, 여러 곳 가능). 지역은 "서울 · 경기"처럼 저장된다.
+// 예전에 직접 입력한 글자는 목록에 없어도 지우지 않고 그대로 둔다.
+const provinces = ["서울", "경기", "인천", "부산", "대구", "울산", "광주", "대전", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
+const AREA_SEP = " · ";
+const areaTokens = (a: string) => a.split(AREA_SEP).map((t) => t.trim()).filter(Boolean);
+
 function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDone: (saved: boolean) => void }) {
-  const [f, setF] = useState({ brand: "", title: "", desc: "", category: categories[0], op: ops[0], cost: "", area: "", sponsored: false, sold: false });
+  const [f, setF] = useState({ brand: "", title: "", desc: "", category: categories[0], op: ops[0], cost: "", area: "전국", sponsored: false, sold: false });
   const [card, setCard] = useState("");      // 목록 카드에 쓰는 대표 이미지
   const [slices, setSlices] = useState<string[]>([]); // 상세에 이어 붙여 보여주는 홍보 이미지 조각
   const [date, setDate] = useState("");
@@ -122,7 +128,7 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
     Promise.all([fetchRemoteListing(id), fetchRemotePhotos(id)]).then(([l, ph]) => {
       if (!alive) return;
       if (l?.promo) {
-        setF({ brand: l.promo.brand, title: l.title, desc: l.promo.desc, category: l.category, op: l.op, cost: String(l.price), area: l.promo.area ?? "", sponsored: !!l.promo.sponsored, sold: !!l.sold });
+        setF({ brand: l.promo.brand, title: l.title, desc: l.promo.desc, category: l.category, op: l.op, cost: String(l.price), area: l.promo.area || "전국", sponsored: !!l.promo.sponsored, sold: !!l.sold });
         setCard(l.thumb ?? ""); setSlices(ph); setDate(l.date ?? "");
       } else setErr("브랜드를 불러오지 못했습니다.");
       setLoading(false);
@@ -131,6 +137,14 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
   }, [id]);
 
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
+  // 모집지역 방식: 전국 / 지역 (기본은 전국)
+  const areaMode = f.area === "전국" ? "all" : "region";
+  const toggleProvince = (p: string) => {
+    const t = areaTokens(f.area);
+    const next = t.includes(p) ? t.filter((x) => x !== p) : [...t, p];
+    const known = provinces.filter((x) => next.includes(x));
+    set("area", [...known, ...next.filter((x) => !provinces.includes(x))].join(AREA_SEP));
+  };
 
   async function addPromo(files: FileList | null) {
     if (!files?.length) return;
@@ -164,6 +178,7 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!supabase) return;
+    if (!f.area.trim()) return setErr("모집지역에서 지역을 1곳 이상 선택해주세요.");
     if (!card) return setErr("목록 카드 대표 이미지를 올려주세요.");
     if (!slices.length) return setErr("홍보 이미지를 1개 이상 올려주세요.");
     setBusy(true); setErr("");
@@ -196,7 +211,29 @@ function FranchiseForm({ cred, id, onDone }: { cred: Cred; id: number | null; on
         <h2 className="mb-4 text-[0.9375rem] font-black">브랜드 정보</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <Label text="브랜드명" req><input required value={f.brand} onChange={(e) => set("brand", e.target.value)} placeholder="브랜드 이름" className={inputCls} /></Label>
-          <Label text="모집지역 (선택)"><input value={f.area} onChange={(e) => set("area", e.target.value)} placeholder="전국 · 대구 우선 모집" className={inputCls} /></Label>
+          <div className="sm:col-span-2">
+            <p className="mb-1.5 text-[0.75rem] font-bold text-neutral-600">모집지역</p>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 text-[0.8125rem]">
+              {([["all", "전국"], ["region", "지역"]] as const).map(([m, label]) => (
+                <label key={m} className="flex cursor-pointer items-center gap-1.5">
+                  <input type="radio" name="areaMode" checked={areaMode === m} className="accent-[#d9480f]"
+                    onChange={() => { if (m === "all") set("area", "전국"); else if (f.area === "전국") set("area", ""); }} />
+                  {label}
+                </label>
+              ))}
+            </div>
+            {areaMode === "region" && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {[...provinces, ...areaTokens(f.area).filter((t) => !provinces.includes(t))].map((p) => {
+                  const on = areaTokens(f.area).includes(p);
+                  return (
+                    <button key={p} type="button" onClick={() => toggleProvince(p)} aria-pressed={on}
+                      className={`rounded-full border px-3 py-1 text-[0.8125rem] transition ${on ? "border-ink bg-ink font-bold text-white" : "border-neutral-300 bg-white text-neutral-600 hover:border-ink"}`}>{p}</button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
           <div className="sm:col-span-2"><Label text="제목 (목록 카드와 상세의 큰 제목)" req><input required value={f.title} onChange={(e) => set("title", e.target.value)} placeholder="회사 다니면서도 도전할 수 있는 무인 인형뽑기 창업" className={inputCls} /></Label></div>
           <div className="sm:col-span-2"><Label text="소개 문구 (300자까지 · Enter로 줄바꿈 · **글자** 로 감싸면 진하게)" req><textarea required rows={3} maxLength={300} value={f.desc} onChange={(e) => set("desc", e.target.value)} placeholder="월 순수익 800만원, 본사 직접 책임 시공과 A/S" className={inputCls} /></Label></div>
           <Label text="업종">

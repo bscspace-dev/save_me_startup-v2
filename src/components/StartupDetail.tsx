@@ -19,7 +19,7 @@ export function StartupDetail({ l, c, srcs }: { l: Listing; c: StartupCase; srcs
   ];
 
   return (
-    <main className="mx-auto max-w-[68.75rem] px-6 py-10">
+    <main className="mx-auto max-w-[80rem] px-6 py-10">
       <Link href="/listings?type=신규창업" className="text-[0.75rem] text-neutral-500 transition hover:text-brand">← 목록으로</Link>
 
       <h1 className="mt-4 text-[1.75rem] font-black leading-snug md:text-[2.125rem]">{c.title}</h1>

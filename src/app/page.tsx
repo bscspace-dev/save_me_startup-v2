@@ -4,6 +4,7 @@ import { Categories, NewListings } from "@/components/Sections";
 import { Consult } from "@/components/ConsultForm";
 import { Footer } from "@/components/Footer";
 import { TestNoticePopup } from "@/components/TestNoticePopup";
+import { YoutubePopup } from "@/components/YoutubePopup";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Consult />
       </main>
       <Footer />
+      <YoutubePopup />
       <TestNoticePopup />
     </>
   );

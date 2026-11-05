@@ -44,7 +44,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
 
   return (
     <main className="bg-[#f7f6f4] pb-24">
-      <div className="mx-auto max-w-[68.75rem] px-6 pt-8">
+      <div className="mx-auto max-w-[80rem] px-6 pt-8">
         <p className="text-[0.7188rem] text-neutral-500">
           <Link href="/listings?type=프랜차이즈" className="transition hover:text-brand">← 목록으로</Link>
         </p>

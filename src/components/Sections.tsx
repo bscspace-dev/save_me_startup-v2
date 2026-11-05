@@ -136,8 +136,8 @@ export function Picks() {
 }
 
 // 버튼 이름 → 매물 유형(kind). 전수창업이 가장 먼저 노출된다
-const ICON = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" } as const;
-const filters = [
+export const ICON = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" } as const;
+export const filters = [
   { label: "전수창업", kind: "전수창업", more: "전수창업 자세히 보기", icon: <><path d="M4 8h15M15 4l4 4-4 4" /><path d="M20 16H5M9 12l-4 4 4 4" /></> },
   { label: "프랜차이즈창업", kind: "프랜차이즈", more: "브랜드 자세히 보기", icon: <><path d="M3 9l1.5-5h15L21 9" /><path d="M3 9c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3" /><path d="M5 12v8h14v-8" /><path d="M10 20v-5h4v5" /></> },
   { label: "상가매물", kind: "상가매물", more: "매물 자세히 보기", icon: <><path d="M12 21s-7-6.2-7-11.2A7 7 0 0 1 19 9.8C19 14.8 12 21 12 21z" /><circle cx="12" cy="10" r="2.5" /></> },
@@ -145,7 +145,7 @@ const filters = [
 ];
 
 // 홈 "새롭게 등록된 창업 정보" 카드: 사진 / 가운데 큰 제목 / 짧은 설명 / 자세히 보기
-function NewCard({ l, i, more }: { l: Listing; i: number; more: string }) {
+export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?: boolean }) {
   const shop = l.shop ?? (l.kind === "상가매물" ? shops[l.id] : undefined);
   const t = l.kind === "전수창업" ? transferOf(l) : undefined;
   const c = l.kind === "신규창업" ? startupOf(l) : undefined;
@@ -153,24 +153,20 @@ function NewCard({ l, i, more }: { l: Listing; i: number; more: string }) {
   const title = brand ?? c?.title ?? l.title;
   const desc = brand ? (l.promo?.desc || l.title) : c ? c.summary : t ? `${t.master.name} 사부의 전수메뉴` : `${l.region} · ${shop?.buildingType ?? l.category}`;
   return (
-    <Reveal delay={Math.min(i, 8) * 0.05} className="w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto">
+    <Reveal delay={Math.min(i, 8) * 0.05} className={fluid ? "" : "w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto"}>
       <motion.a href={`/listings/${l.id}`} whileHover={{ y: -6 }} className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-xl">
-        <div className="relative h-[9.375rem] bg-neutral-100 sm:h-[10.625rem]">
+        <div className={`relative bg-neutral-100 sm:h-[10.625rem] ${fluid ? "h-[7.5rem]" : "h-[9.375rem]"}`}>
           {l.photos ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={l.thumb ?? photoSrc(l.id, 1)} alt={l.title} className="absolute inset-0 size-full object-cover" />
           ) : null}
-          <div className="absolute left-2.5 top-2.5 flex gap-1.5 text-[0.75rem] font-black text-ink">
-            {!c && l.isNew && <span className="rounded-full bg-[#F0C33F] px-3 py-0.5">NEW</span>}
-            <span className="rounded-full bg-[#F0C33F] px-3 py-0.5">{l.kind}</span>
-          </div>
           {l.sold && l.kind !== "전수창업" && <div className="absolute inset-0 grid place-items-center bg-black/55 text-[0.9375rem] font-bold text-white">계약완료</div>}
         </div>
-        <div className="flex flex-1 flex-col px-5 pb-4 pt-5">
-          <h3 className="line-clamp-1 text-center font-gmarket text-[1.25rem] font-bold tracking-tight">{title}</h3>
-          <p className="mt-2 line-clamp-2 min-h-[2.625rem] text-center text-[0.875rem] leading-relaxed text-[#2d2d2d]">{brand ? <RichText text={desc.replace(/\s*\n\s*/g, " ")} max={40} /> : desc}</p>
+        <div className={`flex flex-1 flex-col sm:px-5 sm:pb-4 sm:pt-5 ${fluid ? "px-3 pb-3 pt-4" : "px-5 pb-4 pt-5"}`}>
+          <h3 className={`line-clamp-1 text-center font-gmarket font-bold tracking-tight sm:text-[1.25rem] ${fluid ? "text-[1rem]" : "text-[1.25rem]"}`}>{title}</h3>
+          <p className={`mt-2 line-clamp-2 min-h-[2.625rem] text-center leading-relaxed text-[#2d2d2d] sm:text-[0.875rem] ${fluid ? "text-[0.8125rem]" : "text-[0.875rem]"}`}>{brand ? <RichText text={desc.replace(/\s*\n\s*/g, " ")} max={40} /> : desc}</p>
           <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-3.5 text-[0.875rem] font-bold text-ink">
-            <span>{more}</span><span aria-hidden className="text-[1.25rem] leading-none">→</span>
+            <span>자세히 보기</span><span aria-hidden className="text-[1.25rem] leading-none">→</span>
           </div>
         </div>
       </motion.a>
@@ -191,7 +187,6 @@ export function NewListings() {
     .sort((a, b) => b.id - a.id)
     .filter((l) => !l.sold && l.kind === active && fresh(l.date))
     .slice(0, 8);
-  const more = filters.find((f) => f.kind === active)!.more;
 
   return (
     <section id="new" className="bg-[#f5f2f2]">
@@ -213,16 +208,16 @@ export function NewListings() {
           <div className="mt-3 h-1.5 w-16 rounded-full" style={{ background: NEON }} />
         </div>
       </Reveal>
-      <div className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-2.5">
+      <div className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-2">
         {filters.map((f) => (
-          <button key={f.kind} onClick={() => setActive(f.kind)} className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border px-3 py-1.5 sm:px-5 font-gmarket text-[0.875rem] font-bold transition ${active === f.kind ? "border-ink bg-ink text-white" : "border-ink/70 bg-white text-ink hover:bg-neutral-100"}`}>
-            <svg viewBox="0 0 24 24" aria-hidden className="size-[1.125rem] shrink-0" {...ICON}>{f.icon}</svg>{f.label}
+          <button key={f.kind} onClick={() => setActive(f.kind)} className={`inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full border py-1.5 pl-3.5 pr-4 font-gmarket text-[0.8125rem] font-bold transition ${active === f.kind ? "border-ink bg-ink text-white" : "border-ink/70 bg-white text-ink hover:bg-neutral-100"}`}>
+            <svg viewBox="0 0 24 24" aria-hidden className="size-4 shrink-0" {...ICON}>{f.icon}</svg>{f.label}
           </button>
         ))}
       </div>
       <div className="mt-5 -mx-6 flex min-h-[18.75rem] snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 lg:mx-0 lg:grid lg:grid-cols-4 lg:items-stretch lg:overflow-visible lg:px-0 lg:pb-0">
         {list.length === 0 && <p className="w-full py-20 lg:col-span-4 text-center text-[0.875rem] text-neutral-400">해당 유형의 신규 매물이 아직 없습니다</p>}
-        {list.map((l, i) => <NewCard key={l.id} l={l} i={i} more={more} />)}
+        {list.map((l, i) => <NewCard key={l.id} l={l} i={i} />)}
       </div>
     </div>
     </section>
