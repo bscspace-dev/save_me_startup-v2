@@ -3,7 +3,7 @@ import { RichText } from "./RichText";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { categories, kindBadge, listings, photoSrc, withNew, type Listing } from "@/lib/data";
+import { categories, kindBadge, listings, photoSrc, withNew, won, type Listing } from "@/lib/data";
 import { franchises } from "@/lib/franchise";
 import { shops } from "@/lib/shop";
 import { transferOf } from "@/lib/transfer";
@@ -145,28 +145,95 @@ export const filters = [
 ];
 
 // 홈 "새롭게 등록된 창업 정보" 카드: 사진 / 가운데 큰 제목 / 짧은 설명 / 자세히 보기
-export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?: boolean }) {
+// 카드·목록 줄이 함께 쓰는 표시 정보 (제목·설명)
+function cardInfo(l: Listing) {
   const shop = l.shop ?? (l.kind === "상가매물" ? shops[l.id] : undefined);
   const t = l.kind === "전수창업" ? transferOf(l) : undefined;
   const c = l.kind === "신규창업" ? startupOf(l) : undefined;
   const brand = l.kind === "프랜차이즈" ? (l.promo?.brand ?? franchises[l.id]?.brand) : undefined;
   const title = brand ?? c?.title ?? l.title;
   const desc = brand ? (l.promo?.desc || l.title) : c ? c.summary : t ? `${t.master.name} 사부의 전수메뉴` : `${l.region} · ${shop?.buildingType ?? l.category}`;
+  return { title, desc, brand };
+}
+
+export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?: boolean }) {
+  const { title, desc, brand } = cardInfo(l);
   return (
     <Reveal delay={Math.min(i, 8) * 0.05} className={fluid ? "" : "w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto"}>
       <motion.a href={`/listings/${l.id}`} whileHover={{ y: -6 }} className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-xl">
-        <div className={`relative bg-neutral-100 sm:h-[10.625rem] ${fluid ? "h-[7.5rem]" : "h-[9.375rem]"}`}>
+        <div className={`relative bg-neutral-100 ${fluid ? "h-[9.375rem] sm:h-[13rem]" : "h-[9.375rem] sm:h-[10.625rem]"}`}>
           {l.photos ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={l.thumb ?? photoSrc(l.id, 1)} alt={l.title} className="absolute inset-0 size-full object-cover" />
           ) : null}
           {l.sold && l.kind !== "전수창업" && <div className="absolute inset-0 grid place-items-center bg-black/55 text-[0.9375rem] font-bold text-white">계약완료</div>}
         </div>
-        <div className={`flex flex-1 flex-col sm:px-5 sm:pb-4 sm:pt-5 ${fluid ? "px-3 pb-3 pt-4" : "px-5 pb-4 pt-5"}`}>
-          <h3 className={`line-clamp-1 text-center font-gmarket font-bold tracking-tight sm:text-[1.25rem] ${fluid ? "text-[1rem]" : "text-[1.25rem]"}`}>{title}</h3>
-          <p className={`mt-2 line-clamp-2 min-h-[2.625rem] text-center leading-relaxed text-[#2d2d2d] sm:text-[0.875rem] ${fluid ? "text-[0.8125rem]" : "text-[0.875rem]"}`}>{brand ? <RichText text={desc.replace(/\s*\n\s*/g, " ")} max={40} /> : desc}</p>
-          <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-3.5 text-[0.875rem] font-bold text-ink">
-            <span>자세히 보기</span><span aria-hidden className="text-[1.25rem] leading-none">→</span>
+        <div className="flex flex-1 flex-col px-5 pb-4 pt-5">
+          <h3 className="line-clamp-1 text-center font-gmarket text-[1.25rem] font-bold tracking-tight">{title}</h3>
+          <p className="mt-2 line-clamp-2 min-h-[2.625rem] text-center text-[0.875rem] leading-relaxed text-[#2d2d2d]">{brand ? <RichText text={desc.replace(/\s*\n\s*/g, " ")} max={40} /> : desc}</p>
+          {(() => {
+            // 아래 줄: "자세히 보기" 대신 핵심 금액을 보여준다 (금액 정보가 없으면 자세히 보기)
+            const price = priceInfo(l);
+            return price ? (
+              <div className="mt-auto flex items-center justify-between gap-2 border-t border-neutral-100 pt-3.5 text-[0.875rem]">
+                <span className="shrink-0 text-neutral-500">{price.label}</span>
+                <span className="line-clamp-1 font-gmarket font-bold text-[#D49F12]">{price.value}</span>
+              </div>
+            ) : (
+              <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-3.5 text-[0.875rem] font-bold text-ink">
+                <span>자세히 보기</span><span aria-hidden className="text-[1.25rem] leading-none">→</span>
+              </div>
+            );
+          })()}
+        </div>
+      </motion.a>
+    </Reveal>
+  );
+}
+
+// 목록 줄 오른쪽에 보여줄 핵심 금액 (유형마다 기준이 달라 이름표와 값을 함께 만든다)
+function priceInfo(l: Listing): { label: string; value: string } | undefined {
+  const shop = l.shop ?? (l.kind === "상가매물" ? shops[l.id] : undefined);
+  if (l.kind === "프랜차이즈") return { label: "창업비용", value: l.price > 0 ? `약 ${won(l.price)}원` : "본사와 협의" };
+  if (l.kind === "신규창업") return { label: "컨설팅 비용", value: `약 ${won(l.cost)}원` };
+  if (l.kind === "전수창업") return { label: "전수 비용", value: `약 ${won(l.price)}원` };
+  if (shop && shop.premium !== undefined) {
+    return { label: "권리금", value: shop.premiumLabel ?? (shop.premium === 0 ? (shop.showZero ? "없음" : "무권리") : `${won(shop.premium)}원`) };
+  }
+  return l.price > 0 ? { label: "금액", value: `${won(l.price)}원` } : undefined;
+}
+
+// 매물 목록 페이지의 가로형 줄: 왼쪽 사진 / 제목 / 설명 / 지역·업종 / 오른쪽 핵심 금액
+export function ListingRow({ l, i }: { l: Listing; i: number }) {
+  const { title, desc, brand } = cardInfo(l);
+  const meta = [l.region, l.category].filter(Boolean).join(" · ");
+  const price = priceInfo(l);
+  return (
+    <Reveal delay={Math.min(i, 8) * 0.04}>
+      <motion.a href={`/listings/${l.id}`} whileHover={{ y: -2 }} className="group flex h-[8.375rem] items-stretch overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:border-[#F0C33F] hover:shadow-lg sm:h-[9.375rem]">
+        <div className="relative w-[6.5rem] shrink-0 bg-neutral-100 sm:w-[10rem]">
+          {l.photos ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={l.thumb ?? photoSrc(l.id, 1)} alt={l.title} className="absolute inset-0 size-full object-cover" />
+          ) : null}
+          {l.sold && l.kind !== "전수창업" && <div className="absolute inset-0 grid place-items-center bg-black/55 text-[0.8125rem] font-bold text-white">계약완료</div>}
+        </div>
+        <div className="flex min-w-0 flex-1 items-center gap-4 px-4 sm:px-6">
+          <div className="min-w-0 flex-1">
+            <h3 className="line-clamp-1 font-gmarket text-[1rem] font-bold tracking-tight transition-colors group-hover:text-[#D49F12] sm:text-[1.125rem]">{title}</h3>
+            <p className="mt-1 line-clamp-2 text-[0.8125rem] leading-relaxed text-[#2d2d2d] sm:text-[0.875rem]">{brand ? <RichText text={desc.replace(/\s*\n\s*/g, " ")} max={60} /> : desc}</p>
+            <p className="mt-1 line-clamp-1 text-[0.75rem] text-neutral-500">
+              {meta}
+              {price && <span className="font-bold text-[#D49F12] sm:hidden lg:inline">{meta ? " · " : ""}{price.label} {price.value}</span>}
+            </p>
+          </div>
+          <div className="hidden w-[11rem] shrink-0 self-stretch border-l border-neutral-200 pl-6 sm:flex sm:flex-col sm:justify-center sm:text-right lg:hidden">
+            {price && (
+              <>
+                <p className="text-[0.75rem] text-neutral-500">{price.label}</p>
+                <p className="mt-0.5 line-clamp-1 font-gmarket text-[1.0625rem] font-bold tabular-nums text-[#D49F12]">{price.value}</p>
+              </>
+            )}
           </div>
         </div>
       </motion.a>

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { businessCategories, listings as staticListings, withNew, type Listing } from "@/lib/data";
 import { fetchRemoteListings } from "@/lib/remote";
-import { NewCard, filters, ICON } from "./Sections";
+import { ListingRow, filters, ICON } from "./Sections";
 import { ListingInquiryPopup } from "./ListingInquiryPopup";
 import { ConsultPopup } from "./ConsultPopup";
 
@@ -19,7 +19,7 @@ const sortOptions: { label: string; sort: Sort; desc: boolean }[] = [
   { label: "면적 좁은순", sort: "면적순", desc: false },
 ];
 
-// 한 페이지 12칸 (데스크톱 4열 × 3줄): 카드 11개 + 맨 마지막 칸은 항상 "매물 등록 문의" (신규창업은 문의 칸이 없어 카드 12개)
+// 한 페이지 12칸: 매물 11개 + 맨 마지막 칸은 항상 "매물 등록 문의" (웹 한 줄 3개 × 4줄, 모바일·태블릿 12줄 / 신규창업은 문의 칸이 없어 매물 12개)
 const PAGE_CELLS = 12;
 
 
@@ -112,20 +112,17 @@ export function ListingsView() {
           {list.length === 0 ? (
             <p className="py-32 text-center text-[0.8125rem] text-[#2d2d2d] sm:text-[0.875rem]">조건에 맞는 매물이 없습니다</p>
           ) : (
-            <div key={`${filterKey}-${page}`} className="grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(min(100%,18.5rem),18.5rem))] sm:gap-4">
-              {pageList.map((l, i) => (
-                <NewCard key={l.id} l={l} i={i} fluid />
-              ))}
-                {kind !== "신규창업" && <button
-                  onClick={() => setInquiryOpen(true)}
-                  aria-label="매물 등록 문의"
-                  className={`grid cursor-pointer place-items-center rounded-lg border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-[#D49F12] hover:text-[#D49F12] min-h-[15.875rem]`}
-                >
-                  <span className="text-center">
-                    <span className="block text-[2.75rem] font-light leading-none">+</span>
-                    <span className="mt-2 block text-[0.8125rem] font-bold sm:text-[0.875rem]">매물 등록 문의</span>
-                  </span>
-                </button>}
+            <div key={`${filterKey}-${page}`}>
+              {/* 목록형: 모바일·태블릿은 한 줄에 하나, 웹은 한 줄에 3개 */}
+              <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
+                {pageList.map((l, i) => <ListingRow key={l.id} l={l} i={i} />)}
+                {kind !== "신규창업" && (
+                  <button onClick={() => setInquiryOpen(true)} aria-label="매물 등록 문의" className="flex min-h-[4.5rem] w-full cursor-pointer items-center justify-center gap-3 rounded-xl lg:h-[9.375rem] border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-[#D49F12] hover:text-[#D49F12]">
+                    <span className="text-[1.75rem] font-light leading-none">+</span>
+                    <span className="text-[0.8125rem] font-bold">매물 등록 문의</span>
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
