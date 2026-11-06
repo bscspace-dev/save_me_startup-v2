@@ -31,7 +31,7 @@ const steps = [
 function Head({ eyebrow, title, center = false }: { eyebrow?: string; title: string; center?: boolean }) {
   return (
     <div className={center ? "text-center" : ""}>
-      {eyebrow && <p className="text-[0.6875rem] font-bold tracking-wide text-brand">{eyebrow}</p>}
+      {eyebrow && <p className="text-[0.6875rem] font-bold tracking-wide text-[#D49F12]">{eyebrow}</p>}
       <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket">{title}</h2>
     </div>
   );
@@ -47,14 +47,14 @@ export default function TransferPage() {
           <Reveal>
             <Head title="전수창업이란?" />
             <p className="mt-5 max-w-[38.75rem] text-[0.875rem] leading-relaxed text-neutral-600">
-              검증된 사부(전수자)의 <b className="text-brand">기술과 운영 노하우를 직접 배워</b> 내가게로 시작하는 창업 방식입니다<br />혼자 시행착오를 겪는 대신, 이미 검증된 방법을 전수받아 출발합니다
+              검증된 사부(전수자)의 <b className="text-[#D49F12]">기술과 운영 노하우를 직접 배워</b> 내가게로 시작하는 창업 방식입니다<br />혼자 시행착오를 겪는 대신, 이미 검증된 방법을 전수받아 출발합니다
             </p>
           </Reveal>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {concepts.map((c, i) => (
               <Reveal key={c.no} delay={i * 0.08}>
                 <div className="h-full rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-                  <p className="text-[0.6875rem] font-bold text-brand">{c.no}</p>
+                  <p className="text-[0.6875rem] font-bold text-[#D49F12]">{c.no}</p>
                   <h3 className="mt-3 text-[1.125rem] font-black">{c.title}</h3>
                   <p className="mt-2 text-[0.7813rem] leading-relaxed text-neutral-500">{c.desc}</p>
                 </div>
@@ -77,7 +77,7 @@ export default function TransferPage() {
               {steps.map((s, i) => (
                 <Reveal key={s.title} delay={i * 0.08}>
                   <div className="h-full rounded-lg bg-white p-6 shadow-sm">
-                    <p className="text-[0.6875rem] font-bold text-brand">STEP {i + 1}</p>
+                    <p className="text-[0.6875rem] font-bold text-[#D49F12]">STEP {i + 1}</p>
                     <h3 className="mt-3 text-[1.0625rem] font-black">{s.title}</h3>
                     <p className="mt-2 whitespace-pre-line text-[0.7813rem] leading-relaxed text-neutral-500">{s.desc}</p>
                   </div>
@@ -91,13 +91,13 @@ export default function TransferPage() {
         <section className="mx-auto max-w-[80rem] px-6 pb-[3.75rem] pt-20 text-center">
           <Reveal>
             <h2 className="text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem] font-gmarket">
-              창업은 <span className="text-brand">처음이어도</span><br />준비는 <span className="text-brand">전문가답게</span>
+              창업은 <span className="text-[#F0C33F]">처음이어도</span><br />준비는 <span className="text-[#F0C33F]">전문가답게</span>
             </h2>
           </Reveal>
           <Reveal><ServiceCircles /></Reveal>
           <Reveal>
             <p className="mt-16 text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem] font-gmarket">
-              &ldquo;<span className="text-brand">시작</span>부터 <span className="text-brand">끝</span>까지 <span className="text-brand">책임</span>집니다&rdquo;
+              &ldquo;<span className="text-[#F0C33F]">시작</span>부터 <span className="text-[#F0C33F]">끝</span>까지 <span className="text-[#F0C33F]">책임</span>집니다&rdquo;
             </p>
           </Reveal>
         </section>
@@ -105,7 +105,7 @@ export default function TransferPage() {
         {/* 전수창업 매물 카드 */}
         <section className="bg-sand">
           <div className="mx-auto max-w-[80rem] px-6 pb-20 pt-[3.75rem]">
-            <Reveal><h2 className="text-[1.875rem] font-black leading-snug tracking-tight font-gmarket">&ldquo;<span className="text-brand md:text-[2.375rem] font-gmarket">사부님</span> 어디 계십니까?&rdquo;</h2></Reveal>
+            <Reveal><h2 className="text-[1.875rem] font-black leading-snug tracking-tight font-gmarket">&ldquo;<span className="text-[#F0C33F] md:text-[2.375rem] font-gmarket">사부님</span> 어디 계십니까?&rdquo;</h2></Reveal>
             <Reveal><div className="mt-8"><TransferSlider /></div></Reveal>
           </div>
         </section>
