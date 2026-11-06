@@ -5,6 +5,7 @@ import { regions, won, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import type { ShopInfo } from "@/lib/shop";
 import { supabase } from "@/lib/supabase";
+import { useToday } from "@/lib/today";
 import { StateBadges, listingSorts, listingStatuses, listingText, usePeriod } from "./period";
 import { dataUrlToBlob, shrink } from "./imageTools";
 
@@ -257,6 +258,7 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
 
 function ShopForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDone: (saved: boolean) => void }) {
   const [f, setF] = useState<Form>(empty);
+  const todayIso = useToday(); // 사용승인일은 오늘 이후로 고를 수 없다
   const [photos, setPhotos] = useState<string[]>([]);
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(id !== null);
@@ -403,7 +405,7 @@ function ShopForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDone:
                 <div key={x.k} className={x.wide ? "sm:col-span-2" : ""}>
                   <span className="mb-1 block text-[0.6875rem] font-bold text-neutral-500">{x.label}</span>
                   <div className="flex gap-2">
-                    <input type="date" value={korToDate(f[x.k] ?? "")} onChange={(e) => set(x.k, e.target.value ? dateToKor(e.target.value) : "")} className={inputCls} />
+                    <input type="date" value={korToDate(f[x.k] ?? "")} max={x.k === "approved" ? todayIso ?? undefined : undefined} onChange={(e) => set(x.k, e.target.value && !(x.k === "approved" && todayIso && e.target.value > todayIso) ? dateToKor(e.target.value) : "")} className={inputCls} />
                     {x.now && (
                       <button type="button" onClick={() => set(x.k, f[x.k] === x.now ? "" : x.now!)} aria-pressed={f[x.k] === x.now}
                         className={`shrink-0 rounded border px-4 text-[0.8125rem] font-bold transition ${f[x.k] === x.now ? "border-[#F0C33F] bg-[#F0C33F] text-ink" : "border-neutral-300 bg-white text-neutral-600 hover:border-ink"}`}>{x.now}</button>
