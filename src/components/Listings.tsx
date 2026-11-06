@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { businessCategories, listings as staticListings, withNew, type Listing } from "@/lib/data";
+import { businessCategories, byNewest, listings as staticListings, withNew, type Listing } from "@/lib/data";
 import { fetchRemoteListings } from "@/lib/remote";
 import { ListingRow, filters, ICON } from "./Sections";
 import { ListingInquiryPopup } from "./ListingInquiryPopup";
@@ -47,6 +47,7 @@ export function ListingsView() {
     const key: Record<Sort, (l: Listing) => number> = {
       최신순: (l) => l.id, 인기순: (l) => l.views, 추천순: (l) => (l.rec ? 1e6 : 0) + l.id, 금액순: (l) => l.price, 면적순: (l) => l.area,
     };
+    if (sort === "최신순") return out.sort((a, b) => (desc ? byNewest(a, b) : byNewest(b, a))); // 등록일 → 매물번호 순
     return out.sort((a, b) => (desc ? key[sort](b) - key[sort](a) : key[sort](a) - key[sort](b)));
   }, [listings, kind, region, category, sort, desc]);
 

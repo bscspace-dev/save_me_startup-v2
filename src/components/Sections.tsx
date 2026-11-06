@@ -3,7 +3,7 @@ import { RichText } from "./RichText";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { categories, kindBadge, listings, photoSrc, withNew, won, type Listing } from "@/lib/data";
+import { byNewest, categories, kindBadge, listings, photoSrc, withNew, won, type Listing } from "@/lib/data";
 import { franchises } from "@/lib/franchise";
 import { shops } from "@/lib/shop";
 import { transferOf } from "@/lib/transfer";
@@ -258,7 +258,7 @@ export function NewListings() {
   const fresh = (d?: string) => !d || !today || (new Date(today).getTime() - new Date(d).getTime()) / 86400000 <= 7;
 
   const list = withNew([...remote, ...listings])
-    .sort((a, b) => b.id - a.id)
+    .sort(byNewest)
     .filter((l) => !l.sold && l.kind === active && fresh(l.date))
     .slice(0, 8);
 

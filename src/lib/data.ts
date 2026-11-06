@@ -34,6 +34,9 @@ export type TransferData = { name: string; store: string; years: number; days: n
 export type Promo = { brand: string; desc: string; area?: string; sponsored?: boolean };
 
 // 사진: public/listings/<매물번호>/1.jpg, 2.jpg … 에 넣고 photos 에 장수를 적는다
+// 최근 등록순: 등록일(date)이 늦은 순, 같은 날이면 매물번호가 큰 순 (등록일이 없으면 가장 뒤)
+export const byNewest = (a: { date?: string; id: number }, b: { date?: string; id: number }) => (b.date ?? "").localeCompare(a.date ?? "") || b.id - a.id;
+
 export const photoSrc = (id: number, n: number) => `/listings/${id}/${n}.jpg`;
 
 export const listings: Listing[] = []; // 매물은 관리자에서 등록한 것만 표시한다 (DB)

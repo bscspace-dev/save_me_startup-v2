@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import type { Listing, Promo, Startup, TransferData } from "./data";
+import { byNewest, type Listing, type Promo, type Startup, type TransferData } from "./data";
 import type { ShopInfo } from "./shop";
 
 // 관리자에서 등록한 매물(상가매물·프랜차이즈 홍보, Supabase) → 기존 Listing 형태로 변환
@@ -40,7 +40,7 @@ export async function fetchRemoteListings(all = false): Promise<Listing[]> {
   let { data, error } = await run();
   if (noHiddenCol(error)) { cols = "id,data,thumb,photo_count,sold"; ({ data, error } = await run()); }
   if (error || !data) return (lastList ?? []).filter((l) => all || !l.hidden);
-  lastList = (data as unknown as Row[]).map(toListing);
+  lastList = (data as unknown as Row[]).map(toListing).sort(byNewest);
   return lastList.filter((l) => all || !l.hidden);
 }
 
