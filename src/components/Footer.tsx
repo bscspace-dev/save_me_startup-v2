@@ -10,10 +10,10 @@ export function Footer() {
             <img src="/logo-footer.svg" alt="구해줘창업" className="h-16 w-auto" />
           </Link>
           <nav className="flex gap-6 text-[0.75rem]">
-            {["회사소개", "이용약관", "개인정보처리방침", "광고·제휴 문의"].map((n) => (
-              n === "개인정보처리방침"
-                ? <Link key={n} href="/privacy" className="hover:text-white">{n}</Link>
-                : <a key={n} href="#" className="hover:text-white">{n}</a>
+            {([["회사소개", "#"], ["이용약관", "/terms"], ["개인정보처리방침", "/privacy"], ["광고·제휴 문의", "/partnership"]] as const).map(([n, href]) => (
+              href === "#"
+                ? <a key={n} href="#" className="hover:text-white">{n}</a>
+                : <Link key={n} href={href} className="hover:text-white">{n}</Link>
             ))}
           </nav>
         </div>
