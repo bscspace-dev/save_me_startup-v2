@@ -6,7 +6,7 @@ import { NameInput } from "./NameInput";
 import { PhoneInput } from "./PhoneInput";
 
 const types = ["상가매물", "전수창업", "프랜차이즈"];
-const regions = ["중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"];
+const regions = ["서울", "경기", "인천", "부산", "대구", "울산", "광주", "대전", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"]; // 전국 시·도
 const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[0.8125rem] outline-none transition placeholder:text-neutral-300 focus:border-[#F0C33F]";
 
 function InquiryForm({ onClose, only }: { onClose: () => void; only?: string }) {
@@ -55,9 +55,9 @@ function InquiryForm({ onClose, only }: { onClose: () => void; only?: string }) 
           ))}
         </div>
 
-        <label className="mt-4 block text-[0.75rem] font-bold">매물 지역 (대구)</label>
+        <label className="mt-4 block text-[0.75rem] font-bold">매물 지역</label>
         <select name="region" defaultValue="" className={`${field} mt-1.5 text-neutral-500`}>
-          <option value="">구·군 선택</option>
+          <option value="">시·도 선택</option>
           {regions.map((r) => <option key={r}>{r}</option>)}
         </select>
 
