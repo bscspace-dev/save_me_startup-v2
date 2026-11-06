@@ -21,7 +21,7 @@ const services = [
   ["03", "영상 제작", "전수받은 기술과 대표 메뉴가 잘 보이도록 매장 소개 영상과 숏폼 콘텐츠를 제작합니다", ["기획·촬영", "편집·자막", "숏폼 제공"]],
 ] as const;
 
-const btn = "block rounded-lg bg-brand px-6 py-3.5 text-center text-[0.8125rem] font-bold text-white transition hover:bg-brand-dark";
+const btn = "block rounded-lg bg-[#F0C33F] px-6 py-3.5 text-center text-[0.8125rem] font-bold text-ink transition hover:brightness-95";
 
 export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; srcs?: string[] }) {
   const m = t.master;
@@ -53,14 +53,14 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
         </p>
 
         {/* 상단 소개 */}
-        <section className="mt-4 overflow-hidden rounded-3xl bg-gradient-to-br from-[#33231a] to-[#17100b] p-6 text-white md:p-9">
+        <section className="mt-4 overflow-hidden rounded-3xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] p-6 text-white md:p-9">
           <div className="grid gap-6 lg:grid-cols-[1.45fr_0.8fr_0.7fr]">
             <div className="flex flex-col">
               <span className="self-start rounded-full bg-white/15 px-3 py-1 text-[0.6563rem] font-bold">등록번호 {l.id}</span>
               <div className="my-auto max-lg:mt-6">
               <p className="text-[0.8125rem] font-bold tracking-wide text-white/55">{l.category}</p>
               <div className="my-6 h-px w-14 bg-white/25" />
-              <p className="text-[0.8125rem] font-bold text-[#ff7a45]">{m.name} 사부의 전수메뉴</p>
+              <p className="text-[0.8125rem] font-bold text-[#F0C33F]">{m.name} 사부의 전수메뉴</p>
               <h1 className="mt-2 text-[2.25rem] font-semibold leading-[1.15] tracking-tight text-white/90 md:text-[2.875rem] font-gmarket">{names[0] ?? menuText}</h1>
               {t.menuDesc && <p className="mt-3 line-clamp-2 max-w-[26.25rem] text-[0.8125rem] leading-relaxed text-white/70">{t.menuDesc}</p>}
               <div className="mt-9 flex flex-wrap gap-2.5">
@@ -76,21 +76,21 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
 
             <div className="grid gap-4 lg:grid-rows-[1fr_0.8fr_1fr]">
               <div className="flex flex-col justify-between rounded-2xl bg-white/10 p-5">
-                <Icon name="user" className="size-6 text-[#ff7a45]" />
+                <Icon name="user" className="size-6 text-[#F0C33F]" />
                 <div>
                   <p className="text-[0.625rem] text-white/50">교육 방식</p>
                   <p className="mt-1 text-[1rem] font-black">사부(전수자) 1:1 실습</p>
                 </div>
               </div>
-              <div className="flex flex-col justify-between rounded-2xl bg-brand p-5">
+              <div className="flex flex-col justify-between rounded-2xl bg-[#F0C33F] p-5 text-ink">
                 <div>
-                  <p className="text-[0.625rem] text-white/70">기술 전수비</p>
+                  <p className="text-[0.625rem] text-ink/70">기술 전수비</p>
                   <p className="mt-2 text-[1.75rem] font-black leading-none tracking-tight font-gmarket">{man(l.price)}</p>
                 </div>
-                <p className="mt-4 text-[0.625rem] text-white/80">구해줘창업 컨설팅 포함</p>
+                <p className="mt-4 text-[0.625rem] text-ink/70">구해줘창업 컨설팅 포함</p>
               </div>
               <div className="flex flex-col justify-between rounded-2xl bg-white/10 p-5">
-                <Icon name="bag" className="size-6 text-[#ff7a45]" />
+                <Icon name="bag" className="size-6 text-[#F0C33F]" />
                 <div>
                   <p className="text-[0.625rem] text-white/50">대표 메뉴</p>
                   <p className="mt-1 text-[1rem] font-black leading-snug">{menuText}</p>
@@ -113,9 +113,9 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
         <div className="mt-5 space-y-5">
           {/* 사부(전수자) 소개 */}
           <section id="expert" className={`${card} scroll-mt-24`}>
-            <Head title={<span className="text-brand">사부님 소개</span>} />
+            <Head title={<span className="text-[#F0C33F]">사부님 소개</span>} />
             <div className="mt-7 grid gap-4 lg:grid-cols-2">
-              <div className="relative flex min-h-[16.25rem] items-end overflow-hidden rounded-2xl bg-gradient-to-br from-[#33231a] to-[#0f0a07] text-white">
+              <div className="relative flex min-h-[16.25rem] items-end overflow-hidden rounded-2xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] text-white">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 {photo && <img src={photo} alt={`${m.name} 사부(전수자)`} className="absolute inset-0 size-full object-cover object-top" />}
                 <div className="relative w-full bg-gradient-to-t from-black/80 to-transparent p-8 pt-20">
@@ -126,7 +126,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
                 {t.timeline.length === 0 && <li className="py-3.5 font-bold text-neutral-400">경력없음</li>}
                 {t.timeline.map(([y, text], i) => (
                   <li key={i} className="flex gap-6 py-3.5">
-                    <span className={`${t.timeline.some(([yy]) => yy.includes("~")) ? "w-[5.75rem]" : "w-10"} shrink-0 whitespace-nowrap font-black ${i === t.timeline.length - 1 ? "text-brand" : "text-brand/70"}`}>{y.replace(/^(\d{4})~\1$/, "$1")}</span>
+                    <span className={`${t.timeline.some(([yy]) => yy.includes("~")) ? "w-[5.75rem]" : "w-10"} shrink-0 whitespace-nowrap font-black ${i === t.timeline.length - 1 ? "text-[#F0C33F]" : "text-[#F0C33F]/70"}`}>{y.replace(/^(\d{4})~\1$/, "$1")}</span>
                     <span className="font-bold">{text}</span>
                   </li>
                 ))}
@@ -137,7 +137,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
           {/* 교육 대표 메뉴 */}
           {((t.menuNames?.length ?? 0) > 0 || menuSrcs.length > 0) && (
             <section id="menus" className={`${card} scroll-mt-24`}>
-              <Head title={<span className="text-brand">교육 대표 메뉴</span>} />
+              <Head title={<span className="text-[#F0C33F]">교육 대표 메뉴</span>} />
               <ul className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {Array.from({ length: Math.max(menuNames.length, menuSrcs.length) }, (_, k) => (
                   <li key={k}>
@@ -164,7 +164,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
 
           {/* 비용 및 제공 자료 */}
           <section id="fee" className={`${card} scroll-mt-24`}>
-            <Head title={<span className="text-brand">전수 비용 및 제공 자료</span>} />
+            <Head title={<span className="text-[#F0C33F]">전수 비용 및 제공 자료</span>} />
             <div className="mt-6 flex flex-wrap items-center justify-between gap-x-10 gap-y-4 rounded-2xl bg-[#0f0a07] px-7 py-6 text-white">
               <div>
                 <p className="text-[0.6875rem] text-white/60">총 기술 전수비 <span className="text-white/40">· VAT 별도</span></p>
@@ -178,34 +178,34 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
             <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {provided.map((k) => (
                 <li key={k} className="flex items-center gap-2.5 rounded-xl border border-neutral-200 bg-[#faf9f7] px-5 py-4 text-[0.8125rem] font-black">
-                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#fff4ea]"><Icon name="check" className="size-3.5 text-brand" /></span>{k}
+                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#fff8dc]"><Icon name="check" className="size-3.5 text-[#D49F12]" /></span>{k}
                 </li>
               ))}
             </ul>
             <p className="mt-4 rounded-lg border border-neutral-200 bg-[#faf9f7] px-5 py-3 text-[0.6563rem] leading-relaxed text-neutral-500">점포 임차비, 인테리어, 주방 장비, 식자재 및 영업 인허가 비용은 기술 전수비에 포함되지 않으며 식자재 거래처 목록도 별도로 제공하지 않습니다</p>
-            <p className="mt-3 rounded-lg bg-[#fff4ea] px-5 py-3 text-[0.6563rem] leading-relaxed font-bold text-brand">교육 종료 후 운영 지원은 포함되지 않으며, 추가 교육이 필요한 경우 별도 일정과 비용으로 협의합니다</p>
+            <p className="mt-3 rounded-lg bg-[#fff8dc] px-5 py-3 text-[0.6563rem] leading-relaxed font-bold text-[#D49F12]">교육 종료 후 운영 지원은 포함되지 않으며, 추가 교육이 필요한 경우 별도 일정과 비용으로 협의합니다</p>
           </section>
 
           {/* 창업 홍보 서비스 */}
-          <section id="package" className="scroll-mt-24 rounded-3xl bg-gradient-to-br from-[#33231a] to-[#17100b] p-8 text-white md:p-10">
+          <section id="package" className="scroll-mt-24 rounded-3xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] p-8 text-white md:p-10">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h2 className="mt-2 text-[1.625rem] font-black tracking-tight text-[#ff7a45] font-gmarket">기술만 배우고 끝내지 않습니다</h2>
+                <h2 className="mt-2 text-[1.625rem] font-black tracking-tight text-[#F0C33F] font-gmarket">기술만 배우고 끝내지 않습니다</h2>
                 <p className="mt-3 max-w-[35rem] text-[0.75rem] leading-relaxed text-white/60">전수창업을 통해 전수받은 기술을 교육 이후 신규 매장의 영업·홍보·광고와 홍보영상 제작까지 하나의 실행 과정으로 연결합니다</p>
               </div>
-              <span className="rounded-full bg-brand/90 px-4 py-1.5 text-[0.6563rem] font-bold">구해줘창업 실행 패키지 · 별도 비용</span>
+              <span className="rounded-full bg-[#F0C33F] px-4 py-1.5 text-[0.6563rem] font-bold text-ink">구해줘창업 실행 패키지 · 별도 비용</span>
             </div>
             <div className="mt-8 grid gap-4 md:grid-cols-3">
               {services.map(([no, title, desc, items]) => (
                 <div key={no} className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6">
                   <div className="flex items-center justify-between">
-                    <span className="grid size-7 place-items-center rounded-full bg-brand text-[0.6563rem] font-black">{no}</span>
+                    <span className="grid size-7 place-items-center rounded-full bg-[#F0C33F] text-ink text-[0.6563rem] font-black">{no}</span>
                     <span className="text-[0.5625rem] tracking-wider text-white/30">LAUNCH SERVICE</span>
                   </div>
                   <p className="mt-5 text-[1.0625rem] font-black">{title}</p>
                   <p className="mt-2 text-[0.7188rem] leading-relaxed text-white/60">{desc}</p>
                   <ul className="mt-5 space-y-1.5 border-t border-white/10 pt-4 text-[0.6875rem] text-white/70">
-                    {items.map((it) => <li key={it} className="flex items-center gap-1.5"><Icon name="check" className="size-3 text-brand" />{it}</li>)}
+                    {items.map((it) => <li key={it} className="flex items-center gap-1.5"><Icon name="check" className="size-3 text-[#F0C33F]" />{it}</li>)}
                   </ul>
                 </div>
               ))}

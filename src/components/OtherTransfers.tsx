@@ -16,7 +16,7 @@ export function OtherTransfers({ currentId }: { currentId: number }) {
 
   return (
     <section className="mt-12">
-      <h2 className="text-[1.5rem] font-black tracking-tight font-gmarket">다른 <span className="text-brand">전수창업</span></h2>
+      <h2 className="text-[1.5rem] font-black tracking-tight font-gmarket">다른 <span className="text-[#F0C33F]">전수창업</span></h2>
       <div className="mt-6"><TransferSlider items={items} /></div>
     </section>
   );
