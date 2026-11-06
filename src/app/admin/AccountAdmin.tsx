@@ -10,7 +10,6 @@ type Account = { username: string; name: string | null; super: boolean; perms: s
 export const PERM_GROUPS: { title: string; short: string; items: [string, string][] }[] = [
   { title: "상담 관리", short: "상담", items: [["consult_franchise", "프랜차이즈"], ["consult_listing", "상가매물"], ["consult_transfer", "전수창업"], ["consult_newbiz", "신규창업"], ["consult_register", "등록 문의"], ["consult_other", "기타"]] },
   { title: "등록 관리", short: "등록", items: [["reg_franchise", "프랜차이즈"], ["reg_shop", "상가매물"], ["reg_transfer", "전수창업"], ["reg_startup", "신규창업"]] },
-  { title: "메인 페이지", short: "", items: [["main", "메인 페이지 관리"]] },
 ];
 
 const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[0.8125rem] outline-none focus:border-brand";

@@ -10,7 +10,6 @@ import { ShopAdmin } from "./ShopAdmin";
 import { StartupAdmin } from "./StartupAdmin";
 import { TransferAdmin } from "./TransferAdmin";
 import { AccountAdmin } from "./AccountAdmin";
-import { MainAdmin } from "./MainAdmin";
 import { usePeriod } from "./period";
 
 type Row = { id: string; name: string; phone: string; type: string | null; region: string | null; message: string | null; created_at: string; done: boolean };
@@ -121,7 +120,7 @@ function ChangePassword({ cred, onClose }: { cred: Cred; onClose: () => void }) 
 
 function Dashboard({ cred }: { cred: Cred }) {
   const [pwOpen, setPwOpen] = useState(false);
-  const [tab, setTab] = useState<"consult" | "register" | "accounts" | "main">("consult");
+  const [tab, setTab] = useState<"consult" | "register" | "accounts">("consult");
   // 내 메뉴 권한: undefined=불러오는 중, "legacy"=권한 SQL(admin-roles.sql) 실행 전이라 전부 허용
   const [me, setMe] = useState<{ super: boolean; perms: string[]; name?: string | null } | "legacy" | undefined>(undefined);
   const can = (k: string) => me === "legacy" || (!!me && (me.super || me.perms.includes(k)));
@@ -164,11 +163,11 @@ function Dashboard({ cred }: { cred: Cred }) {
   // 권한이 없는 메뉴에 있으면 허용된 첫 메뉴로 옮긴다
   useEffect(() => {
     if (me === undefined) return;
-    const ok = tab === "consult" ? canConsult : tab === "accounts" ? me !== "legacy" && me.super : tab === "main" ? can("main") : can("reg_" + reg);
+    const ok = tab === "consult" ? canConsult : tab === "accounts" ? me !== "legacy" && me.super : can("reg_" + reg);
     if (ok) return;
     /* eslint-disable react-hooks/set-state-in-effect */
     if (canConsult) setTab("consult");
-    else { const r = (["franchise", "shop", "transfer", "startup"] as const).find((k) => can("reg_" + k)); if (r) { setTab("register"); setReg(r); setOpenG((o) => ({ ...o, register: true })); } else if (can("main")) setTab("main"); }
+    else { const r = (["franchise", "shop", "transfer", "startup"] as const).find((k) => can("reg_" + k)); if (r) { setTab("register"); setReg(r); setOpenG((o) => ({ ...o, register: true })); } }
     /* eslint-enable react-hooks/set-state-in-effect */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me]);
@@ -252,9 +251,6 @@ function Dashboard({ cred }: { cred: Cred }) {
           {me !== undefined && me !== "legacy" && me.super && (
             <button onClick={() => setTab("accounts")} className={`flex w-full items-center justify-between rounded-xl border px-4 py-4 text-[1.0625rem] font-black transition ${tab === "accounts" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>계정 관리</button>
           )}
-          {can("main") && (
-            <button onClick={() => setTab("main")} className={`flex w-full cursor-pointer items-center justify-between rounded-xl border px-4 py-4 text-[1.0625rem] font-black transition ${tab === "main" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>메인 페이지 관리</button>
-          )}
           {([
             ...(canConsult ? [["consult", "상담 관리", myKinds.map(([k, t]) => {
               const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다
@@ -289,7 +285,7 @@ function Dashboard({ cred }: { cred: Cred }) {
           })}
         </nav>
         <div className="min-w-0 flex-1">
-        {tab === "accounts" ? <AccountAdmin cred={cred} /> : tab === "main" ? <MainAdmin cred={cred} /> : tab === "register" ? (<>
+        {tab === "accounts" ? <AccountAdmin cred={cred} /> : tab === "register" ? (<>
           {reg === "franchise" ? <FranchiseAdmin cred={cred} canDelete={canDelete} /> : reg === "shop" ? <ShopAdmin cred={cred} canDelete={canDelete} /> : reg === "transfer" ? <TransferAdmin cred={cred} canDelete={canDelete} /> : <StartupAdmin cred={cred} canDelete={canDelete} />}
         </>) : (<>
 

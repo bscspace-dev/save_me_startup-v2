@@ -1,11 +1,9 @@
 "use client";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
-import { fetchBanners } from "@/lib/remote";
+import { useState } from "react";
 import { ConsultPopup } from "./ConsultPopup";
 
-const BANNER_CACHE = "hero-banners-v1";
 const NEON = "#F0C33F"; // 배너의 포인트(네온) 색
 
 const paths = [
@@ -37,39 +35,14 @@ function ShopIcon() {
 }
 
 export function Hero() {
-  // 관리자(메인 페이지 관리)에서 올린 배너 이미지. 없으면 기본 그라데이션 배경
-  const [banners, setBanners] = useState<string[]>([]);
-  const [cur, setCur] = useState(0);
   const [consult, setConsult] = useState(false);
-  const [ready, setReady] = useState(false); // 배너를 받아왔는지(받아오는 동안은 기본 배경을 보여주지 않는다)
-  /* eslint-disable react-hooks/set-state-in-effect */
-  useEffect(() => {
-    // 지난번에 받아 둔 배너가 있으면 바로 보여주고, 그 사이 최신 배너를 받아와 바꾼다
-    try {
-      const c = JSON.parse(localStorage.getItem(BANNER_CACHE) ?? "[]");
-      if (Array.isArray(c) && c.length) { setBanners(c); setReady(true); }
-    } catch {}
-    fetchBanners().then((b) => {
-      setBanners(b); setReady(true);
-      try { localStorage.setItem(BANNER_CACHE, JSON.stringify(b)); } catch {} // 용량이 모자라면 캐시만 건너뛴다
-    });
-  }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
-  useEffect(() => {
-    if (banners.length < 2) return;
-    const t = setInterval(() => setCur((c) => (c + 1) % banners.length), 5000);
-    return () => clearInterval(t);
-  }, [banners.length]);
 
   return (
-    <section className={`relative overflow-hidden ${ready && !banners.length ? "bg-[#1c1512]" : "bg-[#2d2d2d]"}`}>
-      {banners.map((src, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img key={i} src={src} alt="" aria-hidden className={`absolute inset-0 size-full translate-x-[calc(10px-4.2%)] -translate-y-[40px] scale-[1.1] origin-[50%_40%] object-cover object-[50%_40%] transition-opacity duration-1000 ${i === cur % banners.length ? "opacity-100" : "opacity-0"}`} />
-      ))}
-      {/* 올린 배너 이미지가 있으면 원본 그대로 보이게 덮개를 거의 없앤다 (글씨가 읽힐 정도만 살짝). 없으면 기본 그라데이션 배경 */}
-      {ready && !banners.length && <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)]" />}
-      <div className={`absolute inset-0 bg-gradient-to-r ${!ready || banners.length ? "from-black/20 via-transparent to-black/10" : "from-black/65 via-black/25 to-black/50"}`} />
+    <section className="relative overflow-hidden bg-[#2d2d2d]">
+      {/* 메인 배너 이미지: public/hero-banner.webp 로 고정 (관리자 등록 기능은 제거). 이미지를 바꾸려면 이 파일을 교체한다 */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/hero-banner.webp" alt="" aria-hidden className={`absolute inset-0 size-full translate-x-[calc(10px-4.2%)] -translate-y-[40px] scale-[1.1] origin-[50%_40%] object-cover object-[50%_40%] `} />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/10" />
 
       <div className="relative mx-auto grid max-w-[80rem] items-center gap-10 px-6 py-10 lg:grid-cols-[1fr_25rem] lg:py-12">
         <div className="text-white">

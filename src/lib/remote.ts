@@ -66,10 +66,3 @@ export async function fetchRemotePhotos(id: number): Promise<string[]> {
   return (data ?? []).map((p: { data: string }) => p.data);
 }
 
-// 메인 배너 이미지 (관리자 > 메인 페이지 관리). 없으면 빈 배열 → 기본 배경
-export async function fetchBanners(): Promise<string[]> {
-  if (!supabase) return [];
-  const { data, error } = await retry(() => supabase!.from("main_banners").select("n,data").order("n"));
-  if (error || !data) return [];
-  return (data as unknown as { data: string }[]).map((r) => r.data);
-}
