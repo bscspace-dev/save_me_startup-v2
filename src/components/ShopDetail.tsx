@@ -159,7 +159,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
             </div>
           </section>
         </div>
-        <div className="mt-10 text-center">
+        <div className="mt-10 text-right">
           <Link href="/listings?type=상가매물" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
         </div>
       </div>
