@@ -170,7 +170,7 @@ export default function IdentityPage() {
                     <div className="grid overflow-hidden rounded-lg bg-white shadow-sm md:grid-cols-[1fr_auto_1.1fr]">
                       <div className="flex flex-col items-center justify-center p-7 text-center md:p-9">
                         <p className="text-[0.6875rem] font-bold text-[#D49F12]">STEP {s.no} · {s.label}</p>
-                        <p className="mt-3 whitespace-pre-line text-[1.5rem] font-black leading-snug tracking-tight text-[#F0C33F] md:text-[1.75rem] font-gmarket"><span className="bg-gradient-to-t from-red-500/60 from-40% to-transparent to-40% px-0.5">{s.title}</span></p>
+                        <p className="mt-3 whitespace-pre-line text-[1.5rem] font-black leading-snug tracking-tight text-red-600 md:text-[1.75rem] font-gmarket"><span className="bg-gradient-to-t from-[#F0C33F]/60 from-40% to-transparent to-40% px-0.5">{s.title}</span></p>
                         {s.desc && <p className="mt-3 text-[0.8125rem] leading-relaxed text-neutral-600">{s.desc}</p>}
                       </div>
                       <div className="grid place-items-center bg-[#F0C33F] px-6 py-3 text-[1.125rem] font-black tracking-wide text-ink md:min-w-[6.25rem] md:py-0 md:text-[1.375rem]">
@@ -181,7 +181,7 @@ export default function IdentityPage() {
                       </div>
                       <div className="flex flex-col justify-center p-7 md:p-9">
                         <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-3.5 md:translate-x-6">
-                          <p className="text-[0.875rem] font-black leading-snug text-[#D49F12]"><span className="bg-gradient-to-t from-red-500/60 from-40% to-transparent to-40% px-0.5">{s.howTitle}</span></p>
+                          <p className="text-[0.875rem] font-black leading-snug text-red-600"><span className="bg-gradient-to-t from-[#F0C33F]/60 from-40% to-transparent to-40% px-0.5">{s.howTitle}</span></p>
                           <ul className="flex flex-col gap-3.5 text-[0.8125rem] leading-snug text-neutral-600">
                             {s.how.map((h) => (
                               <li key={h} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1.5 shrink-0 rounded-full bg-[#F0C33F]" />{h}</li>
