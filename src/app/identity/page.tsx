@@ -186,8 +186,8 @@ export default function IdentityPage() {
                       </div>
                       <div className="flex flex-col justify-center p-7 md:p-9">
                         <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-3.5 md:translate-x-6">
-                          <p className="text-[0.875rem] font-black leading-snug text-ink"><span className="bg-gradient-to-t from-[#F0C33F]/60 from-40% to-transparent to-40% px-0.5">{s.howTitle}</span></p>
-                          <ul className="flex flex-col gap-3.5 text-[0.8125rem] leading-snug text-neutral-600">
+                          <p className="text-[0.9375rem] font-black leading-snug text-ink"><span className="bg-gradient-to-t from-[#F0C33F]/60 from-40% to-transparent to-40% px-0.5">{s.howTitle}</span></p>
+                          <ul className="flex flex-col gap-3.5 text-[0.9375rem] leading-snug text-neutral-600">
                             {s.how.map((h) => (
                               <li key={h} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1.5 shrink-0 rounded-full bg-[#F0C33F]" />{h}</li>
                             ))}
