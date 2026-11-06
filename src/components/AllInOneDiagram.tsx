@@ -60,9 +60,9 @@ export function AllInOneDiagram() {
             transition={{ ...move, delay: 0.6 }}
           >
             <div>
-              <p className="text-[0.6875rem] font-black leading-tight sm:text-[0.875rem]">{it.label}</p>
+              <p className="text-[0.6875rem] font-black leading-tight sm:text-[0.875rem] lg:text-[0.9375rem]">{it.label}</p>
               <span className="mx-auto my-1.5 hidden h-px w-6 bg-[#F0C33F]/40 md:block" />
-              <ul className="hidden max-w-[6.5rem] space-y-0.5 text-left text-[0.625rem] leading-snug text-neutral-600 md:block lg:max-w-[7.375rem] lg:text-[0.6875rem]">
+              <ul className="hidden max-w-[6.5rem] space-y-0.5 text-left text-[0.625rem] leading-snug text-neutral-600 md:block lg:max-w-[8.5rem] lg:text-[0.9375rem]">
                 {it.points.map((t) => (
                   <li key={t} className="flex items-start gap-1">
                     <span className="mt-[0.3125rem] size-1 shrink-0 rounded-full bg-[#F0C33F]" />
@@ -79,8 +79,8 @@ export function AllInOneDiagram() {
       <ul className="mx-auto mt-6 grid max-w-[26.25rem] gap-3 text-left md:hidden">
         {items.map((it) => (
           <li key={it.label} className="rounded-lg border border-neutral-200 bg-white p-4">
-            <p className="text-[0.875rem] font-black">{it.label}</p>
-            <ul className="mt-2 space-y-1 text-[0.7813rem] text-neutral-600">
+            <p className="text-[0.9375rem] font-black">{it.label}</p>
+            <ul className="mt-2 space-y-1 text-[0.9375rem] text-neutral-600">
               {it.points.map((t) => (
                 <li key={t} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1 shrink-0 rounded-full bg-[#F0C33F]" />{t}</li>
               ))}
