@@ -12,9 +12,10 @@ export type Status<T> = { key: string; label: string; test: (t: T) => boolean };
 export type Sort<T> = { key: string; label: string; cmp: (a: T, b: T) => number };
 
 // 상태 칩: 노출중(고객에게 보임) · 숨김 · (마감 표시가 있는 종류만) 계약완료/모집마감
-export const listingStatuses = (soldLabel?: string): Status<Listing>[] => [
+export const listingStatuses = (soldLabel?: string, review = false): Status<Listing>[] => [
   { key: "show", label: "노출중", test: (l) => !l.hidden },
   { key: "hidden", label: "숨김", test: (l) => !!l.hidden },
+  ...(review ? [{ key: "review", label: "확인필요", test: (l: Listing) => !!l.needsReview }] : []),
   ...(soldLabel ? [{ key: "sold", label: soldLabel, test: (l: Listing) => !!l.sold }] : []),
 ];
 
@@ -33,6 +34,7 @@ export const listingSorts = (cost?: { label: string; of: (l: Listing) => number 
 export function StateBadges({ l, soldLabel }: { l: Listing; soldLabel?: string }) {
   return (
     <>
+      {l.needsReview && <span className="mr-1.5 shrink-0 rounded bg-red-600 px-1.5 py-0.5 align-middle text-[0.6563rem] font-bold text-white">확인필요</span>}
       {l.hidden && <span className="mr-1.5 shrink-0 rounded bg-neutral-800 px-1.5 py-0.5 align-middle text-[0.6563rem] font-bold text-white">숨김</span>}
       {soldLabel && l.sold && <span className="mr-1.5 shrink-0 rounded bg-orange-100 px-1.5 py-0.5 align-middle text-[0.6563rem] font-bold text-brand">{soldLabel}</span>}
     </>

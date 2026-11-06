@@ -19,7 +19,7 @@ export const categories = [
 export type Listing = {
   id: number; price: number; title: string; region: string; category: string;
   op: "직접운영" | "반오토" | "풀오토"; cost: number; area: number;
-  date?: string; photos?: number; rec?: boolean; isNew?: boolean; sold?: boolean; hidden?: boolean; views: number; kind: string;
+  date?: string; photos?: number; rec?: boolean; isNew?: boolean; sold?: boolean; hidden?: boolean; needsReview?: boolean; views: number; kind: string;
   // 관리자에서 등록한 매물(Supabase)만 가진다: 목록용 작은 이미지와 상세 정보
   thumb?: string; shop?: ShopInfo; promo?: Promo; startup?: Startup; transfer?: TransferData;
 };

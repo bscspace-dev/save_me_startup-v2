@@ -15,7 +15,7 @@ const categories = businessCategories;
 const ops = ["직접운영", "반오토", "풀오토"];
 const inputCls = "w-full rounded border border-neutral-300 bg-white px-3 py-2.5 text-[0.8125rem] outline-none focus:border-brand";
 // 지역 필터용 구·군은 입력한 주소("대구 중구 계양동")에서 자동으로 가져온다
-const regionOf = (address: string) => address.split(/s+/).find((w) => regions.some(([r]) => r === w)) ?? "";
+const regionOf = (address: string) => address.split(/\s+/).find((w) => regions.some(([r]) => r === w)) ?? "";
 const PYEONG = 3.3058; // 1평 = 3.3058㎡ (저장은 ㎡, 화면 입력은 평)
 const today = () => new Date().toLocaleDateString("sv-SE");
 

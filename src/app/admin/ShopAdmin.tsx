@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { useToday } from "@/lib/today";
 import { StateBadges, listingSorts, listingStatuses, listingText, usePeriod } from "./period";
 import { dataUrlToBlob, shrink } from "./imageTools";
+import { ShopImport, type Built, type ImportRow } from "./ShopImport";
 
 type Cred = { u: string; p: string };
 type Form = Record<string, string>;
@@ -51,7 +52,7 @@ const extraLabels = [["x_deal", "거래 형태"], ["x_room", "화장실"]] as co
 const empty: Form = { sold: "" };
 
 // 지역 필터용 구·군은 소재지("대구 수성구 두산동")에서 자동으로 가져온다
-const regionOf = (address: string) => address.split(/s+/).find((w) => regions.some(([r]) => r === w)) ?? "";
+const regionOf = (address: string) => address.split(/\s+/).find((w) => regions.some(([r]) => r === w)) ?? "";
 
 const num = (s: string) => Number(String(s).replace(/,/g, "")) || 0;
 const PYEONG = 3.3058; // 1평 = 3.3058㎡ (저장은 ㎡, 화면 입력은 평)
@@ -104,7 +105,44 @@ function toData(f: Form, date: string) {
     title: f.title.trim(), region: regionOf(f.address), category: "기타 업종", op: "직접운영",
     area, price: deposit + premium, cost: deposit + premium,
     date, shop,
+    ...(f.review ? { needsReview: true } : {}), // 엑셀로 등록해 아직 확인 전인 매물은 수정해도 확인필요 표시를 유지한다
   };
+}
+
+// 엑셀 한 줄(열 이름 → 글자) → 등록용 데이터. 입력 화면과 같은 규칙으로 검사하고, 문제가 있으면 errors 에 담는다
+const IMPORT_NUM = /^\d[\d,]*(\.\d+)?$/;
+function buildFromRow(r: ImportRow): Built {
+  const g = (h: string) => (r[h] ?? "").trim();
+  const errors: string[] = [];
+  for (const h of ["매물 제목", "소재지", "전용면적(평)", "건축물 용도", "해당 층", "총 층", "한 줄 소개", "보증금(만원)", "월세(만원)"]) if (!g(h)) errors.push(`${h} 비어 있음`);
+  for (const h of ["전용면적(평)", "보증금(만원)", "월세(만원)", "권리금(만원)", "해당 층", "총 층", "주차 대수"]) if (g(h) && !IMPORT_NUM.test(g(h))) errors.push(`${h}은 숫자만`);
+  if (g("전용면적(평)") && IMPORT_NUM.test(g("전용면적(평)")) && num(g("전용면적(평)")) <= 0) errors.push("전용면적은 0보다 커야 함");
+  if (g("소재지") && !regionOf(g("소재지"))) errors.push("소재지에 구·군 이름 필요 (예: 대구 수성구 황금동)");
+  if (g("한 줄 소개").length > 80) errors.push("한 줄 소개는 80자 이하");
+  if (g("방향") && !directions.includes(g("방향"))) errors.push(`방향은 ${directions.join("/")} 중 하나`);
+  if (g("거래 형태") && !deals.includes(g("거래 형태"))) errors.push(`거래 형태는 ${deals.join("/")} 중 하나`);
+  const kind = g("해당 층 구분(지상/지하)") || "지상";
+  if (kind !== "지상" && kind !== "지하") errors.push("해당 층 구분은 지상/지하");
+  if (g("주차(가능/불가능)") && !["가능", "불가능"].includes(g("주차(가능/불가능)"))) errors.push("주차는 가능/불가능");
+  if (g("화장실(있음/없음)") && !["있음", "없음"].includes(g("화장실(있음/없음)"))) errors.push("화장실은 있음/없음");
+  const approvedIso = korToDate(g("사용승인일")) || g("사용승인일").replace(/\./g, "-").match(/^\d{4}-\d{1,2}-\d{1,2}$/)?.[0].replace(/-(\d)(?=-|$)/g, "-0$1") || "";
+  if (g("사용승인일") && !approvedIso) errors.push("사용승인일은 2024-05-30 형태로");
+  else if (approvedIso > today()) errors.push("사용승인일은 오늘 이후일 수 없음");
+  const moveIso = korToDate(g("입주 가능일")) || g("입주 가능일").match(/^\d{4}-\d{1,2}-\d{1,2}$/)?.[0].replace(/-(\d)(?=-|$)/g, "-0$1") || "";
+  if (g("입주 가능일") && g("입주 가능일") !== "즉시 입주" && !moveIso) errors.push("입주 가능일은 날짜 또는 '즉시 입주'");
+  if (errors.length) return { errors };
+  const parking = g("주차(가능/불가능)") === "가능" ? (g("주차 대수") ? `가능 ${num(g("주차 대수"))}대` : "가능") : g("주차(가능/불가능)");
+  const f: Form = {
+    title: g("매물 제목"), address: g("소재지"), area: g("전용면적(평)"), buildingType: g("건축물 용도"),
+    floor: floorText(kind, g("해당 층"), g("총 층")), desc: g("한 줄 소개"), point: g("입지 포인트"),
+    deposit: g("보증금(만원)"), rent: g("월세(만원)"), maintenance: g("관리비(만원)") || "0", premium: g("권리금(만원)") || "0",
+    direction: g("방향"), x_deal: g("거래 형태"), approved: approvedIso ? dateToKor(approvedIso) : "",
+    moveIn: g("입주 가능일") === "즉시 입주" ? "즉시 입주" : moveIso ? dateToKor(moveIso) : "",
+    currentUse: g("현업종"), recommended: g("추천 업종"), parking,
+    x_room: g("화장실(있음/없음)") ? bathText(g("화장실(있음/없음)") === "있음" ? "yes" : "no") : "",
+    review: "1",
+  };
+  return { d: toData(f, today()), errors };
 }
 
 function fromListing(l: Listing): Form {
@@ -116,7 +154,7 @@ function fromListing(l: Listing): Form {
     deposit: String(s.deposit), rent: String(s.rent), maintenance: s.maintenance ? String(s.maintenance) : s.maintenanceLabel && s.maintenanceLabel !== "0원" ? s.maintenanceLabel : "0", premium: String(s.premium),
     direction: s.direction, parking: s.parking, approved: s.approved, moveIn: s.moveIn, currentUse: s.currentUse ?? "", recommended: s.recommended ?? "",
     ...Object.fromEntries(extraLabels.map(([k, label]) => [k, extra(label) || (k === "x_room" ? extra("방 · 화장실") : "")])),
-    sold: l.sold ? "1" : "",
+    sold: l.sold ? "1" : "", review: l.needsReview ? "1" : "",
   };
 }
 
@@ -180,10 +218,11 @@ export function Photos({ photos, setPhotos, title = "사진", lead = true }: { p
 
 export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: boolean }) {
   const [items, setItems] = useState<Listing[] | null>(null);
-  const period = usePeriod(items, (l) => l.date, { searchOf: listingText, statuses: listingStatuses("계약완료"), sorts: listingSorts({ label: "월세", of: (l) => l.shop?.rent ?? 0 }) });
+  const period = usePeriod(items, (l) => l.date, { searchOf: listingText, statuses: listingStatuses("계약완료", true), sorts: listingSorts({ label: "월세", of: (l) => l.shop?.rent ?? 0 }) });
   const [editing, setEditing] = useState<number | "new" | null>(null);
   const [tick, setTick] = useState(0);
   const [note, setNote] = useState("");
+  const [importing, setImporting] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -196,6 +235,15 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
   async function toggleHidden(l: Listing) {
     const { data, error } = await supabase!.rpc("admin_shop_set_hidden", { ...cred, listing_id: l.id, v: !l.hidden });
     if (error || !data) return setNote("변경하지 못했습니다. (hide-listings.sql 실행 여부를 확인해주세요)");
+    setNote(""); reload();
+  }
+
+  // 엑셀로 올린 "확인필요" 매물을 확인한 뒤 게시한다 (숨김 해제 + 확인필요 표시 제거)
+  async function confirmReview(l: Listing) {
+    const warn = l.photos ? "" : "\n※ 사진이 없습니다. 사진 없이 게시됩니다.";
+    if (!confirm(`매물 ${l.id}번 내용을 확인했습니다. 사이트에 게시할까요?${warn}`)) return;
+    const { data, error } = await supabase!.rpc("admin_shop_confirm", { ...cred, listing_id: l.id });
+    if (error || !data) return setNote("게시하지 못했습니다. (shop-import.sql 실행 여부와 매물 등록 권한을 확인해주세요)");
     setNote(""); reload();
   }
 
@@ -220,8 +268,16 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-[0.75rem] text-neutral-500">관리자에서 등록한 상가매물 {items ? `${items.length}건` : ""} <span className="text-neutral-300">· 기존 정적 매물(10xxx번)은 여기에 표시되지 않습니다</span></p>
-        <button onClick={() => setEditing("new")} className="rounded bg-brand px-4 py-2.5 text-[0.8125rem] font-bold text-white hover:bg-brand-dark">+ 상가매물 등록</button>
+        <div className="flex gap-2">
+          <button onClick={() => setImporting((v) => !v)} className="rounded border border-neutral-300 px-4 py-2.5 text-[0.8125rem] font-bold hover:border-brand hover:text-brand">엑셀로 등록</button>
+          <button onClick={() => setEditing("new")} className="rounded bg-brand px-4 py-2.5 text-[0.8125rem] font-bold text-white hover:bg-brand-dark">+ 상가매물 등록</button>
+        </div>
       </div>
+      {importing && (
+        <div className="mt-4">
+          <ShopImport cred={cred} build={buildFromRow} onClose={() => setImporting(false)} onDone={(n) => { setImporting(false); setNote(""); reload(); alert(`${n}건을 '확인필요' 상태로 등록했습니다. 목록에서 확인 후 게시해주세요.`); }} />
+        </div>
+      )}
       {note && <p className="mt-3 rounded-lg bg-red-50 p-3 text-[0.75rem] text-red-700">{note}</p>}
       <div className="mt-4">{period.bar}</div>
       <ul className="mt-3 space-y-3">
@@ -245,7 +301,8 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
               <PopupLink href={`/listings/${l.id}`} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</PopupLink>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "계약완료 해제" : "계약완료"}</button>
-              <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>
+              {l.needsReview && <button onClick={() => confirmReview(l)} className="rounded bg-brand px-3 py-1.5 font-bold text-white hover:bg-brand-dark">확인 후 게시</button>}
+              {!l.needsReview && <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>}
               {canDelete && <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>}
             </div>
           </li>
