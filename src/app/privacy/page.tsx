@@ -63,7 +63,8 @@ export default function PrivacyPage() {
                 <thead><tr><th className={th}>구분</th><th className={th}>수집 항목</th></tr></thead>
                 <tbody>
                   <tr><td className={td}>필수 항목</td><td className={td}>성명, 휴대전화번호</td></tr>
-                  <tr><td className={td}>선택 항목</td><td className={td}>관심 창업 유형, 상담 내용(예산·업종·현재 상황 등 정보주체가 직접 적은 내용)</td></tr>
+                  <tr><td className={td}>선택 항목</td><td className={td}>관심 창업 유형, 희망 지역(매물 등록 문의 시), 상담 내용(예산·업종·현재 상황 등 정보주체가 직접 적은 내용)</td></tr>
+                  <tr><td className={td}>서비스 이용 중 생성</td><td className={td}>문의한 매물·브랜드 번호(매물·가맹 상담 시), 신청 일시</td></tr>
                   <tr><td className={td}>자동 생성 정보</td><td className={td}>접속 IP 정보, 접속 일시, 브라우저 정보 (호스팅 서비스의 접속 기록)</td></tr>
                 </tbody>
               </table>
@@ -75,7 +76,7 @@ export default function PrivacyPage() {
 
           <Section no="2" title="개인정보의 보유 기간 및 파기">
             <Sub title="1) 보유 기간">
-              <p>기본 보유기간: <b>1년</b> (상담 처리 후 보관하며, 정보주체가 삭제를 요청하면 지체 없이 파기합니다)</p>
+              <p>기본 보유기간: <b>1년</b> (상담 처리 후 보관하며, 보유기간이 지난 정보는 관리자가 정기적으로 확인하여 삭제합니다. 정보주체가 삭제를 요청하면 지체 없이 파기합니다)</p>
               <p className="mt-2 font-bold text-ink">법정 보유기간</p>
               <ul className={`mt-1 ${ul}`}>
                 <li>소비자의 불만 또는 분쟁처리에 관한 기록: 3년 (전자상거래 등에서의 소비자보호에 관한 법률 제6조)</li>
@@ -86,9 +87,8 @@ export default function PrivacyPage() {
             </Sub>
             <Sub title="2) 파기 절차 및 방법">
               <ul className={ul}>
-                <li>파기 절차: 파기 사유가 발생한 개인정보를 선정하고, 개인정보 보호책임자의 승인을 받아 개인정보를 파기합니다.</li>
-                <li>전자파일: 완전삭제 (덮어쓰기)</li>
-                <li>종이문서: 분쇄기로 분쇄</li>
+                <li>파기 절차: 보유기간이 지났거나 처리 목적을 달성한 개인정보를 선정하여 파기합니다.</li>
+                <li>파기 방법: 데이터베이스에 저장된 정보는 관리자 페이지에서 삭제하여 복구할 수 없도록 파기합니다.</li>
               </ul>
             </Sub>
           </Section>
@@ -116,9 +116,8 @@ export default function PrivacyPage() {
 
           <Section no="5" title="개인정보의 안전성 확보조치">
             <ul className={ul}>
-              <li><b className="text-ink">관리적 조치:</b> 정기적인 교육 실시, 접근권한 기록 보관, 내부관리계획 수립·시행, 접근권한 관리</li>
-              <li><b className="text-ink">기술적 조치:</b> 접근통제시스템 설치·운영, 개인정보 암호화, 보안프로그램 설치·갱신, 접속기록 보관·점검, 고유 계정 사용</li>
-              <li><b className="text-ink">물리적 조치:</b> 문서보안, 출입통제</li>
+              <li><b className="text-ink">관리적 조치:</b> 상담 정보를 열람할 수 있는 관리자를 최소한으로 제한하고, 업무(상담 종류)별로 접근권한을 구분하여 관리합니다.</li>
+              <li><b className="text-ink">기술적 조치:</b> 관리자별 고유 계정 사용, 로그인한 관리자만 상담 정보에 접근하도록 데이터베이스 접근통제, 전송 구간 암호화(HTTPS), 저장 시 암호화(데이터베이스 호스팅 서비스 제공)</li>
             </ul>
           </Section>
 
