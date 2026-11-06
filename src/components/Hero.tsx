@@ -57,9 +57,9 @@ export function Hero() {
             당신에게 맞는 창업의 모든 순간을 <span style={{ color: "#D49F12" }}>구해줘창업</span>이 함께합니다.
           </motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mt-9 flex flex-wrap gap-2.5">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mt-9 grid max-w-[38.75rem] grid-cols-2 gap-2.5 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
             {paths.map((p) => (
-              <Link key={p.title} href={p.href} className="group inline-flex min-w-[9.375rem] items-center justify-center gap-2 rounded-full border border-white/70 bg-transparent px-7 py-1.5 font-gmarket text-[0.9375rem] font-medium text-white transition hover:-translate-y-0.5 hover:border-[#F0C33F] hover:bg-white/10 hover:text-[#F0C33F]">
+              <Link key={p.title} href={p.href} className="group flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/70 bg-transparent px-3 py-1.5 sm:px-5 font-gmarket text-[0.9375rem] font-medium text-white transition hover:-translate-y-0.5 hover:border-[#F0C33F] hover:bg-white/10 hover:text-[#F0C33F]">
                 <PathIcon k={p.icon} />
                 {p.title}
               </Link>
