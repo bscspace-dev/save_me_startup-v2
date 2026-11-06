@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { PopupLink } from "./PopupLink";
 import { useEffect, useRef, useState } from "react";
 import { businessCategories, costText, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
@@ -89,7 +89,7 @@ export function FranchiseAdmin({ cred, canDelete = true }: { cred: Cred; canDele
               <p className="text-[0.75rem] text-neutral-500">{l.category} · {l.op} · 예상 창업비 {costText(l.price)}</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[0.7188rem]">
-              <Link href={`/listings/${l.id}`} target="_blank" className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</Link>
+              <PopupLink href={`/listings/${l.id}`} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</PopupLink>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "모집마감 해제" : "모집마감"}</button>
               <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>

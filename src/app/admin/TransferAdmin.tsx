@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { PopupLink } from "./PopupLink";
 import { useEffect, useState } from "react";
 import { businessCategories, regions, won, type Listing } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
@@ -90,7 +90,7 @@ export function TransferAdmin({ cred, canDelete = true }: { cred: Cred; canDelet
               <p className="text-[0.75rem] text-neutral-500">{l.transfer!.name} 사부 · {l.transfer!.address ?? `대구 ${l.region}`} · 전수 비용 약 {won(l.price)}원</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[0.7188rem]">
-              <Link href={`/listings/${l.id}`} target="_blank" className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</Link>
+              <PopupLink href={`/listings/${l.id}`} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</PopupLink>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>
               {canDelete && <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>}

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { PopupLink } from "./PopupLink";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { franchises } from "@/lib/franchise";
 import { fetchRemoteListings } from "@/lib/remote";
@@ -335,7 +336,7 @@ function Dashboard({ cred }: { cred: Cred }) {
                     <span className={`rounded px-1.5 py-0.5 font-bold ${r.done ? "bg-neutral-100 text-neutral-500" : "bg-orange-50 text-brand"}`}>{r.done ? "처리 완료" : "대기"}</span>
                     <span className={`rounded px-1.5 py-0.5 font-bold ${kindTone[kindOf(r.type)]}`}>{kindName[kindOf(r.type)]}</span>
                     {r.type && <span className="max-w-full truncate rounded bg-neutral-100 px-1.5 py-0.5 text-neutral-600">{typeText(r.type)}</span>}
-                    {listingId(r.type) && <Link href={`/listings/${listingId(r.type)}`} target="_blank" className="rounded border border-brand px-1.5 py-0.5 font-bold text-brand hover:bg-brand hover:text-white">{r.type?.startsWith("가맹상담[") ? `${brands[Number(listingId(r.type))] ?? franchises[Number(listingId(r.type))]?.brand ?? "프랜차이즈"}` : "매물 보기 →"}</Link>}
+                    {listingId(r.type) && <PopupLink href={`/listings/${listingId(r.type)}`} className="rounded border border-brand px-1.5 py-0.5 font-bold text-brand hover:bg-brand hover:text-white">{r.type?.startsWith("가맹상담[") ? `${brands[Number(listingId(r.type))] ?? franchises[Number(listingId(r.type))]?.brand ?? "프랜차이즈"}` : "매물 보기 →"}</PopupLink>}
                     {r.region && <span className="text-neutral-400">{r.region}</span>}
                     <span className="text-neutral-300">{fmt(r.created_at)}</span>
                   </div>
