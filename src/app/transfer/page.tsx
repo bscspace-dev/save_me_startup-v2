@@ -8,8 +8,6 @@ import { TransferGuideVideo } from "@/components/TransferGuideVideo";
 import { MainPopups } from "@/components/MainPopups";
 import { ServiceCircles } from "@/components/ServiceCircles";
 import { TransferSlider } from "@/components/TransferSlider";
-import { listings } from "@/lib/data";
-import { transfers } from "@/lib/transfer";
 
 export const metadata: Metadata = {
   title: "전수창업 | 구해줘창업",
@@ -21,9 +19,6 @@ const concepts = [
   { no: "02", title: "노하우", desc: "상품 구성, 거래처, 마케팅 등 운영하며 쌓인 노하우를 전수받습니다" },
   { no: "03", title: "운영 방식", desc: "메뉴얼과 교육을 통해 매장을 운영하는 방식을 익힙니다" },
 ];
-
-// 진행 중인 전수창업 매물 (슬라이드로 넘겨 본다)
-const featured = listings.filter((l) => l.kind === "전수창업" && !l.sold && transfers[l.id]);
 
 const steps = [
   { title: "설문", desc: "메뉴 및 전수조건 확인" },
@@ -111,7 +106,7 @@ export default function TransferPage() {
         <section className="bg-sand">
           <div className="mx-auto max-w-[80rem] px-6 pb-20 pt-[3.75rem]">
             <Reveal><h2 className="text-[1.875rem] font-black leading-snug tracking-tight">&ldquo;<span className="text-brand md:text-[2.375rem]">사부님</span> 어디 계십니까?&rdquo;</h2></Reveal>
-            <Reveal><div className="mt-8"><TransferSlider items={featured} /></div></Reveal>
+            <Reveal><div className="mt-8"><TransferSlider /></div></Reveal>
           </div>
         </section>
 
