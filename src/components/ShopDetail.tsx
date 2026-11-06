@@ -51,7 +51,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
     <main className="bg-[#f7f6f4] pb-24">
       <div className="mx-auto max-w-[80rem] px-6 pt-8">
         <p className="text-[0.7188rem] text-neutral-500">
-          <Link href="/listings?type=상가매물" className="transition hover:text-[#F0C33F]">← 목록으로</Link>
+          <Link href="/listings?type=상가매물" className="transition hover:text-[#D49F12]">← 목록으로</Link>
         </p>
 
         {/* 상단 요약 */}
@@ -61,12 +61,12 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
             <h1 className="text-[1.875rem] font-black leading-[1.25] tracking-tight">{s.headline[0]}{s.headline[1] && <><br />{s.headline[1]}</>}</h1>
             <p className="mt-4 text-[0.8125rem] leading-relaxed text-neutral-500">{s.desc}</p>
             <div className="mt-5 rounded-xl bg-[#fff8dc] px-5 py-4">
-              <p className="text-[0.6563rem] font-bold text-[#F0C33F]">임대 조건</p>
+              <p className="text-[0.6563rem] font-bold text-[#D49F12]">임대 조건</p>
               <div className="mt-3 grid grid-cols-3 gap-2 text-center">
                 {[["권리금", s.premiumLabel ?? (s.premium || (s.showZero ? "없음" : "무권리")), true], ["보증금", s.deposit, false], [rentLabel, s.rent, false]].map(([k, v, hl]) => (
                   <div key={k as string} className={`rounded-lg px-2 py-3 ${hl ? "bg-[#F0C33F] text-ink" : "bg-white"}`}>
                     <p className={`text-[0.6563rem] font-bold ${hl ? "text-white/80" : "text-neutral-400"}`}>{k as string}</p>
-                    <p className={`mt-1 text-[1.125rem] font-black tracking-tight ${hl ? "" : "text-[#F0C33F]"}`}>{typeof v === "string" ? v : <>{v.toLocaleString()}<span className="ml-0.5 text-[0.625rem] font-bold">만원</span></>}</p>
+                    <p className={`mt-1 text-[1.125rem] font-black tracking-tight ${hl ? "" : "text-[#D49F12]"}`}>{typeof v === "string" ? v : <>{v.toLocaleString()}<span className="ml-0.5 text-[0.625rem] font-bold">만원</span></>}</p>
                   </div>
                 ))}
               </div>
@@ -107,7 +107,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
         {/* 섹션 이동 */}
         <nav className="mt-5 grid grid-cols-3 divide-x divide-neutral-200 overflow-hidden rounded-2xl border border-neutral-200 bg-white text-center text-[0.8125rem] font-bold">
           {tabs.map(([label, href]) => (
-            <a key={href} href={href} className="py-4 transition hover:bg-neutral-50 hover:text-[#F0C33F]">{label}</a>
+            <a key={href} href={href} className="py-4 transition hover:bg-neutral-50 hover:text-[#D49F12]">{label}</a>
           ))}
         </nav>
 
@@ -123,7 +123,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
               ))}
             </dl>
             <div className="mt-4 rounded-xl bg-[#fff8dc] px-6 py-5">
-              <p className="text-[0.6563rem] font-bold text-[#F0C33F]">입지 포인트</p>
+              <p className="text-[0.6563rem] font-bold text-[#D49F12]">입지 포인트</p>
               <p className={`mt-1.5 whitespace-pre-line text-[0.7813rem] ${s.point.length > 60 ? "font-medium leading-relaxed" : "font-bold"}`}>{s.point}</p>
             </div>
           </section>
@@ -134,7 +134,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
             <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[["보증금", s.deposit, false], [rentLabel, s.rent, false], ["관리비", s.maintenance || s.maintenanceLabel || "매월 변동", false], ["권리금", s.premiumLabel ?? (s.premium || (s.showZero ? "없음" : "무권리")), true]].map(([k, v, hl]) => (
                 <div key={k as string} className={`rounded-xl border p-5 ${hl ? "border-[#F0C33F]/50 bg-[#fff8dc]" : "border-neutral-200 bg-[#faf9f7]"}`}>
-                  <p className={`text-[0.6563rem] ${hl ? "font-bold text-[#F0C33F]" : "text-neutral-400"}`}>{k as string}</p>
+                  <p className={`text-[0.6563rem] ${hl ? "font-bold text-[#D49F12]" : "text-neutral-400"}`}>{k as string}</p>
                   <p className="mt-2 text-[1.5rem] font-black tracking-tight">{typeof v === "string" ? <span className="text-[1.1875rem]">{v}</span> : <>{v.toLocaleString()}<span className="ml-1 text-[0.6875rem] font-bold text-neutral-400">만원</span></>}</p>
                 </div>
               ))}
