@@ -62,9 +62,9 @@ export const kindBadge: Record<string, string> = {
   신규창업: "bg-blue-700",
 };
 
-// NEW 표시는 매물번호가 가장 큰(최근 등록) 3건에만 붙인다
+// NEW 표시는 등록일이 가장 늦은(같은 날이면 매물번호가 큰) 3건에만 붙인다
 export const withNew = (list: Listing[]): Listing[] => {
-  const top = new Set([...list].sort((a, b) => b.id - a.id).slice(0, 3).map((l) => l.id));
+  const top = new Set([...list].sort(byNewest).slice(0, 3).map((l) => l.id));
   return list.map((l) => ({ ...l, isNew: top.has(l.id) }));
 };
 
