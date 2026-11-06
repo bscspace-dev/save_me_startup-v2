@@ -9,19 +9,19 @@ export function Footer() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-footer.svg" alt="구해줘창업" className="h-16 w-auto" />
           </Link>
-          <nav className="flex gap-6 text-[0.75rem]">
+          <nav className="flex gap-6 text-[0.875rem]">
             {([["회사소개", "/about"], ["이용약관", "/terms"], ["개인정보처리방침", "/privacy"], ["광고·제휴 문의", "/partnership"]] as const).map(([n, href]) => (
               <Link key={n} href={href} className="hover:text-white">{n}</Link>
             ))}
           </nav>
         </div>
-        <div className="mt-8 space-y-1 text-[0.75rem] leading-relaxed">
+        <div className="mt-8 space-y-1 text-[0.875rem] leading-relaxed">
           <p className="font-bold text-white/80">구해줘창업</p>
           <p>사업자등록번호 : (등록 예정) &nbsp; 대표자 : [입력 예정] &nbsp; 통신판매업신고 : (등록 예정)</p>
           <p>사업장 주소 : 대구광역시 (입력 예정) &nbsp; 대표 전화 : [입력 예정]</p>
           <p>이메일 : [입력 예정]</p>
         </div>
-        <div className="mt-8 flex justify-between border-t border-white/10 pt-5 text-[0.75rem]">
+        <div className="mt-8 flex justify-between border-t border-white/10 pt-5 text-[0.875rem]">
           <p>© 구해줘창업. All rights reserved.</p>
         </div>
       </div>
