@@ -114,7 +114,7 @@ export function Consult({ title, only }: { title?: string; only?: string }) {
             </div>
           </div>
           <ul className="mx-auto mt-12 grid max-w-[53.75rem] gap-6 md:grid-cols-3 md:gap-10">
-            {[["지역 전문", "컨설턴트 1:1 매칭"], ["프랜차이즈·전수창업", "신규창업 전 유형 상담"], ["상담 신청 후", "24시간 내 연락"]].map(([a, b]) => (
+            {[["전문 컨설턴트", "1:1 매칭"], ["프랜차이즈·전수창업", "신규창업 전 유형 상담"], ["상담 신청 후", "24시간 내 연락"]].map(([a, b]) => (
               <li key={a} className="border-b-[0.1875rem] border-[#F0C33F] pb-2 text-center text-[1.25rem] font-medium leading-snug">{a}<br />{b}</li>
             ))}
           </ul>
