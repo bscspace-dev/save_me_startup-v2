@@ -225,7 +225,7 @@ export default function IdentityPage() {
         {/* 상담 유도 */}
         <section className="mx-auto max-w-[80rem] px-6 pb-20">
           <Reveal>
-            <div className="rounded-3xl bg-gradient-to-br from-[#33231a] to-[#17100b] px-6 py-12 text-center text-white md:py-14">
+            <div className="rounded-3xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] px-6 py-12 text-center text-white md:py-14">
               <h2 className="text-[1.625rem] font-black leading-snug md:text-[2rem] font-gmarket"><span className="text-[#F0C33F]">처음이라</span> 막막하다면<br /><span className="text-[#F0C33F]">전문가와</span> 함께하세요</h2>
               <p className="mt-3 text-[0.8125rem] text-white/70">상담은 무료이며 상담 후 편하게 결정하세요</p>
 
