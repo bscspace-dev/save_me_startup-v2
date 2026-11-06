@@ -11,7 +11,7 @@ export function Footer() {
           </Link>
           <nav className="flex gap-6 text-[0.75rem]">
             {["회사소개", "이용약관", "개인정보처리방침", "광고·제휴 문의"].map((n) => (
-              <a key={n} href="#" className={n === "개인정보처리방침" ? "font-bold text-white" : "hover:text-white"}>{n}</a>
+              <a key={n} href="#" className="hover:text-white">{n}</a>
             ))}
           </nav>
         </div>
