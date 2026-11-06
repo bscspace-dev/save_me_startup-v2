@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Consult } from "@/components/ConsultForm";
@@ -101,8 +102,12 @@ export default function IdentityPage() {
     <>
       <Header active="신규창업" />
       <main>
+        <div className="mx-auto max-w-[80rem] px-6 pt-8">
+          <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 메인으로</Link>
+        </div>
+
         {/* 소개 */}
-        <section className="mx-auto max-w-[80rem] px-6 py-20">
+        <section className="mx-auto max-w-[80rem] px-6 pb-20 pt-12">
           <Reveal>
             <p className="text-[0.6875rem] font-bold tracking-wide text-[#D49F12]">NEW START</p>
             <h2 className="mt-2 text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem] font-gmarket">
@@ -238,6 +243,9 @@ export default function IdentityPage() {
           </Reveal>
         </section>
 
+        <div className="mx-auto max-w-[80rem] px-6 pb-12 text-right">
+          <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 메인으로 돌아가기</Link>
+        </div>
         <Consult title="신규창업 상담신청" only="신규창업" />
       </main>
       <Footer />
