@@ -84,7 +84,7 @@ export default function TransferPage() {
                   <div className="h-full rounded-lg bg-white p-6 shadow-sm">
                     <p className="text-[0.6875rem] font-bold text-[#D49F12]">STEP {i + 1}</p>
                     <h3 className="mt-3 text-[1.0625rem] font-black">{s.title}</h3>
-                    <p className="mt-2 whitespace-pre-line text-[0.7813rem] leading-relaxed text-neutral-500">{s.desc}</p>
+                    <p className="mt-2 whitespace-pre-line text-[0.875rem] leading-relaxed text-neutral-500">{s.desc}</p>
                   </div>
                 </Reveal>
               ))}
