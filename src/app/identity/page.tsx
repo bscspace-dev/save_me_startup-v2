@@ -211,7 +211,7 @@ export default function IdentityPage() {
           </Reveal>
           <Reveal>
             <div className="mt-8 overflow-hidden rounded-lg border border-neutral-200 text-[0.8125rem]">
-              <div className="grid grid-cols-[4.5rem_1fr_1fr] bg-sand text-[0.75rem] font-bold md:grid-cols-[7.5rem_1fr_1fr]">
+              <div className="grid grid-cols-[4.5rem_1fr_1fr] bg-sand text-[0.8125rem] font-bold md:grid-cols-[7.5rem_1fr_1fr]">
                 <span className="p-4" />
                 <span className="p-4 text-neutral-500">혼자서 업체를 따로 구할 때</span>
                 <span className="bg-[#F0C33F] p-4 text-ink">올인원 시스템</span>
