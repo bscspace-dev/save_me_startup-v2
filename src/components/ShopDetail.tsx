@@ -114,7 +114,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
         <div className="mt-5 space-y-5">
           {/* 매물 기본 정보 */}
           <section id="info" className={`${card} scroll-mt-24`}>
-            <Head eyebrow="PROPERTY INFO" title="매물 기본 정보" />
+            <Head eyebrowClass="text-[#D49F12]" eyebrow="PROPERTY INFO" title="매물 기본 정보" />
             <dl className={`${inner} mt-7 grid bg-white text-[0.7813rem] md:grid-cols-2 md:[&>div:nth-child(odd)]:border-r`}>
               {basic.map(([k, v], i) => (
                 <div key={k} className={`flex border-neutral-100 px-6 py-4 ${i < basic.length - 2 ? "border-b" : ""} ${i === basic.length - 2 ? "max-md:border-b" : ""}`}>
@@ -130,7 +130,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
 
           {/* 임대 및 권리 조건 */}
           <section id="lease" className={`${card} scroll-mt-24`}>
-            <Head eyebrow="LEASE TERMS" title="임대 및 권리 조건" />
+            <Head eyebrowClass="text-[#D49F12]" eyebrow="LEASE TERMS" title="임대 및 권리 조건" />
             <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {[["보증금", s.deposit, false], [rentLabel, s.rent, false], ["관리비", s.maintenance || s.maintenanceLabel || "매월 변동", false], ["권리금", s.premiumLabel ?? (s.premium || (s.showZero ? "없음" : "무권리")), true]].map(([k, v, hl]) => (
                 <div key={k as string} className={`rounded-xl border p-5 ${hl ? "border-[#F0C33F]/50 bg-[#fff8dc]" : "border-neutral-200 bg-[#faf9f7]"}`}>
@@ -141,14 +141,14 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
             </div>
             <div className="mt-4 grid overflow-hidden rounded-xl bg-ink text-white sm:grid-cols-2 sm:divide-x sm:divide-white/15">
               <div className="flex items-center justify-between px-6 py-4 text-[0.75rem]"><span>월 고정비 (월세 + 관리비)</span><b className="text-[0.9375rem]">{s.maintenance ? man(fixed) : s.maintenanceLabel === "0원" || s.maintenanceLabel === "없음" ? man(s.rent) : `${man(s.rent)} + 관리비`}</b></div>
-              <div className="flex items-center justify-between px-6 py-4 text-[0.75rem]"><span className="text-white/80">보증금 + 권리금</span><b className="text-[0.9375rem] text-[#ff7a45]">{s.premiumLabel ? `${won(s.deposit)}원 + 권리금` : `${won(s.deposit + s.premium)}원`}</b></div>
+              <div className="flex items-center justify-between px-6 py-4 text-[0.75rem]"><span className="text-white/80">보증금 + 권리금</span><b className="text-[0.9375rem] text-[#D49F12]">{s.premiumLabel ? `${won(s.deposit)}원 + 권리금` : `${won(s.deposit + s.premium)}원`}</b></div>
             </div>
             <p className="mt-3 text-[0.6563rem] text-neutral-400">* 권리금 협의 범위와 시설 포함 여부는 임대인·현 임차인 확인 후 최종 결정됩니다</p>
           </section>
 
           {/* 현재 사용 현황 */}
           <section id="status" className={`${card} scroll-mt-24`}>
-            <Head eyebrow="CURRENT STATUS" title="현재 사용 현황" />
+            <Head eyebrowClass="text-[#D49F12]" eyebrow="CURRENT STATUS" title="현재 사용 현황" />
             <div className="mt-7 grid gap-3 md:grid-cols-2">
               {status.map(([ic, k, v]) => (
                 <div key={k} className="flex items-center gap-3 rounded-xl bg-[#faf9f7] px-5 py-4">
