@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // .env.local 에서 설정: 대표 영상 주소(선택). 비어 있으면 채널의 최신 영상을 재생합니다.
 const CHANNEL_URL = process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_URL ?? "https://www.youtube.com/channel/UC0Y0tolZw8UPefvbxQgMOPg";
@@ -30,6 +30,16 @@ const pos = (i: number) => {
 export function ServiceCircles() {
   const player = toPlayer(VIDEO_URL, CHANNEL_URL);
   const [playing, setPlaying] = useState(false);
+  const [big, setBig] = useState(false); // 임시 소개 영상: 재생을 누르면 화면 가득 크게 띄운다
+
+  useEffect(() => {
+    if (!big) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setBig(false);
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
+  }, [big]);
 
   return (
     <div className="mt-14 flex flex-col items-center gap-8 md:relative md:mx-auto md:block md:aspect-square md:max-w-[42.5rem] md:mt-[7.5rem] md:gap-0">
@@ -50,7 +60,14 @@ export function ServiceCircles() {
       <div className="relative aspect-video w-full max-w-[32.5rem] overflow-hidden rounded-2xl bg-black shadow-2xl ring-8 ring-[#fff8dc] md:absolute md:left-1/2 md:top-1/2 md:w-[46%] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2">
         {!VIDEO_URL ? (
           // 대표 YouTube 영상 주소(NEXT_PUBLIC_YOUTUBE_URL)가 없으면 사이트에 있는 소개 영상을 임시로 재생한다
-          <video src="/transfer-intro.mp4#t=0.1" controls playsInline preload="metadata" className="absolute inset-0 size-full bg-black object-contain" />
+          <button type="button" onClick={() => setBig(true)} aria-label="영상 크게 보기" className="absolute inset-0 cursor-pointer">
+            <video src="/transfer-intro.mp4#t=0.1" muted playsInline preload="metadata" className="size-full bg-black object-cover" />
+            <span className="absolute inset-0 grid place-items-center bg-black/25">
+              <span className="grid size-16 place-items-center rounded-full bg-white shadow-xl transition hover:scale-105">
+                <svg viewBox="0 0 10 10" className="ml-1 size-7 fill-red-600"><path d="M2 1l7 4-7 4z" /></svg>
+              </span>
+            </span>
+          </button>
         ) : player && playing ? (
           <iframe
             src={player.src}
@@ -117,6 +134,12 @@ export function ServiceCircles() {
           </li>
         ))}
       </ul>
+      {big && (
+        <div className="fixed inset-0 z-[100] grid place-items-center bg-black/85 p-4" onClick={() => setBig(false)}>
+          <button type="button" onClick={() => setBig(false)} aria-label="닫기" className="absolute right-4 top-4 grid size-10 cursor-pointer place-items-center rounded-full bg-white/15 text-[1.25rem] text-white hover:bg-white/25">✕</button>
+          <video src="/transfer-intro.mp4" controls autoPlay playsInline onClick={(e) => e.stopPropagation()} className="max-h-[90vh] w-full max-w-[70rem] rounded-xl bg-black shadow-2xl" />
+        </div>
+      )}
     </div>
   );
 }
