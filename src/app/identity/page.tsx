@@ -181,7 +181,7 @@ export default function IdentityPage() {
                       <div className="grid place-items-center bg-[#F0C33F] px-6 py-3 text-[1.125rem] font-black tracking-wide text-ink md:min-w-[6.25rem] md:py-0 md:text-[1.375rem]">
                         <div className="text-center">
                           <p>{s.tag}?</p>
-                          <p className="mt-1 text-[0.75rem] font-bold tracking-normal text-white/80">{s.ko}</p>
+                          <p className="mt-1 text-[0.9375rem] font-bold tracking-normal text-ink/70">{s.ko}</p>
                         </div>
                       </div>
                       <div className="flex flex-col justify-center p-7 md:p-9">
