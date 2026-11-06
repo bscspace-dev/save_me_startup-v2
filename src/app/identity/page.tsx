@@ -123,7 +123,7 @@ export default function IdentityPage() {
                 <div className="h-full rounded-lg border border-[#F0C33F]/50 bg-[#fff8dc] p-7">
                   <p className="text-[0.6875rem] font-bold tracking-wide text-[#D49F12]">{s.tag}</p>
                   <h3 className="mt-2 text-[1.375rem] font-black">{s.title}</h3>
-                  <p className="mt-3 text-[0.8125rem] leading-relaxed text-neutral-600">{s.desc}</p>
+                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-neutral-600">{s.desc}</p>
                 </div>
               </Reveal>
             ))}
