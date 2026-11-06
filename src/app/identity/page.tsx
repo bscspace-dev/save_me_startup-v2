@@ -225,14 +225,14 @@ export default function IdentityPage() {
         {/* 상담 유도 */}
         <section className="mx-auto max-w-[80rem] px-6 pb-20">
           <Reveal>
-            <div className="rounded-3xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] px-6 py-12 text-center text-white md:py-14">
-              <h2 className="text-[1.625rem] font-black leading-snug md:text-[2rem] font-gmarket"><span className="text-[#F0C33F]">처음이라</span> 막막하다면<br /><span className="text-[#F0C33F]">전문가와</span> 함께하세요</h2>
-              <p className="mt-3 text-[0.8125rem] text-white/70">상담은 무료이며 상담 후 편하게 결정하세요</p>
+            <div className="rounded-3xl bg-[#F0C33F] px-6 py-12 text-center text-ink md:py-14">
+              <h2 className="text-[1.625rem] font-black leading-snug md:text-[2rem] font-gmarket"><span className="bg-gradient-to-t from-white/80 from-40% to-transparent to-40% px-0.5">처음이라</span> 막막하다면<br /><span className="bg-gradient-to-t from-white/80 from-40% to-transparent to-40% px-0.5">전문가와</span> 함께하세요</h2>
+              <p className="mt-3 text-[0.8125rem] text-ink/70">상담은 무료이며 상담 후 편하게 결정하세요</p>
 
               {/* QnA */}
-              <div className="mt-8 border-t border-white/15 pt-8 text-left [&>ul]:mt-0">
+              <div className="mt-8 border-t border-ink/15 pt-8 text-left [&>ul]:mt-0">
                 <Faq items={faqs} />
-                <p className="mt-6 text-center text-[0.6875rem] text-white/50">상권분석 결과와 컨설팅 내용은 참고 자료이며 매출과 수익을 보장하지 않습니다</p>
+                <p className="mt-6 text-center text-[0.6875rem] text-ink/60">상권분석 결과와 컨설팅 내용은 참고 자료이며 매출과 수익을 보장하지 않습니다</p>
               </div>
             </div>
           </Reveal>
