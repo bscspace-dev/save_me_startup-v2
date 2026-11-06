@@ -117,7 +117,7 @@ export function ListingsView() {
               <div className="space-y-3 lg:grid lg:grid-cols-3 lg:gap-3 lg:space-y-0">
                 {pageList.map((l, i) => <ListingRow key={l.id} l={l} i={i} />)}
                 {kind !== "신규창업" && (
-                  <button onClick={() => setInquiryOpen(true)} aria-label="매물 등록 문의" className="flex min-h-[4.5rem] w-full cursor-pointer items-center justify-center gap-3 rounded-xl lg:h-[9.375rem] border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-[#D49F12] hover:text-[#D49F12]">
+                  <button onClick={() => setInquiryOpen(true)} aria-label="매물 등록 문의" className="flex min-h-[4.5rem] w-full cursor-pointer items-center justify-center gap-3 rounded-xl lg:h-[9.375rem] border-2 border-[#F0C33F] bg-[#F0C33F] text-ink transition hover:brightness-95">
                     <span className="text-[1.75rem] font-light leading-none font-gmarket">+</span>
                     <span className="text-[0.8125rem] font-bold">매물 등록 문의</span>
                   </button>
