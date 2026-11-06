@@ -17,7 +17,7 @@ export function Header(_props: { active?: string }) {
       {/* 데스크톱 윗줄: 양옆 문구 + 가운데 로고 (스크롤하면 올라가 사라진다) */}
       <div className="hidden border-b border-black/5 bg-white font-header md:block">
         <div className="mx-auto grid h-[4.5rem] max-w-[80rem] grid-cols-[1fr_auto_1fr] items-center px-6">
-          <span className="font-gmarket text-[0.875rem] font-medium tracking-[0.14em] text-[#2d2d2d]">ALL-IN-ONE STARTUP PLATFORM</span>
+          <span className="font-gmarket text-[0.75rem] font-medium tracking-[0.14em] text-[#2d2d2d]">ALL-IN-ONE STARTUP PLATFORM</span>
           <Wordmark className="h-[3.5rem] w-auto" />
           <span className="justify-self-end font-gmarket text-[0.875rem] font-medium text-[#2d2d2d]">상가창업 전문 컨설팅 플랫폼</span>
         </div>
