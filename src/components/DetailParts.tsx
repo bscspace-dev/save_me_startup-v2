@@ -4,7 +4,7 @@ export const man = (v: number) => `${v.toLocaleString()}만원`;
 export const card = "rounded-3xl border border-neutral-200 bg-white p-8 md:p-10";
 export const inner = "rounded-xl border border-neutral-200 bg-[#faf9f7]";
 
-export function Head({ eyebrow, title, eyebrowClass = "text-brand" }: { eyebrow?: string; title: React.ReactNode; eyebrowClass?: string }) {
+export function Head({ eyebrow, title, eyebrowClass = "text-[#D49F12]" }: { eyebrow?: string; title: React.ReactNode; eyebrowClass?: string }) {
   return (
     <>
       {eyebrow && <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${eyebrowClass}`}>{eyebrow}</p>}
@@ -31,14 +31,14 @@ export function ProfitPanel({ revenue, costs, title, rateLabel, caption, revenue
 
   return (
     <div className="mt-7 grid overflow-hidden rounded-xl border border-neutral-200 lg:grid-cols-[1fr_2.1fr]">
-      <div className="flex flex-col justify-between bg-[#fff4ea] p-7">
+      <div className="flex flex-col justify-between bg-[#fff8dc] p-7">
         <div>
-          <p className="text-[0.6875rem] font-bold text-brand">{title}</p>
+          <p className="text-[0.6875rem] font-bold text-[#D49F12]">{title}</p>
           <p className="mt-4 text-[2.125rem] font-black leading-none tracking-tight font-gmarket">{man(net)}</p>
         </div>
         <div className="mt-12">
-          <span className="inline-block rounded-full bg-brand px-3 py-1 text-[0.6875rem] font-bold text-white">{rateLabel} {rate}%</span>
-          <p className="mt-2 text-[0.6875rem] text-brand">{caption}</p>
+          <span className="inline-block rounded-full bg-[#F0C33F] px-3 py-1 text-[0.6875rem] font-bold text-ink">{rateLabel} {rate}%</span>
+          <p className="mt-2 text-[0.6875rem] text-[#D49F12]">{caption}</p>
         </div>
       </div>
       <div className="divide-y divide-neutral-100 bg-white text-[0.7813rem]">

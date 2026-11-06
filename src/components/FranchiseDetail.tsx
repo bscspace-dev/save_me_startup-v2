@@ -46,16 +46,16 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
     <main className="bg-[#f7f6f4] pb-24">
       <div className="mx-auto max-w-[80rem] px-6 pt-8">
         <p className="text-[0.7188rem] text-neutral-500">
-          <Link href="/listings?type=프랜차이즈" className="transition hover:text-brand">← 목록으로</Link>
+          <Link href="/listings?type=프랜차이즈" className="transition hover:text-[#D49F12]">← 목록으로</Link>
         </p>
 
         {/* 상단 요약 */}
         <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white lg:grid-cols-[1.35fr_1fr]">
-          <FranchiseGallery slides={f.gallery} badges={[l.rec ? "추천 브랜드" : "프랜차이즈", "신규 가맹 모집", ...(f.sponsored ? ["광고"] : [])]} photos={{ id: l.id, count: l.photos ?? 0 }} />
+          <FranchiseGallery yellow slides={f.gallery} badges={[l.rec ? "추천 브랜드" : "프랜차이즈", "신규 가맹 모집", ...(f.sponsored ? ["광고"] : [])]} photos={{ id: l.id, count: l.photos ?? 0 }} />
           <div className="p-8 md:p-10">
             <BrandLogo src={`/listings/${l.id}/logo.png`} alt={`${f.brand} 로고`} />
-            <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-brand">{f.eyebrow}</p>
-            <h1 className="mt-4 text-[1.875rem] font-black leading-[1.25] tracking-tight font-gmarket">{f.headline[0]}<br /><span className="text-brand">{f.headline[1]}</span></h1>
+            <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-[#D49F12]">{f.eyebrow}</p>
+            <h1 className="mt-4 text-[1.875rem] font-black leading-[1.25] tracking-tight font-gmarket">{f.headline[0]}<br /><span className="text-[#D49F12]">{f.headline[1]}</span></h1>
             <p className="mt-4 text-[0.8125rem] leading-relaxed text-neutral-500">{f.desc}</p>
             <dl className="mt-7 divide-y divide-neutral-100 border-t border-neutral-100 text-[0.7813rem]">
               <div className="flex py-3.5"><dt className="w-[5.25rem] shrink-0 text-neutral-400">등록번호</dt><dd className="font-bold">{l.id}</dd></div>
@@ -66,7 +66,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
             {l.sold ? (
               <p className="mt-5 rounded-lg bg-neutral-100 py-4 text-center text-[0.8438rem] font-bold text-neutral-500">모집이 마감된 브랜드입니다</p>
             ) : (
-              <ListingConsultButton id={l.id} kind="가맹상담" title={`${f.brand} (${l.title})`} label="가맹 상담 신청하기  →" className="mt-5 block w-full rounded-lg bg-brand py-4 text-center text-[0.875rem] font-bold text-white transition hover:bg-brand-dark" />
+              <ListingConsultButton id={l.id} kind="가맹상담" title={`${f.brand} (${l.title})`} label="가맹 상담 신청하기  →" className="mt-5 block w-full rounded-lg bg-[#F0C33F] py-4 text-center text-[0.875rem] font-bold text-ink transition hover:brightness-95" />
             )}
           </div>
         </section>
@@ -74,7 +74,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
         {/* 섹션 이동 */}
         <nav className={`mt-5 grid grid-cols-2 divide-neutral-200 overflow-hidden rounded-2xl border border-neutral-200 bg-white text-center text-[0.8125rem] font-bold ${tabs.length > 5 ? "sm:grid-cols-6" : "sm:grid-cols-5"} sm:divide-x`}>
           {tabs.map(([label, href]) => (
-            <a key={href} href={href} className="py-4 transition hover:bg-neutral-50 hover:text-brand">{label}</a>
+            <a key={href} href={href} className="py-4 transition hover:bg-neutral-50 hover:text-[#D49F12]">{label}</a>
           ))}
         </nav>
 
@@ -98,7 +98,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-[0.6875rem] text-neutral-400">정보공개서 {f.facts.disclosure} 기준 · <a href={FTC} target="_blank" rel="noopener noreferrer" className="font-bold text-brand underline underline-offset-2">공정거래위원회 가맹사업정보제공시스템에서 확인 →</a></p>
+              <p className="mt-4 text-[0.6875rem] text-neutral-400">정보공개서 {f.facts.disclosure} 기준 · <a href={FTC} target="_blank" rel="noopener noreferrer" className="font-bold text-[#D49F12] underline underline-offset-2">공정거래위원회 가맹사업정보제공시스템에서 확인 →</a></p>
             </section>
           )}
 
@@ -118,7 +118,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
             <div className="mt-7 grid gap-4 md:grid-cols-3">
               {f.strengths.map((s, i) => (
                 <div key={s.title} className={`${inner} p-6`}>
-                  <p className="text-[0.6875rem] font-bold text-brand">{String(i + 1).padStart(2, "0")}</p>
+                  <p className="text-[0.6875rem] font-bold text-[#D49F12]">{String(i + 1).padStart(2, "0")}</p>
                   <h3 className="mt-5 text-[0.9688rem] font-black">{s.title}</h3>
                   <p className="mt-2 text-[0.75rem] leading-relaxed text-neutral-500">{s.desc}</p>
                 </div>
@@ -135,7 +135,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
                   <MenuPhoto src={`/listings/${l.id}/menu-${i + 1}.jpg`} alt={m.name} />
                   <h3 className="flex items-center gap-2 text-[0.9063rem] font-black">
                     {m.name}
-                    {m.badge && <span className="rounded bg-orange-50 px-1.5 py-0.5 text-[0.5625rem] font-bold text-brand">{m.badge}</span>}
+                    {m.badge && <span className="rounded bg-[#fff8dc] px-1.5 py-0.5 text-[0.5625rem] font-bold text-[#D49F12]">{m.badge}</span>}
                   </h3>
                   <p className="mt-2 text-[0.75rem] text-neutral-400">{m.desc}</p>
                   <p className="mt-8 text-[1.0625rem] font-black">{m.price.toLocaleString()}원</p>
@@ -158,7 +158,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
             <div className="mt-6 grid gap-4 border-t border-neutral-100 pt-6 md:grid-cols-3">
               {modelInfo.map(([ic, k, v]) => (
                 <div key={k} className="flex items-center gap-3 rounded-xl bg-[#faf9f7] px-5 py-4">
-                  <Icon name={ic} className="size-5 shrink-0 text-brand" />
+                  <Icon name={ic} className="size-5 shrink-0 text-[#F0C33F]" />
                   <div>
                     <p className="text-[0.6563rem] text-neutral-400">{k}</p>
                     <p className="mt-0.5 text-[0.7813rem] font-bold">{v}</p>
@@ -179,8 +179,8 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
           <section id="cost" className={`${card} scroll-mt-24`}>
             <Head eyebrow="STARTUP COST" title="가맹 조건 및 예상 비용" />
             <div className="mt-7 grid gap-3 md:grid-cols-2">
-              <div className="rounded-xl bg-[#fff4ea] px-6 py-4">
-                <p className="text-[0.6563rem] font-bold text-brand">산정 기준</p>
+              <div className="rounded-xl bg-[#fff8dc] px-6 py-4">
+                <p className="text-[0.6563rem] font-bold text-[#D49F12]">산정 기준</p>
                 <p className="mt-1 text-[0.8438rem] font-black">{f.basis}</p>
               </div>
               <div className="rounded-xl bg-neutral-100 px-6 py-4">
@@ -215,8 +215,11 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
           {/* 광고·정보공개서 안내 */}
           <aside className="rounded-2xl border border-neutral-200 bg-white px-6 py-5 text-[0.6875rem] leading-relaxed text-neutral-400">
             {f.sponsored && <p className="mb-1.5 font-bold text-neutral-600">이 페이지는 가맹본부의 의뢰로 제작된 광고입니다</p>}
-            <p>표시된 예상 수익·비용 등 수치는 가맹본부가 제공한 자료와 예상치이며 실제와 다를 수 있습니다. 가맹계약 전 반드시 가맹본부의 정보공개서를 확인하세요. (<a href={FTC} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-brand">가맹사업정보제공시스템 franchise.ftc.go.kr</a>)</p>
+            <p>표시된 예상 수익·비용 등 수치는 가맹본부가 제공한 자료와 예상치이며 실제와 다를 수 있습니다. 가맹계약 전 반드시 가맹본부의 정보공개서를 확인하세요. (<a href={FTC} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-[#D49F12]">가맹사업정보제공시스템 franchise.ftc.go.kr</a>)</p>
           </aside>
+        </div>
+        <div className="mt-10 text-right">
+          <Link href="/listings?type=프랜차이즈" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
         </div>
       </div>
     </main>

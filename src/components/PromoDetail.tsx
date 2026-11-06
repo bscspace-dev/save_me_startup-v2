@@ -4,7 +4,7 @@ import { costText, type Listing } from "@/lib/data";
 import { ListingConsultButton } from "./ListingConsultButton";
 
 const FTC = "https://franchise.ftc.go.kr"; // 공정거래위원회 가맹사업정보제공시스템
-const cta = "block w-full rounded-xl bg-brand py-4 text-center text-[0.9063rem] font-bold text-white transition hover:bg-brand-dark";
+const cta = "block w-full rounded-xl bg-[#F0C33F] py-4 text-center text-[0.9063rem] font-bold text-ink transition hover:brightness-95";
 
 // 관리자에서 올린 프랜차이즈 홍보 이미지를 가맹본부가 만든 그대로 세로로 이어서 보여준다
 export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
@@ -22,7 +22,7 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
       {/* 위 요약과 아래 이미지의 폭을 같은 열(960px)에 맞춘다 */}
       <div className="mx-auto max-w-[80rem] px-4 pt-8 sm:px-6">
         <p className="text-[0.7188rem] text-neutral-500">
-          <Link href="/listings?type=프랜차이즈" className="transition hover:text-brand">← 목록으로</Link>
+          <Link href="/listings?type=프랜차이즈" className="transition hover:text-[#D49F12]">← 목록으로</Link>
         </p>
 
         <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white md:grid-cols-[0.8fr_1fr]">
@@ -31,7 +31,7 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {l.thumb && <img src={l.thumb} alt={p.brand} className="absolute inset-0 size-full object-cover" />}
             <div className="absolute left-4 top-4 flex flex-wrap gap-1.5 text-[0.6875rem] font-bold text-white">
-              <span className="rounded bg-brand px-2.5 py-1">{l.rec ? "추천 브랜드" : "프랜차이즈"}</span>
+              <span className="rounded bg-[#F0C33F] px-2.5 py-1 text-ink">{l.rec ? "추천 브랜드" : "프랜차이즈"}</span>
               <span className="rounded bg-black/60 px-2.5 py-1">신규 가맹 모집</span>
               {p.sponsored && <span className="rounded bg-black/60 px-2.5 py-1">광고</span>}
             </div>
@@ -43,9 +43,9 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
             <p className="mt-3 break-keep text-[1rem] font-bold leading-snug text-neutral-800">{l.title}</p>
             <p className="mt-2 whitespace-pre-line break-keep text-[0.8125rem] leading-relaxed text-neutral-500"><RichText text={p.desc} /></p>
 
-            <div className="mt-5 flex items-baseline justify-between gap-3 rounded-xl bg-[#fff4ea] px-5 py-3">
+            <div className="mt-5 flex items-baseline justify-between gap-3 rounded-xl bg-[#fff8dc] px-5 py-3">
               <p className="text-[0.6875rem] font-bold text-neutral-500">창업비용</p>
-              <p className="text-[1.0625rem] font-black tracking-tight text-brand">{costText(l.price)}</p>
+              <p className="text-[1.0625rem] font-black tracking-tight text-[#D49F12]">{costText(l.price)}</p>
             </div>
             <dl className="mt-3 divide-y divide-neutral-100 text-[0.7813rem]">
               {rows.map(([k, v]) => (
@@ -82,8 +82,11 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
 
         <aside className="mt-6 rounded-2xl border border-neutral-200 bg-white px-6 py-5 text-[0.6875rem] leading-relaxed text-neutral-400">
           {p.sponsored && <p className="mb-1.5 font-bold text-neutral-600">이 페이지는 가맹본부의 의뢰로 제작된 광고입니다</p>}
-          <p>표시된 예상 수익·비용 등 수치는 가맹본부가 제공한 자료와 예상치이며 실제와 다를 수 있습니다. 가맹계약 전 반드시 가맹본부의 정보공개서를 확인하세요. (<a href={FTC} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-brand">가맹사업정보제공시스템 franchise.ftc.go.kr</a>)</p>
+          <p>표시된 예상 수익·비용 등 수치는 가맹본부가 제공한 자료와 예상치이며 실제와 다를 수 있습니다. 가맹계약 전 반드시 가맹본부의 정보공개서를 확인하세요. (<a href={FTC} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-[#D49F12]">가맹사업정보제공시스템 franchise.ftc.go.kr</a>)</p>
         </aside>
+        <div className="mt-10 text-right">
+          <Link href="/listings?type=프랜차이즈" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
+        </div>
       </div>
 
       {/* 모바일: 긴 페이지를 내려가도 상담 버튼이 항상 보이도록 하단에 고정 */}
