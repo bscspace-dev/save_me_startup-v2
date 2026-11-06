@@ -61,7 +61,7 @@ export default function TransferPage() {
                 <div className="h-full rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                   <p className="text-[0.6875rem] font-bold text-[#D49F12]">{c.no}</p>
                   <h3 className="mt-3 text-[1.125rem] font-black">{c.title}</h3>
-                  <p className="mt-2 text-[0.7813rem] leading-relaxed text-neutral-500">{c.desc}</p>
+                  <p className="mt-2 text-[0.875rem] leading-relaxed text-neutral-500">{c.desc}</p>
                 </div>
               </Reveal>
             ))}
