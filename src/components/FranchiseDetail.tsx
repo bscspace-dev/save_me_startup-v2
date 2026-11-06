@@ -46,7 +46,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
     <main className="bg-[#f7f6f4] pb-24">
       <div className="mx-auto max-w-[80rem] px-6 pt-8">
         <p className="text-[0.7188rem] text-neutral-500">
-          <Link href="/listings?type=프랜차이즈" className="transition hover:text-[#D49F12]">← 목록으로</Link>
+          <Link href="/listings?type=프랜차이즈" className="inline-block rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 목록으로</Link>
         </p>
 
         {/* 상단 요약 */}
