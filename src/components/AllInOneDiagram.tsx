@@ -27,7 +27,7 @@ export function AllInOneDiagram() {
         {/* 가운데: 작은 원들에서 올인원 시스템으로 이어지는 화살표 */}
         <motion.svg
           viewBox="0 0 40 24"
-          className="absolute left-[43%] top-1/2 w-[8%] -translate-x-1/2 -translate-y-1/2 text-brand"
+          className="absolute left-[43%] top-1/2 w-[8%] -translate-x-1/2 -translate-y-1/2 text-[#F0C33F]"
           aria-hidden
           initial={{ opacity: 0, x: -10 }}
           animate={shown ? { opacity: 1, x: 0 } : undefined}
@@ -38,15 +38,15 @@ export function AllInOneDiagram() {
 
         {/* 오른쪽: 모이면 크게 나타나는 올인원 시스템 */}
         <motion.div
-          className="absolute left-[77%] top-1/2 grid aspect-square h-[92%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-brand p-3 text-center text-white shadow-xl ring-8 ring-orange-100"
+          className="absolute left-[77%] top-1/2 grid aspect-square h-[92%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#F0C33F] p-3 text-center text-ink shadow-xl ring-8 ring-[#fff8dc]"
           initial={{ scale: 0.4, opacity: 0 }}
           animate={shown ? { scale: 1, opacity: 1 } : undefined}
           transition={{ delay: 0.85, type: "spring", stiffness: 180, damping: 14 }}
         >
           <div>
-            <p className="text-[0.625rem] font-bold tracking-wide text-white/80 sm:text-[0.8125rem]">ALL-IN-ONE</p>
+            <p className="text-[0.625rem] font-bold tracking-wide text-ink/70 sm:text-[0.8125rem]">ALL-IN-ONE</p>
             <p className="mt-1 text-[1.375rem] font-black leading-tight sm:text-[2.5rem] font-gmarket">올인원<br />시스템</p>
-            <p className="mt-2 hidden text-[0.8125rem] text-white/80 sm:block">처음부터 끝까지 한 번에</p>
+            <p className="mt-2 hidden text-[0.8125rem] text-ink/70 sm:block">처음부터 끝까지 한 번에</p>
           </div>
         </motion.div>
 
@@ -56,16 +56,16 @@ export function AllInOneDiagram() {
             key={it.label}
             className="absolute grid aspect-square h-[27%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border p-1 text-center shadow-sm"
             initial={{ left: `${it.from[0]}%`, top: `${it.from[1]}%`, backgroundColor: "#f5f5f5", borderColor: "#d4d4d4", scale: 0.85 }}
-            animate={shown ? { left: `${to[i][0]}%`, top: `${to[i][1]}%`, backgroundColor: "#fff4ea", borderColor: "#fed7aa", scale: 1 } : undefined}
+            animate={shown ? { left: `${to[i][0]}%`, top: `${to[i][1]}%`, backgroundColor: "#fff8dc", borderColor: "#f3d97a", scale: 1 } : undefined}
             transition={{ ...move, delay: 0.6 }}
           >
             <div>
               <p className="text-[0.6875rem] font-black leading-tight sm:text-[0.875rem]">{it.label}</p>
-              <span className="mx-auto my-1.5 hidden h-px w-6 bg-brand/40 md:block" />
+              <span className="mx-auto my-1.5 hidden h-px w-6 bg-[#F0C33F]/40 md:block" />
               <ul className="hidden max-w-[6.5rem] space-y-0.5 text-left text-[0.625rem] leading-snug text-neutral-600 md:block lg:max-w-[7.375rem] lg:text-[0.6875rem]">
                 {it.points.map((t) => (
                   <li key={t} className="flex items-start gap-1">
-                    <span className="mt-[0.3125rem] size-1 shrink-0 rounded-full bg-brand" />
+                    <span className="mt-[0.3125rem] size-1 shrink-0 rounded-full bg-[#F0C33F]" />
                     <span>{t}</span>
                   </li>
                 ))}
@@ -82,14 +82,14 @@ export function AllInOneDiagram() {
             <p className="text-[0.875rem] font-black">{it.label}</p>
             <ul className="mt-2 space-y-1 text-[0.7813rem] text-neutral-600">
               {it.points.map((t) => (
-                <li key={t} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1 shrink-0 rounded-full bg-brand" />{t}</li>
+                <li key={t} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1 shrink-0 rounded-full bg-[#F0C33F]" />{t}</li>
               ))}
             </ul>
           </li>
         ))}
       </ul>
 
-      <button type="button" onClick={() => setRun((r) => r + 1)} className="mt-6 rounded-full border border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 transition hover:border-brand hover:text-brand">
+      <button type="button" onClick={() => setRun((r) => r + 1)} className="mt-6 rounded-full border border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 transition hover:border-[#F0C33F] hover:text-[#D49F12]">
         ↻ 다시 보기
       </button>
     </div>
