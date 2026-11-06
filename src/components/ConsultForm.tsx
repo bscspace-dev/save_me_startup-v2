@@ -48,7 +48,7 @@ export function ConsultCard({ title = "간편 상담 신청", only, wide = false
           <label className="text-[0.875rem] font-bold sm:pt-2">상담 내용 (선택)</label>
           <div>
             <textarea name="message" rows={5} placeholder="예산, 업종, 현재 상황 등 자유롭게 적어주세요" className={`${wf} resize-none`} />
-            <label className="mt-2 flex items-center gap-2 text-[0.875rem] text-[#2d2d2d]"><input type="checkbox" required className="accent-ink" />개인정보 수집 및 이용에 동의합니다</label>
+            <label className="mt-2 flex items-center gap-2 text-[0.875rem] text-[#2d2d2d]"><input type="checkbox" required className="accent-ink" />개인정보 수집 및 이용에 동의합니다 <a href="/privacy" target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-2 hover:text-ink">[보기]</a></label>
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@ export function ConsultCard({ title = "간편 상담 신청", only, wide = false
         <textarea name="message" rows={3} placeholder="예산, 업종, 현재 상황 등 자유롭게 적어주세요" className={`${field} mt-1.5 resize-none`} />
 
         <label className="mt-4 flex items-center gap-2 text-[0.6875rem] text-neutral-400">
-          <input type="checkbox" required className="accent-[#F0C33F]" />개인정보 수집 및 이용에 동의합니다
+          <input type="checkbox" required className="accent-[#F0C33F]" />개인정보 수집 및 이용에 동의합니다 <a href="/privacy" target="_blank" rel="noopener noreferrer" className="font-bold underline underline-offset-2 hover:text-ink">[보기]</a>
         </label>
 
         <motion.button whileTap={{ scale: 0.98 }} disabled={status === "sending" || status === "done"} className="mt-5 w-full rounded bg-[#F0C33F] py-3.5 text-[0.875rem] font-bold text-ink transition hover:brightness-95 disabled:opacity-70">
