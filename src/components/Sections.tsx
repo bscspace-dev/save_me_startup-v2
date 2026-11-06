@@ -151,7 +151,10 @@ function cardInfo(l: Listing) {
   const t = l.kind === "전수창업" ? transferOf(l) : undefined;
   const c = l.kind === "신규창업" ? startupOf(l) : undefined;
   const brand = l.kind === "프랜차이즈" ? (l.promo?.brand ?? franchises[l.id]?.brand) : undefined;
-  const title = brand ?? c?.title ?? l.title;
+  // 전수창업 카드 제목은 사부 이름이 아니라 대표 메뉴 (두 개까지, 더 있으면 ' 등')
+  const menus = t?.menuNames ?? [];
+  const menuTitle = menus.length ? menus.slice(0, 2).join(", ") + (menus.length > 2 ? " 등" : "") : undefined;
+  const title = brand ?? c?.title ?? menuTitle ?? l.title;
   const desc = brand ? (l.promo?.desc || l.title) : c ? c.summary : t ? `${t.master.name} 사부의 전수메뉴` : (shop?.desc || `${l.region} · ${shop?.buildingType ?? l.category}`);
   const address = l.kind === "상가매물" ? shop?.address : undefined; // 상가매물 소재지
   return { title, desc, brand, address };
