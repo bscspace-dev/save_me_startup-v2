@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 
 // .env.local 에서 설정: 채널 주소(필수), 대표 영상 주소(선택)
@@ -10,6 +11,8 @@ function toEmbed(url: string) {
   const m = url.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
   return m ? `https://www.youtube.com/embed/${m[1]}?rel=0` : null;
 }
+
+const MotionLink = motion.create(Link);
 
 const YtLogo = ({ size = 26 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 00-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 001 7.2C.5 9.1.5 12 .5 12s0 2.9.5 4.8a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 002.1-2.1c.5-1.9.5-4.8.5-4.8s0-2.9-.5-4.8zM9.8 15.2V8.8l5.7 3.2-5.7 3.2z" /></svg>
@@ -28,6 +31,20 @@ export function YoutubePopup() {
 
   return (
     <>
+      {/* 유튜브 버튼 바로 위: 전수창업 안내(전수창업이란?) 로 이동 */}
+      <MotionLink
+        href="/transfer#concept"
+        initial={{ x: 80, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 1, type: "spring", stiffness: 120 }}
+        whileHover={{ x: -4 }}
+        aria-label="전수창업이 뭔가요?"
+        className="fixed right-0 top-[calc(50%-8.8rem)] z-40 flex -translate-y-1/2 flex-col items-center gap-1.5 rounded-l-xl bg-brand px-3 py-4 text-white shadow-xl"
+      >
+        <svg width={26} height={26} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><path d="M9.1 9a3 3 0 015.8 1c0 2-3 2.5-3 4.5" /><path d="M12 17.5h.01" /></svg>
+        <span className="text-[0.625rem] font-bold leading-tight">전수창업이<br />뭔가요?</span>
+      </MotionLink>
+
       <motion.button
         onClick={() => setOpen(true)}
         initial={{ x: 80, opacity: 0 }}
