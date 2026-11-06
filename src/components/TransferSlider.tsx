@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Listing } from "@/lib/data";
 import { fetchRemoteListings } from "@/lib/remote";
-import { ListingCard } from "./ListingCard";
+import { NewCard } from "./Sections";
 
 // 전수창업 매물 카드를 한 화면에 3개(태블릿 2개, 모바일 1개 남짓)씩 보여주고 좌우로 넘겨 본다
 // items 를 주지 않으면 관리자에서 등록한 전수창업(DB) 중 진행 중인 매물을 직접 불러온다
@@ -48,7 +48,7 @@ export function TransferSlider({ items: given }: { items?: Listing[] }) {
       >
         {(items ?? []).map((l, i) => (
           <div key={l.id} className="shrink-0 basis-[82%] snap-start sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)]">
-            <ListingCard l={l} i={i} />
+            <NewCard l={l} i={i} fluid />
           </div>
         ))}
       </div>
