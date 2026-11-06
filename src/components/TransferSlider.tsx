@@ -4,7 +4,7 @@ import type { Listing } from "@/lib/data";
 import { fetchRemoteListings } from "@/lib/remote";
 import { NewCard } from "./Sections";
 
-// 전수창업 매물 카드를 한 화면에 3개(태블릿 2개, 모바일 1개 남짓)씩 보여주고 좌우로 넘겨 본다
+// 전수창업 매물 카드를 메인과 같은 크기·디자인으로 보여준다 (웹은 한 줄 4개, 태블릿·모바일은 카드 너비 고정) — 좌우로 넘겨 본다
 // items 를 주지 않으면 관리자에서 등록한 전수창업(DB) 중 진행 중인 매물을 직접 불러온다
 export function TransferSlider({ items: given }: { items?: Listing[] }) {
   const [fetched, setFetched] = useState<Listing[] | null>(null);
@@ -47,8 +47,8 @@ export function TransferSlider({ items: given }: { items?: Listing[] }) {
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth text-left [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {(items ?? []).map((l, i) => (
-          <div key={l.id} className="shrink-0 basis-[82%] snap-start sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)]">
-            <NewCard l={l} i={i} fluid />
+          <div key={l.id} className="shrink-0 snap-start lg:basis-[calc((100%-3rem)/4)]">
+            <NewCard l={l} i={i} />
           </div>
         ))}
       </div>
