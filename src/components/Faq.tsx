@@ -11,7 +11,7 @@ export function Faq({ items }: { items: { q: string; a: string }[] }) {
         <li key={it.q} className="overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
           <button onClick={() => setOpen(open === i ? null : i)} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-[0.875rem] font-bold text-ink">
             {it.q}
-            <motion.span animate={{ rotate: open === i ? 45 : 0 }} className="text-[1.25rem] font-normal leading-none text-[#D49F12]">+</motion.span>
+            <motion.span animate={{ rotate: open === i ? 45 : 0 }} className="text-[1.25rem] font-normal leading-none text-[#F0C33F]">+</motion.span>
           </button>
           <AnimatePresence initial={false}>
             {open === i && (
