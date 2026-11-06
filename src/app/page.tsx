@@ -5,6 +5,7 @@ import { Consult } from "@/components/ConsultForm";
 import { Footer } from "@/components/Footer";
 import { TestNoticePopup } from "@/components/TestNoticePopup";
 import { YoutubePopup } from "@/components/YoutubePopup";
+import { ConsultPromoPopup } from "@/components/ConsultPromoPopup";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       </main>
       <Footer />
       <YoutubePopup />
+      <ConsultPromoPopup />
       <TestNoticePopup />
     </>
   );
