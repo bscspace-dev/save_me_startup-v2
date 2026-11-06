@@ -69,7 +69,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
               </div>
             </div>
 
-            <div className="relative min-h-[18.75rem] overflow-hidden rounded-2xl bg-gradient-to-b from-[#6b4a2e] via-[#3f2a18] to-[#1b120b]">
+            <div className="relative min-h-[18.75rem] overflow-hidden rounded-2xl bg-gradient-to-b from-[#3a3a3a] via-[#2d2d2d] to-[#1f1f1f]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {(menuSrcs[0] ?? photo) && <img src={(menuSrcs[0] ?? photo)!} alt={menuText} className="absolute inset-0 size-full object-cover" />}
             </div>
@@ -141,7 +141,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
               <ul className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {Array.from({ length: Math.max(menuNames.length, menuSrcs.length) }, (_, k) => (
                   <li key={k}>
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-[#6b4a2e] via-[#3f2a18] to-[#24170d]">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-[#3a3a3a] via-[#2d2d2d] to-[#1f1f1f]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       {menuSrcs[k] && <img src={menuSrcs[k]} alt={menuNames[k] ?? `대표 메뉴 ${k + 1}`} className="absolute inset-0 size-full object-cover" />}
                     </div>
