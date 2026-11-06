@@ -286,19 +286,18 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
         {period.empty && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
         {period.view.map((l) => (
           <li key={l.id} className={`flex flex-wrap items-center gap-4 rounded-xl border bg-white p-3 ${l.hidden ? "border-dashed border-neutral-300 bg-neutral-50" : "border-neutral-200"}`}>
-            <div className="relative h-[4.25rem] w-[6.25rem] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+            <PopupLink href={`/listings/${l.id}`} title="클릭하면 매물 화면이 팝업으로 열립니다" className="relative block h-[4.25rem] w-[6.25rem] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-100 transition hover:opacity-80">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
               {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[0.625rem] font-bold text-white">숨김</span>}
               {l.sold && <span className="absolute inset-0 grid place-items-center bg-black/55 text-[0.6875rem] font-bold text-white">계약완료</span>}
-            </div>
+            </PopupLink>
             <div className="min-w-0 flex-1">
               <p className="text-[0.6875rem] text-neutral-400">[{l.id}] {l.shop?.address} · {l.date} · 사진 {l.photos}장</p>
               <p className="truncate text-[0.875rem] font-black"><StateBadges l={l} soldLabel="계약완료" />{l.title}</p>
               <p className="text-[0.75rem] text-neutral-500">보증금 {won(l.shop!.deposit)}원 · 월세 {won(l.shop!.rent)}원 · 권리금 {l.shop!.premium ? `${won(l.shop!.premium)}원` : "없음"}</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[0.7188rem]">
-              <PopupLink href={`/listings/${l.id}`} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</PopupLink>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "계약완료 해제" : "계약완료"}</button>
               {l.needsReview && <button onClick={() => confirmReview(l)} className="rounded bg-brand px-3 py-1.5 font-bold text-white hover:bg-brand-dark">확인 후 게시</button>}

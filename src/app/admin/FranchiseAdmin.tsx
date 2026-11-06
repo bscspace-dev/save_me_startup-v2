@@ -77,19 +77,18 @@ export function FranchiseAdmin({ cred, canDelete = true }: { cred: Cred; canDele
         {period.empty && <li className="py-16 text-center text-[0.8125rem] text-neutral-400">조건에 맞는 자료가 없습니다.</li>}
         {period.view.map((l) => (
           <li key={l.id} className={`flex flex-wrap items-center gap-4 rounded-xl border bg-white p-3 ${l.hidden ? "border-dashed border-neutral-300 bg-neutral-50" : "border-neutral-200"}`}>
-            <div className="relative h-[4.25rem] w-[6.25rem] shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+            <PopupLink href={`/listings/${l.id}`} title="클릭하면 매물 화면이 팝업으로 열립니다" className="relative block h-[4.25rem] w-[6.25rem] shrink-0 cursor-pointer overflow-hidden rounded-lg bg-neutral-100 transition hover:opacity-80">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l.thumb && <img src={l.thumb} alt="" className="size-full object-cover" />}
               {l.hidden && <span className="absolute inset-x-0 bottom-0 bg-black/75 py-0.5 text-center text-[0.625rem] font-bold text-white">숨김</span>}
               {l.sold && <span className="absolute inset-0 grid place-items-center bg-black/55 text-[0.6875rem] font-bold text-white">모집마감</span>}
-            </div>
+            </PopupLink>
             <div className="min-w-0 flex-1">
               <p className="text-[0.6875rem] text-neutral-400">[{l.id}] {l.promo!.brand} · {l.date} · 이미지 {l.photos}장{l.promo!.sponsored && " · 광고"}</p>
               <p className="truncate text-[0.875rem] font-black"><StateBadges l={l} soldLabel="모집마감" />{l.title}</p>
               <p className="text-[0.75rem] text-neutral-500">{l.category} · {l.op} · 예상 창업비 {costText(l.price)}</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[0.7188rem]">
-              <PopupLink href={`/listings/${l.id}`} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">보기</PopupLink>
               <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "모집마감 해제" : "모집마감"}</button>
               <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>

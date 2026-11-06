@@ -2,10 +2,10 @@
 import type { ReactNode } from "react";
 
 // 관리자에서 "보기"를 누르면 새 탭이 아니라 작은 팝업 창으로 연다. (팝업이 막히면 새 탭으로 열린다)
-export function PopupLink({ href, className, children }: { href: string; className?: string; children: ReactNode }) {
+export function PopupLink({ href, className, title, children }: { href: string; className?: string; title?: string; children: ReactNode }) {
   return (
     <a
-      href={href} target="_blank" rel="noopener" className={className}
+      href={href} target="_blank" rel="noopener" className={className} title={title}
       onClick={(e) => {
         const w = Math.min(1200, window.screen.availWidth - 80);
         const h = Math.min(900, window.screen.availHeight - 80);
