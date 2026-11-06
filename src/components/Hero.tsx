@@ -42,9 +42,8 @@ export function Hero() {
       {/* 메인 배너 이미지: public/hero-banner.webp 로 고정 (관리자 등록 기능은 제거). 이미지를 바꾸려면 이 파일을 교체한다 */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/hero-banner.webp" alt="" aria-hidden className={`absolute inset-0 hidden size-full lg:block translate-x-[calc(10px-4.2%)] -translate-y-[40px] scale-[1.1] origin-[50%_40%] object-cover object-[50%_40%] `} />
-      {/* 화면이 좁아지면(lg 미만) 사람이 들어 있는 배너 이미지는 숨기고 기본 배경을 보여준다 */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)] lg:hidden" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/10" />
+      {/* 화면이 좁아지면(lg 미만) 배너 이미지와 덮개를 숨기고 배경색 #2D2D2D 만 보여준다 */}
+      <div className="absolute inset-0 hidden bg-gradient-to-r from-black/20 via-transparent to-black/10 lg:block" />
 
       <div className="relative mx-auto grid max-w-[80rem] items-center gap-10 px-6 py-10 lg:grid-cols-[1fr_25rem] lg:py-12">
         <div className="text-white">
