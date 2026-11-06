@@ -113,7 +113,7 @@ export default function IdentityPage() {
             <h2 className="mt-2 text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem] font-gmarket">
               <span className="text-[#F0C33F]">신규창업</span><br />알아보기 힘드시죠?
             </h2>
-            <p className="mt-4 max-w-[35rem] text-[0.875rem] leading-relaxed text-neutral-600">
+            <p className="mt-4 max-w-[35rem] text-[0.9375rem] leading-relaxed text-neutral-600">
               어디서부터 시작해야 할지, 누구에게 맡겨야 할지 막막하셨다면 <b className="text-[#D49F12]">한 번에 준비하는 올인원 시스템</b>으로 해결하세요
             </p>
           </Reveal>
