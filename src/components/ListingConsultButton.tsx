@@ -36,7 +36,7 @@ function ConsultForm({ id, title, kind, onClose }: { id: number; title: string; 
         initial={{ scale: 0.92, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.92, y: 20 }}
       >
         <button type="button" onClick={onClose} aria-label="닫기" className="absolute right-4 top-4 grid size-8 place-items-center rounded-full bg-neutral-100 hover:bg-neutral-200">✕</button>
-        <p className="text-[0.6875rem] font-bold text-ink">매물 상담</p>
+        <p className="text-[0.6875rem] font-bold text-[#F0C33F]">매물 상담</p>
         <h3 className="mt-2 text-[1.25rem] font-black">이 매물에 대해 문의하기</h3>
         <p className="mt-2 rounded bg-neutral-50 px-3 py-2 text-[0.75rem] text-neutral-600"><b className="mr-1 text-neutral-400">[{id}]</b>{title}</p>
 
