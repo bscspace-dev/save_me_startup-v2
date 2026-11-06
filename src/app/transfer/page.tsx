@@ -112,13 +112,13 @@ export default function TransferPage() {
           <div className="mx-auto max-w-[80rem] px-6 pb-20 pt-[3.75rem]">
             <Reveal><h2 className="text-[1.875rem] font-black leading-snug tracking-tight font-gmarket">&ldquo;<span className="text-[#F0C33F] md:text-[2.375rem] font-gmarket">사부님</span> 어디 계십니까?&rdquo;</h2></Reveal>
             <Reveal><div className="mt-8"><TransferSlider /></div></Reveal>
+            <div className="mt-10 text-right">
+              <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 메인으로 돌아가기</Link>
+            </div>
           </div>
         </section>
 
         <Consult title="전수창업 상담신청" only="전수창업" />
-        <div className="mx-auto max-w-[80rem] px-6 py-10 text-right">
-          <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 메인으로 돌아가기</Link>
-        </div>
       </main>
       <Footer />
       <YoutubePopup />
