@@ -35,15 +35,15 @@ export function TransferGuideVideo() {
         {!playing && (
           <button onClick={play} aria-label="영상 재생" className="absolute inset-0 flex flex-col justify-between bg-gradient-to-t from-black/75 via-black/10 to-black/30 p-5 text-left text-white">
             <span className="flex w-fit items-center gap-2 rounded-lg bg-black/55 px-3 py-2 text-[0.6563rem] font-bold tracking-wide">
-              <span className="grid size-6 place-items-center rounded bg-[#F0C33F]"><svg viewBox="0 0 10 10" className="size-2.5 fill-ink"><path d="M2 1l7 4-7 4z" /></svg></span>
+              <span className="grid size-6 place-items-center rounded bg-red-600"><svg viewBox="0 0 10 10" className="size-2.5 fill-white"><path d="M2 1l7 4-7 4z" /></svg></span>
               구해줘창업 ORIGINAL
             </span>
             <span className="absolute left-1/2 top-1/2 grid size-[4.5rem] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white shadow-xl transition hover:scale-105">
-              <svg viewBox="0 0 10 10" className="ml-1 size-7 fill-[#F0C33F]"><path d="M2 1l7 4-7 4z" /></svg>
+              <svg viewBox="0 0 10 10" className="ml-1 size-7 fill-red-600"><path d="M2 1l7 4-7 4z" /></svg>
             </span>
             <span className="block">
               <span className="block text-[1.0625rem] font-black">기술을 배우고 내 매장을 시작하는 방법</span>
-              <span className="mt-3 block h-[0.1875rem] rounded bg-white/25"><span className="block h-full w-[10%] rounded bg-[#F0C33F]" /></span>
+              <span className="mt-3 block h-[0.1875rem] rounded bg-white/25"><span className="block h-full w-[10%] rounded bg-red-600" /></span>
               <span className="mt-2 flex justify-between text-[0.625rem] text-white/70"><span>00:00 / {clock(dur)}</span><span>HD · 자막</span></span>
             </span>
           </button>
