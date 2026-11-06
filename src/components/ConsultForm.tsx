@@ -7,7 +7,7 @@ import { NameInput } from "./NameInput";
 import { PhoneInput } from "./PhoneInput";
 
 const types = ["프랜차이즈", "상가매물", "전수창업", "신규창업"];
-const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[0.8125rem] outline-none transition placeholder:text-neutral-300 focus:border-brand";
+const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[0.8125rem] outline-none transition placeholder:text-neutral-300 focus:border-[#F0C33F]";
 
 export function ConsultCard({ title = "간편 상담 신청", only, wide = false }: { title?: string; only?: string; wide?: boolean }) {
   const [type, setType] = useState(only ?? "프랜차이즈");
@@ -79,7 +79,7 @@ export function ConsultCard({ title = "간편 상담 신청", only, wide = false
         <p className="mt-4 text-[0.75rem] font-bold">관심 창업 유형</p>
         <div className="mt-1.5 flex flex-wrap gap-2">
           {(only ? [only] : types).map((t) => (
-            <button type="button" key={t} disabled={!!only} onClick={() => setType(t)} className={`rounded-full border px-3.5 py-1.5 text-[0.7188rem] transition ${type === t ? "border-brand bg-orange-50 font-bold text-brand" : "border-neutral-300 text-neutral-500 hover:border-brand"} disabled:cursor-default`}>{t}</button>
+            <button type="button" key={t} disabled={!!only} onClick={() => setType(t)} className={`rounded-full border px-3.5 py-1.5 text-[0.7188rem] transition ${type === t ? "border-[#F0C33F] bg-[#F0C33F] font-bold text-ink" : "border-neutral-300 text-neutral-500 hover:border-[#F0C33F]"} disabled:cursor-default`}>{t}</button>
           ))}
         </div>
 
@@ -87,10 +87,10 @@ export function ConsultCard({ title = "간편 상담 신청", only, wide = false
         <textarea name="message" rows={3} placeholder="예산, 업종, 현재 상황 등 자유롭게 적어주세요" className={`${field} mt-1.5 resize-none`} />
 
         <label className="mt-4 flex items-center gap-2 text-[0.6875rem] text-neutral-400">
-          <input type="checkbox" required className="accent-[#d9480f]" />개인정보 수집 및 이용에 동의합니다
+          <input type="checkbox" required className="accent-[#F0C33F]" />개인정보 수집 및 이용에 동의합니다
         </label>
 
-        <motion.button whileTap={{ scale: 0.98 }} disabled={status === "sending" || status === "done"} className="mt-5 w-full rounded bg-brand py-3.5 text-[0.875rem] font-bold text-white transition hover:bg-brand-dark disabled:opacity-70">
+        <motion.button whileTap={{ scale: 0.98 }} disabled={status === "sending" || status === "done"} className="mt-5 w-full rounded bg-[#F0C33F] py-3.5 text-[0.875rem] font-bold text-ink transition hover:brightness-95 disabled:opacity-70">
           {status === "sending" ? "전송 중..." : status === "done" ? "신청이 접수되었습니다 ✓" : "무료 창업상담 신청하기"}
         </motion.button>
         {status === "error" && <p className="mt-2 text-center text-[0.75rem] text-red-600">전송에 실패했습니다. 잠시 후 다시 시도해주세요</p>}
