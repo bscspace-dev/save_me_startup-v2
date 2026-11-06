@@ -51,7 +51,7 @@ export default function TransferPage() {
         <section id="concept" className="mx-auto max-w-[80rem] scroll-mt-20 px-6 pb-20 pt-12">
           <Reveal>
             <Head title="전수창업이란?" />
-            <p className="mt-5 max-w-[38.75rem] text-[0.875rem] leading-relaxed text-neutral-600">
+            <p className="mt-5 max-w-[38.75rem] text-[0.875rem] leading-relaxed text-[#2d2d2d]">
               검증된 사부(전수자)의 <b className="text-[#D49F12]">기술과 운영 노하우를 직접 배워</b> 내가게로 시작하는 창업 방식입니다<br />혼자 시행착오를 겪는 대신, 이미 검증된 방법을 전수받아 출발합니다
             </p>
           </Reveal>
@@ -61,7 +61,7 @@ export default function TransferPage() {
                 <div className="h-full rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                   <p className="text-[0.6875rem] font-bold text-[#D49F12]">{c.no}</p>
                   <h3 className="mt-3 text-[1.125rem] font-black">{c.title}</h3>
-                  <p className="mt-2 text-[0.875rem] leading-relaxed text-neutral-500">{c.desc}</p>
+                  <p className="mt-2 text-[0.875rem] leading-relaxed text-[#2d2d2d]">{c.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -84,7 +84,7 @@ export default function TransferPage() {
                   <div className="h-full rounded-lg bg-white p-6 shadow-sm">
                     <p className="text-[0.6875rem] font-bold text-[#D49F12]">STEP {i + 1}</p>
                     <h3 className="mt-3 text-[1.0625rem] font-black">{s.title}</h3>
-                    <p className="mt-2 whitespace-pre-line text-[0.875rem] leading-relaxed text-neutral-500">{s.desc}</p>
+                    <p className="mt-2 whitespace-pre-line text-[0.875rem] leading-relaxed text-[#2d2d2d]">{s.desc}</p>
                   </div>
                 </Reveal>
               ))}

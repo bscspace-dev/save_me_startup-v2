@@ -112,7 +112,7 @@ export default function IdentityPage() {
             <h2 className="mt-2 text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem] font-gmarket">
               <span className="text-[#F0C33F]">신규창업</span><br />알아보기 힘드시죠?
             </h2>
-            <p className="mt-4 max-w-[35rem] text-[0.9375rem] leading-relaxed text-neutral-600">
+            <p className="mt-4 max-w-[35rem] text-[0.9375rem] leading-relaxed text-[#2d2d2d]">
               어디서부터 시작해야 할지, 누구에게 맡겨야 할지 막막하셨다면 <b className="text-[#D49F12]">한 번에 준비하는 올인원 시스템</b>으로 해결하세요
             </p>
           </Reveal>
@@ -122,7 +122,7 @@ export default function IdentityPage() {
                 <div className="h-full rounded-lg border border-[#F0C33F]/50 bg-[#fff8dc] p-7">
                   <p className="text-[0.6875rem] font-bold tracking-wide text-[#D49F12]">{s.tag}</p>
                   <h3 className="mt-2 text-[1.375rem] font-black">{s.title}</h3>
-                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-neutral-600">{s.desc}</p>
+                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-[#2d2d2d]">{s.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -133,7 +133,7 @@ export default function IdentityPage() {
         <section className="mx-auto max-w-[80rem] px-6 pb-20 text-center">
           <Reveal>
             <h2 className="text-[1.875rem] font-black tracking-tight font-gmarket">하나의 흐름으로 이어지는 <span className="text-[#F0C33F]">ALL-IN-ONE</span></h2>
-            <p className="mx-auto mt-3 max-w-[47.5rem] text-[0.9375rem] leading-relaxed text-neutral-500">혼자서 알아보기 힘든 상가 분석, 인테리어, 브랜드 스토리, 로고, 사후관리, 마케팅이 한곳으로 모여<br className="hidden md:block" /> 하나의 <b className="text-[1rem] text-[#D49F12]">&ldquo;올인원 시스템&rdquo;</b>이 됩니다</p>
+            <p className="mx-auto mt-3 max-w-[47.5rem] text-[0.9375rem] leading-relaxed text-[#2d2d2d]">혼자서 알아보기 힘든 상가 분석, 인테리어, 브랜드 스토리, 로고, 사후관리, 마케팅이 한곳으로 모여<br className="hidden md:block" /> 하나의 <b className="text-[1rem] text-[#D49F12]">&ldquo;올인원 시스템&rdquo;</b>이 됩니다</p>
           </Reveal>
           <Reveal><div className="mt-10"><AllInOneDiagram /></div></Reveal>
         </section>
@@ -148,7 +148,7 @@ export default function IdentityPage() {
               <Reveal key={m.title} delay={i * 0.06}>
                 <div className="h-full rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-[#F0C33F] hover:shadow-lg">
                   <h3 className="text-[0.9375rem] font-black leading-snug text-[#D49F12]">{m.title}</h3>
-                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-neutral-500">{m.desc}</p>
+                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-[#2d2d2d]">{m.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -174,7 +174,7 @@ export default function IdentityPage() {
                       <div className="flex flex-col items-center justify-center p-7 text-center md:p-9">
                         <p className="text-[0.6875rem] font-bold text-[#D49F12]">STEP {s.no} · {s.label}</p>
                         <p className="mt-3 whitespace-pre-line text-[1.5rem] font-black leading-snug tracking-tight text-ink md:text-[1.75rem] font-gmarket"><span className="bg-gradient-to-t from-[#F0C33F]/60 from-40% to-transparent to-40% px-0.5">{s.title}</span></p>
-                        {s.desc && <p className="mt-3 text-[0.8125rem] leading-relaxed text-neutral-600">{s.desc}</p>}
+                        {s.desc && <p className="mt-3 text-[0.8125rem] leading-relaxed text-[#2d2d2d]">{s.desc}</p>}
                       </div>
                       <div className="grid place-items-center bg-[#F0C33F] px-6 py-3 text-[1.125rem] font-black tracking-wide text-ink md:min-w-[6.25rem] md:py-0 md:text-[1.375rem]">
                         <div className="text-center">
@@ -185,7 +185,7 @@ export default function IdentityPage() {
                       <div className="flex flex-col justify-center p-7 md:p-9">
                         <div className="mx-auto flex w-full max-w-[25rem] flex-col gap-3.5 md:translate-x-6">
                           <p className="text-[0.9375rem] font-black leading-snug text-ink"><span className="bg-gradient-to-t from-[#F0C33F]/60 from-40% to-transparent to-40% px-0.5">{s.howTitle}</span></p>
-                          <ul className="flex flex-col gap-3.5 text-[0.9375rem] leading-snug text-neutral-600">
+                          <ul className="flex flex-col gap-3.5 text-[0.9375rem] leading-snug text-[#2d2d2d]">
                             {s.how.map((h) => (
                               <li key={h} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1.5 shrink-0 rounded-full bg-[#F0C33F]" />{h}</li>
                             ))}

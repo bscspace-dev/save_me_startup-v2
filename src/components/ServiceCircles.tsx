@@ -108,7 +108,7 @@ export function ServiceCircles() {
               <p className="text-[0.625rem] font-bold text-[#D49F12] md:text-[0.6875rem]">{it.no}</p>
               <h3 className="mt-0.5 text-[0.75rem] font-black leading-tight md:text-[0.9375rem]">{it.title}</h3>
               <span className="my-2 hidden h-px w-8 bg-[#F0C33F]/40 md:block" />
-              <ul className="hidden w-fit max-w-[9.5rem] space-y-1 text-left text-[0.75rem] leading-snug text-neutral-600 md:block lg:text-[0.8125rem]">
+              <ul className="hidden w-fit max-w-[9.5rem] space-y-1 text-left text-[0.75rem] leading-snug text-[#2d2d2d] md:block lg:text-[0.8125rem]">
                 {it.points.map((p) => (
                   <li key={p} className="flex items-start gap-1.5">
                     <span className="mt-[0.3125rem] size-1 shrink-0 rounded-full bg-[#F0C33F]" />
@@ -129,7 +129,7 @@ export function ServiceCircles() {
             <span className="w-6 shrink-0 font-black text-[#D49F12]">{it.no}</span>
             <span>
               <b className="block font-black">{it.title}</b>
-              <span className="mt-0.5 block text-neutral-500">{it.points.join(" · ")}</span>
+              <span className="mt-0.5 block text-[#2d2d2d]">{it.points.join(" · ")}</span>
             </span>
           </li>
         ))}

@@ -62,7 +62,7 @@ export function AllInOneDiagram() {
             <div>
               <p className="text-[0.6875rem] font-black leading-tight sm:text-[0.875rem] lg:text-[0.875rem]">{it.label}</p>
               <span className="mx-auto my-1.5 hidden h-px w-6 bg-[#F0C33F]/40 md:block" />
-              <ul className="hidden max-w-[6.5rem] space-y-0.5 text-left text-[0.625rem] leading-snug text-neutral-600 md:block lg:max-w-[8rem] lg:text-[0.8125rem]">
+              <ul className="hidden max-w-[6.5rem] space-y-0.5 text-left text-[0.625rem] leading-snug text-[#2d2d2d] md:block lg:max-w-[8rem] lg:text-[0.8125rem]">
                 {it.points.map((t) => (
                   <li key={t} className="flex items-start gap-1">
                     <span className="mt-[0.3125rem] size-1 shrink-0 rounded-full bg-[#F0C33F]" />
@@ -80,7 +80,7 @@ export function AllInOneDiagram() {
         {items.map((it) => (
           <li key={it.label} className="rounded-lg border border-neutral-200 bg-white p-4">
             <p className="text-[0.9375rem] font-black">{it.label}</p>
-            <ul className="mt-2 space-y-1 text-[0.9375rem] text-neutral-600">
+            <ul className="mt-2 space-y-1 text-[0.9375rem] text-[#2d2d2d]">
               {it.points.map((t) => (
                 <li key={t} className="flex items-start gap-2"><span className="mt-[0.4375rem] size-1 shrink-0 rounded-full bg-[#F0C33F]" />{t}</li>
               ))}
@@ -89,7 +89,7 @@ export function AllInOneDiagram() {
         ))}
       </ul>
 
-      <button type="button" onClick={() => setRun((r) => r + 1)} className="mt-6 rounded-full border border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 transition hover:border-[#F0C33F] hover:text-[#D49F12]">
+      <button type="button" onClick={() => setRun((r) => r + 1)} className="mt-6 rounded-full border border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-[#2d2d2d] transition hover:border-[#F0C33F] hover:text-[#D49F12]">
         ↻ 다시 보기
       </button>
     </div>
