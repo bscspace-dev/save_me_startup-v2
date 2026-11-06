@@ -138,7 +138,7 @@ export default function IdentityPage() {
         <section className="mx-auto max-w-[80rem] px-6 pb-20">
           <Reveal>
             <p className="text-[0.6875rem] font-bold tracking-wide text-[#D49F12]">CHECK</p>
-            <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket"><span className="text-[#F0C33F]">신규창업</span> 이런 <span className="text-[#F0C33F]">실수</span>를 많이 합니다</h2>
+            <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket"><span className="text-[2.25rem] text-[#F0C33F]">신규창업</span> 이런 <span className="text-[2.25rem] text-[#F0C33F]">실수</span>를 많이 합니다</h2>
           </Reveal>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {mistakes.map((m, i) => (
