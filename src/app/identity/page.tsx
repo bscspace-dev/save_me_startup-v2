@@ -134,7 +134,7 @@ export default function IdentityPage() {
         <section className="mx-auto max-w-[80rem] px-6 pb-20 text-center">
           <Reveal>
             <h2 className="text-[1.875rem] font-black tracking-tight font-gmarket">하나의 흐름으로 이어지는 <span className="text-[#F0C33F]">ALL-IN-ONE</span></h2>
-            <p className="mx-auto mt-3 max-w-[47.5rem] text-[0.8125rem] leading-relaxed text-neutral-500">혼자서 알아보기 힘든 상가 분석, 인테리어, 브랜드 스토리, 로고, 사후관리, 마케팅이 한곳으로 모여<br className="hidden md:block" /> 하나의 <b className="text-[1rem] text-[#D49F12]">&ldquo;올인원 시스템&rdquo;</b>이 됩니다</p>
+            <p className="mx-auto mt-3 max-w-[47.5rem] text-[0.9375rem] leading-relaxed text-neutral-500">혼자서 알아보기 힘든 상가 분석, 인테리어, 브랜드 스토리, 로고, 사후관리, 마케팅이 한곳으로 모여<br className="hidden md:block" /> 하나의 <b className="text-[1rem] text-[#D49F12]">&ldquo;올인원 시스템&rdquo;</b>이 됩니다</p>
           </Reveal>
           <Reveal><div className="mt-10"><AllInOneDiagram /></div></Reveal>
         </section>
