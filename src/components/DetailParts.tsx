@@ -8,7 +8,7 @@ export function Head({ eyebrow, title, eyebrowClass = "text-brand" }: { eyebrow?
   return (
     <>
       {eyebrow && <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${eyebrowClass}`}>{eyebrow}</p>}
-      <h2 className="mt-2 text-[1.625rem] font-black tracking-tight">{title}</h2>
+      <h2 className="mt-2 text-[1.625rem] font-black tracking-tight font-gmarket">{title}</h2>
     </>
   );
 }
@@ -34,7 +34,7 @@ export function ProfitPanel({ revenue, costs, title, rateLabel, caption, revenue
       <div className="flex flex-col justify-between bg-[#fff4ea] p-7">
         <div>
           <p className="text-[0.6875rem] font-bold text-brand">{title}</p>
-          <p className="mt-4 text-[2.125rem] font-black leading-none tracking-tight">{man(net)}</p>
+          <p className="mt-4 text-[2.125rem] font-black leading-none tracking-tight font-gmarket">{man(net)}</p>
         </div>
         <div className="mt-12">
           <span className="inline-block rounded-full bg-brand px-3 py-1 text-[0.6875rem] font-bold text-white">{rateLabel} {rate}%</span>

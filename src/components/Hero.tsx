@@ -81,7 +81,7 @@ export function Hero() {
               <svg viewBox="0 0 24 24" aria-hidden className="size-[1.5rem]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9l-4 3v-3H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" /><path d="M8 11h.01M12 11h.01M16 11h.01" strokeWidth="2.6" /></svg>
               상담 신청하기
             </span>
-            <span aria-hidden className="text-[2rem] font-bold leading-none">→</span>
+            <span aria-hidden className="text-[2rem] font-bold leading-none font-gmarket">→</span>
           </button>
         </motion.div>
       </div>

@@ -45,7 +45,7 @@ export function AllInOneDiagram() {
         >
           <div>
             <p className="text-[0.625rem] font-bold tracking-wide text-white/80 sm:text-[0.8125rem]">ALL-IN-ONE</p>
-            <p className="mt-1 text-[1.375rem] font-black leading-tight sm:text-[2.5rem]">올인원<br />시스템</p>
+            <p className="mt-1 text-[1.375rem] font-black leading-tight sm:text-[2.5rem] font-gmarket">올인원<br />시스템</p>
             <p className="mt-2 hidden text-[0.8125rem] text-white/80 sm:block">처음부터 끝까지 한 번에</p>
           </div>
         </motion.div>

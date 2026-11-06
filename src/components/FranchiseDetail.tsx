@@ -55,7 +55,7 @@ export function FranchiseDetail({ l, f }: { l: Listing; f: FranchiseInfo }) {
           <div className="p-8 md:p-10">
             <BrandLogo src={`/listings/${l.id}/logo.png`} alt={`${f.brand} 로고`} />
             <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-brand">{f.eyebrow}</p>
-            <h1 className="mt-4 text-[1.875rem] font-black leading-[1.25] tracking-tight">{f.headline[0]}<br /><span className="text-brand">{f.headline[1]}</span></h1>
+            <h1 className="mt-4 text-[1.875rem] font-black leading-[1.25] tracking-tight font-gmarket">{f.headline[0]}<br /><span className="text-brand">{f.headline[1]}</span></h1>
             <p className="mt-4 text-[0.8125rem] leading-relaxed text-neutral-500">{f.desc}</p>
             <dl className="mt-7 divide-y divide-neutral-100 border-t border-neutral-100 text-[0.7813rem]">
               <div className="flex py-3.5"><dt className="w-[5.25rem] shrink-0 text-neutral-400">등록번호</dt><dd className="font-bold">{l.id}</dd></div>

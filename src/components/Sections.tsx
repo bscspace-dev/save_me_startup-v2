@@ -23,7 +23,7 @@ function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: {
     <div className="flex items-end justify-between">
       <div>
         {badge ?? <p className="text-[0.75rem] font-bold text-brand">{eyebrow}</p>}
-        <h2 className="mt-2 text-[1.875rem] font-black tracking-tight">{title}</h2>
+        <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket">{title}</h2>
         {sub && <p className="mt-2 text-[0.875rem] text-neutral-500">{sub}</p>}
       </div>
       {more && <Link href={href} className="pb-1 text-[0.75rem] font-bold text-brand">{more} →</Link>}

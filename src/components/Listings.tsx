@@ -118,7 +118,7 @@ export function ListingsView() {
                 {pageList.map((l, i) => <ListingRow key={l.id} l={l} i={i} />)}
                 {kind !== "신규창업" && (
                   <button onClick={() => setInquiryOpen(true)} aria-label="매물 등록 문의" className="flex min-h-[4.5rem] w-full cursor-pointer items-center justify-center gap-3 rounded-xl lg:h-[9.375rem] border-2 border-dashed border-neutral-300 bg-white text-neutral-400 transition hover:border-[#D49F12] hover:text-[#D49F12]">
-                    <span className="text-[1.75rem] font-light leading-none">+</span>
+                    <span className="text-[1.75rem] font-light leading-none font-gmarket">+</span>
                     <span className="text-[0.8125rem] font-bold">매물 등록 문의</span>
                   </button>
                 )}

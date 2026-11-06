@@ -120,8 +120,8 @@ export default async function ListingDetail({ params }: Props) {
 
           <Reveal delay={0.1}>
             <p className="text-[0.75rem] text-neutral-400">[{l.id}] 대구 {l.region} | {l.category}</p>
-            <h1 className="mt-2 text-[1.625rem] font-black leading-snug">{l.title}</h1>
-            <p className="mt-5 text-[1.75rem] font-black text-brand">{won(l.price)}원</p>
+            <h1 className="mt-2 text-[1.625rem] font-black leading-snug font-gmarket">{l.title}</h1>
+            <p className="mt-5 text-[1.75rem] font-black text-brand font-gmarket">{won(l.price)}원</p>
 
             <dl className="mt-6 divide-y divide-neutral-100 border-y border-neutral-200 text-[0.8125rem]">
               {rows.map(([k, v]) => (

@@ -58,7 +58,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
         <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white lg:grid-cols-[1.35fr_1fr]">
           <FranchiseGallery yellow slides={s.gallery ?? GALLERY} badges={[l.rec ? "추천 상가" : "상가매물", "실매물 확인"]} photos={{ id: l.id, count: srcs ? srcs.length : l.photos ?? 0, srcs }} />
           <div className="p-8 md:p-10">
-            <h1 className="text-[1.875rem] font-black leading-[1.25] tracking-tight">{s.headline[0]}{s.headline[1] && <><br />{s.headline[1]}</>}</h1>
+            <h1 className="text-[1.875rem] font-black leading-[1.25] tracking-tight font-gmarket">{s.headline[0]}{s.headline[1] && <><br />{s.headline[1]}</>}</h1>
             <p className="mt-4 text-[0.8125rem] leading-relaxed text-neutral-500">{s.desc}</p>
             <div className="mt-5 rounded-xl bg-[#fff8dc] px-5 py-4">
               <p className="text-[0.6563rem] font-bold text-[#D49F12]">임대 조건</p>
@@ -88,19 +88,19 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-2xl border border-neutral-200 bg-white px-6 py-5">
             <p className="text-[0.6563rem] text-neutral-400">전용면적</p>
-            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight">약 {py}평</p>
+            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight font-gmarket">약 {py}평</p>
           </div>
           <div className="rounded-2xl border border-neutral-200 bg-white px-6 py-5">
             <p className="text-[0.6563rem] text-neutral-400">보증금</p>
-            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight">{man(s.deposit)}</p>
+            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight font-gmarket">{man(s.deposit)}</p>
           </div>
           <div className="rounded-2xl border border-neutral-200 bg-white px-6 py-5">
             <p className="text-[0.6563rem] text-neutral-400">월세</p>
-            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight">{man(s.rent)}</p>
+            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight font-gmarket">{man(s.rent)}</p>
           </div>
           <div className="rounded-2xl border border-neutral-200 bg-white px-6 py-5">
             <p className="text-[0.6563rem] text-neutral-400">권리금</p>
-            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight">{premiumText}</p>
+            <p className="mt-1.5 text-[1.5rem] font-black tracking-tight font-gmarket">{premiumText}</p>
           </div>
         </div>
 
@@ -135,7 +135,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
               {[["보증금", s.deposit, false], [rentLabel, s.rent, false], ["관리비", s.maintenance || s.maintenanceLabel || "매월 변동", false], ["권리금", s.premiumLabel ?? (s.premium || (s.showZero ? "없음" : "무권리")), true]].map(([k, v, hl]) => (
                 <div key={k as string} className={`rounded-xl border p-5 ${hl ? "border-[#F0C33F]/50 bg-[#fff8dc]" : "border-neutral-200 bg-[#faf9f7]"}`}>
                   <p className={`text-[0.6563rem] ${hl ? "font-bold text-[#D49F12]" : "text-neutral-400"}`}>{k as string}</p>
-                  <p className="mt-2 text-[1.5rem] font-black tracking-tight">{typeof v === "string" ? <span className="text-[1.1875rem]">{v}</span> : <>{v.toLocaleString()}<span className="ml-1 text-[0.6875rem] font-bold text-neutral-400">만원</span></>}</p>
+                  <p className="mt-2 text-[1.5rem] font-black tracking-tight font-gmarket">{typeof v === "string" ? <span className="text-[1.1875rem]">{v}</span> : <>{v.toLocaleString()}<span className="ml-1 text-[0.6875rem] font-bold text-neutral-400">만원</span></>}</p>
                 </div>
               ))}
             </div>

@@ -105,7 +105,7 @@ export default function IdentityPage() {
         <section className="mx-auto max-w-[80rem] px-6 py-20">
           <Reveal>
             <p className="text-[0.6875rem] font-bold tracking-wide text-brand">NEW START</p>
-            <h2 className="mt-2 text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem]">
+            <h2 className="mt-2 text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem] font-gmarket">
               <span className="text-brand">신규창업</span><br />알아보기 힘드시죠?
             </h2>
             <p className="mt-4 max-w-[35rem] text-[0.875rem] leading-relaxed text-neutral-600">
@@ -128,7 +128,7 @@ export default function IdentityPage() {
         {/* 올인원 시스템 그림 */}
         <section className="mx-auto max-w-[80rem] px-6 pb-20 text-center">
           <Reveal>
-            <h2 className="text-[1.875rem] font-black tracking-tight">하나의 흐름으로 이어지는 <span className="text-brand">ALL-IN-ONE</span></h2>
+            <h2 className="text-[1.875rem] font-black tracking-tight font-gmarket">하나의 흐름으로 이어지는 <span className="text-brand">ALL-IN-ONE</span></h2>
             <p className="mx-auto mt-3 max-w-[47.5rem] text-[0.8125rem] leading-relaxed text-neutral-500">혼자서 알아보기 힘든 상가 분석, 인테리어, 브랜드 스토리, 로고, 사후관리, 마케팅이 한곳으로 모여<br className="hidden md:block" /> 하나의 <b className="text-[1rem] text-brand">&ldquo;올인원 시스템&rdquo;</b>이 됩니다</p>
           </Reveal>
           <Reveal><div className="mt-10"><AllInOneDiagram /></div></Reveal>
@@ -138,7 +138,7 @@ export default function IdentityPage() {
         <section className="mx-auto max-w-[80rem] px-6 pb-20">
           <Reveal>
             <p className="text-[0.6875rem] font-bold tracking-wide text-brand">CHECK</p>
-            <h2 className="mt-2 text-[1.875rem] font-black tracking-tight"><span className="text-brand">신규창업</span> 이런 <span className="text-brand">실수</span>를 많이 합니다</h2>
+            <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket"><span className="text-brand">신규창업</span> 이런 <span className="text-brand">실수</span>를 많이 합니다</h2>
           </Reveal>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {mistakes.map((m, i) => (
@@ -159,7 +159,7 @@ export default function IdentityPage() {
               <p className="text-[0.6875rem] font-bold tracking-wide text-brand">PROCESS</p>
               <h2 className="mt-4 flex flex-wrap gap-3">
                 {["How?", "Why?", "What?"].map((t) => (
-                  <span key={t} className="rounded-full bg-brand px-6 py-2.5 text-[1.25rem] font-black tracking-tight text-white shadow-md md:px-7 md:py-3 md:text-[1.625rem]">{t}</span>
+                  <span key={t} className="rounded-full bg-brand px-6 py-2.5 text-[1.25rem] font-black tracking-tight text-white shadow-md md:px-7 md:py-3 md:text-[1.625rem] font-gmarket">{t}</span>
                 ))}
               </h2>
             </Reveal>
@@ -170,7 +170,7 @@ export default function IdentityPage() {
                     <div className="grid overflow-hidden rounded-lg bg-white shadow-sm md:grid-cols-[1fr_auto_1.1fr]">
                       <div className="flex flex-col items-center justify-center p-7 text-center md:p-9">
                         <p className="text-[0.6875rem] font-bold text-brand">STEP {s.no} · {s.label}</p>
-                        <p className="mt-3 whitespace-pre-line text-[1.5rem] font-black leading-snug tracking-tight text-brand md:text-[1.75rem]"><span className="bg-gradient-to-t from-orange-200 from-40% to-transparent to-40% px-0.5">{s.title}</span></p>
+                        <p className="mt-3 whitespace-pre-line text-[1.5rem] font-black leading-snug tracking-tight text-brand md:text-[1.75rem] font-gmarket"><span className="bg-gradient-to-t from-orange-200 from-40% to-transparent to-40% px-0.5">{s.title}</span></p>
                         {s.desc && <p className="mt-3 text-[0.8125rem] leading-relaxed text-neutral-600">{s.desc}</p>}
                       </div>
                       <div className="grid place-items-center bg-brand px-6 py-3 text-[1.125rem] font-black tracking-wide text-white md:min-w-[6.25rem] md:py-0 md:text-[1.375rem]">
@@ -202,7 +202,7 @@ export default function IdentityPage() {
         <section className="mx-auto max-w-[80rem] px-6 py-20">
           <Reveal>
             <p className="text-[0.6875rem] font-bold tracking-wide text-brand">COMPARE</p>
-            <h2 className="mt-2 text-[1.875rem] font-black tracking-tight"><span className="text-brand">ALL-IN-ONE</span> 이란?</h2>
+            <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket"><span className="text-brand">ALL-IN-ONE</span> 이란?</h2>
           </Reveal>
           <Reveal>
             <div className="mt-8 overflow-hidden rounded-lg border border-neutral-200 text-[0.8125rem]">
@@ -226,7 +226,7 @@ export default function IdentityPage() {
         <section className="mx-auto max-w-[80rem] px-6 pb-20">
           <Reveal>
             <div className="rounded-3xl bg-gradient-to-br from-[#33231a] to-[#17100b] px-6 py-12 text-center text-white md:py-14">
-              <h2 className="text-[1.625rem] font-black leading-snug md:text-[2rem]"><span className="text-[#ff7a45]">처음이라</span> 막막하다면<br /><span className="text-[#ff7a45]">전문가와</span> 함께하세요</h2>
+              <h2 className="text-[1.625rem] font-black leading-snug md:text-[2rem] font-gmarket"><span className="text-[#ff7a45]">처음이라</span> 막막하다면<br /><span className="text-[#ff7a45]">전문가와</span> 함께하세요</h2>
               <p className="mt-3 text-[0.8125rem] text-white/70">상담은 무료이며 상담 후 편하게 결정하세요</p>
 
               {/* QnA */}

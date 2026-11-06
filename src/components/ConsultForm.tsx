@@ -55,7 +55,7 @@ export function ConsultCard({ title = "간편 상담 신청", only, wide = false
 
       <div className="mt-6 flex flex-col justify-center lg:mt-0 lg:pl-10">
         <motion.button whileTap={{ scale: 0.98 }} disabled={sending} className="cursor-pointer rounded-2xl bg-[#F0C33F] px-7 py-5 text-left font-gmarket text-ink transition hover:brightness-95 disabled:opacity-70">
-          <span className="text-[1.75rem] font-bold leading-[1.3]">
+          <span className="text-[1.75rem] font-bold leading-[1.3] font-gmarket">
             {status === "sending" ? "전송 중..." : status === "done" ? <>신청이<br />접수되었습니다</> : <>무료<br />창업상담<br />신청하기 <span aria-hidden className="ml-1 inline-grid size-7 -translate-y-0.5 place-items-center rounded-full bg-ink align-middle text-[#F0C33F]"><svg viewBox="0 0 24 24" className="size-[1rem]" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5l7 7-7 7" /></svg></span></>}
           </span>
         </motion.button>

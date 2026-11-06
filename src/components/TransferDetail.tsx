@@ -58,7 +58,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
               <p className="text-[0.8125rem] font-bold tracking-wide text-white/55">{l.category}</p>
               <div className="my-6 h-px w-14 bg-white/25" />
               <p className="text-[0.8125rem] font-bold text-[#ff7a45]">{m.name} 사부의 전수메뉴</p>
-              <h1 className="mt-2 text-[2.25rem] font-semibold leading-[1.15] tracking-tight text-white/90 md:text-[2.875rem]">{names[0] ?? menuText}</h1>
+              <h1 className="mt-2 text-[2.25rem] font-semibold leading-[1.15] tracking-tight text-white/90 md:text-[2.875rem] font-gmarket">{names[0] ?? menuText}</h1>
               {t.menuDesc && <p className="mt-3 line-clamp-2 max-w-[26.25rem] text-[0.8125rem] leading-relaxed text-white/70">{t.menuDesc}</p>}
               <div className="mt-9 flex flex-wrap gap-2.5">
                 <ListingConsultButton id={l.id} title={`${m.name} 사부(전수자) ${l.title} (전수창업 상담)`} label="전수창업 상담  →" className={btn} />
@@ -82,7 +82,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
               <div className="flex flex-col justify-between rounded-2xl bg-brand p-5">
                 <div>
                   <p className="text-[0.625rem] text-white/70">기술 전수비</p>
-                  <p className="mt-2 text-[1.75rem] font-black leading-none tracking-tight">{man(l.price)}</p>
+                  <p className="mt-2 text-[1.75rem] font-black leading-none tracking-tight font-gmarket">{man(l.price)}</p>
                 </div>
                 <p className="mt-4 text-[0.625rem] text-white/80">구해줘창업 컨설팅 포함</p>
               </div>
@@ -102,7 +102,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
           {stats.map(([k, v]) => (
             <div key={k} className="rounded-2xl border border-neutral-200 bg-white px-6 py-5">
               <p className="text-[0.6563rem] text-neutral-400">{k}</p>
-              <p className="mt-1.5 text-[1.5rem] font-black tracking-tight">{v}</p>
+              <p className="mt-1.5 text-[1.5rem] font-black tracking-tight font-gmarket">{v}</p>
             </div>
           ))}
         </div>
@@ -155,7 +155,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
             <div className="mt-6 flex flex-wrap items-center justify-between gap-x-10 gap-y-4 rounded-2xl bg-[#0f0a07] px-7 py-6 text-white">
               <div>
                 <p className="text-[0.6875rem] text-white/60">총 기술 전수비 <span className="text-white/40">· VAT 별도</span></p>
-                <p className="mt-2 text-[2rem] font-black leading-none tracking-tight">{man(l.price)}</p>
+                <p className="mt-2 text-[2rem] font-black leading-none tracking-tight font-gmarket">{man(l.price)}</p>
               </div>
               <div className="border-white/15 sm:border-l sm:pl-10">
                 <p className="text-[0.625rem] text-white/50">결제 방식</p>
@@ -177,7 +177,7 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
           <section id="package" className="scroll-mt-24 rounded-3xl bg-gradient-to-br from-[#33231a] to-[#17100b] p-8 text-white md:p-10">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h2 className="mt-2 text-[1.625rem] font-black tracking-tight text-[#ff7a45]">기술만 배우고 끝내지 않습니다</h2>
+                <h2 className="mt-2 text-[1.625rem] font-black tracking-tight text-[#ff7a45] font-gmarket">기술만 배우고 끝내지 않습니다</h2>
                 <p className="mt-3 max-w-[35rem] text-[0.75rem] leading-relaxed text-white/60">전수창업을 통해 전수받은 기술을 교육 이후 신규 매장의 영업·홍보·광고와 홍보영상 제작까지 하나의 실행 과정으로 연결합니다</p>
               </div>
               <span className="rounded-full bg-brand/90 px-4 py-1.5 text-[0.6563rem] font-bold">구해줘창업 실행 패키지 · 별도 비용</span>

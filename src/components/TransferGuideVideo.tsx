@@ -17,7 +17,7 @@ export function TransferGuideVideo() {
     <div className="grid items-center gap-8 rounded-3xl bg-sand p-8 md:grid-cols-[1fr_1.35fr] md:gap-12 md:p-12">
       <div>
         <span className="inline-block rounded-full bg-brand px-3 py-1 text-[0.6875rem] font-bold text-white">{dur ? `${Math.max(1, Math.ceil(dur / 60))}분 ` : ""}핵심 가이드</span>
-        <h2 className="mt-5 text-[1.875rem] font-black leading-[1.25] tracking-tight">기술을 배우고<br />내 매장을 시작하는 방법</h2>
+        <h2 className="mt-5 text-[1.875rem] font-black leading-[1.25] tracking-tight font-gmarket">기술을 배우고<br />내 매장을 시작하는 방법</h2>
         <p className="mt-4 text-[0.8438rem] leading-relaxed text-neutral-600">사부(전수자) 선택부터 교육과 창업 실행까지 핵심 내용을 짧게 확인해 보세요</p>
       </div>
 
