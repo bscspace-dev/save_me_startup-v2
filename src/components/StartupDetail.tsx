@@ -20,7 +20,7 @@ export function StartupDetail({ l, c, srcs }: { l: Listing; c: StartupCase; srcs
 
   return (
     <main className="mx-auto max-w-[80rem] px-6 py-10">
-      <Link href="/listings?type=신규창업" className="text-[0.75rem] text-neutral-500 transition hover:text-brand">← 목록으로</Link>
+      <Link href="/listings?type=신규창업" className="inline-block rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 목록으로</Link>
 
       <h1 className="mt-4 text-[1.75rem] font-black leading-snug md:text-[2.125rem] font-gmarket">{c.title}</h1>
 
@@ -62,6 +62,9 @@ export function StartupDetail({ l, c, srcs }: { l: Listing; c: StartupCase; srcs
         </div>
       </Reveal>
 
+      <div className="mt-10 text-right">
+        <Link href="/listings?type=신규창업" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
+      </div>
       <div className="mt-16" />
     </main>
   );
