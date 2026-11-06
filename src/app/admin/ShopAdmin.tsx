@@ -298,10 +298,10 @@ export function ShopAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: 
               <p className="text-[0.75rem] text-neutral-500">보증금 {won(l.shop!.deposit)}원 · 월세 {won(l.shop!.rent)}원 · 권리금 {l.shop!.premium ? `${won(l.shop!.premium)}원` : "없음"}</p>
             </div>
             <div className="flex shrink-0 gap-2 text-[0.7188rem]">
-              <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               <button onClick={() => toggleSold(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">{l.sold ? "계약완료 해제" : "계약완료"}</button>
               {l.needsReview && <button onClick={() => confirmReview(l)} className="rounded bg-brand px-3 py-1.5 font-bold text-white hover:bg-brand-dark">확인 후 게시</button>}
               {!l.needsReview && <button onClick={() => toggleHidden(l)} className={`rounded border px-3 py-1.5 font-bold hover:border-brand hover:text-brand ${l.hidden ? "border-brand text-brand" : "border-neutral-300"}`}>{l.hidden ? "숨김 해제" : "숨기기"}</button>}
+              <button onClick={() => setEditing(l.id)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold hover:border-brand hover:text-brand">수정</button>
               {canDelete && <button onClick={() => remove(l)} className="rounded border border-neutral-300 px-3 py-1.5 font-bold text-red-600 hover:border-red-400">삭제</button>}
             </div>
           </li>
