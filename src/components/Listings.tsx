@@ -62,6 +62,26 @@ export function ListingsView() {
   const pageList = list.slice((page - 1) * pageSize, page * pageSize);
 
 
+  // 하단 배너 두 개: 모바일은 페이지 이동 위, 태블릿 이상은 페이지 이동 아래에 보여준다 (cls 로 보이는 자리를 나눈다)
+  const banners = (cls: string) => (
+            <div className={`gap-3 sm:grid-cols-2 sm:gap-4 ${cls}`}>
+              <Link href="/transfer" className="flex cursor-pointer items-center justify-between gap-4 rounded-lg bg-[#F0C33F] px-5 py-4 text-left text-ink transition hover:shadow-md">
+                <span>
+                  <span className="block text-[0.625rem] text-ink">구해줘창업</span>
+                  <span className="mt-1 block font-gmarket text-[1rem] font-bold leading-snug">창업 전, 이건 알고 가세요</span>
+                </span>
+                <span className="shrink-0 text-[0.625rem] font-bold text-ink">자세히 보기 →</span>
+              </Link>
+              <button onClick={() => setConsultOpen(true)} className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-[#F0C33F] bg-[#FFF6D6] px-5 py-4 text-left transition hover:shadow-md">
+                <span>
+                  <span className="block text-[0.625rem] text-ink">구해줘창업</span>
+                  <span className="mt-1 block font-gmarket text-[1rem] font-bold leading-snug">내 조건에 맞는 매장 찾기</span>
+                </span>
+                <span className="shrink-0 rounded bg-white px-2 py-1 text-[0.625rem] font-bold text-ink">무료 상담 신청하기 →</span>
+              </button>
+            </div>
+  );
+
   return (
     <>
       {/* 검색 필터 바 */}
@@ -126,6 +146,9 @@ export function ListingsView() {
             </div>
           )}
 
+          {/* 하단 배너 (모바일: 페이지 이동 위) */}
+          {banners("grid mt-8 sm:hidden")}
+
           {totalPages > 1 && (
             <nav aria-label="페이지 이동" className="mt-10 flex items-center justify-center gap-1.5 text-[0.8125rem]">
               <button onClick={() => goPage(page - 1)} disabled={page === 1} className="h-9 rounded border border-neutral-300 bg-white px-3 text-neutral-600 transition hover:border-[#D49F12] hover:text-[#D49F12] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-300 disabled:hover:text-neutral-600">이전</button>
@@ -135,23 +158,8 @@ export function ListingsView() {
               <button onClick={() => goPage(page + 1)} disabled={page === totalPages} className="h-9 rounded border border-neutral-300 bg-white px-3 text-neutral-600 transition hover:border-[#D49F12] hover:text-[#D49F12] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-neutral-300 disabled:hover:text-neutral-600">다음</button>
             </nav>
           )}
-          {/* 하단 배너 */}
-          <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4">
-            <Link href="/transfer" className="flex cursor-pointer items-center justify-between gap-4 rounded-lg bg-[#F0C33F] px-5 py-4 text-left text-ink transition hover:shadow-md">
-              <span>
-                <span className="block text-[0.625rem] text-ink">구해줘창업</span>
-                <span className="mt-1 block font-gmarket text-[1rem] font-bold leading-snug">창업 전, 이건 알고 가세요</span>
-              </span>
-              <span className="shrink-0 text-[0.625rem] font-bold text-ink">자세히 보기 →</span>
-            </Link>
-            <button onClick={() => setConsultOpen(true)} className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-[#F0C33F] bg-[#FFF6D6] px-5 py-4 text-left transition hover:shadow-md">
-              <span>
-                <span className="block text-[0.625rem] text-ink">구해줘창업</span>
-                <span className="mt-1 block font-gmarket text-[1rem] font-bold leading-snug">내 조건에 맞는 매장 찾기</span>
-              </span>
-              <span className="shrink-0 rounded bg-white px-2 py-1 text-[0.625rem] font-bold text-ink">무료 상담 신청하기 →</span>
-            </button>
-          </div>
+          {/* 하단 배너 (태블릿 이상) */}
+          {banners("hidden sm:mt-10 sm:grid")}
 
         </section>
       </div>
