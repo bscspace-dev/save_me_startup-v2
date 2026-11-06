@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { NameInput } from "./NameInput";
 import { PhoneInput } from "./PhoneInput";
 
-const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[0.8125rem] outline-none transition placeholder:text-neutral-300 focus:border-brand";
+const field = "w-full rounded border border-neutral-200 px-3.5 py-3 text-[0.8125rem] outline-none transition placeholder:text-neutral-300 focus:border-[#F0C33F]";
 
 function ConsultForm({ id, title, kind, onClose }: { id: number; title: string; kind: string; onClose: () => void }) {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
@@ -36,7 +36,7 @@ function ConsultForm({ id, title, kind, onClose }: { id: number; title: string; 
         initial={{ scale: 0.92, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.92, y: 20 }}
       >
         <button type="button" onClick={onClose} aria-label="닫기" className="absolute right-4 top-4 grid size-8 place-items-center rounded-full bg-neutral-100 hover:bg-neutral-200">✕</button>
-        <p className="text-[0.6875rem] font-bold text-brand">매물 상담</p>
+        <p className="text-[0.6875rem] font-bold text-ink">매물 상담</p>
         <h3 className="mt-2 text-[1.25rem] font-black">이 매물에 대해 문의하기</h3>
         <p className="mt-2 rounded bg-neutral-50 px-3 py-2 text-[0.75rem] text-neutral-600"><b className="mr-1 text-neutral-400">[{id}]</b>{title}</p>
 
@@ -53,7 +53,7 @@ function ConsultForm({ id, title, kind, onClose }: { id: number; title: string; 
           <input type="checkbox" required className="accent-[#d9480f]" />개인정보 수집 및 이용에 동의합니다
         </label>
 
-        <motion.button whileTap={{ scale: 0.98 }} disabled={status === "sending" || status === "done"} className="mt-5 w-full rounded bg-brand py-3.5 text-[0.875rem] font-bold text-white transition hover:bg-brand-dark disabled:opacity-70">
+        <motion.button whileTap={{ scale: 0.98 }} disabled={status === "sending" || status === "done"} className="mt-5 w-full rounded bg-[#F0C33F] py-3.5 text-[0.875rem] font-bold text-ink transition hover:brightness-95 disabled:opacity-70">
           {status === "sending" ? "전송 중..." : status === "done" ? "문의가 접수되었습니다 ✓" : "이 매물 상담 신청하기"}
         </motion.button>
         {status === "error" && <p className="mt-2 text-center text-[0.6875rem] text-red-600">전송에 실패했습니다. 잠시 후 다시 시도해주세요</p>}
