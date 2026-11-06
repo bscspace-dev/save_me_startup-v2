@@ -65,7 +65,7 @@ export function Hero() {
     <section className={`relative overflow-hidden ${ready && !banners.length ? "bg-[#1c1512]" : "bg-[#2d2d2d]"}`}>
       {banners.map((src, i) => (
         // eslint-disable-next-line @next/next/no-img-element
-        <img key={i} src={src} alt="" aria-hidden className={`absolute inset-0 size-full translate-x-[calc(50px-4.2%)] -translate-y-[50px] scale-[1.2] origin-[50%_40%] object-cover object-[50%_40%] transition-opacity duration-1000 ${i === cur % banners.length ? "opacity-100" : "opacity-0"}`} />
+        <img key={i} src={src} alt="" aria-hidden className={`absolute inset-0 size-full translate-x-[calc(50px-4.2%)] -translate-y-[50px] scale-[1.1] origin-[50%_40%] object-cover object-[50%_40%] transition-opacity duration-1000 ${i === cur % banners.length ? "opacity-100" : "opacity-0"}`} />
       ))}
       {/* 올린 배너 이미지가 있으면 원본 그대로 보이게 덮개를 거의 없앤다 (글씨가 읽힐 정도만 살짝). 없으면 기본 그라데이션 배경 */}
       {ready && !banners.length && <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(217,120,50,.5),transparent_55%),radial-gradient(ellipse_at_10%_100%,rgba(120,60,20,.55),transparent_50%)]" />}
