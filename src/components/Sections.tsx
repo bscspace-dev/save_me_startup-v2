@@ -153,11 +153,12 @@ function cardInfo(l: Listing) {
   const brand = l.kind === "프랜차이즈" ? (l.promo?.brand ?? franchises[l.id]?.brand) : undefined;
   const title = brand ?? c?.title ?? l.title;
   const desc = brand ? (l.promo?.desc || l.title) : c ? c.summary : t ? `${t.master.name} 사부의 전수메뉴` : (shop?.desc || `${l.region} · ${shop?.buildingType ?? l.category}`);
-  return { title, desc, brand };
+  const address = l.kind === "상가매물" ? shop?.address : undefined; // 상가매물 소재지
+  return { title, desc, brand, address };
 }
 
 export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?: boolean }) {
-  const { title, desc, brand } = cardInfo(l);
+  const { title, desc, brand, address } = cardInfo(l);
   return (
     <Reveal delay={Math.min(i, 8) * 0.05} className={fluid ? "" : "w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto"}>
       <motion.a href={`/listings/${l.id}`} whileHover={{ y: -6 }} className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-xl">
@@ -170,6 +171,12 @@ export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?
         </div>
         <div className="flex flex-1 flex-col px-5 pb-4 pt-5">
           <h3 className="line-clamp-1 text-center font-gmarket text-[1.25rem] font-bold tracking-tight">{title}</h3>
+          {address && (
+            <p className="mt-1.5 flex items-center justify-center gap-1 text-center text-[0.8125rem] text-neutral-500">
+              <svg viewBox="0 0 24 24" aria-hidden className="size-[0.875rem] shrink-0 text-[#D49F12]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.2A7 7 0 0 1 19 9.8C19 14.8 12 21 12 21z" /><circle cx="12" cy="10" r="2.5" /></svg>
+              <span className="line-clamp-1">{address}</span>
+            </p>
+          )}
           <p className="mt-2 line-clamp-2 min-h-[2.625rem] text-center text-[0.875rem] leading-relaxed text-[#2d2d2d]">{brand ? <RichText text={desc.replace(/\s*\n\s*/g, " ")} max={40} /> : desc}</p>
           {(() => {
             // 아래 줄: "자세히 보기" 대신 핵심 금액을 보여준다 (금액 정보가 없으면 자세히 보기)
@@ -205,8 +212,8 @@ function priceInfo(l: Listing): { label: string; value: string } | undefined {
 
 // 매물 목록 페이지의 가로형 줄: 왼쪽 사진 / 제목 / 설명 / 지역·업종 / 오른쪽 핵심 금액
 export function ListingRow({ l, i }: { l: Listing; i: number }) {
-  const { title, desc, brand } = cardInfo(l);
-  const meta = [l.region, l.category].filter(Boolean).join(" · ");
+  const { title, desc, brand, address } = cardInfo(l);
+  const meta = [address ?? l.region, l.category].filter(Boolean).join(" · ");
   const price = priceInfo(l);
   return (
     <Reveal delay={Math.min(i, 8) * 0.04}>
