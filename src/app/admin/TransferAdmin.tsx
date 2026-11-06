@@ -106,6 +106,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
   const [f, setF] = useState({ name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", menuNames: "", menuDesc: "" });
   const [history, setHistory] = useState<[string, string][]>([]); // 이력: [시기, 내용]
   const [photos, setPhotos] = useState<string[]>([]);
+  const [detailPhotos, setDetailPhotos] = useState<string[]>([]); // 교육 대표 메뉴 아래에 이어 붙여 보여줄 상세 이미지 (메뉴 사진 뒤에 이어 저장)
   const [menuPhotos, setMenuPhotos] = useState<string[]>([]); // 대표 메뉴 사진 (저장할 때 사부 사진 뒤에 이어 붙인다)
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(id !== null);
@@ -123,7 +124,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
           name: t.name, store: t.store, address: t.address ?? `대구 ${l.region}`, category: l.category,
           price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), menuNames: (t.menuNames ?? []).join(", "), menuDesc: t.menuDesc ?? "",
         });
-        setHistory(t.timeline ?? []); const nm = Math.min(t.menuPhotos ?? 0, ph.length); setPhotos(ph.slice(0, ph.length - nm)); setMenuPhotos(ph.slice(ph.length - nm)); setDate(l.date ?? "");
+        setHistory(t.timeline ?? []); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
       } else setErr("전수창업을 불러오지 못했습니다.");
       setLoading(false);
     });
@@ -150,9 +151,9 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       const d = {
         title: `${f.name.trim()} 사부 전수창업`, region, category: f.category, op: "직접운영" as const, area: 0, // 운영방식은 입력받지 않는다
          price, cost: price, date: date || today(), kind: "전수창업",
-        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, menuDesc: f.menuDesc.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
+        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, detailPhotos: detailPhotos.length || undefined, menuDesc: f.menuDesc.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
       };
-      const { data, error } = await supabase.rpc("admin_shop_save", { ...cred, listing_id: id, d, t: thumb, photos: [...photos, ...menuPhotos], is_sold: false });
+      const { data, error } = await supabase.rpc("admin_shop_save", { ...cred, listing_id: id, d, t: thumb, photos: [...photos, ...menuPhotos, ...detailPhotos], is_sold: false });
       if (error) throw new Error(error.message);
       if (!data) throw new Error("인증에 실패했습니다. 다시 로그인해주세요.");
       onDone(true);
@@ -214,6 +215,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       </section>
 
       <Photos photos={menuPhotos} setPhotos={setMenuPhotos} title="교육 대표 메뉴 사진 *" />
+      <Photos photos={detailPhotos} setPhotos={setDetailPhotos} title="교육 상세 이미지 (선택, 교육 대표 메뉴 아래에 이어 붙여 표시)" lead={false} />
 
       {err && <p className="rounded-lg bg-red-50 p-3 text-[0.75rem] leading-relaxed text-red-700">{err}</p>}
       <div className="flex gap-2">

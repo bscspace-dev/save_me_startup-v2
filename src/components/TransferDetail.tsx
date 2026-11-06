@@ -25,10 +25,13 @@ const btn = "block rounded-lg bg-brand px-6 py-3.5 text-center text-[0.8125rem] 
 
 export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; srcs?: string[] }) {
   const m = t.master;
-  // 관리자 등록분은 사부 사진 뒤에 대표 메뉴 사진이 이어 붙어 있다
-  const nMenu = Math.min(l.transfer?.menuPhotos ?? 0, srcs?.length ?? 0);
-  const ownerSrcs = srcs?.slice(0, (srcs?.length ?? 0) - nMenu);
-  const menuSrcs = nMenu ? srcs!.slice(srcs!.length - nMenu) : [];
+  // 관리자 등록분은 사부 사진 뒤에 대표 메뉴 사진, 그 뒤에 하단 상세 이미지가 이어 붙어 있다
+  const total = srcs?.length ?? 0;
+  const nDetail = Math.min(l.transfer?.detailPhotos ?? 0, total);
+  const nMenu = Math.min(l.transfer?.menuPhotos ?? 0, total - nDetail);
+  const ownerSrcs = srcs?.slice(0, total - nDetail - nMenu);
+  const menuSrcs = nMenu ? srcs!.slice(total - nDetail - nMenu, total - nDetail) : [];
+  const detailSrcs = nDetail ? srcs!.slice(total - nDetail) : [];
   // 대표 메뉴는 이름을 3개까지 보여주고 더 있으면 '등'을 붙인다
   const names = t.menuNames ?? [];
   const menuNames = names;
@@ -146,6 +149,16 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {/* 교육 대표 메뉴 아래 상세 이미지: 조각을 틈 없이 이어 붙여 한 장처럼 보이게 한다 */}
+          {detailSrcs.length > 0 && (
+            <section className="overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm">
+              {detailSrcs.map((s, i) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={i} src={s} alt={`교육 상세 이미지 ${i + 1}`} loading={i < 2 ? "eager" : "lazy"} className="block h-auto w-full" />
+              ))}
             </section>
           )}
 
