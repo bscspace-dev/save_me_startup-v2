@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Consult } from "@/components/ConsultForm";
@@ -42,8 +43,12 @@ export default function TransferPage() {
     <>
       <Header active="전수창업" />
       <main>
+        <div className="mx-auto max-w-[80rem] px-6 pt-8">
+          <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 메인으로</Link>
+        </div>
+
         {/* 전수창업이란 */}
-        <section id="concept" className="mx-auto max-w-[80rem] scroll-mt-20 px-6 py-20">
+        <section id="concept" className="mx-auto max-w-[80rem] scroll-mt-20 px-6 pb-20 pt-12">
           <Reveal>
             <Head title="전수창업이란?" />
             <p className="mt-5 max-w-[38.75rem] text-[0.875rem] leading-relaxed text-neutral-600">
@@ -111,6 +116,9 @@ export default function TransferPage() {
         </section>
 
         <Consult title="전수창업 상담신청" only="전수창업" />
+        <div className="mx-auto max-w-[80rem] px-6 py-10 text-right">
+          <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 메인으로 돌아가기</Link>
+        </div>
       </main>
       <Footer />
       <YoutubePopup />
