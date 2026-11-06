@@ -109,7 +109,6 @@ export default function IdentityPage() {
         {/* 소개 */}
         <section className="mx-auto max-w-[80rem] px-6 pb-20 pt-12">
           <Reveal>
-            <p className="text-[0.6875rem] font-bold tracking-wide text-[#D49F12]">NEW START</p>
             <h2 className="mt-2 text-[1.875rem] font-black leading-snug tracking-tight md:text-[2.375rem] font-gmarket">
               <span className="text-[#F0C33F]">신규창업</span><br />알아보기 힘드시죠?
             </h2>
