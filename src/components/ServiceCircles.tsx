@@ -48,7 +48,10 @@ export function ServiceCircles() {
 
       {/* 가운데 유튜브 영상 */}
       <div className="relative aspect-video w-full max-w-[32.5rem] overflow-hidden rounded-2xl bg-black shadow-2xl ring-8 ring-[#fff8dc] md:absolute md:left-1/2 md:top-1/2 md:w-[46%] md:max-w-none md:-translate-x-1/2 md:-translate-y-1/2">
-        {player && playing ? (
+        {!VIDEO_URL ? (
+          // 대표 YouTube 영상 주소(NEXT_PUBLIC_YOUTUBE_URL)가 없으면 사이트에 있는 소개 영상을 임시로 재생한다
+          <video src="/transfer-intro.mp4#t=0.1" controls playsInline preload="metadata" className="absolute inset-0 size-full bg-black object-contain" />
+        ) : player && playing ? (
           <iframe
             src={player.src}
             title="구해줘창업 소개 영상"
