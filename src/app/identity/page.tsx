@@ -150,7 +150,7 @@ export default function IdentityPage() {
               <Reveal key={m.title} delay={i * 0.06}>
                 <div className="h-full rounded-lg border border-neutral-200 bg-white p-6 shadow-sm transition hover:border-[#F0C33F] hover:shadow-lg">
                   <h3 className="text-[0.9375rem] font-black leading-snug text-[#D49F12]">{m.title}</h3>
-                  <p className="mt-3 text-[0.7813rem] leading-relaxed text-neutral-500">{m.desc}</p>
+                  <p className="mt-3 text-[0.9375rem] leading-relaxed text-neutral-500">{m.desc}</p>
                 </div>
               </Reveal>
             ))}
