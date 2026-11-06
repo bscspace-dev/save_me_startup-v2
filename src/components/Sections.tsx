@@ -152,7 +152,7 @@ function cardInfo(l: Listing) {
   const c = l.kind === "신규창업" ? startupOf(l) : undefined;
   const brand = l.kind === "프랜차이즈" ? (l.promo?.brand ?? franchises[l.id]?.brand) : undefined;
   const title = brand ?? c?.title ?? l.title;
-  const desc = brand ? (l.promo?.desc || l.title) : c ? c.summary : t ? `${t.master.name} 사부의 전수메뉴` : `${l.region} · ${shop?.buildingType ?? l.category}`;
+  const desc = brand ? (l.promo?.desc || l.title) : c ? c.summary : t ? `${t.master.name} 사부의 전수메뉴` : (shop?.desc || `${l.region} · ${shop?.buildingType ?? l.category}`);
   return { title, desc, brand };
 }
 
