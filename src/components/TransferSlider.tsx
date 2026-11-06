@@ -56,7 +56,7 @@ export function TransferSlider({ items: given }: { items?: Listing[] }) {
       <button type="button" aria-label="다음 매물" onClick={() => move(1)} disabled={edge.end} className={`${arrow} right-1 lg:-right-5`}>›</button>
       </div>
       {items && items.length === 0 && <p className="py-10 text-center text-[0.8125rem] text-neutral-400">진행 중인 전수창업 매물이 없습니다.</p>}
-      <a href="/listings?type=전수창업" className="mt-6 inline-block text-[0.8125rem] font-bold text-[#D49F12]">전수창업 전체보기 →</a>
+      <a href="/listings?type=전수창업" className="mt-6 inline-block text-[0.875rem] font-bold text-[#D49F12]">전수창업 전체보기 →</a>
     </div>
   );
 }
