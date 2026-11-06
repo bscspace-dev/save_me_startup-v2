@@ -26,7 +26,7 @@ export function MainAdmin({ cred }: { cred: Cred }) {
     setBusy(true); setNote(null);
     const picked = Array.from(files).filter((f) => f.type.startsWith("image/")).slice(0, MAX - imgs.length);
     try {
-      const done = await Promise.all(picked.map((f) => shrink(f, 1920, 0.8, 380_000)));
+      const done = await Promise.all(picked.map((f) => shrink(f, 2560, 0.88, 900_000)));
       setImgs([...imgs, ...done]);
       if (files.length > picked.length) setNote({ ok: false, t: `배너는 최대 ${MAX}장까지 등록할 수 있습니다.` });
     } catch { setNote({ ok: false, t: "이미지를 읽지 못했습니다. 다른 파일로 시도해주세요." }); }
@@ -57,7 +57,7 @@ export function MainAdmin({ cred }: { cred: Cred }) {
     <div className="space-y-5">
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
         <h2 className="text-[0.9375rem] font-black">메인 배너 이미지 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">{imgs?.length ?? 0} / {MAX}장 · 2장 이상이면 5초마다 넘어갑니다</span></h2>
-        <p className="mt-1 text-[0.75rem] text-neutral-500">메인 페이지 맨 위 큰 배너의 배경으로 쓰입니다. 가로로 긴 사진(권장 1920×800 이상)이 잘 어울리고, 글자는 위에 어둡게 겹쳐 표시됩니다.</p>
+        <p className="mt-1 text-[0.75rem] text-neutral-500">메인 페이지 맨 위 큰 배너의 배경으로 쓰입니다. 가로로 긴 사진(권장 2560×1000 이상)이 잘 어울리고, 글자는 위에 어둡게 겹쳐 표시됩니다.</p>
 
         {imgs === null ? (
           <p className="py-10 text-center text-[0.8125rem] text-neutral-400">불러오는 중...</p>
@@ -85,7 +85,7 @@ export function MainAdmin({ cred }: { cred: Cred }) {
           </div>
         )}
         <input ref={ref} type="file" accept="image/*" multiple hidden onChange={(e) => add(e.target.files)} />
-        <p className="mt-3 text-[0.6875rem] text-neutral-400">큰 이미지는 자동으로 줄여서 저장합니다(가로 1920px 이내, WebP). 배너를 모두 삭제하고 저장하면 기본 배경으로 돌아갑니다.</p>
+        <p className="mt-3 text-[0.6875rem] text-neutral-400">큰 이미지는 자동으로 줄여서 저장합니다(가로 2560px 이내, WebP, 한 장 약 650KB 이하). 배너를 모두 삭제하고 저장하면 기본 배경으로 돌아갑니다.</p>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <button onClick={save} disabled={saving || imgs === null} className="cursor-pointer rounded bg-brand px-5 py-2.5 text-[0.8125rem] font-bold text-white hover:bg-brand-dark disabled:opacity-60">{saving ? "저장 중..." : "저장"}</button>
