@@ -15,7 +15,7 @@ const tones = [
 ];
 
 // photos 가 있으면 실제 사진으로, 없으면 자리표시 배경으로 보여준다
-export function FranchiseGallery({ slides: base, badges, photos, hideLabels, ratio = "aspect-[1/0.92]" }: { slides: Slide[]; badges: string[]; photos?: { id: number; count: number; srcs?: string[] }; hideLabels?: boolean; ratio?: string }) {
+export function FranchiseGallery({ slides: base, badges, photos, hideLabels, ratio = "aspect-[1/0.92]", yellow = false }: { slides: Slide[]; badges: string[]; photos?: { id: number; count: number; srcs?: string[] }; hideLabels?: boolean; ratio?: string; yellow?: boolean }) {
   const slides: Slide[] = photos?.count
     ? Array.from({ length: photos.count }, (_, k) => ({ label: `사진 ${k + 1}`, caption: base[k]?.caption ?? "", sub: base[k]?.sub ?? "", src: photos.srcs?.[k] ?? photoSrc(photos.id, k + 1) }))
     : base;
@@ -32,7 +32,7 @@ export function FranchiseGallery({ slides: base, badges, photos, hideLabels, rat
         {s.src && <img src={s.src} alt={s.label} className="absolute inset-0 size-full object-cover" />}
         <div className="absolute left-4 top-4 flex gap-1.5 text-[0.6875rem] font-bold text-white">
           {badges.map((b, k) => (
-            <span key={b} className={`rounded px-2.5 py-1 ${k === 0 ? "bg-brand" : "bg-black/60"}`}>{b}</span>
+            <span key={b} className={`rounded px-2.5 py-1 ${k === 0 ? (yellow ? "bg-[#F0C33F] text-ink" : "bg-brand") : "bg-black/60"}`}>{b}</span>
           ))}
         </div>
         <span className="absolute right-5 top-4 text-[0.75rem] font-bold text-white/90">{String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}</span>
@@ -50,7 +50,7 @@ export function FranchiseGallery({ slides: base, badges, photos, hideLabels, rat
             onClick={() => setI(k)}
             aria-label={t.label}
             aria-current={k === i}
-            className={`relative aspect-[1.5/1] overflow-hidden rounded-md bg-gradient-to-br ${tones[k % tones.length]} ring-2 transition ${k === i ? "ring-brand" : "opacity-80 ring-transparent hover:opacity-100"}`}
+            className={`relative aspect-[1.5/1] overflow-hidden rounded-md bg-gradient-to-br ${tones[k % tones.length]} ring-2 transition ${k === i ? (yellow ? "ring-[#F0C33F]" : "ring-brand") : "opacity-80 ring-transparent hover:opacity-100"}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {t.src && <img src={t.src} alt="" className="absolute inset-0 size-full object-cover" />}
