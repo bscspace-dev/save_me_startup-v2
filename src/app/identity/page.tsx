@@ -206,7 +206,6 @@ export default function IdentityPage() {
         {/* 비교 */}
         <section className="mx-auto max-w-[80rem] px-6 py-20">
           <Reveal>
-            <p className="text-[0.6875rem] font-bold tracking-wide text-[#D49F12]">COMPARE</p>
             <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket"><span className="text-[#F0C33F]">ALL-IN-ONE</span> 이란?</h2>
           </Reveal>
           <Reveal>
