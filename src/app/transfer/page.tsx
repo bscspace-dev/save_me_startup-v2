@@ -52,7 +52,7 @@ export default function TransferPage() {
           <Reveal>
             <Head title="전수창업이란?" />
             <p className="mt-5 max-w-[38.75rem] text-[0.875rem] leading-relaxed text-neutral-600">
-              검증된 사부(전수자)의 <b className="text-[1.0625rem] text-[#D49F12]">기술과 운영 노하우를 직접 배워</b> 내가게로 시작하는 창업 방식입니다<br />혼자 시행착오를 겪는 대신, 이미 검증된 방법을 전수받아 출발합니다
+              검증된 사부(전수자)의 <b className="text-[#D49F12]">기술과 운영 노하우를 직접 배워</b> 내가게로 시작하는 창업 방식입니다<br />혼자 시행착오를 겪는 대신, 이미 검증된 방법을 전수받아 출발합니다
             </p>
           </Reveal>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
