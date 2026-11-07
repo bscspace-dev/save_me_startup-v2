@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon } from "./Icons";
-import { RevealLi, RevealDiv } from "./ScrollReveal";
+import { RevealLi, RevealDiv, GrowBar } from "./ScrollReveal";
 
 // 전수창업 상세 하단의 공통 안내 섹션들 (모든 전수창업 매물에 같은 문구)
 export const wrap = "mx-auto max-w-[80rem] px-6";
@@ -45,7 +45,7 @@ function SecHead({ eyebrow, title, side, dark, center }: { eyebrow: string; titl
   );
 }
 
-export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle }: { name: string; photo: string | null; middle?: React.ReactNode; quote?: string; bio?: string; sales?: [number, number, number]; peakNote?: string }) {
+export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle, stats }: { name: string; stats?: [string, string][]; photo: string | null; middle?: React.ReactNode; quote?: string; bio?: string; sales?: [number, number, number]; peakNote?: string }) {
   const checks = ["손에 익을 때까지, 조리 실습", "매장에 맞춘 주방 동선과 준비 과정", "오픈 후에도 지킬 수 있는 운영 기준"];
   const phil = [
     ["맛은 감이 아니라, 기준으로.", "계량, 숙성, 화력과 조리 시간을 정리해 누구나 같은 한 접시를 만듭니다."],
@@ -56,6 +56,8 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
     <section id="expert" className="scroll-mt-24 rounded-3xl border border-neutral-200 bg-white py-8 text-ink md:py-10">
       <div className="px-8 md:px-10">
         <div className="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr]">
+          <div className="relative">
+          <span aria-hidden className="absolute -bottom-3 -right-3 size-full rounded-2xl border-2 border-[#F0C33F]" />
           <div className="relative flex aspect-[3/2] items-end overflow-hidden rounded-2xl bg-[#161616]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {photo && <img src={photo} alt={`${name} 사부(전수자)`} className="absolute inset-0 size-full object-cover object-top" />}
@@ -68,9 +70,10 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
               <span className="shrink-0 text-[0.6875rem] text-white/80">인터뷰 보기 ↗</span>
             </div>
           </div>
+          </div>
           <div>
             <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>THE MASTER</p>
-            <h2 className="mt-4 text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">맛의 기준을 나누는<br />{name} 사부</h2>
+            <h2 className="mt-4 text-[2rem] font-black leading-[1.3] tracking-tight font-gmarket md:text-[2.5rem]">맛의 기준을 나누는<br /><mark className="rounded-md bg-[#F0C33F] px-2 text-ink">{name}</mark> 사부</h2>
             {quote || bio ? (
               <div className="mt-6">
                 {quote && <p className="whitespace-pre-line text-[1.0625rem] font-black leading-[1.6] text-ink">&ldquo;{quote}&rdquo;</p>}
@@ -84,6 +87,17 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
             </ul>
           </div>
         </div>
+
+        {stats && (
+          <ul className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {stats.map(([k, v]) => (
+              <li key={k} className="card-soft px-5 py-4">
+                <p className="text-[0.6875rem] text-neutral-500">{k}</p>
+                <p className="mt-1 text-[1.75rem] font-black tracking-tight text-[#A97C0A] font-gmarket">{v}</p>
+              </li>
+            ))}
+          </ul>
+        )}
 
         {middle && <div className="mt-14 border-t border-neutral-200 pt-12">{middle}</div>}
 
@@ -112,30 +126,31 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
             <p className={`mt-3 text-[0.8125rem] font-bold ${YEL}`}>매출과 관련하여 이만큼 장사가 잘된다는 걸 직접 데이터로 증명합니다.</p>
           </div>
           <div className="mx-auto mt-8 grid max-w-[64rem] gap-5 md:grid-cols-2">
-            <div className="rounded-2xl border border-neutral-200 bg-[#faf9f7] p-6">
+            <div className="card-soft p-6">
               <div className="flex items-center justify-between gap-3">
                 <p className={`text-[0.8125rem] font-black ${YEL}`}>전수 매장 월 매출 상승 추이</p>
                 <span className="text-[0.6875rem] text-neutral-600">최근 6개월 실적 기준</span>
               </div>
               <ul className="mt-6 space-y-5">
                 {[["오픈 1개월차", 0], ["오픈 3개월차", 1], ["오픈 6개월차 (안착)", 2]].map(([label, k]) => {
-                  const v = sales?.[k as number] ?? 0;
-                  const max = Math.max(...(sales ?? [0]), 1);
+                  const data = sales ?? [3800, 6200, 8500]; // 관리자 입력이 없으면 예시 수치
+                  const v = data[k as number] ?? 0;
+                  const max = Math.max(...data, 1);
                   return (
                     <li key={label as string}>
                       <div className="flex items-center justify-between text-[0.75rem]">
                         <span className="font-bold">{label}</span>
-                        <b className={k === 2 ? YEL : ""}>{v ? `월 ${v.toLocaleString()}만원${k === 2 ? " 달성!" : ""}` : <span className="font-normal text-neutral-400">매출 입력 예정</span>}</b>
+                        <b className={k === 2 ? YEL : ""}>월 {v.toLocaleString()}만원{k === 2 ? " 달성!" : ""}</b>
                       </div>
                       <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-neutral-200">
-                        <div className={`h-full rounded-full ${k === 2 ? "bg-[#D49F12]" : "bg-[#F0C33F]"}`} style={{ width: `${Math.round((v / max) * 100)}%` }} />
+                        <GrowBar i={k as number} pct={Math.round((v / max) * 100)} className={`h-full rounded-full ${k === 2 ? "bg-[#D49F12]" : "bg-[#F0C33F]"}`} />
                       </div>
                     </li>
                   );
                 })}
               </ul>
             </div>
-            <div className="rounded-2xl border border-neutral-200 bg-[#faf9f7] p-6">
+            <div className="card-soft p-6">
               <p className={`text-[0.8125rem] font-black ${YEL}`}>피크타임 만석 및 대기열 증빙</p>
               <div className="mt-4 grid aspect-[16/9] place-items-center rounded-xl border border-dashed border-neutral-300 bg-white text-[0.75rem] text-neutral-400">피크타임 증빙 사진 영역</div>
               <p className="mt-3 text-[0.6875rem] leading-relaxed text-neutral-600">{peakNote ? `*${peakNote}` : <span className="text-neutral-400">*증빙 설명을 입력해 주세요</span>}</p>
@@ -161,7 +176,7 @@ export function MenuSection({ name, names, srcs, desc, embedded }: { name: strin
         </div>
         <ul className={`mx-auto mt-10 grid gap-5 ${n === 1 ? "max-w-[21rem]" : n === 2 ? "max-w-[42rem] md:grid-cols-2" : "max-w-[64rem] md:grid-cols-3"}`}>
           {Array.from({ length: n }, (_, k) => (
-            <RevealLi i={k} key={k} className="group overflow-hidden rounded-2xl border border-neutral-200 bg-[#faf9f7]">
+            <RevealLi i={k} key={k} className="group card-soft overflow-hidden">
               <div className="relative aspect-[4/3] bg-neutral-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 {srcs[k] && <img src={srcs[k]} alt={names[k] ?? `대표 메뉴 ${k + 1}`} className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105" />}
@@ -213,7 +228,7 @@ export function CostComparison() {
           <p className="mt-3 text-[0.8125rem] text-neutral-600">가맹비, 로열티, 인테리어 중간 마진 등 불필요한 거품을 싹 <b className={YEL}>빼</b>고 전수비 하나로 해결하세요.</p>
         </div>
         <div className="mx-auto mt-10 grid max-w-[56rem] gap-5 md:grid-cols-2">
-          <div className="rounded-2xl border border-neutral-200 bg-[#faf9f7] p-7">
+          <div className="card-soft p-7">
             <p className="text-center text-[0.6875rem] font-bold text-neutral-500">일반 프랜차이즈 가맹</p>
             <p className="mt-1 text-center text-[1.25rem] font-black text-neutral-600">부담스러운 거품 창업비</p>
             <ul className="mt-6 divide-y-0 border-t border-neutral-200 pt-4 text-[0.75rem]">
@@ -254,13 +269,15 @@ export function NeighborhoodSection() {
     <section className="rounded-3xl border border-neutral-200 bg-white py-8 text-ink md:py-10">
       <div className="px-8 md:px-10">
         <SecHead dark eyebrow="FIND YOUR NEIGHBORHOOD" title="이런 상권과 잘 맞아요!" side={<>입지가 곧 정답은 아닙니다.<br />현장 조건과 운영 계획을 함께 살펴봅니다.</>} />
-        <ul className="mt-10 grid gap-x-8 md:grid-cols-3">
-          {areas.map(([no, ic, t, a, b]) => (
-            <li key={no} className="border-y border-neutral-200 py-6">
-              <div className="flex items-center justify-between"><span className={`text-[0.75rem] ${YEL}`}>{no}</span><L k={ic} className={`size-6 ${YEL}`} /></div>
-              <p className="mt-6 text-[1.0625rem] font-black">{t}</p>
-              <p className="mt-4 text-[0.75rem] leading-[1.8] text-neutral-600">{a}<br />{b}</p>
-            </li>
+        <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          {areas.map(([no, ic, t, a, b], i) => (
+            <RevealLi i={i} key={no} className="group card-soft relative overflow-hidden p-6">
+              <span aria-hidden className="pointer-events-none absolute -right-1 -top-3 select-none text-[4rem] font-black leading-none text-white/[0.04] font-gmarket">{no}</span>
+              <span className="relative grid size-12 place-items-center rounded-xl bg-[#F0C33F] text-[#1b1b1b]"><L k={ic} className="size-6" /></span>
+              <p className="relative mt-7 text-[1.1875rem] font-black">{t}</p>
+              <span aria-hidden className="relative mt-3 block h-0.5 w-8 rounded-full bg-[#F0C33F]" />
+              <p className="relative mt-4 text-[0.75rem] leading-[1.9] text-neutral-600">{a}<br />{b}</p>
+            </RevealLi>
           ))}
         </ul>
       </div>
@@ -283,7 +300,7 @@ export function PreResults() {
           <p className="mt-5 text-center text-[0.75rem] leading-[1.9] text-neutral-600">준비를 충분히 했다고 생각했는데, 막상 첫날이 되면 달라집니다.<br />구해줘창업은 그 순간을 먼저 겪어봤기 때문에 미리 대비합니다.</p>
           <ul className="mt-12 grid gap-4 md:grid-cols-3">
             {traps.map(([tag, t, d], i) => (
-              <RevealLi i={i} key={t} className="rounded-2xl border border-neutral-200 bg-[#faf9f7] p-6">
+              <RevealLi i={i} key={t} className="card-soft p-6">
                 <p className="flex items-center gap-2"><span className="grid size-7 place-items-center rounded-full bg-[#F0C33F] text-[0.6875rem] font-black text-ink">{String(i + 1).padStart(2, "0")}</span><span className={`text-[0.6875rem] font-bold ${YEL}`}>{tag}</span></p>
                 <p className="mt-5 text-[1.0625rem] font-black">{t}</p>
                 <p className="mt-3 text-[0.75rem] leading-[1.9] text-neutral-600">{d}</p>
@@ -368,7 +385,7 @@ export function CalendarSection() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {cal.slice(1).map(([d, t, items], ci) => (
-            <RevealDiv i={ci} key={d} className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-[#faf9f7] px-5 py-8 text-center">
+            <RevealDiv i={ci} key={d} className="card-soft relative overflow-hidden px-5 py-8 text-center">
               <div aria-hidden className="pointer-events-none absolute inset-0 select-none space-y-3 p-6 text-left text-[0.75rem] text-neutral-400 blur-[3px]">
                 {items.map((it) => <p key={it}>{it}</p>)}
               </div>
@@ -396,7 +413,7 @@ export function SopSection() {
           <SecHead dark eyebrow="OPERATIONS MANUAL" title={<>대표 프랜차이즈도 본사 없이는<br />운영한 적 없는<br />매장 전용 맞춤형 SOP 북</>} side={<>우리 가게만의 조리 기준, 서비스 절차,<br />위생 체크리스트를 한 권에 정리합니다.<br />혼자서도 흔들리지 않고 운영하는<br />기준이 됩니다.</>} />
           <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {sop.map(([ic, t, d], sopI) => (
-              <RevealLi i={sopI} key={t} className="border border-neutral-200 bg-[#faf9f7] p-6">
+              <RevealLi i={sopI} key={t} className="card-soft p-6">
                 <L k={ic} className="size-6 text-[#A97C0A]" />
                 <p className="mt-5 text-[1rem] font-black">{t}</p>
                 <p className="mt-3 text-[0.7188rem] leading-[1.9] text-neutral-600">{d}</p>
@@ -422,15 +439,19 @@ export function MarketingPackage() {
       <div className="px-8 md:px-10">
         <SecHead dark eyebrow="FIRST MONTH MARKETING" title={<>오픈 첫 달 300% 목표를 위한<br />구해줘창업 전속 마케팅 · PR 패키지</>} side={<>첫 달은 단순한 운영이 아닌,<br />브랜드를 알리는 가장 중요한 시간입니다.<br />4단계 흐름으로 체계적으로 준비합니다.</>} />
         <p className="mt-4 text-[0.6563rem] text-neutral-500">* 300%는 마케팅 목표 수치이며, 개별 매장의 실제 성과는 입지·업종·운영 방식에 따라 다를 수 있습니다.</p>
-        <ol className="mt-12">
-          {steps.map(([s, when, t, d, tags]) => (
-            <li key={s} className="grid items-center gap-4 border-b border-neutral-200 py-7 first:border-t-0 md:grid-cols-[12rem_1fr_auto]">
-              <div><p className={`text-[0.625rem] font-bold tracking-[0.18em] ${YEL}`}>{s}</p><p className="mt-2 text-[0.9375rem] font-black">{when}</p></div>
-              <div><p className="text-[1.0625rem] font-black">{t}</p><p className="mt-3 text-[0.75rem] leading-[1.8] text-neutral-600">{d}</p></div>
-              <div className="flex gap-2">
-                {tags.map((tg, i) => <span key={tg} className={`whitespace-nowrap rounded-full bg-white/10 px-3 py-1.5 text-[0.6563rem] font-bold ${i === 0 ? YEL : "text-neutral-700"}`}>{tg}</span>)}
+        <ol className="relative mt-12 space-y-4">
+          <span aria-hidden className="absolute bottom-6 left-[1.6875rem] top-6 hidden w-0.5 rounded-full bg-neutral-200 md:block" />
+          {steps.map(([s, when, t, d, tags], idx) => (
+            <RevealLi i={idx} key={s} className="relative md:pl-[4.5rem]">
+              <span className="absolute left-0 top-6 z-10 hidden size-14 place-items-center rounded-full border-4 border-white bg-[#F0C33F] text-[0.9375rem] font-black text-[#1b1b1b] font-gmarket md:grid">{String(idx + 1).padStart(2, "0")}</span>
+              <div className="grid items-center gap-4 rounded-2xl border border-neutral-200 bg-[#faf9f7] p-6 md:grid-cols-[10rem_1fr_auto]">
+                <div><p className={`text-[0.625rem] font-bold tracking-[0.18em] ${YEL}`}>{s}</p><p className="mt-2 text-[0.9375rem] font-black">{when}</p></div>
+                <div><p className="text-[1.0625rem] font-black">{t}</p><p className="mt-3 text-[0.75rem] leading-[1.8] text-neutral-600">{d}</p></div>
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tg, i) => <span key={tg} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-[0.6563rem] font-bold ${i === 0 ? "border-[#F0C33F]/60 bg-[#fff8dc] text-[#A97C0A]" : "border-neutral-200 bg-white text-neutral-700"}`}>{tg}</span>)}
+                </div>
               </div>
-            </li>
+            </RevealLi>
           ))}
         </ol>
       </div>
@@ -450,7 +471,7 @@ export function Faq() {
           </div>
           <div>
             {faqs.map(([q, a]) => (
-              <details key={q} open className="group border-b border-neutral-200 py-5 first:border-t lg:first:border-t-0">
+              <details key={q} open className="group card-soft mb-3 px-6 py-5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[0.9375rem] font-black">
                   <span><span className={`mr-3 ${YEL}`}>Q.</span>{q}</span>
                   <span className="text-neutral-500 group-open:hidden">+</span><span className="hidden text-neutral-500 group-open:inline">–</span>

@@ -26,3 +26,17 @@ export function RevealLi({ children, className, i = 0 }: { children: ReactNode; 
 export function RevealDiv({ children, className, i = 0 }: { children: ReactNode; className?: string; i?: number }) {
   return <motion.div {...useVariants(i, 22)} className={className}>{children}</motion.div>;
 }
+
+// 화면에 들어오면 0%에서 목표 폭까지 차오르는 막대
+export function GrowBar({ pct, className, i = 0 }: { pct: number; className?: string; i?: number }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.div
+      className={className}
+      initial={reduce ? false : { width: 0 }}
+      whileInView={{ width: `${pct}%` }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: 1.3, delay: reduce ? 0 : 0.15 + i * 0.25, ease: [0.22, 1, 0.36, 1] }}
+    />
+  );
+}
