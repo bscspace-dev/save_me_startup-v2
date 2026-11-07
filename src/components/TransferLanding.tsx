@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon } from "./Icons";
-import { RevealLi, RevealDiv, GrowBar, DrawX } from "./ScrollReveal";
+import { RevealLi, RevealDiv, GrowBar, DrawX, Highlight } from "./ScrollReveal";
 
 // 전수창업 상세 하단의 공통 안내 섹션들 (모든 전수창업 매물에 같은 문구)
 export const wrap = "mx-auto max-w-[80rem] px-6";
@@ -53,7 +53,7 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
     ["팔리는 메뉴만큼, 남는 구조도 중요하게.", "식재료 관리와 메뉴 구성을 함께 살피고 원가를 점검하는 습관을 만듭니다."],
   ];
   return (
-    <section id="expert" className="scroll-mt-24 rounded-3xl border border-neutral-200 bg-white py-8 text-ink md:py-10">
+    <section id="expert" className="scroll-mt-24 overflow-hidden rounded-3xl border border-neutral-200 bg-white py-8 text-ink md:py-10">
       <div className="px-8 md:px-10">
         <div className="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr]">
           <div className="relative">
@@ -73,7 +73,7 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
           </div>
           <div>
             <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>THE MASTER</p>
-            <h2 className="mt-4 text-[2rem] font-black leading-[1.3] tracking-tight font-gmarket md:text-[2.5rem]">맛의 기준을 나누는<br /><mark className="rounded-md bg-[#F0C33F] px-2 text-ink">{name}</mark> 사부</h2>
+            <h2 className="mt-4 font-black leading-[1.35] tracking-tight font-gmarket text-[1.75rem] md:text-[2.125rem]">맛의 기준을 나누는<br /><Highlight>{name} 사부</Highlight></h2>
             {quote || bio ? (
               <div className="mt-6">
                 {quote && <p className="whitespace-pre-line text-[1.0625rem] font-black leading-[1.6] text-ink">&ldquo;{quote}&rdquo;</p>}
@@ -99,12 +99,12 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
           </ul>
         )}
 
-        {middle && <div className="mt-14 border-t border-neutral-200 pt-12">{middle}</div>}
+        {middle && <div className="-mx-8 mt-12 md:-mx-10">{middle}</div>}
 
-        <div className="mt-14 border-t border-neutral-200 pt-12 lg:grid lg:grid-cols-[1fr_1.8fr] lg:gap-10">
+        <div className="mt-12 lg:grid lg:grid-cols-[1fr_1.8fr] lg:gap-10">
           <div>
             <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>BEYOND THE RECIPE</p>
-            <h3 className="mt-4 text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">운영 노하우 /<br />장사 철학</h3>
+            <h3 className="mt-4 font-black leading-[1.35] tracking-tight font-gmarket text-[1.75rem] md:text-[2.125rem]">운영 노하우 /<br /><Highlight>장사 철학</Highlight></h3>
             <p className="mt-5 text-[0.75rem] leading-[1.9] text-neutral-600">오래 가는 가게의 시작은<br />화려한 비법보다 흔들리지 않는<br />매일의 기본입니다.</p>
           </div>
           <ol className="mt-8 lg:mt-0">
@@ -120,18 +120,18 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
           </ol>
         </div>
 
-        <div className="mt-12 border-t border-neutral-200 pt-12">
+        <div className="tone-dark -mx-8 -mb-8 mt-12 px-8 py-10 md:-mx-10 md:-mb-10 md:px-10">
           <div className="text-center">
-            <h3 className="text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">장사 데이터로 증명합니다</h3>
+            <h3 className="font-black leading-[1.35] tracking-tight font-gmarket text-[1.75rem] md:text-[2.125rem]">장사 <Highlight>데이터</Highlight>로 증명합니다</h3>
             <p className={`mt-3 text-[0.8125rem] font-bold ${YEL}`}>매출과 관련하여 이만큼 장사가 잘된다는 걸 직접 데이터로 증명합니다.</p>
           </div>
           <div className="mx-auto mt-8 grid max-w-[64rem] gap-5 md:grid-cols-2">
-            <div className="card-soft p-6">
+            <div className="card-soft flex flex-col p-6">
               <div className="flex items-center justify-between gap-3">
                 <p className={`text-[0.8125rem] font-black ${YEL}`}>전수 매장 월 매출 상승 추이</p>
                 <span className="text-[0.6875rem] text-neutral-600">최근 6개월 실적 기준</span>
               </div>
-              <ul className="mt-6 space-y-5">
+              <ul className="mt-6 flex flex-1 flex-col justify-around gap-5">
                 {[["오픈 1개월차", 0], ["오픈 3개월차", 1], ["오픈 6개월차 (안착)", 2]].map(([label, k]) => {
                   const data = sales ?? [3800, 6200, 8500]; // 관리자 입력이 없으면 예시 수치
                   const v = data[k as number] ?? 0;
@@ -149,6 +149,7 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
                   );
                 })}
               </ul>
+              {(() => { const d = sales ?? [3800, 6200, 8500]; return d[0] > 0 && d[2] > d[0] ? <p className="mt-5 rounded-xl border border-[#F0C33F]/60 bg-[#fff8dc] px-4 py-3 text-center text-[0.75rem] font-bold">오픈 1개월차 대비 약 <span className={YEL}>{(d[2] / d[0]).toFixed(1)}배</span> 성장</p> : null; })()}
             </div>
             <div className="card-soft p-6">
               <p className={`text-[0.8125rem] font-black ${YEL}`}>피크타임 만석 및 대기열 증빙</p>
@@ -171,8 +172,8 @@ export function MenuSection({ name, names, srcs, desc, embedded }: { name: strin
   const content = (<>
         <div className="text-center">
           <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>SIGNATURE MENU</p>
-          <h2 className="mt-3 text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">손님이 줄 서는 이유, {name} 사부의 대표메뉴</h2>
-          <p className="mt-3 text-[0.8125rem] leading-relaxed text-neutral-600">가게의 중심이 되는 메뉴를 사부가 직접 1:1로 전수합니다.<br />레시피부터 조리 기준, 원가 관리까지 한 번에 배웁니다.</p>
+          <h2 className="mt-3 text-[1.75rem] font-black leading-[1.35] tracking-tight font-gmarket md:text-[2.125rem]">손님이 줄 서는 이유,<br /><Highlight>{name} 사부</Highlight>의 대표메뉴</h2>
+          <p className="mt-3 text-[0.8125rem] leading-relaxed text-neutral-600">가게의 중심이 되는 메뉴를 <b className="text-ink">사부가 직접 1:1로 전수</b>합니다.<br /><b className="text-ink">레시피부터 조리 기준, 원가 관리까지</b> 한 번에 배웁니다.</p>
         </div>
         <ul className={`mx-auto mt-10 grid gap-5 ${n === 1 ? "max-w-[21rem]" : n === 2 ? "max-w-[42rem] md:grid-cols-2" : "max-w-[64rem] md:grid-cols-3"}`}>
           {Array.from({ length: n }, (_, k) => (
@@ -195,7 +196,7 @@ export function MenuSection({ name, names, srcs, desc, embedded }: { name: strin
           ))}
         </ul>
 </>);
-  if (embedded) return <div id="menus" className="scroll-mt-24">{content}</div>;
+  if (embedded) return <div id="menus" className="tone-dark scroll-mt-24 px-8 py-10 md:px-10">{content}</div>;
   return (
     <section id="menus" className="scroll-mt-24 rounded-3xl border border-neutral-200 bg-white py-8 text-ink md:py-10">
       <div className="px-8 md:px-10">{content}</div>
@@ -252,6 +253,73 @@ export function CostComparison() {
   );
 }
 
+const aio = [
+  ["01", "palette", "브랜드 CI / BI & 패키징 디자인", "매장의 정체성을 규정하는 로고, 시그니처 캐릭터, 전용 컬러 팔레트, 슬로건부터 테이크아웃 컵/패키지, 유니폼까지 시각적 호감도를 극대화합니다.", "전담 브랜드 디자이너 1:1 배치", [
+    ["CI/BI 심볼 & 로고 타입", "간판, POS, SNS 프로필 등 온·오프라인에 모두 입체적으로 최적화된 심볼 디자인"],
+    ["패키지 & 굿즈 가이드라인", "포장용기, 봉투, 컵홀더, 냅킨, 유니폼, 앞치마 등 통일된 브랜드 룩앤필 구축"],
+    ["시그니처 캐릭터 & 스토리", "고객 기억에 남는 스토리텔링 카피라이팅과 브랜드 캐릭터 IP 개발"],
+    ["브랜드 스타일 가이드북", "서체, RGB/CMYK 컬러 코드, 그래픽 모티브 매뉴얼집 제공"],
+  ]],
+  ["02", "layout", "공간 인테리어 & 3D 도면 설계", "예쁜 디자인에 그치지 않고 회전율과 노동 강도를 낮추는 상업 인테리어 전용 동선 도면과 3D 가상 시뮬레이션을 제공합니다.", "상업 공간 전담 건축사 & 디자이너", [
+    ["3D 렌더링 시뮬레이션", "시공 전 마감재, 조명, 동선 배치를 눈으로 직접 확인하는 고화질 3D 모델링"],
+    ["인테리어 표준 규격 매뉴얼", "시공업체가 바뀌어도 동일 퀄리티를 유지하는 자재 사양서 및 상세 도면"],
+    ["주방 & 홀 초밀착 도면", "전기 배선, 가스, 배수, 환기 덕트 용량 사전 계산으로 재시공 리스크 차단"],
+    ["파사드 & 간판 가시성 설계", "거리 유동인구의 시선을 단번에 사로잡는 파사드 디자인 및 야간 조명 룩"],
+  ]],
+  ["03", "clip", "메뉴 엔지니어링 & 레시피 표준화", "누가 조리해도 균일한 맛이 나오도록 조리법을 계량화하고, 마진율 35% 이상을 보장하는 식자재 원가율 분석을 실행합니다.", "메뉴 개발 전문 셰프 팀", [
+    ["시그니처 메뉴 개발", "SNS 바이럴을 유도하는 비주얼 특화 시그니처 메뉴 및 미끼 메뉴 구성"],
+    ["그램(g) 단위 레시피 북", "숙련도 상관없이 3분 조리가 가능하도록 양념 및 재료 계량 수치화"],
+    ["식자재 원가율 & 마진 매핑", "메뉴별 원가 분석표 제공으로 식자재 로스율을 최소화하고 수익률 극대화"],
+    ["사전 준비(Mise en place) 가이드", "피크타임 전 식자재 1차 가공 수량 및 파트별 냉장 보관 가이드라인"],
+  ]],
+  ["04", "mega", "마케팅 전략 & SNS / PR 마케팅", "오픈과 동시에 매장 앞 줄을 서게 만드는 퍼포먼스 마케팅. 네이버 스마트플레이스, 인스타그램 숏폼, 지역 블로그 체험단, 보도자료 PR을 동시 가동합니다.", "바이럴 & PR 퍼포먼스 전문가", [
+    ["네이버 플레이스 상위 노출", "지역 키워드 최적화, 대표 키워드 세팅, 영수증 리뷰 이벤트 세팅"],
+    ["인스타그램 릴스 / 숏폼 콘텐츠", "메뉴 조리 과정 및 매장 매력을 담은 고화질 숏폼 3~5편 제작 및 타겟팅 광고"],
+    ["지역 특화 체험단 릴레이", "오픈 전후 영향력 있는 지역 인플루언서 및 블로거 20~50팀 릴레이 방문 마케팅"],
+    ["언론 보도자료 PR 배포", "브랜드 창업 스토리 및 시그니처 메뉴 출시 공식 뉴스 기사 송출로 신뢰도 향상"],
+  ]],
+  ["05", "flag", "HQ 오픈매니저 현장 실전 세팅", "기획한 브랜딩과 인테리어, 메뉴를 현장에서 구동시키는 마지막 핵심! 3일간 밀착 상주하여 피크타임 오퍼레이션을 완벽히 이관합니다.", "HQ Field Controller 3일 상주", [
+    ["가오픈 리허설 & 시뮬레이션", "주문 폭주 상황 재현 및 동선 병목 즉시 해결"],
+    ["오픈 당일 현장 밀착 상주", "기계 고장, 재료 소진, 돌발 컴플레인 100% 현장 방어"],
+    ["알바 OJT & 롤바인딩", "포지션별 매뉴얼 교육 및 고객 응대 모션 훈련"],
+    ["우리 매장 전용 SOP 북 제공", "조닝 라벨링표 + 개점/마감 일일 점검표 최종 이관"],
+  ]],
+] as const;
+
+export function AllInOne() {
+  return (
+    <section className="py-8 md:py-10">
+      <div className="px-8 md:px-10">
+        <div className="text-center">
+          <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>ALL-IN-ONE BRAND LAUNCH</p>
+          <h2 className="mt-3 text-[1.75rem] font-black leading-[1.35] tracking-tight font-gmarket md:text-[2.125rem]">외주 전달용 겉치레가 아닙니다.<br /><Highlight>분야별 실전 전문가 집단</Highlight>이 만드는 원스톱 브랜딩</h2>
+          <p className="mt-4 text-[0.8125rem] leading-[1.9] text-neutral-600">각기 다른 외주업체를 찾느라 시간을 낭비하지 마세요.<br />구해줘창업의 분야별 전담 전문가 팀이 기획부터 마케팅까지 하나로 유기적으로 연결합니다.</p>
+        </div>
+        <ul className="mx-auto mt-10 max-w-[68rem] space-y-4">
+          {aio.map(([no, ic, t, d, tag, subs], i) => (
+            <RevealLi i={i} key={no} className="card-soft grid gap-6 p-6 lg:grid-cols-[1fr_1.35fr] lg:p-7">
+              <div>
+                <span className="grid size-11 place-items-center rounded-xl bg-[#F0C33F] text-[0.9375rem] font-black text-ink font-gmarket">{no}</span>
+                <p className="mt-5 text-[1.25rem] font-black leading-snug">{t}</p>
+                <p className="mt-3 text-[0.75rem] leading-[1.9] text-neutral-600">{d}</p>
+                <span className={`mt-4 inline-flex items-center gap-1.5 rounded-full border border-[#F0C33F]/60 bg-[#fff8dc] px-3 py-1.5 text-[0.6875rem] font-bold ${YEL}`}><L k={ic} className="size-3.5" />{tag}</span>
+              </div>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {subs.map(([st, sd]) => (
+                  <li key={st} className="rounded-xl border border-neutral-200 bg-white px-4 py-3.5">
+                    <p className="text-[0.8125rem] font-black">{st}</p>
+                    <p className="mt-1.5 text-[0.6875rem] leading-[1.7] text-neutral-600">{sd}</p>
+                  </li>
+                ))}
+              </ul>
+            </RevealLi>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 const areas = [
   ["01", "office", "오피스 / 직장인 상권", "점심에는 든든한 식사, 저녁에는 모임.", "요일과 시간대별 식사 수요를 살펴봅니다."],
   ["02", "home", "주택가 / 복합 상권", "가족 외식과 동네 단골이 만나는 곳.", "생활 동선과 재방문 수요를 확인합니다."],
@@ -287,9 +355,9 @@ export function NeighborhoodSection() {
 }
 
 const traps = [
-  ["첫 번째 함정", "임기응변 운영의 함정", "조리 순서, 서빙 타이밍, 역할 분담이 명문화되지 않으면 피크타임에 각자 다른 판단으로 움직이게 됩니다. 준비한 대로 되지 않는 첫날이 반복됩니다."],
-  ["두 번째 함정", "조리 속도 · 타이밍 불일치", "혼자 연습할 때의 조리 속도와 실제 주문이 쏟아지는 순간의 타이밍은 전혀 다릅니다. 불 조절, 메뉴별 완성 순서, 대기 시간 관리가 함께 훈련되어야 합니다."],
-  ["세 번째 함정", "고객 & 돌발 상황 대응", "주문 실수, 재료 소진, 예상치 못한 단체 손님. 연습으로 준비되지 않은 상황은 반드시 옵니다. 경험 있는 매니저가 옆에 있어야 흔들리지 않고 대응할 수 있습니다."],
+  ["현실 01", "엉킨 주방·홀 동선", "배달 기사와 홀 알바, 퇴식 동선이 한곳에서 꼬여 병목 현상 발생. 뚝배기나 뜨거운 음식을 들고 동선이 부딪히는 아찔한 상황 지속."],
+  ["현실 02", "조리 지연 & 식기 부족", "주문은 몰리는데 미장플라(사전 재료 준비) 부재로 조리대에서 양념통 찾다가 15분 경과. 식기가 부족해 주방 세척이 멈추는 대혼란."],
+  ["현실 03", "알바 멘붕 & 첫 컴플레인", "알바생은 무엇을 해야 할지 몰라 서성이고, 기계 조작 실수와 재료 소진으로 오픈 당일부터 고객 컴플레인이 폭주하며 브랜드 이미지 실추."],
 ];
 
 export function PreResults() {
@@ -298,7 +366,7 @@ export function PreResults() {
       <section className="rounded-3xl border border-neutral-200 bg-white py-8 text-ink md:py-10">
         <div className="px-8 md:px-10">
           <SecHead dark center eyebrow="PRE-RESULTS" title="이론상 완벽했던 매장, 오픈 당일 왜 마비될까요?" />
-          <p className="mt-5 text-center text-[0.75rem] leading-[1.9] text-neutral-600">준비를 충분히 했다고 생각했는데, 막상 첫날이 되면 달라집니다.<br />구해줘창업은 그 순간을 먼저 겪어봤기 때문에 미리 대비합니다.</p>
+          <p className="mt-5 text-center text-[1rem] font-black leading-[1.7] text-[#ff7468] md:text-[1.125rem]">점주 혼자 감당하는 준비 없는 오픈은<br className="sm:hidden" /> 연습이 아니라 &lsquo;소문난 악재&rsquo;가 됩니다.</p>
           <ul className="mt-12 grid gap-4 md:grid-cols-3">
             {traps.map(([tag, t, d], i) => (
               <RevealLi i={i} key={t} className="card-soft p-6">
@@ -309,7 +377,8 @@ export function PreResults() {
             ))}
           </ul>
           <div className="mt-8 rounded-2xl bg-[#F0C33F] px-8 py-5 text-ink">
-            <p className="text-[1rem] font-black">구해줘창업이 이 세 가지를 오픈 전에 미리 막습니다.</p>
+            <p className="text-[1rem] font-black">구해줘창업 HQ 오픈매니저가 함께하면 현장이 완전히 달라집니다.</p>
+            <p className="mt-1 text-[0.75rem]">사전 가오픈 시뮬레이션부터 3일 현장 직접 지휘까지 체계적으로 세팅합니다.</p>
           </div>
         <div className="mt-12 border-t border-neutral-200 pt-12 lg:grid lg:grid-cols-[1fr_2.2fr] lg:gap-10">
           <div>
@@ -348,10 +417,20 @@ const cal = [
 ] as const;
 
 const sop = [
-  ["book", "메뉴별 조리 SOP", "재료 계량, 조리 순서, 화력·시간 기준을 단계별로 정리해 누구나 같은 품질을 유지합니다."],
-  ["clip", "일일 운영 체크리스트", "오픈 전·영업 중·마감 시 확인해야 할 항목을 체계적으로 정리한 Daily Checklist입니다."],
-  ["shield", "위생·식자재 관리 기준", "식재료 보관 온도·기한, 교차 오염 방지, 위생 점검 주기를 현장 기준에 맞게 작성합니다."],
-  ["users", "직원 역할 분담표", "홀·주방·카운터 역할을 명확히 나누고, 피크타임에 흔들리지 않는 팀 운영 체계를 갖춥니다."],
+  ["운영 흐름", "하루를 같은 순서로", [
+    ["flag", "오픈·마감 절차서", "오픈 전 점검부터 마감 정산까지 단계별 정리"],
+    ["clip", "일일 운영 체크리스트", "시간대별 점검 항목과 이상 발생 기록"],
+    ["users", "직원 역할 분담표", "포지션별 업무 범위와 피크타임 동선"],
+  ]],
+  ["맛과 서비스", "누가 해도 같은 품질", [
+    ["book", "메뉴별 조리 SOP", "g 단위 계량, 조리 순서·화력·시간, 플레이팅"],
+    ["mega", "서비스 응대 매뉴얼", "주문 응대 멘트와 클레임 대응 스크립트"],
+  ]],
+  ["관리 기준", "숫자로 지키는 운영", [
+    ["layout", "원가·재고 관리표", "메뉴별 원가율, 발주 주기, 폐기율 기록"],
+    ["shield", "위생·식자재 관리 기준", "보관 온도·유통기한, 교차 오염 방지"],
+    ["refresh", "장비 사용·점검 가이드", "사용법, 정기 점검, 고장 시 연락망"],
+  ]],
 ] as const;
 
 const days = [
@@ -375,11 +454,10 @@ export function CalendarSection() {
               <p className="flex flex-wrap items-center gap-3"><span className="rounded-md bg-[#F0C33F] px-2.5 py-1 text-[0.75rem] font-black text-ink">{cal[0][0]}</span><span className="text-[1rem] font-black">{cal[0][1]}</span></p>
               <span className={`shrink-0 rounded-full border border-neutral-200 bg-[#fff8dc] px-3 py-1 text-[0.625rem] font-bold ${YEL}`}>공개 가이드</span>
             </div>
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-5 grid gap-3 sm:grid-cols-3">
               {cal[0][2].map((it, i) => (
                 <li key={it} className="rounded-xl border border-neutral-200 bg-[#faf9f7] px-4 py-3">
                   <p className="text-[0.75rem] font-black">{String(i + 1).padStart(2, "0")}. {it}</p>
-                  <p className="mt-1 text-[0.6875rem] text-neutral-500">&nbsp;</p>
                 </li>
               ))}
             </ul>
@@ -387,12 +465,13 @@ export function CalendarSection() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {cal.slice(1).map(([d, t, items], ci) => (
             <RevealDiv i={ci} key={d} className="card-soft relative overflow-hidden px-5 py-8 text-center">
-              <div aria-hidden className="pointer-events-none absolute inset-0 select-none space-y-3 p-6 text-left text-[0.75rem] text-neutral-400 blur-[3px]">
+              <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 select-none space-y-2 px-6 pb-4 text-left text-[0.6875rem] text-neutral-400 opacity-35 blur-[3px]">
                 {items.map((it) => <p key={it}>{it}</p>)}
               </div>
               <div className="relative">
                 <svg viewBox="0 0 24 24" aria-hidden className={`mx-auto size-7 ${YEL}`} fill="currentColor"><path d="M7 10V8a5 5 0 0110 0v2h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1h1zm2 0h6V8a3 3 0 00-6 0v2z" /></svg>
-                <p className="mt-3 text-[1rem] font-black">{d} · {t}</p>
+                <p className={`mt-3 text-[0.6875rem] font-bold tracking-wide ${YEL}`}>{d}</p>
+                <p className="mt-1 text-[1rem] font-black">{t}</p>
                 <p className="mt-1 text-[0.6875rem] text-neutral-600">{d === "D-DAY" ? "오픈 매니저 현장 동행과 운영 피드백이 포함됩니다." : "해당 단계의 상세 일정과 체크 항목이 포함되어 있습니다."}</p>
                 <span className={`mt-4 inline-block rounded-full border border-neutral-200 bg-[#fff8dc] px-4 py-1.5 text-[0.6875rem] font-bold ${YEL}`}>상담 신청 시 커리큘럼 열람</span>
               </div>
@@ -412,15 +491,26 @@ export function SopSection() {
       <div className="px-8 md:px-10">
         <div className="">
           <SecHead dark eyebrow="OPERATIONS MANUAL" title={<>대표 프랜차이즈도 본사 없이는<br />운영한 적 없는<br />매장 전용 맞춤형 SOP 북</>} side={<>우리 가게만의 조리 기준, 서비스 절차,<br />위생 체크리스트를 한 권에 정리합니다.<br />혼자서도 흔들리지 않고 운영하는<br />기준이 됩니다.</>} />
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {sop.map(([ic, t, d], sopI) => (
-              <RevealLi i={sopI} key={t} className="card-soft p-6">
-                <L k={ic} className="size-6 text-[#A97C0A]" />
-                <p className="mt-5 text-[1rem] font-black">{t}</p>
-                <p className="mt-3 text-[0.7188rem] leading-[1.9] text-neutral-600">{d}</p>
-              </RevealLi>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {sop.map(([group, sub, items], gi) => (
+              <RevealDiv i={gi} key={group} className="card-soft p-6">
+                <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>0{gi + 1} · {group}</p>
+                <p className="mt-2 text-[1.1875rem] font-black">{sub}</p>
+                <ul className="mt-5 divide-y divide-neutral-200 border-t border-neutral-200">
+                  {items.map(([ic, t, d]) => (
+                    <li key={t} className="flex gap-3 py-4">
+                      <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-[#fff8dc]"><L k={ic} className="size-[1.125rem] text-[#A97C0A]" /></span>
+                      <div>
+                        <p className="text-[0.875rem] font-black">{t}</p>
+                        <p className="mt-1 text-[0.7188rem] leading-[1.7] text-neutral-600">{d}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </RevealDiv>
             ))}
-          </ul>
+          </div>
+          <p className="mt-5 rounded-xl border border-[#F0C33F]/60 bg-[#fff8dc] px-5 py-4 text-[0.75rem] font-bold leading-[1.8] text-ink">사부의 레시피와 우리 매장 조건에 맞춰 작성한 뒤, 오픈매니저 3일 현장 상주 때 현장에 적용하며 최종 이관합니다.</p>
         </div>
       </div>
     </section>

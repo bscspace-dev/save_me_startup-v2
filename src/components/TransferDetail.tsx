@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { photoSrc, type Listing } from "@/lib/data";
 import type { TransferInfo } from "@/lib/transfer";
 import { Reveal } from "./Reveal";
 import { ListingConsultButton } from "./ListingConsultButton";
 import {
-  wrap, MasterSection, MenuSection, CostComparison, NeighborhoodSection,
+  wrap, MasterSection, MenuSection, CostComparison, AllInOne, NeighborhoodSection,
   PreResults, CalendarSection, SopSection, MarketingPackage, Faq,
 } from "./TransferLanding";
 
@@ -26,6 +27,8 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
   return (
     <main className="bg-[#f7f6f4] pb-24">
       <div className={`${wrap} space-y-5 pt-8`}>
+      <Link href="/listings?type=전수창업" className="inline-block self-start rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 목록으로</Link>
+
       {/* 히어로: 좌 노랑 문구 / 우 대표 메뉴 사진 */}
       <section className="grid overflow-hidden rounded-3xl lg:min-h-[32rem] lg:grid-cols-2">
         <div className="flex flex-col justify-center bg-[#F0C33F] px-6 py-12 text-ink md:p-9 lg:px-10">
@@ -52,11 +55,12 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
         </div>
       </section>
 
-      <Reveal><MasterSection stats={[["사부 현장 경력", `${m.years}년`], ["교육 기간", `${t.days}일`], ["교육 방식", "1:1 실습"], ["전수 메뉴", `${t.menus}종`]]} middle={<MenuSection embedded name={m.name} names={names} srcs={menuSrcs} desc={t.menuDesc} />} name={m.name} photo={photo} quote={t.masterQuote} bio={t.masterBio} sales={t.sales} peakNote={t.peakNote} /></Reveal>
-      {/* 비용 비교부터 Q&A까지 한 카드로 묶고 섹션 사이는 구분선 */}
+      {/* 사부 소개부터 Q&A까지 한 카드로 묶고 섹션 사이는 구분선 */}
       <div className="divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 bg-white [&_section]:!rounded-none [&_section]:!border-0 [&_section]:!bg-transparent">
-        <Reveal className="tone-dark"><CostComparison /></Reveal>
+        <Reveal><MasterSection stats={[["사부 현장 경력", `${m.years}년`], ["교육 기간", `${t.days}일`], ["교육 방식", "1:1 실습"], ["전수 메뉴", `${t.menus}종`]]} middle={<MenuSection embedded name={m.name} names={names} srcs={menuSrcs} desc={t.menuDesc} />} name={m.name} photo={photo} quote={t.masterQuote} bio={t.masterBio} sales={t.sales} peakNote={t.peakNote} /></Reveal>
         <Reveal><NeighborhoodSection /></Reveal>
+        <Reveal className="tone-dark"><CostComparison /></Reveal>
+        <Reveal><AllInOne /></Reveal>
         <Reveal className="tone-dark"><CalendarSection /></Reveal>
         <Reveal><SopSection /></Reveal>
         <Reveal className="tone-dark"><PreResults /></Reveal>
@@ -64,6 +68,9 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
         <Reveal className="tone-dark"><Faq /></Reveal>
       </div>
 
+      <div className="pt-5 text-right">
+        <Link href="/listings?type=전수창업" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
+      </div>
       </div>
     </main>
   );

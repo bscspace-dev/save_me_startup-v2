@@ -60,3 +60,21 @@ export function DrawX({ className }: { className?: string }) {
     </svg>
   );
 }
+
+// 형광펜이 왼쪽에서 오른쪽으로 칠해지는 강조 텍스트
+export function Highlight({ children }: { children: ReactNode }) {
+  const reduce = useReducedMotion();
+  return (
+    <span className="relative isolate inline-block px-1.5 text-[#1b1b1b]">
+      <motion.span
+        aria-hidden
+        className="absolute inset-x-0 bottom-0.5 top-1.5 -z-10 origin-left rounded-md bg-[#F0C33F]"
+        initial={reduce ? false : { scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, amount: 0.8 }}
+        transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      />
+      {children}
+    </span>
+  );
+}

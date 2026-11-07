@@ -135,12 +135,12 @@ export function Picks() {
   );
 }
 
-// 버튼 이름 → 매물 유형(kind). 전수창업이 가장 먼저 노출된다
+// 버튼 이름 → 매물 유형(kind). 프랜차이즈 → 상가매물 → 전수창업 → 신규창업 순으로 노출된다
 export const ICON = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 export const filters = [
-  { label: "전수창업", kind: "전수창업", more: "전수창업 자세히 보기", icon: <><path d="M4 8h15M15 4l4 4-4 4" /><path d="M20 16H5M9 12l-4 4 4 4" /></> },
   { label: "프랜차이즈창업", kind: "프랜차이즈", more: "브랜드 자세히 보기", icon: <><path d="M3 9l1.5-5h15L21 9" /><path d="M3 9c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3" /><path d="M5 12v8h14v-8" /><path d="M10 20v-5h4v5" /></> },
   { label: "상가매물", kind: "상가매물", more: "매물 자세히 보기", icon: <><path d="M12 21s-7-6.2-7-11.2A7 7 0 0 1 19 9.8C19 14.8 12 21 12 21z" /><circle cx="12" cy="10" r="2.5" /></> },
+  { label: "전수창업", kind: "전수창업", more: "전수창업 자세히 보기", icon: <><path d="M4 8h15M15 4l4 4-4 4" /><path d="M20 16H5M9 12l-4 4 4 4" /></> },
   { label: "신규창업", kind: "신규창업", more: "창업 자세히 보기", icon: <><path d="M9 18h6M10 21h4" /><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" /></> },
 ];
 
