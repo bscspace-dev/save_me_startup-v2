@@ -55,9 +55,9 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
       <Reveal><MasterSection stats={[["사부 현장 경력", `${m.years}년`], ["교육 기간", `${t.days}일`], ["교육 방식", "1:1 실습"], ["전수 메뉴", `${t.menus}종`]]} middle={<MenuSection embedded name={m.name} names={names} srcs={menuSrcs} desc={t.menuDesc} />} name={m.name} photo={photo} quote={t.masterQuote} bio={t.masterBio} sales={t.sales} peakNote={t.peakNote} /></Reveal>
       {/* 비용 비교부터 Q&A까지 한 카드로 묶고 섹션 사이는 구분선 */}
       <div className="divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 bg-white [&_section]:!rounded-none [&_section]:!border-0 [&_section]:!bg-transparent">
-        <Reveal><CostComparison /></Reveal>
-        <Reveal className="tone-dark"><NeighborhoodSection /></Reveal>
-        <Reveal><CalendarSection /></Reveal>
+        <Reveal className="tone-dark"><CostComparison /></Reveal>
+        <Reveal><NeighborhoodSection /></Reveal>
+        <Reveal className="tone-dark"><CalendarSection /></Reveal>
         <Reveal><SopSection /></Reveal>
         <Reveal className="tone-dark"><PreResults /></Reveal>
         <Reveal><MarketingPackage /></Reveal>

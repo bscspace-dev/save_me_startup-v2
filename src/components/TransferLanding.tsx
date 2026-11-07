@@ -58,7 +58,7 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
         <div className="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr]">
           <div className="relative">
           <span aria-hidden className="absolute -bottom-3 -right-3 size-full rounded-2xl border-2 border-[#F0C33F]" />
-          <div className="relative flex aspect-[3/2] items-end overflow-hidden rounded-2xl bg-[#161616]">
+          <div className="relative flex aspect-[3/2] items-end overflow-hidden rounded-2xl bg-[#1c1c1c]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             {photo && <img src={photo} alt={`${name} 사부(전수자)`} className="absolute inset-0 size-full object-cover object-top" />}
             <span aria-hidden className="absolute left-1/2 top-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#F0C33F] text-ink"><svg viewBox="0 0 24 24" className="ml-0.5 size-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><path d="M8 5l11 7-11 7z" /></svg></span>
@@ -143,7 +143,7 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
                         <b className={k === 2 ? YEL : ""}>월 {v.toLocaleString()}만원{k === 2 ? " 달성!" : ""}</b>
                       </div>
                       <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-neutral-200">
-                        <GrowBar i={k as number} pct={Math.round((v / max) * 100)} className={`h-full rounded-full ${k === 2 ? "bg-[#D49F12]" : "bg-[#F0C33F]"}`} />
+                        <GrowBar i={k as number} pct={Math.round((v / max) * 100)} className={`h-full rounded-full ${k === 2 ? "bg-[#F0C33F]" : "bg-[#F0C33F]"}`} />
                       </div>
                     </li>
                   );
@@ -236,7 +236,7 @@ export function CostComparison() {
             </ul>
             <p className="mt-3 border-t border-neutral-200 pt-4 text-center text-[0.6875rem] text-neutral-500">지속적인 본사 통제 및 높은 매일 고정비 발생</p>
           </div>
-          <div className="relative rounded-2xl border border-[#F0C33F] bg-[#0f0a07] p-7 text-white">
+          <div className="relative rounded-2xl border border-[#F0C33F] bg-white/[0.07] p-7 text-white">
             <span className="absolute -top-3 right-5 rounded-full bg-[#F0C33F] px-3 py-1 text-[0.6563rem] font-bold text-ink">추천: 합리적인 선택</span>
             <p className="text-center text-[0.6875rem] font-bold text-[#F0C33F]">구해줘창업 전수창업</p>
             <p className="mt-1 text-center text-[1.25rem] font-black">단 1회 전수창업비로 완결!</p>
