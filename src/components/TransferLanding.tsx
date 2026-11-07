@@ -60,7 +60,7 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
           <span aria-hidden className="absolute -bottom-3 -right-3 size-full rounded-2xl border-2 border-[#F0C33F]" />
           <div className="relative flex aspect-[3/2] items-end overflow-hidden rounded-2xl bg-[#1c1c1c]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            {photo && <img src={photo} alt={`${name} 사부(전수자)`} className="absolute inset-0 size-full object-cover object-top" />}
+            {photo && <img src={photo} alt={`${name} 사부(전수자)`} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover object-top" />}
             <span aria-hidden className="absolute left-1/2 top-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#F0C33F] text-ink"><svg viewBox="0 0 24 24" className="ml-0.5 size-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"><path d="M8 5l11 7-11 7z" /></svg></span>
             <div className="relative flex w-full items-end justify-between gap-4 bg-gradient-to-t from-black/85 to-transparent p-6 pt-24">
               <div>
@@ -140,16 +140,22 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
                     <li key={label as string}>
                       <div className="flex items-center justify-between text-[0.75rem]">
                         <span className="font-bold">{label}</span>
-                        <b className={k === 2 ? YEL : ""}>월 {v.toLocaleString()}만원{k === 2 ? " 달성!" : ""}</b>
+                        <b className={k === 2 ? "text-[#ff5a48]" : ""}>월 {v.toLocaleString()}만원{k === 2 ? " 달성!" : ""}</b>
                       </div>
                       <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-neutral-200">
-                        <GrowBar i={k as number} pct={Math.round((v / max) * 100)} className={`h-full rounded-full ${k === 2 ? "bg-[#F0C33F]" : "bg-[#F0C33F]"}`} />
+                        <GrowBar i={k as number} pct={Math.round((v / max) * 100)} className={`h-full rounded-full ${k === 2 ? "bg-[#e5301f]" : "bg-[#F0C33F]"}`} />
                       </div>
                     </li>
                   );
                 })}
               </ul>
-              {(() => { const d = sales ?? [3800, 6200, 8500]; return d[0] > 0 && d[2] > d[0] ? <p className="mt-5 rounded-xl border border-[#F0C33F]/60 bg-[#fff8dc] px-4 py-3 text-center text-[0.75rem] font-bold">오픈 1개월차 대비 약 <span className={YEL}>{(d[2] / d[0]).toFixed(1)}배</span> 성장</p> : null; })()}
+              {(() => { const d = sales ?? [3800, 6200, 8500]; return d[0] > 0 && d[2] > d[0] ? (
+                <div className="mt-5 flex items-baseline justify-center gap-2 rounded-xl border border-[#e5301f]/40 bg-[#e5301f]/10 px-4 py-4">
+                  <span className="text-[0.75rem] font-bold text-neutral-700">오픈 1개월차 대비</span>
+                  <span className="text-[2.75rem] font-black leading-none tracking-tight text-[#ff5a48] font-gmarket">{(d[2] / d[0]).toFixed(1)}배</span>
+                  <span className="text-[1rem] font-black">성장</span>
+                </div>
+              ) : null; })()}
             </div>
             <div className="card-soft p-6">
               <p className={`text-[0.8125rem] font-black ${YEL}`}>피크타임 만석 및 대기열 증빙</p>
@@ -180,7 +186,7 @@ export function MenuSection({ name, names, srcs, desc, embedded }: { name: strin
             <RevealLi i={k} key={k} className="group card-soft overflow-hidden">
               <div className="relative aspect-[4/3] bg-neutral-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {srcs[k] && <img src={srcs[k]} alt={names[k] ?? `대표 메뉴 ${k + 1}`} className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105" />}
+                {srcs[k] && <img src={srcs[k]} alt={names[k] ?? `대표 메뉴 ${k + 1}`} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105" />}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
                 <span className="absolute left-3 top-3 rounded-full bg-[#F0C33F] px-2.5 py-1 text-[0.6563rem] font-bold tracking-wider text-ink">{badges[k] ?? `MENU`}</span>
                 <span className="absolute right-4 top-3 text-[2rem] font-black leading-none text-white/30 font-gmarket">{String(k + 1).padStart(2, "0")}</span>
@@ -465,9 +471,6 @@ export function CalendarSection() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {cal.slice(1).map(([d, t, items], ci) => (
             <RevealDiv i={ci} key={d} className="card-soft relative overflow-hidden px-5 py-8 text-center">
-              <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 select-none space-y-2 px-6 pb-4 text-left text-[0.6875rem] text-neutral-400 opacity-35 blur-[3px]">
-                {items.map((it) => <p key={it}>{it}</p>)}
-              </div>
               <div className="relative">
                 <svg viewBox="0 0 24 24" aria-hidden className={`mx-auto size-7 ${YEL}`} fill="currentColor"><path d="M7 10V8a5 5 0 0110 0v2h1a1 1 0 011 1v9a1 1 0 01-1 1H6a1 1 0 01-1-1v-9a1 1 0 011-1h1zm2 0h6V8a3 3 0 00-6 0v2z" /></svg>
                 <p className={`mt-3 text-[0.6875rem] font-bold tracking-wide ${YEL}`}>{d}</p>
