@@ -79,3 +79,16 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
+
+/* 전수창업 상세: 밝은 카드 사이에 끼우는 어두운 구간 (상가매물 상세의 어두운 박스 톤) */
+.tone-dark { background: linear-gradient(135deg, #2d2d2d, #1c1c1c); color: #fff; }
+.tone-dark .text-ink { color: #fff; }
+.tone-dark .text-neutral-700, .tone-dark .text-neutral-600 { color: rgba(255, 255, 255, 0.68); }
+.tone-dark .text-neutral-500, .tone-dark .text-neutral-400 { color: rgba(255, 255, 255, 0.5); }
+.tone-dark .border-neutral-200, .tone-dark .border-neutral-300 { border-color: rgba(255, 255, 255, 0.12); }
+.tone-dark .bg-\[\#faf9f7\], .tone-dark .bg-white { background-color: rgba(255, 255, 255, 0.045); }
+.tone-dark .bg-\[\#fff8dc\] { background-color: rgba(255, 255, 255, 0.07); }
+.tone-dark .bg-neutral-200, .tone-dark .bg-neutral-100 { background-color: rgba(255, 255, 255, 0.12); }
+.tone-dark .text-\[\#A97C0A\] { color: #F0C33F; }
+/* 노랑 바탕 위 글자는 계속 어둡게 */
+.tone-dark .bg-\[\#F0C33F\].text-ink, .tone-dark .bg-\[\#F0C33F\] .text-ink { color: var(--color-ink); }

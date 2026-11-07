@@ -56,12 +56,12 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
       {/* 비용 비교부터 Q&A까지 한 카드로 묶고 섹션 사이는 구분선 */}
       <div className="divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 bg-white [&_section]:!rounded-none [&_section]:!border-0 [&_section]:!bg-transparent">
         <Reveal><CostComparison /></Reveal>
-        <Reveal><NeighborhoodSection /></Reveal>
+        <Reveal className="tone-dark"><NeighborhoodSection /></Reveal>
         <Reveal><CalendarSection /></Reveal>
         <Reveal><SopSection /></Reveal>
-        <Reveal><PreResults /></Reveal>
+        <Reveal className="tone-dark"><PreResults /></Reveal>
         <Reveal><MarketingPackage /></Reveal>
-        <Reveal><Faq /></Reveal>
+        <Reveal className="tone-dark"><Faq /></Reveal>
       </div>
 
       </div>
