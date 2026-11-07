@@ -1,27 +1,11 @@
-import Link from "next/link";
 import { photoSrc, type Listing } from "@/lib/data";
 import type { TransferInfo } from "@/lib/transfer";
+import { Reveal } from "./Reveal";
 import { ListingConsultButton } from "./ListingConsultButton";
-import { Icon } from "./Icons";
-import { Head, card, man } from "./DetailParts";
-import { OtherTransfers } from "./OtherTransfers";
-
-const provided = [
-  "레시피 자료",
-  "원가 계산표",
-  "운영 매뉴얼",
-  "상권 분석 컨설팅",
-  "BI, CI 제작 및 제공",
-  "전담 오픈매니저",
-];
-
-const services = [
-  ["01", "영업 실행", "상권과 업종에 맞는 고객 유치 전략을 세우고 제휴처 발굴과 초기 영업을 실행합니다", ["영업 전략 수립", "지역 제휴처 제안", "초기 고객 유치"]],
-  ["02", "홍보·광고 실행", "네이버 플레이스, SNS, 지역 타깃 광고를 매장 상황에 맞게 기획하고 집행합니다", ["광고 채널 설계", "콘텐츠 운영", "광고 성과 리포트"]],
-  ["03", "영상 제작", "전수받은 기술과 대표 메뉴가 잘 보이도록 매장 소개 영상과 숏폼 콘텐츠를 제작합니다", ["기획·촬영", "편집·자막", "숏폼 제공"]],
-] as const;
-
-const btn = "block rounded-lg bg-[#F0C33F] px-6 py-3.5 text-center text-[0.8125rem] font-bold text-ink transition hover:brightness-95";
+import {
+  wrap, MasterSection, MenuSection, CostComparison, NeighborhoodSection,
+  PreResults, CalendarSection, SopSection, MarketingPackage, Faq,
+} from "./TransferLanding";
 
 export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; srcs?: string[] }) {
   const m = t.master;
@@ -31,200 +15,55 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
   const nMenu = Math.min(l.transfer?.menuPhotos ?? 0, total - nDetail);
   const ownerSrcs = srcs?.slice(0, total - nDetail - nMenu);
   const menuSrcs = nMenu ? srcs!.slice(total - nDetail - nMenu, total - nDetail) : [];
-  const detailSrcs = nDetail ? srcs!.slice(total - nDetail) : [];
-  // 대표 메뉴는 이름을 3개까지 보여주고 더 있으면 '등'을 붙인다
   const names = t.menuNames ?? [];
-  const menuNames = names;
   const menuText = names.slice(0, 3).join(", ") + (names.length > 3 ? " 등" : "");
-  // 상단 큰 사진 칸은 교육 대표 메뉴 사진 (없으면 사부 사진)
+  // 사부 사진 (없으면 샘플 사진)
   const photo = ownerSrcs?.[0] ?? (l.photos && !srcs ? photoSrc(l.id, 1) : null);
-  const stats = [
-    ["사부(전수자) 경력", `${m.years}년`],
-    ["교육 기간", `${t.days}일`],
-    ["교육 방식", "1:1 실습"],
-    ["전수 메뉴", `${t.menus}종`],
-  ];
+  const heroPhoto = menuSrcs[0] ?? photo;
+  const dish = names[0] || menuText || "우리 가게 대표 메뉴";
+  const consultTitle = `${m.name} 사부(전수자) ${l.title} (전수창업 상담)`;
 
   return (
     <main className="bg-[#f7f6f4] pb-24">
-      <div className="mx-auto max-w-[80rem] px-6 pt-8">
-        <p className="text-[0.7188rem] text-neutral-500">
-          <Link href="/listings?type=전수창업" className="inline-block rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 목록으로</Link>
-        </p>
-
-        {/* 상단 소개 */}
-        <section className="mt-4 overflow-hidden rounded-3xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] p-6 text-white md:p-9">
-          <div className="grid gap-6 lg:grid-cols-[1.45fr_0.8fr_0.7fr]">
-            <div className="flex flex-col">
-              <span className="self-start rounded-full bg-white/15 px-3 py-1 text-[0.6563rem] font-bold">등록번호 {l.id}</span>
-              <div className="my-auto max-lg:mt-6">
-              <p className="text-[0.8125rem] font-bold tracking-wide text-white/55">{l.category}</p>
-              <div className="my-6 h-px w-14 bg-white/25" />
-              <p className="text-[0.8125rem] font-bold text-[#F0C33F]">{m.name} 사부의 전수메뉴</p>
-              <h1 className="mt-2 text-[2.25rem] font-semibold leading-[1.15] tracking-tight text-white/90 md:text-[2.875rem] font-gmarket">{names[0] ?? menuText}</h1>
-              {t.menuDesc && <p className="mt-3 line-clamp-2 max-w-[26.25rem] text-[0.8125rem] leading-relaxed text-white/70">{t.menuDesc}</p>}
-              <div className="mt-9 flex flex-wrap gap-2.5">
-                <ListingConsultButton id={l.id} title={`${m.name} 사부(전수자) ${l.title} (전수창업 상담)`} label="전수창업 상담  →" className={btn} />
-              </div>
-              </div>
-            </div>
-
-            <div className="relative min-h-[18.75rem] overflow-hidden rounded-2xl bg-gradient-to-b from-[#3a3a3a] via-[#2d2d2d] to-[#1f1f1f]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              {(menuSrcs[0] ?? photo) && <img src={(menuSrcs[0] ?? photo)!} alt={menuText} className="absolute inset-0 size-full object-cover" />}
-            </div>
-
-            <div className="grid gap-4 lg:grid-rows-[1fr_0.8fr_1fr]">
-              <div className="flex flex-col justify-between rounded-2xl bg-white/10 p-5">
-                <Icon name="user" className="size-6 text-[#F0C33F]" />
-                <div>
-                  <p className="text-[0.625rem] text-white/50">교육 방식</p>
-                  <p className="mt-1 text-[1rem] font-black">사부(전수자) 1:1 실습</p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-between rounded-2xl bg-[#F0C33F] p-5 text-ink">
-                <div>
-                  <p className="text-[0.625rem] text-ink/70">기술 전수비</p>
-                  <p className="mt-2 text-[1.75rem] font-black leading-none tracking-tight font-gmarket">{man(l.price)}</p>
-                </div>
-                <p className="mt-4 text-[0.625rem] text-ink/70">구해줘창업 컨설팅 포함</p>
-              </div>
-              <div className="flex flex-col justify-between rounded-2xl bg-white/10 p-5">
-                <Icon name="bag" className="size-6 text-[#F0C33F]" />
-                <div>
-                  <p className="text-[0.625rem] text-white/50">대표 메뉴</p>
-                  <p className="mt-1 text-[1rem] font-black leading-snug">{menuText}</p>
-                </div>
-              </div>
-            </div>
+      <div className={`${wrap} space-y-5 pt-8`}>
+      {/* 히어로: 좌 노랑 문구 / 우 대표 메뉴 사진 */}
+      <section className="grid overflow-hidden rounded-3xl lg:min-h-[32rem] lg:grid-cols-2">
+        <div className="flex flex-col justify-center bg-[#F0C33F] px-6 py-12 text-ink md:p-9 lg:px-10">
+          <p className="inline-flex items-center gap-2 self-start rounded-full bg-ink/10 px-4 py-1.5 text-[0.75rem] font-bold">
+            <svg viewBox="0 0 24 24" aria-hidden className="size-3.5" fill="currentColor"><path d="M12 2c1 3.5-1 4.5-2.5 6.5C8 10.5 7 12 7 14.5A5 5 0 0 0 17 15c0-2-1-3.5-2-4.5.3 2-.7 3-1.5 3 1-3-.5-5.5-1.5-11.5zM12 21a3 3 0 0 1-3-3c0-1.5 1.5-2.5 3-4 1.5 1.5 3 2.5 3 4a3 3 0 0 1-3 3z" /></svg>
+            줄 서 먹는 전설의 시그니처 메뉴 완전 전수
+          </p>
+          <h1 className="mt-8 text-[2.25rem] font-semibold leading-[1.15] tracking-tight font-gmarket md:text-[2.875rem]">줄 서 먹는<br />{dish},<br />당신의 가게가<br />될 수 있습니다.</h1>
+          <p className="mt-8 text-[0.8125rem] leading-[1.9] text-ink/80">사부의 비법 레시피 전수부터 나만의 브랜드 완성,<br />HQ의 30일 창업 매니지먼트까지 <b className="text-ink">구해줘창업</b>이 함께합니다.</p>
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <ListingConsultButton id={l.id} title={consultTitle} label="내 가게 창업 상담하기  ↗" className="block rounded-lg bg-ink px-7 py-4 text-center text-[0.8125rem] font-bold text-white transition hover:opacity-90" />
           </div>
-        </section>
-
-        {/* 핵심 수치 */}
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map(([k, v]) => (
-            <div key={k} className="rounded-2xl border border-neutral-200 bg-white px-6 py-5">
-              <p className="text-[0.6563rem] text-neutral-400">{k}</p>
-              <p className="mt-1.5 text-[1.5rem] font-black tracking-tight font-gmarket">{v}</p>
-            </div>
-          ))}
+          <p className="mt-6 text-[0.6875rem]">업종이 정해지지 않았어도, 편하게 시작하세요.</p>
         </div>
-
-        <div className="mt-5 space-y-5">
-          {/* 사부(전수자) 소개 */}
-          <section id="expert" className={`${card} scroll-mt-24`}>
-            <Head title={<span className="text-[#F0C33F]">사부님 소개</span>} />
-            <div className="mt-7 grid gap-4 lg:grid-cols-2">
-              <div className="relative flex min-h-[16.25rem] items-end overflow-hidden rounded-2xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] text-white">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                {photo && <img src={photo} alt={`${m.name} 사부(전수자)`} className="absolute inset-0 size-full object-cover object-top" />}
-                <div className="relative w-full bg-gradient-to-t from-black/80 to-transparent p-8 pt-20">
-                  <p className="text-[1.375rem] font-black">{m.name} 사부(전수자)</p>
-                </div>
-              </div>
-              <ul className="divide-y divide-neutral-100 rounded-2xl border border-neutral-200 px-6 text-[0.7813rem]">
-                {t.timeline.length === 0 && <li className="py-3.5 font-bold text-neutral-400">경력없음</li>}
-                {t.timeline.map(([y, text], i) => (
-                  <li key={i} className="flex gap-6 py-3.5">
-                    <span className={`${t.timeline.some(([yy]) => yy.includes("~")) ? "w-[5.75rem]" : "w-10"} shrink-0 whitespace-nowrap font-black ${i === t.timeline.length - 1 ? "text-[#F0C33F]" : "text-[#F0C33F]/70"}`}>{y.replace(/^(\d{4})~\1$/, "$1")}</span>
-                    <span className="font-bold">{text}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          {/* 교육 대표 메뉴 */}
-          {((t.menuNames?.length ?? 0) > 0 || menuSrcs.length > 0) && (
-            <section id="menus" className={`${card} scroll-mt-24`}>
-              <Head title={<span className="text-[#F0C33F]">교육 대표 메뉴</span>} />
-              <ul className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {Array.from({ length: Math.max(menuNames.length, menuSrcs.length) }, (_, k) => (
-                  <li key={k}>
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-gradient-to-br from-[#3a3a3a] via-[#2d2d2d] to-[#1f1f1f]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      {menuSrcs[k] && <img src={menuSrcs[k]} alt={menuNames[k] ?? `대표 메뉴 ${k + 1}`} className="absolute inset-0 size-full object-cover" />}
-                    </div>
-                    {menuNames[k] && <p className="mt-2 text-center text-[0.8125rem] font-bold">{menuNames[k]}</p>}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {/* 교육 대표 메뉴 아래 상세 이미지: 조각을 틈 없이 이어 붙여 한 장처럼 보이게 한다 */}
-          {detailSrcs.length > 0 && (
-            <section className="overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm">
-              {detailSrcs.map((s, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={i} src={s} alt={`교육 상세 이미지 ${i + 1}`} loading={i < 2 ? "eager" : "lazy"} className="block h-auto w-full" />
-              ))}
-            </section>
-          )}
-
-          {/* 비용 및 제공 자료 */}
-          <section id="fee" className={`${card} scroll-mt-24`}>
-            <Head title={<span className="text-[#F0C33F]">전수 비용 및 제공 자료</span>} />
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-x-10 gap-y-4 rounded-2xl bg-[#0f0a07] px-7 py-6 text-white">
-              <div>
-                <p className="text-[0.6875rem] text-white/60">총 기술 전수비 <span className="text-white/40">· VAT 별도</span></p>
-                <p className="mt-2 text-[2rem] font-black leading-none tracking-tight font-gmarket">{man(l.price)}</p>
-              </div>
-              <div className="border-white/15 sm:border-l sm:pl-10">
-                <p className="text-[0.625rem] text-white/50">결제 방식</p>
-                <p className="mt-1.5 text-[0.8125rem] font-bold">계약금 30% · 교육 시작 전 잔금 70%</p>
-              </div>
-            </div>
-            <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {provided.map((k) => (
-                <li key={k} className="flex items-center gap-2.5 rounded-xl border border-neutral-200 bg-[#faf9f7] px-5 py-4 text-[0.8125rem] font-black">
-                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#fff8dc]"><Icon name="check" className="size-3.5 text-[#D49F12]" /></span>{k}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 rounded-lg border border-neutral-200 bg-[#faf9f7] px-5 py-3 text-[0.6563rem] leading-relaxed text-neutral-500">점포 임차비, 인테리어, 주방 장비, 식자재 및 영업 인허가 비용은 기술 전수비에 포함되지 않으며 식자재 거래처 목록도 별도로 제공하지 않습니다</p>
-            <p className="mt-3 rounded-lg bg-[#fff8dc] px-5 py-3 text-[0.6563rem] leading-relaxed font-bold text-[#D49F12]">교육 종료 후 운영 지원은 포함되지 않으며, 추가 교육이 필요한 경우 별도 일정과 비용으로 협의합니다</p>
-          </section>
-
-          {/* 창업 홍보 서비스 */}
-          <section id="package" className="scroll-mt-24 rounded-3xl bg-gradient-to-br from-[#2d2d2d] to-[#1c1c1c] p-8 text-white md:p-10">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <h2 className="mt-2 text-[1.625rem] font-black tracking-tight text-[#F0C33F] font-gmarket">기술만 배우고 끝내지 않습니다</h2>
-                <p className="mt-3 max-w-[35rem] text-[0.75rem] leading-relaxed text-white/60">전수창업을 통해 전수받은 기술을 교육 이후 신규 매장의 영업·홍보·광고와 홍보영상 제작까지 하나의 실행 과정으로 연결합니다</p>
-              </div>
-              <span className="rounded-full bg-[#F0C33F] px-4 py-1.5 text-[0.6563rem] font-bold text-ink">구해줘창업 실행 패키지 · 별도 비용</span>
-            </div>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {services.map(([no, title, desc, items]) => (
-                <div key={no} className="flex flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-                  <div className="flex items-center justify-between">
-                    <span className="grid size-7 place-items-center rounded-full bg-[#F0C33F] text-ink text-[0.6563rem] font-black">{no}</span>
-                    <span className="text-[0.5625rem] tracking-wider text-white/30">LAUNCH SERVICE</span>
-                  </div>
-                  <p className="mt-5 text-[1.0625rem] font-black">{title}</p>
-                  <p className="mt-2 text-[0.7188rem] leading-relaxed text-white/60">{desc}</p>
-                  <ul className="mt-5 space-y-1.5 border-t border-white/10 pt-4 text-[0.6875rem] text-white/70">
-                    {items.map((it) => <li key={it} className="flex items-center gap-1.5"><Icon name="check" className="size-3 text-[#F0C33F]" />{it}</li>)}
-                  </ul>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-xl bg-white/10 px-6 py-5">
-              <div>
-                <p className="text-[0.8125rem] font-black">전수 교육부터 오픈 홍보까지 구해줘창업이 함께 실행합니다</p>
-                <p className="mt-1 text-[0.6563rem] text-white/60">영업·홍보·광고 실행 비용은 기술 전수비와 별도이며, 업종·지역·광고 범위·광고 예산에 따라 교육 일정 상담과 함께 통합 견적을 제공합니다</p>
-              </div>
-              <ListingConsultButton id={l.id} title={`${m.name} 사부(전수자) ${l.title} (전수창업 상담)`} label="전수창업 상담  →" className={`${btn} shrink-0`} />
-            </div>
-          </section>
-
+        <div className="relative min-h-[22rem] bg-gradient-to-b from-[#3a3a3a] via-[#2d2d2d] to-[#1f1f1f]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {heroPhoto && <img src={heroPhoto} alt={menuText} className="absolute inset-0 size-full object-cover" />}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
+          <span aria-hidden className="absolute left-1/2 top-1/2 grid size-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#F0C33F] text-ink shadow-xl"><svg viewBox="0 0 24 24" className="ml-1 size-8" fill="currentColor"><path d="M8 5l11 7-11 7z" /></svg></span>
+          <p className="absolute inset-x-6 bottom-5 flex items-center gap-2 text-[0.8125rem] font-bold text-white md:text-[0.9375rem]">
+            <span aria-hidden className="text-[1.25rem] leading-none text-[#F0C33F]">&ldquo;</span>
+            {m.years > 0 ? `${m.years}년 손맛 내공 그대로! ` : "사부의 손맛 그대로! "}초보 점주도 g단위 레시피로 똑같이 구현합니다.
+          </p>
         </div>
+      </section>
 
-        <OtherTransfers currentId={l.id} />
-        <div className="mt-10 text-right">
-          <Link href="/listings?type=전수창업" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
-        </div>
+      <Reveal><MasterSection middle={<MenuSection embedded name={m.name} names={names} srcs={menuSrcs} desc={t.menuDesc} />} name={m.name} photo={photo} quote={t.masterQuote} bio={t.masterBio} sales={t.sales} peakNote={t.peakNote} /></Reveal>
+      {/* 비용 비교부터 Q&A까지 한 카드로 묶고 섹션 사이는 구분선 */}
+      <div className="divide-y divide-neutral-200 overflow-hidden rounded-3xl border border-neutral-200 bg-white [&_section]:!rounded-none [&_section]:!border-0 [&_section]:!bg-transparent">
+        <Reveal><CostComparison /></Reveal>
+        <Reveal><NeighborhoodSection /></Reveal>
+        <Reveal><CalendarSection /></Reveal>
+        <Reveal><SopSection /></Reveal>
+        <Reveal><PreResults /></Reveal>
+        <Reveal><MarketingPackage /></Reveal>
+        <Reveal><Faq /></Reveal>
+      </div>
+
       </div>
     </main>
   );

@@ -103,7 +103,7 @@ export function TransferAdmin({ cred, canDelete = true }: { cred: Cred; canDelet
 }
 
 function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDone: (saved: boolean) => void }) {
-  const [f, setF] = useState({ name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", menuNames: "", menuDesc: "" });
+  const [f, setF] = useState({ name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", menuNames: "", menuDesc: "", masterQuote: "", masterBio: "", sales1: "", sales3: "", sales6: "", peakNote: "" });
   const [history, setHistory] = useState<[string, string][]>([]); // 이력: [시기, 내용]
   const [photos, setPhotos] = useState<string[]>([]);
   const [detailPhotos, setDetailPhotos] = useState<string[]>([]); // 교육 대표 메뉴 아래에 이어 붙여 보여줄 상세 이미지 (메뉴 사진 뒤에 이어 저장)
@@ -122,7 +122,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       if (l && t) {
         setF({
           name: t.name, store: t.store, address: t.address ?? `대구 ${l.region}`, category: l.category,
-          price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), menuNames: (t.menuNames ?? []).join(", "), menuDesc: t.menuDesc ?? "",
+          price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), menuNames: (t.menuNames ?? []).join(", "), menuDesc: t.menuDesc ?? "", masterQuote: t.masterQuote ?? "", masterBio: t.masterBio ?? "", sales1: String(t.sales?.[0] ?? ""), sales3: String(t.sales?.[1] ?? ""), sales6: String(t.sales?.[2] ?? ""), peakNote: t.peakNote ?? "",
         });
         setHistory(t.timeline ?? []); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
       } else setErr("전수창업을 불러오지 못했습니다.");
@@ -151,7 +151,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       const d = {
         title: `${f.name.trim()} 사부 전수창업`, region, category: f.category, op: "직접운영" as const, area: 0, // 운영방식은 입력받지 않는다
          price, cost: price, date: date || today(), kind: "전수창업",
-        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, detailPhotos: detailPhotos.length || undefined, menuDesc: f.menuDesc.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
+        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, detailPhotos: detailPhotos.length || undefined, menuDesc: f.menuDesc.trim() || undefined, masterQuote: f.masterQuote.trim() || undefined, masterBio: f.masterBio.trim() || undefined, sales: (Number(f.sales1) || Number(f.sales3) || Number(f.sales6)) ? [Number(f.sales1) || 0, Number(f.sales3) || 0, Number(f.sales6) || 0] : undefined, peakNote: f.peakNote.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
       };
       const { data, error } = await supabase.rpc("admin_shop_save", { ...cred, listing_id: id, d, t: thumb, photos: [...photos, ...menuPhotos, ...detailPhotos], is_sold: false });
       if (error) throw new Error(error.message);
@@ -181,6 +181,12 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
           <Label text="현장 경력 (년)" req><input required inputMode="numeric" value={f.years} onChange={(e) => set("years", num(e.target.value))} placeholder="14" className={inputCls} /></Label>
           <Label text="교육 대표 메뉴 (쉼표로 구분)"><input value={f.menuNames} onChange={(e) => set("menuNames", e.target.value)} placeholder="소금빵, 크루아상, 식빵, 마들렌" className={inputCls} /></Label>
           <div className="sm:col-span-2"><Label text="대표 메뉴 설명 (한두 줄, 상세 상단 메뉴 이름 아래에 표시)"><textarea rows={2} maxLength={100} value={f.menuDesc} onChange={(e) => set("menuDesc", e.target.value)} placeholder="20년 손맛을 담은 구수한 된장찌개, 육수부터 간 맞추기까지 전수합니다" className={`${inputCls} resize-none`} /></Label></div>
+          <div className="sm:col-span-2"><Label text="사부 소개 대표 문구 (큰 글씨로 표시)"><textarea rows={2} maxLength={120} value={f.masterQuote} onChange={(e) => set("masterQuote", e.target.value)} placeholder="12년 동안 주방에서 쌓은 일식 노하우, 초보자도 10분 만에 이해할 수 있도록 쉽게 전수합니다." className={`${inputCls} resize-none`} /></Label></div>
+          <div className="sm:col-span-2"><Label text="사부 소개 본문"><textarea rows={4} maxLength={400} value={f.masterBio} onChange={(e) => set("masterBio", e.target.value)} placeholder="유명 퓨전 일식 레스토랑 헤드 셰프 출신으로, 50개 이상의 직영/가맹 매장 레시피 전수 경험을 보유하고 있습니다." className={`${inputCls} resize-none`} /></Label></div>
+          <Label text="오픈 1개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales1} onChange={(e) => set("sales1", num(e.target.value))} placeholder="3800" className={inputCls} /></Label>
+          <Label text="오픈 3개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales3} onChange={(e) => set("sales3", num(e.target.value))} placeholder="6200" className={inputCls} /></Label>
+          <Label text="오픈 6개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales6} onChange={(e) => set("sales6", num(e.target.value))} placeholder="8500" className={inputCls} /></Label>
+          <div className="sm:col-span-2"><Label text="피크타임 증빙 설명 (사진 아래 문구)"><input value={f.peakNote} onChange={(e) => set("peakNote", e.target.value)} placeholder="점심 오피스 피크타임 테이블 회전율 4.5회전 완수, 평균 조리 출하시간 3분대 유지" className={inputCls} /></Label></div>
         </div>
       </section>
 

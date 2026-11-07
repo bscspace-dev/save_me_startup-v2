@@ -9,6 +9,10 @@ export type TransferInfo = {
   menus: number;
   menuNames?: string[]; // 교육 대표 메뉴 (관리자에서 입력)
   menuDesc?: string; // 대표 메뉴 한두 줄 설명 (관리자에서 입력)
+  masterQuote?: string; // 사부 소개 대표 문구 (관리자에서 입력)
+  masterBio?: string; // 사부 소개 본문 (관리자에서 입력)
+  sales?: [number, number, number]; // 오픈 1·3·6개월차 월 매출(만원)
+  peakNote?: string; // 피크타임 증빙 설명
   timeline: [string, string][];
   curriculum: { title: string; range: string; desc: string }[];
 };
@@ -117,6 +121,10 @@ export const transferOf = (l: Listing): TransferInfo | undefined => {
   t.timeline = r.timeline ?? [];
   if (r.menuNames?.length) t.menuNames = r.menuNames;
   if (r.menuDesc) t.menuDesc = r.menuDesc;
+  if (r.masterQuote) t.masterQuote = r.masterQuote;
+  if (r.masterBio) t.masterBio = r.masterBio;
+  if (r.sales && r.sales.some((v) => v > 0)) t.sales = r.sales;
+  if (r.peakNote) t.peakNote = r.peakNote;
   return t;
 };
 
