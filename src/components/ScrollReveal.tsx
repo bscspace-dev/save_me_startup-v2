@@ -40,3 +40,23 @@ export function GrowBar({ pct, className, i = 0 }: { pct: number; className?: st
     />
   );
 }
+
+// 카드 위에 큰 X 표시가 그려지듯 나타나는 효과
+export function DrawX({ className }: { className?: string }) {
+  const reduce = useReducedMotion();
+  const p = (d: string, delay: number) => (
+    <motion.path
+      d={d}
+      initial={reduce ? false : { pathLength: 0, opacity: 0 }}
+      whileInView={{ pathLength: 1, opacity: 1 }}
+      viewport={{ once: true, amount: 0.6 }}
+      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+    />
+  );
+  return (
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" vectorEffect="non-scaling-stroke">
+      {p("M10 10 L90 90", 0.5)}
+      {p("M90 10 L10 90", 0.85)}
+    </svg>
+  );
+}

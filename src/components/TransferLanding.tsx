@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Icon } from "./Icons";
-import { RevealLi, RevealDiv, GrowBar } from "./ScrollReveal";
+import { RevealLi, RevealDiv, GrowBar, DrawX } from "./ScrollReveal";
 
 // 전수창업 상세 하단의 공통 안내 섹션들 (모든 전수창업 매물에 같은 문구)
 export const wrap = "mx-auto max-w-[80rem] px-6";
@@ -228,7 +228,8 @@ export function CostComparison() {
           <p className="mt-3 text-[0.8125rem] text-neutral-600">가맹비, 로열티, 인테리어 중간 마진 등 불필요한 거품을 싹 <b className={YEL}>빼</b>고 전수비 하나로 해결하세요.</p>
         </div>
         <div className="mx-auto mt-10 grid max-w-[56rem] gap-5 md:grid-cols-2">
-          <div className="card-soft p-7">
+          <div className="card-soft relative p-7">
+            <DrawX className="pointer-events-none absolute inset-4 z-10 size-[calc(100%-2rem)] text-[#c0463c]/70" />
             <p className="text-center text-[0.6875rem] font-bold text-neutral-500">일반 프랜차이즈 가맹</p>
             <p className="mt-1 text-center text-[1.25rem] font-black text-neutral-600">부담스러운 거품 창업비</p>
             <ul className="mt-6 divide-y-0 border-t border-neutral-200 pt-4 text-[0.75rem]">
