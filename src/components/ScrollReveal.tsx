@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 // 스크롤로 화면에 들어올 때 아래에서 살짝 올라오며 나타나는 효과 (움직임 줄이기 설정이면 효과 없음)
-const view = { once: true, amount: 0.15 } as const;
+const view = { once: true, amount: 0.05, margin: "0px 0px -40px 0px" } as const;
 
 function useVariants(i: number, dy: number) {
   const reduce = useReducedMotion();
@@ -11,20 +11,20 @@ function useVariants(i: number, dy: number) {
     initial: reduce ? false : { opacity: 0, y: dy },
     whileInView: { opacity: 1, y: 0 },
     viewport: view,
-    transition: { duration: 0.6, delay: reduce ? 0 : Math.min(i, 5) * 0.09, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+    transition: { duration: 0.3, delay: reduce ? 0 : Math.min(i, 3) * 0.04, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   } as const;
 }
 
 export function Reveal({ children, className, i = 0 }: { children: ReactNode; className?: string; i?: number }) {
-  return <motion.div {...useVariants(i, 28)} className={className}>{children}</motion.div>;
+  return <motion.div {...useVariants(i, 10)} className={className}>{children}</motion.div>;
 }
 
 export function RevealLi({ children, className, i = 0 }: { children: ReactNode; className?: string; i?: number }) {
-  return <motion.li {...useVariants(i, 22)} className={className}>{children}</motion.li>;
+  return <motion.li {...useVariants(i, 10)} className={className}>{children}</motion.li>;
 }
 
 export function RevealDiv({ children, className, i = 0 }: { children: ReactNode; className?: string; i?: number }) {
-  return <motion.div {...useVariants(i, 22)} className={className}>{children}</motion.div>;
+  return <motion.div {...useVariants(i, 10)} className={className}>{children}</motion.div>;
 }
 
 // 화면에 들어오면 0%에서 목표 폭까지 차오르는 막대
@@ -36,7 +36,7 @@ export function GrowBar({ pct, className, i = 0 }: { pct: number; className?: st
       initial={reduce ? false : { width: 0 }}
       whileInView={{ width: `${pct}%` }}
       viewport={{ once: true, amount: 0.6 }}
-      transition={{ duration: 1.3, delay: reduce ? 0 : 0.15 + i * 0.25, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.7, delay: reduce ? 0 : 0.05 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
     />
   );
 }
@@ -50,13 +50,13 @@ export function DrawX({ className }: { className?: string }) {
       initial={reduce ? false : { pathLength: 0, opacity: 0 }}
       whileInView={{ pathLength: 1, opacity: 1 }}
       viewport={{ once: true, amount: 0.6 }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      transition={{ duration: 0.25, delay, ease: "easeOut" }}
     />
   );
   return (
     <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" vectorEffect="non-scaling-stroke">
-      {p("M10 10 L90 90", 0.5)}
-      {p("M90 10 L10 90", 0.85)}
+      {p("M10 10 L90 90", 0.1)}
+      {p("M90 10 L10 90", 0.3)}
     </svg>
   );
 }
@@ -72,7 +72,7 @@ export function Highlight({ children }: { children: ReactNode }) {
         initial={reduce ? false : { scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true, amount: 0.8 }}
-        transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.4, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
       />
       {children}
     </span>
