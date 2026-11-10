@@ -136,9 +136,6 @@ export function TransferCompare({ price }: { price: number }) {
                 </div>
               ))}
               {save > 0 && (
-                <svg viewBox="0 0 40 50" aria-hidden className="pointer-events-none absolute left-[47%] top-[50%] w-[17%] text-[#FFD21F]" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3C22 3 33 16 34 36" /><path d="M25 29l9 10 9-10" transform="translate(-4 0)" /></svg>
-              )}
-              {save > 0 && (
                 <div className="absolute right-[2%] top-[18%] grid size-[7rem] place-items-center rounded-full border border-[#F0C33F] bg-[#222]/80 text-center text-[0.6875rem] leading-tight">
                   <span>기존 전수창업 대비<br /><b className="font-gmarket text-[1.5rem] text-[#F0C33F]">약 {save}%</b><br /><b className="text-[0.8125rem] text-[#F0C33F]">비용 절감</b></span>
                 </div>
