@@ -13,6 +13,13 @@ export type TransferInfo = {
   masterBio?: string; // 사부 소개 본문 (관리자에서 입력)
   sales?: [number, number, number]; // 오픈 1·3·6개월차 월 매출(만원)
   peakNote?: string; // 피크타임 증빙 설명
+  menuDescs?: string[]; // 대표 메뉴별 설명 (메뉴 순서대로)
+  revisit?: number; // 재방문율(%)
+  satisfy?: number; // 만족도(%)
+  startCosts?: [number, number, number]; // 초도 식자재·집기/설비·기타 오픈 비용(만원)
+  simSales?: number; // 시뮬레이션 월 매출 가정(만원)
+  simMargin?: string; // 시뮬레이션 예상 순이익률 (예: 20~25)
+  reviews?: [string, string][]; // 손님 후기 [내용, 출처]
   timeline: [string, string][];
   curriculum: { title: string; range: string; desc: string }[];
 };
@@ -125,6 +132,13 @@ export const transferOf = (l: Listing): TransferInfo | undefined => {
   if (r.masterBio) t.masterBio = r.masterBio;
   if (r.sales && r.sales.some((v) => v > 0)) t.sales = r.sales;
   if (r.peakNote) t.peakNote = r.peakNote;
+  if (r.menuDescs?.some(Boolean)) t.menuDescs = r.menuDescs;
+  if (r.revisit) t.revisit = r.revisit;
+  if (r.satisfy) t.satisfy = r.satisfy;
+  if (r.startCosts?.some((v) => v > 0)) t.startCosts = r.startCosts;
+  if (r.simSales) t.simSales = r.simSales;
+  if (r.simMargin) t.simMargin = r.simMargin;
+  if (r.reviews?.length) t.reviews = r.reviews;
   return t;
 };
 

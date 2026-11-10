@@ -103,7 +103,9 @@ export function TransferAdmin({ cred, canDelete = true }: { cred: Cred; canDelet
 }
 
 function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDone: (saved: boolean) => void }) {
-  const [f, setF] = useState({ name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", menuNames: "", menuDesc: "", masterQuote: "", masterBio: "", sales1: "", sales3: "", sales6: "", peakNote: "" });
+  const [f, setF] = useState({ name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", menuNames: "", masterBio: "", sales1: "", sales3: "", sales6: "", peakNote: "", revisit: "", satisfy: "", cost1: "", cost2: "", cost3: "", simSales: "", simMargin: "" });
+  const [menuDescs, setMenuDescs] = useState<string[]>(["", "", ""]); // 대표 메뉴별 설명 (메뉴 순서대로)
+  const [reviews, setReviews] = useState<[string, string][]>([]); // 손님 후기 [내용, 출처]
   const [history, setHistory] = useState<[string, string][]>([]); // 이력: [시기, 내용]
   const [photos, setPhotos] = useState<string[]>([]);
   const [detailPhotos, setDetailPhotos] = useState<string[]>([]); // 교육 대표 메뉴 아래에 이어 붙여 보여줄 상세 이미지 (메뉴 사진 뒤에 이어 저장)
@@ -122,15 +124,16 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       if (l && t) {
         setF({
           name: t.name, store: t.store, address: t.address ?? `대구 ${l.region}`, category: l.category,
-          price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), menuNames: (t.menuNames ?? []).join(", "), menuDesc: t.menuDesc ?? "", masterQuote: t.masterQuote ?? "", masterBio: t.masterBio ?? "", sales1: String(t.sales?.[0] ?? ""), sales3: String(t.sales?.[1] ?? ""), sales6: String(t.sales?.[2] ?? ""), peakNote: t.peakNote ?? "",
+          price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), menuNames: (t.menuNames ?? []).join(", "), masterBio: t.masterBio ?? "", revisit: String(t.revisit ?? ""), satisfy: String(t.satisfy ?? ""), cost1: String(t.startCosts?.[0] ?? ""), cost2: String(t.startCosts?.[1] ?? ""), cost3: String(t.startCosts?.[2] ?? ""), simSales: String(t.simSales ?? ""), simMargin: t.simMargin ?? "", sales1: String(t.sales?.[0] ?? ""), sales3: String(t.sales?.[1] ?? ""), sales6: String(t.sales?.[2] ?? ""), peakNote: t.peakNote ?? "",
         });
-        setHistory(t.timeline ?? []); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
+        setMenuDescs([0, 1, 2].map((k) => t.menuDescs?.[k] ?? (k === 0 ? t.menuDesc : "") ?? "")); setReviews(t.reviews ?? []); setHistory(t.timeline ?? []); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
       } else setErr("전수창업을 불러오지 못했습니다.");
       setLoading(false);
     });
     return () => { alive = false; };
   }, [id]);
 
+  const menuNameList = f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean);
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
 
   async function submit(e: React.FormEvent) {
@@ -144,14 +147,14 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
     const rows = history.map(([y, x]) => [y.trim(), x.trim()] as [string, string]).filter(([y, x]) => y || x);
     if (rows.some(([y, x]) => !/^\d{4}(~(\d{4}|현재))?$/.test(y) || !x)) return setErr("이력은 시작 년도(예: 2012)와 내용을 함께 입력해주세요. 종료 년도를 비우면 현재로 표시됩니다. 한쪽만 입력된 줄이 있습니다.");
     if (rows.some(([y]) => /~\d{4}$/.test(y) && Number(y.slice(5)) < Number(y.slice(0, 4)))) return setErr("이력의 종료 년도는 시작 년도보다 빠를 수 없습니다.");
-    const price = Number(f.price) || 0;
+    const reviewRows = reviews.map(([x, y]) => [x.trim(), y.trim()] as [string, string]).filter(([x]) => x).slice(0, 3); const price = Number(f.price) || 0;
     setBusy(true); setErr("");
     try {
       const thumb = await shrink(await dataUrlToBlob(menuPhotos[0]), 480, 0.7, 40_000);
       const d = {
         title: `${f.name.trim()} 사부 전수창업`, region, category: f.category, op: "직접운영" as const, area: 0, // 운영방식은 입력받지 않는다
          price, cost: price, date: date || today(), kind: "전수창업",
-        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, detailPhotos: detailPhotos.length || undefined, menuDesc: f.menuDesc.trim() || undefined, masterQuote: f.masterQuote.trim() || undefined, masterBio: f.masterBio.trim() || undefined, sales: (Number(f.sales1) || Number(f.sales3) || Number(f.sales6)) ? [Number(f.sales1) || 0, Number(f.sales3) || 0, Number(f.sales6) || 0] : undefined, peakNote: f.peakNote.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
+        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, detailPhotos: detailPhotos.length || undefined, menuDesc: menuDescs[0]?.trim() || undefined, menuDescs: menuDescs.some((x) => x.trim()) ? menuDescs.map((x) => x.trim()) : undefined, revisit: Number(f.revisit) || undefined, satisfy: Number(f.satisfy) || undefined, startCosts: (Number(f.cost1) || Number(f.cost2) || Number(f.cost3)) ? [Number(f.cost1) || 0, Number(f.cost2) || 0, Number(f.cost3) || 0] : undefined, simSales: Number(f.simSales) || undefined, simMargin: f.simMargin.trim() || undefined, reviews: reviewRows.length ? reviewRows : undefined, masterBio: f.masterBio.trim() || undefined, sales: (Number(f.sales1) || Number(f.sales3) || Number(f.sales6)) ? [Number(f.sales1) || 0, Number(f.sales3) || 0, Number(f.sales6) || 0] : undefined, peakNote: f.peakNote.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
       };
       const { data, error } = await supabase.rpc("admin_shop_save", { ...cred, listing_id: id, d, t: thumb, photos: [...photos, ...menuPhotos, ...detailPhotos], is_sold: false });
       if (error) throw new Error(error.message);
@@ -180,14 +183,42 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
           <Label text="사부(전수자) 이름" req><input required value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="이정훈" className={inputCls} /></Label>
           <Label text="현장 경력 (년)" req><input required inputMode="numeric" value={f.years} onChange={(e) => set("years", num(e.target.value))} placeholder="14" className={inputCls} /></Label>
           <Label text="교육 대표 메뉴 (쉼표로 구분)"><input value={f.menuNames} onChange={(e) => set("menuNames", e.target.value)} placeholder="소금빵, 크루아상, 식빵, 마들렌" className={inputCls} /></Label>
-          <div className="sm:col-span-2"><Label text="대표 메뉴 설명 (한두 줄, 상세 상단 메뉴 이름 아래에 표시)"><textarea rows={2} maxLength={100} value={f.menuDesc} onChange={(e) => set("menuDesc", e.target.value)} placeholder="20년 손맛을 담은 구수한 된장찌개, 육수부터 간 맞추기까지 전수합니다" className={`${inputCls} resize-none`} /></Label></div>
-          <div className="sm:col-span-2"><Label text="사부 소개 대표 문구 (큰 글씨로 표시)"><textarea rows={2} maxLength={120} value={f.masterQuote} onChange={(e) => set("masterQuote", e.target.value)} placeholder="12년 동안 주방에서 쌓은 일식 노하우, 초보자도 10분 만에 이해할 수 있도록 쉽게 전수합니다." className={`${inputCls} resize-none`} /></Label></div>
+          {menuNameList.slice(0, 3).concat(Array(Math.max(0, 1 - menuNameList.length)).fill("")).map((nm, k) => (
+            <div key={k} className="sm:col-span-2"><Label text={`${nm || `대표 메뉴 ${k + 1}`} 설명 (메뉴 카드에 표시, 한두 줄)`}><textarea rows={2} maxLength={100} value={menuDescs[k]} onChange={(e) => setMenuDescs(menuDescs.map((x, j) => (j === k ? e.target.value : x)))} placeholder="14년간 사랑받아 온 대표 메뉴, 감칠맛 나는 양념과 불향을 전수합니다" className={`${inputCls} resize-none`} /></Label></div>
+          ))}
+
           <div className="sm:col-span-2"><Label text="사부 소개 본문"><textarea rows={4} maxLength={400} value={f.masterBio} onChange={(e) => set("masterBio", e.target.value)} placeholder="유명 퓨전 일식 레스토랑 헤드 셰프 출신으로, 50개 이상의 직영/가맹 매장 레시피 전수 경험을 보유하고 있습니다." className={`${inputCls} resize-none`} /></Label></div>
           <Label text="오픈 1개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales1} onChange={(e) => set("sales1", num(e.target.value))} placeholder="3800" className={inputCls} /></Label>
           <Label text="오픈 3개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales3} onChange={(e) => set("sales3", num(e.target.value))} placeholder="6200" className={inputCls} /></Label>
           <Label text="오픈 6개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales6} onChange={(e) => set("sales6", num(e.target.value))} placeholder="8500" className={inputCls} /></Label>
-          <div className="sm:col-span-2"><Label text="피크타임 증빙 설명 (사진 아래 문구)"><input value={f.peakNote} onChange={(e) => set("peakNote", e.target.value)} placeholder="점심 오피스 피크타임 테이블 회전율 4.5회전 완수, 평균 조리 출하시간 3분대 유지" className={inputCls} /></Label></div>
+          <div className="sm:col-span-2"><Label text="피크타임 증빙 설명 (사진 아래 문구)"><input value={f.peakNote} onChange={(e) => set("peakNote", e.target.value)} placeholder="점심 오피스 피크타임 테이블 회전율 4.5회전 완수, 평균 조리 출하시간 3분대 유지" className={inputCls} /></Label></div>          <Label text="재방문율 (%)"><input inputMode="numeric" maxLength={3} value={f.revisit} onChange={(e) => set("revisit", num(e.target.value))} placeholder="91" className={inputCls} /></Label>          <Label text="고객 만족도 (%)"><input inputMode="numeric" maxLength={3} value={f.satisfy} onChange={(e) => set("satisfy", num(e.target.value))} placeholder="96" className={inputCls} /></Label>
         </div>
+      </section>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-1 text-[0.9375rem] font-black">창업 비용 · 수익 시뮬레이션 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">비워두면 상세에 &quot;상담 시 안내&quot;로 표시됩니다 (전수 비용은 아래 전수 정보에서 가져옵니다)</span></h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <Label text="초도 식자재 (만원)"><input inputMode="numeric" value={f.cost1} onChange={(e) => set("cost1", num(e.target.value))} placeholder="300" className={inputCls} /></Label>
+          <Label text="주요 집기·설비 (만원)"><input inputMode="numeric" value={f.cost2} onChange={(e) => set("cost2", num(e.target.value))} placeholder="1500" className={inputCls} /></Label>
+          <Label text="기타 오픈 준비 비용 (만원)"><input inputMode="numeric" value={f.cost3} onChange={(e) => set("cost3", num(e.target.value))} placeholder="500" className={inputCls} /></Label>
+          <Label text="월 매출 가정 (만원, 비우면 3,000)"><input inputMode="numeric" value={f.simSales} onChange={(e) => set("simSales", num(e.target.value))} placeholder="3000" className={inputCls} /></Label>
+          <Label text="예상 순이익률 (%, 비우면 20~25)"><input value={f.simMargin} onChange={(e) => set("simMargin", e.target.value.replace(/[^0-9~]/g, ""))} placeholder="20~25" className={inputCls} /></Label>
+        </div>
+        <p className="mt-3 text-[0.6875rem] text-neutral-400">총 예상 초기 비용은 세 항목을 모두 입력하면 전수 비용과 합산해 자동 계산됩니다.</p>
+      </section>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="text-[0.9375rem] font-black">손님 후기 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">최대 3개, 비워두면 후기 구간이 나타나지 않습니다</span></h2>
+        <ul className="mt-4 space-y-2">
+          {reviews.map(([x, y], i) => (
+            <li key={i} className="flex gap-2">
+              <input value={x} maxLength={60} onChange={(e) => setReviews(reviews.map((r, k) => (k === i ? [e.target.value, r[1]] : r)))} placeholder="고기 너무 맛있어요! 또 올게요" className={inputCls} />
+              <input value={y} maxLength={30} onChange={(e) => setReviews(reviews.map((r, k) => (k === i ? [r[0], e.target.value] : r)))} placeholder="출처 (네이버리뷰 홍**)" className={`${inputCls} !w-[12rem] shrink-0`} />
+              <button type="button" onClick={() => setReviews(reviews.filter((_, k) => k !== i))} className="shrink-0 rounded border border-neutral-300 px-3 text-[0.75rem] font-bold text-red-600 hover:border-red-400">삭제</button>
+            </li>
+          ))}
+        </ul>
+        {reviews.length < 3 && <button type="button" onClick={() => setReviews([...reviews, ["", ""]])} className="mt-3 rounded border border-dashed border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 hover:border-brand hover:text-brand">+ 후기 추가</button>}
       </section>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">

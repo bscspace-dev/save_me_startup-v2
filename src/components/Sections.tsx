@@ -49,7 +49,7 @@ export function Categories() {
         <div className="-mx-6 mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0 lg:pb-0">
           {categories.map((c, i) => (
             <Reveal key={c.title} delay={i * 0.08} className="w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto">
-              <motion.a href={`/listings?type=${c.tag}`} whileHover={{ y: -6 }} className="flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-xl">
+              <motion.a href={`/listings?type=${c.tag}`} className="flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-[box-shadow,translate] duration-200 lg:hover:-translate-y-1.5 hover:shadow-xl">
                 <span className="self-start rounded bg-ink px-2 py-1 text-[0.75rem] font-black tracking-wider" style={{ color: NEON }}>{c.en}</span>
                 <div className="grid h-[8rem] place-items-center">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -163,7 +163,7 @@ export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?
   const { title, desc, brand, address } = cardInfo(l);
   return (
     <Reveal delay={Math.min(i, 8) * 0.05} className={fluid ? "" : "w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto"}>
-      <motion.a href={`/listings/${l.id}`} whileHover={{ y: -6 }} className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-xl">
+      <motion.a href={`/listings/${l.id}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-[box-shadow,translate] duration-200 lg:hover:-translate-y-1.5 hover:shadow-xl">
         <div className={`relative bg-neutral-100 ${fluid ? "h-[9.375rem] sm:h-[13rem]" : "h-[9.375rem] sm:h-[10.625rem]"}`}>
           {l.photos ? (
             // eslint-disable-next-line @next/next/no-img-element
