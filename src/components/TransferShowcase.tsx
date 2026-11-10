@@ -215,9 +215,9 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
           <span className="text-[#FFD21F]">저녁</span>에는 <span className="text-[#FFD21F]">객단가</span><br />
           <span className="text-[#FFD21F]">배달</span>로는 <span className="text-[#FFD21F]">추가매출</span>까지 !
         </h2>
-        <div className="relative mx-auto mt-8 grid aspect-[1/1.1] max-w-[36rem] place-items-center">
+        <div className="relative -mx-6 mt-8 grid aspect-[1/1.05] place-items-center md:mx-auto md:aspect-[16/10] md:max-w-[56rem]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/sales-bg.webp" alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", WebkitMaskComposite: "source-in", maskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", maskComposite: "intersect" }} />
+          <img src="/sales-bg.webp" alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover md:object-bottom" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", WebkitMaskComposite: "source-in", maskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", maskComposite: "intersect" }} />
           <p className="relative px-6 text-center font-[family-name:var(--font-noto)] text-[1.375rem] font-bold leading-[1.7] [text-shadow:0_1px_10px_rgba(0,0,0,0.85)] md:text-[1.875rem]">다년간 쌓아온 맛과<br />운영 노하우를 바탕으로<br />다양한 판매 기회를 만들어 갑니다</p>
         </div>
         <div className="mx-auto mt-8 max-w-[56rem]">
