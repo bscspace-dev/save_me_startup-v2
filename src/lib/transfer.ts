@@ -7,6 +7,12 @@ export type TransferInfo = {
   days: number;
   hours: number;
   menus: number;
+  menuTags?: string[][]; // 대표 메뉴별 태그 (메뉴 순서대로, 관리자에서 입력)
+  method?: string; // 교육 방식 (예: 1:1 실습, 관리자에서 입력)
+  philosophy?: [string, string][]; // 운영 노하우·장사 철학 3가지 [제목, 설명] (관리자에서 입력)
+  videoUrl?: string; // 교육 소개 영상 유튜브 링크 (관리자에서 입력)
+  topTitle?: string; // 상단 제목 (히어로 위 작은 문구, 관리자에서 입력)
+  heroTitle?: string; // 제목 (히어로 큰 문구, [ ] 로 감싼 부분에 밑줄, 관리자에서 입력)
   menuNames?: string[]; // 교육 대표 메뉴 (관리자에서 입력)
   menuDesc?: string; // 대표 메뉴 한두 줄 설명 (관리자에서 입력)
   masterQuote?: string; // 사부 소개 대표 문구 (관리자에서 입력)
@@ -127,6 +133,12 @@ export const transferOf = (l: Listing): TransferInfo | undefined => {
   // 관리자가 입력한 이력만 보여준다 (비어 있으면 상세에서 "경력없음"으로 나온다)
   t.timeline = r.timeline ?? [];
   if (r.menuNames?.length) t.menuNames = r.menuNames;
+  if (r.videoUrl) t.videoUrl = r.videoUrl;
+  if (r.method) t.method = r.method;
+  if (r.menuTags?.some((a) => a?.length)) t.menuTags = r.menuTags;
+  if (r.philosophy?.some(([a, b]) => a || b)) t.philosophy = r.philosophy;
+  if (r.topTitle) t.topTitle = r.topTitle;
+  if (r.heroTitle) t.heroTitle = r.heroTitle;
   if (r.menuDesc) t.menuDesc = r.menuDesc;
   if (r.masterQuote) t.masterQuote = r.masterQuote;
   if (r.masterBio) t.masterBio = r.masterBio;

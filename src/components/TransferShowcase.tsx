@@ -8,28 +8,36 @@ type Common = { dish: string; names: string[]; years: number };
 const yrs = (y: number) => (y > 0 ? `${y}년` : "오랜 시간");
 
 /* ───────── 사부 소개 + 수치 + 장사 철학 (흰 배경) ───────── */
-export function ShowcaseIntro({ name, photo, bio, stats, dish, names, years }: Common & { name: string; photo: string | null; bio?: string; stats: [string, string][] }) {
+export function ShowcaseIntro({ name, photo, videoId, philosophy, bio, stats, dish, names, years }: Common & { name: string; photo: string | null; videoId?: string | null; philosophy?: [string, string][]; bio?: string; stats: [string, string][] }) {
   const chips = [
     `${dish} 레시피 전수`,
     names.length > 1 ? `${names.slice(1, 3).join("·")} 노하우` : "조리 기준·운영 노하우",
     years > 0 ? `${years}년 운영 경험` : "현장 운영 경험",
     "손님 응대 기준",
   ];
-  const phil = [
+  const philDefault = [
     ["맛은 감이 아니라, 기준으로", `${dish}의 양념 비율, 불조절, 조리 순서를 정리해 누구나 같은 맛을 낼 수 있도록 전수합니다.`],
     ["손님이 다시 찾는 흐름까지", "조리만이 아니라 상차림, 밑반찬, 손님 응대까지 실제 매장에서 통하는 흐름을 함께 익힙니다."],
     ["오래 가는 장사의 기본까지", `${yrs(years)} 쌓아온 운영 경험을 바탕으로 메뉴 구성, 현장 운영, 꾸준히 사랑받는 가게의 기준을 전합니다.`],
   ];
+  // 관리자가 입력한 제목·설명을 우선하고, 비어 있는 칸은 기본 문구를 쓴다
+  const phil = philDefault.map(([t, d], k) => [philosophy?.[k]?.[0] || t, philosophy?.[k]?.[1] || d]);
   return (
     <section id="expert" className="scroll-mt-24 bg-white px-6 py-10 text-ink md:px-10 md:py-12">
       <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr]">
         <div className="relative">
           <span aria-hidden className="absolute -bottom-3 -right-3 size-full rounded-2xl border-2 border-[#F0C33F]" />
           <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-[#1c1c1c]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            {photo && <img src={photo} alt={`${name} 사부(전수자)`} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover object-top" />}
-            <span className="absolute left-3 top-3 rounded-md bg-[#F0C33F] px-3 py-1 text-[0.8125rem] font-bold text-ink">사부 인터뷰 영상</span>
-            <span aria-hidden className="absolute left-1/2 top-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white"><svg viewBox="0 0 24 24" className="ml-0.5 size-6" fill="currentColor"><path d="M8 5l11 7-11 7z" /></svg></span>
+            {videoId ? (
+              <iframe src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`} title={`${name} 사부 소개 영상`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowFullScreen className="absolute inset-0 size-full" />
+            ) : (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {photo && <img src={photo} alt={`${name} 사부(전수자)`} loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover object-top" />}
+                <span className="absolute left-3 top-3 rounded-md bg-[#F0C33F] px-3 py-1 text-[0.8125rem] font-bold text-ink">사부 인터뷰 영상</span>
+                <span aria-hidden className="absolute left-1/2 top-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white"><svg viewBox="0 0 24 24" className="ml-0.5 size-6" fill="currentColor"><path d="M8 5l11 7-11 7z" /></svg></span>
+              </>
+            )}
           </div>
         </div>
         <div>
@@ -84,7 +92,7 @@ export function ShowcaseIntro({ name, photo, bio, stats, dish, names, years }: C
 /* ───────── 어두운 구간 A: 대표 메뉴, WHY, 운영 구조, 판매 기회 ───────── */
 const learn = ["레시피 전수", "조리 실습", "원가 관리"];
 
-export function ShowcaseDarkA({ dish, names, years, srcs, descs, bgSrc, sales, revisit, satisfy, reviews, detailSrcs }: Common & { srcs: string[]; descs?: string[]; bgSrc?: string | null; sales?: [number, number, number]; revisit?: number; satisfy?: number; reviews?: [string, string][]; detailSrcs?: string[] }) {
+export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, revisit, satisfy, reviews, detailSrcs }: Common & { srcs: string[]; descs?: string[]; tags?: string[][]; sales?: [number, number, number]; revisit?: number; satisfy?: number; reviews?: [string, string][]; detailSrcs?: string[] }) {
   const n = Math.min(3, Math.max(names.length, srcs.length));
   const s = sales ?? [3800, 6200, 8500];
   const second = names[1];
@@ -134,7 +142,7 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, bgSrc, sales, r
                     {descs?.[k] || "가게의 중심이 되는 메뉴를 사부가 직접 1:1로 전수합니다. 레시피부터 조리 기준, 운영 노하우까지 함께 배웁니다."}
                   </p>
                   <ul className="mt-4 flex flex-wrap gap-2">
-                    {learn.map((x) => <li key={x} className="rounded-full bg-[#1c1c1c] px-3 py-1 text-[0.6875rem] font-bold text-[#F0C33F]">{x}</li>)}
+                    {(tags?.[k]?.length ? tags[k] : learn).map((x) => <li key={x} className="rounded-full bg-[#1c1c1c] px-3 py-1 text-[0.6875rem] font-bold text-[#F0C33F]">{x}</li>)}
                   </ul>
                 </div>
               </RevealLi>
@@ -207,11 +215,10 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, bgSrc, sales, r
           <span className="text-[#FFD21F]">저녁</span>에는 <span className="text-[#FFD21F]">객단가</span><br />
           <span className="text-[#FFD21F]">배달</span>로는 <span className="text-[#FFD21F]">추가매출</span>까지 !
         </h2>
-        <div className="relative mx-auto mt-8 grid aspect-[4/3] max-w-[48rem] place-items-center overflow-hidden rounded-2xl bg-gradient-to-b from-[#2a2118] to-[#120e0a] md:aspect-[16/11]">
+        <div className="relative mx-auto mt-8 grid aspect-[1/1.1] max-w-[36rem] place-items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          {bgSrc && <img src={bgSrc} alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover opacity-60" />}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1c1c1c] via-black/30 to-[#1c1c1c]" />
-          <p className="relative px-6 text-center text-[0.9375rem] leading-[1.7] md:text-[1rem]">다년간 쌓아온 {dish}의 맛과<br />운영 노하우를 바탕으로<br />다양한 판매 기회를 만들어갑니다.</p>
+          <img src="/sales-bg.webp" alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", WebkitMaskComposite: "source-in", maskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", maskComposite: "intersect" }} />
+          <p className="relative px-6 text-center font-[family-name:var(--font-noto)] text-[1.375rem] font-bold leading-[1.7] [text-shadow:0_1px_10px_rgba(0,0,0,0.85)] md:text-[1.875rem]">다년간 쌓아온 맛과<br />운영 노하우를 바탕으로<br />다양한 판매 기회를 만들어 갑니다</p>
         </div>
         <div className="mx-auto mt-8 max-w-[56rem]">
           <p className="text-[0.6875rem] text-white/60">※실제 사부의 매장 운영 현황</p>
@@ -411,7 +418,8 @@ export function ShowcaseProven({ sales, peakNote, price, startCosts, simSales, s
         </div>
         <div className="md:border-l md:border-white/15 md:pl-6">
           <p className="text-[0.875rem] font-black text-[#F0C33F]">피크타임 만석 및 대기열 증빙</p>
-          <div className="mt-3 grid aspect-[4/3] place-items-center rounded-xl border border-dashed border-white/25 text-[0.75rem] text-white/40">피크타임 증빙 사진 영역</div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/peak-default.webp" alt="피크타임 만석 매장 모습" loading="lazy" decoding="async" className="mt-3 aspect-[4/3] w-full rounded-xl object-cover" />
           <p className="mt-2 text-[0.6875rem] text-white/60">{peakNote ? `*${peakNote}` : "*증빙 설명을 입력해 주세요"}</p>
         </div>
       </div>

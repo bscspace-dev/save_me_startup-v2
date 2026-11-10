@@ -2,9 +2,16 @@ import Link from "next/link";
 import { photoSrc, type Listing } from "@/lib/data";
 import type { TransferInfo } from "@/lib/transfer";
 import { ListingConsultButton } from "./ListingConsultButton";
+import { youtubeId } from "@/lib/youtube";
 import { wrap } from "./TransferLanding";
 import { TransferCompare } from "./TransferCompare";
 import { ShowcaseIntro, ShowcaseDarkA, ShowcaseHard, ShowcaseNightmare, ShowcaseProcess, ShowcaseProven } from "./TransferShowcase";
+
+// "[밑줄]" 표기를 밑줄 스타일로 바꾼다
+const UL = "underline decoration-[#e5301f] decoration-[0.12em] underline-offset-[0.12em]";
+function underlined(line: string) {
+  return line.split(/(\[[^\]]+\])/).map((s, i) => (/^\[[^\]]+\]$/.test(s) ? <span key={i} className={UL}>{s.slice(1, -1)}</span> : s));
+}
 
 export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; srcs?: string[] }) {
   const m = t.master;
@@ -21,6 +28,8 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
   const photo = ownerSrcs?.[0] ?? (l.photos && !srcs ? photoSrc(l.id, 1) : null);
   const heroPhoto = menuSrcs[0] ?? photo;
   const dish = names[0] || menuText || "우리 가게 대표 메뉴";
+  const titleLines = t.heroTitle?.split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
+  const videoId = youtubeId(t.videoUrl);
   const consultTitle = `${m.name} 사부(전수자) ${l.title} (전수창업 상담)`;
 
   return (
@@ -31,13 +40,26 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
       {/* 히어로: 좌 노랑 문구 / 우 대표 메뉴 사진 */}
       <section className="grid overflow-hidden rounded-3xl lg:min-h-[26rem] lg:grid-cols-2">
         <div className="flex flex-col justify-center bg-[#F0C33F] px-6 py-12 text-ink md:p-9 lg:px-10">
-          <p className="self-start rounded-full bg-ink/10 px-4 py-1.5 text-[0.8125rem] font-medium">{m.years > 0 ? `${m.years}년간 검증된 ${dish} 맛집의 노하우` : `검증된 ${dish} 맛집의 노하우`}</p>
+          <p className="self-start rounded-full bg-ink/10 px-4 py-1.5 text-[0.8125rem] font-medium">{t.topTitle || (m.years > 0 ? `${m.years}년간 검증된 ${dish} 맛집의 노하우` : `검증된 ${dish} 맛집의 노하우`)}</p>
           <h1 className="mt-6 font-gmarket text-[1.5rem] font-semibold leading-[1.25] tracking-tight md:text-[1.875rem]">
-            왜 맨땅에서 시작하세요?<br />
-            <span className="mt-1 inline-block text-[2.25rem] font-black leading-[1.2] md:text-[2.875rem]">
-              <span className="underline decoration-[#e5301f] decoration-[0.12em] underline-offset-[0.12em]">{m.years > 0 ? `${m.years}년의 맛집` : "검증된 맛집"}</span><br />
-              <span className="underline decoration-[#e5301f] decoration-[0.12em] underline-offset-[0.12em]">노하우</span>가 있는데 !
-            </span>
+            {titleLines ? (
+              <>
+                {titleLines[0]}<br />
+                {titleLines.length > 1 && (
+                  <span className="mt-1 inline-block text-[2.25rem] font-black leading-[1.2] md:text-[2.875rem]">
+                    {titleLines.slice(1).map((ln, i) => <span key={i}>{i > 0 && <br />}{underlined(ln)}</span>)}
+                  </span>
+                )}
+              </>
+            ) : (
+              <>
+                왜 맨땅에서 시작하세요?<br />
+                <span className="mt-1 inline-block text-[2.25rem] font-black leading-[1.2] md:text-[2.875rem]">
+                  <span className={UL}>{m.years > 0 ? `${m.years}년의 맛집` : "검증된 맛집"}</span><br />
+                  <span className={UL}>노하우</span>가 있는데 !
+                </span>
+              </>
+            )}
           </h1>
           <p className="mt-6 text-[0.8125rem] leading-[1.8] text-ink/85">동네를 넘어 전국에서 찾아오는 {dish} 맛집의 비결.<br />레시피 전수부터 창업 컨설팅까지 <b className="text-ink">구해줘창업</b>이 함께합니다.</p>
           <div className="mt-7 flex flex-wrap items-center gap-5">
@@ -53,8 +75,8 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
 
       {/* 시안 구성: 흰색 → 어두움 → 밝음 → 어두움 → 밝음 → 어두움 */}
       <div className="overflow-hidden rounded-3xl border border-neutral-200">
-        <ShowcaseIntro name={m.name} photo={photo} bio={t.masterBio} dish={dish} names={names} years={m.years} stats={[["사부 현장 경력", `${m.years}년`], ["교육 기간", `${t.days}일`], ["교육 방식", "1:1 실습"], ["전수 메뉴", `${t.menus}종`]]} />
-        <ShowcaseDarkA dish={dish} names={names} years={m.years} srcs={menuSrcs} descs={t.menuDescs ?? (t.menuDesc ? [t.menuDesc] : undefined)} bgSrc={menuSrcs[1] ?? menuSrcs[0] ?? null} sales={t.sales} revisit={t.revisit} satisfy={t.satisfy} reviews={t.reviews} detailSrcs={detailSrcs} />
+        <ShowcaseIntro name={m.name} photo={photo} videoId={videoId} philosophy={t.philosophy} bio={t.masterBio} dish={dish} names={names} years={m.years} stats={[["사부 현장 경력", `${m.years}년`], ["교육 기간", `${t.days}일`], ["교육 방식", t.method || "1:1 실습"], ["전수 메뉴", `${t.menus}종`]]} />
+        <ShowcaseDarkA dish={dish} names={names} years={m.years} srcs={menuSrcs} descs={t.menuDescs ?? (t.menuDesc ? [t.menuDesc] : undefined)} tags={t.menuTags} sales={t.sales} revisit={t.revisit} satisfy={t.satisfy} reviews={t.reviews} detailSrcs={detailSrcs} />
         <ShowcaseHard dish={dish} />
         <ShowcaseNightmare />
         <ShowcaseProcess />

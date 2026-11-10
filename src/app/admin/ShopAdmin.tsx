@@ -158,7 +158,7 @@ function fromListing(l: Listing): Form {
   };
 }
 
-export function Photos({ photos, setPhotos, title = "사진", lead = true }: { photos: string[]; setPhotos: (p: string[]) => void; title?: string; lead?: boolean }) {
+export function Photos({ photos, setPhotos, title = "사진", lead = true, max = MAX_PHOTOS, leadText = "첫 번째 사진이 대표 사진입니다" }: { photos: string[]; setPhotos: (p: string[]) => void; title?: string; lead?: boolean; max?: number; leadText?: string }) {
   const ref = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
@@ -166,12 +166,12 @@ export function Photos({ photos, setPhotos, title = "사진", lead = true }: { p
   async function add(files: FileList | null) {
     if (!files?.length) return;
     setBusy(true); setMsg("");
-    const room = MAX_PHOTOS - photos.length;
+    const room = max - photos.length;
     const picked = Array.from(files).filter((f) => f.type.startsWith("image/")).slice(0, room);
     try {
       const done = await Promise.all(picked.map((f) => shrink(f, 1280, 0.8, 300_000)));
       setPhotos([...photos, ...done]);
-      if (files.length > room) setMsg(`사진은 최대 ${MAX_PHOTOS}장까지 등록할 수 있습니다.`);
+      if (files.length > room) setMsg(`사진은 최대 ${max}장까지 등록할 수 있습니다.`);
     } catch { setMsg("사진을 읽지 못했습니다. 다른 파일로 시도해주세요."); }
     setBusy(false);
     if (ref.current) ref.current.value = "";
@@ -187,7 +187,7 @@ export function Photos({ photos, setPhotos, title = "사진", lead = true }: { p
 
   return (
     <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-      <h2 className="text-[0.9375rem] font-black">{title} <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">{photos.length} / {MAX_PHOTOS}장{lead && " · 첫 번째 사진이 대표 사진입니다"}</span></h2>
+      <h2 className="text-[0.9375rem] font-black">{title} <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">{photos.length} / {max}장{lead && ` · ${leadText}`}</span></h2>
       <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
         {photos.map((p, i) => (
           <div key={i} className="overflow-hidden rounded-lg border border-neutral-200">
@@ -203,7 +203,7 @@ export function Photos({ photos, setPhotos, title = "사진", lead = true }: { p
             </div>
           </div>
         ))}
-        {photos.length < MAX_PHOTOS && (
+        {photos.length < max && (
           <button type="button" onClick={() => ref.current?.click()} disabled={busy} className="grid aspect-[1.5/1] place-items-center rounded-lg border-2 border-dashed border-neutral-300 text-[0.75rem] font-bold text-neutral-400 hover:border-brand hover:text-brand disabled:opacity-50">
             {busy ? "처리 중..." : "+ 사진 추가"}
           </button>

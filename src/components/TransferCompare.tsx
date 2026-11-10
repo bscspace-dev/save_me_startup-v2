@@ -1,5 +1,4 @@
 import { RevealLi, DrawX } from "./ScrollReveal";
-import { aio } from "./TransferLanding";
 
 // 전수창업 상세 하단: 왜 전수창업인가 · 왜 구해줘창업인가 · 비용/항목 비교
 // 프랜차이즈·기존 전수창업 수치는 업종 평균 예시값이고, 구해줘창업 금액은 매물의 전수 비용을 쓴다
@@ -18,6 +17,14 @@ const matrix = [
   ["상권분석·점포선정", "△", "X"], ["브랜드 기획 및 BI 개발", "X", "X"], ["인테리어·3D 설계", "△", "X"],
   ["마케팅·홍보 세팅", "△", "X"], ["내 매장 전용 SOP북", "X", "X"], ["사부님 직접 전수·평가", "△", "△"],
 ];
+// 분야별 전문가 카드 [직함, 담당, 주요경력]
+const experts: [string, string, string[]][] = [
+  ["사부님", "레시피 기술전수", ["시그니처 메뉴 개발·운영 경험", "현장 중심 1:1 직접 전수", "사부 운영매장 실전 교육"]],
+  ["상가분석 전문가", "상권·계약·현장", ["매장 입지·상권 분석", "임대 계약 조건 검토", "현장 동선 점검"]],
+  ["브랜드 기획", "브랜드 디자인", ["네이밍·BI·CI 로고 기획", "메뉴판·패키지 디자인", "브랜드 가이드 제작"]],
+  ["인테리어 전문가", "설계·시공", ["3D 도면·동선 설계", "주방·홀 시공 관리", "시공 사양서 제공"]],
+  ["전수매니저", "SOP 교육·오픈 지원", ["SOP 교육 진행", "오픈 준비 점검", "개점 후 운영 지원"]],
+];
 const ticks = [20000, 18000, 16000, 14000, 12000, 10000, 8000, 6000, 4000, 2000, 0];
 const n = (v: number) => v.toLocaleString();
 const bar = (v: number) => `${Math.max((v / 20000) * 100, 2)}%`;
@@ -27,16 +34,16 @@ export function TransferCompare({ price }: { price: number }) {
   const save = p < OLD_AVG ? Math.round(((OLD_AVG - p) / OLD_AVG) * 100) : 0;
   const lower = FR_AVG - p;
   const bars: [string, string, number, string][] = [
-    ["프랜차이즈", "(평균)", FR_TOTAL, "bg-neutral-400"],
-    ["기존 전수창업", "(평균)", OLD_AVG, "bg-neutral-400"],
+    ["프랜차이즈", "(평균)", FR_TOTAL, "bg-gradient-to-b from-neutral-200 to-neutral-500"],
+    ["기존 전수창업", "(평균)", OLD_AVG, "bg-gradient-to-b from-neutral-200 to-neutral-500"],
     ["구해줘창업", "(전수창업)", p, "bg-[#FFD21F]"],
   ];
   const rows = [
-    ["초기비용", `약 ${n(FR_AVG)}만원`, `약 ${n(OLD_AVG)}만원`, `${n(p)}만원`],
-    ["로열티", "월 매출 0~3%", "0%", "0%"],
-    ["5년간 로열티", "약 3,600만원", "0원", "0원"],
-    ["차액가맹금(유통마진)", "브랜드별 상이\n(연간 수백만원)", "없음", "없음"],
-    ["5년 총비용", `약 ${n(FR_TOTAL)}만원`, `약 ${n(OLD_AVG)}만원`, `${n(p)}만원`],
+    ["초기비용", "(가맹비+교육비 등)", `약 ${n(FR_AVG)}만원`, `약 ${n(OLD_AVG)}만원`, `${n(p)}만원`],
+    ["로열티", "", "월 매출 0~3%", "0%", "0%"],
+    ["5년간 로열티", "(월매출 3,000만원 기준)", "약 3,600만원", "0원", "0원"],
+    ["차액가맹금", "(유통마진)", "브랜드별 상이\n(연간 수백만원)", "없음", "없음"],
+    ["5년 총비용", "", `약 ${n(FR_TOTAL)}만원`, `약 ${n(OLD_AVG)}만원`, `${n(p)}만원`],
   ];
   return (
     <section className="bg-[#222] px-6 py-14 text-white md:px-10">
@@ -129,6 +136,9 @@ export function TransferCompare({ price }: { price: number }) {
                 </div>
               ))}
               {save > 0 && (
+                <svg viewBox="0 0 40 50" aria-hidden className="pointer-events-none absolute left-[47%] top-[50%] w-[17%] text-[#FFD21F]" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3C22 3 33 16 34 36" /><path d="M25 29l9 10 9-10" transform="translate(-4 0)" /></svg>
+              )}
+              {save > 0 && (
                 <div className="absolute right-[2%] top-[18%] grid size-[7rem] place-items-center rounded-full border border-[#F0C33F] bg-[#222]/80 text-center text-[0.6875rem] leading-tight">
                   <span>기존 전수창업 대비<br /><b className="font-gmarket text-[1.5rem] text-[#F0C33F]">약 {save}%</b><br /><b className="text-[0.8125rem] text-[#F0C33F]">비용 절감</b></span>
                 </div>
@@ -143,9 +153,9 @@ export function TransferCompare({ price }: { price: number }) {
             <table className="w-full min-w-[26rem] border-collapse text-center text-[0.75rem]">
               <thead><tr className="bg-white/10 text-[0.75rem] font-bold"><th className="p-2">구분</th><th className="p-2">프랜차이즈<br />(평균)</th><th className="p-2">기존 전수창업<br />(평균)</th><th className="bg-[#FFD21F] p-2 text-ink">구해줘창업<br />(전수창업)</th></tr></thead>
               <tbody>
-                {rows.map(([k, a, b, c], i) => (
+                {rows.map(([k, sub, a, b, c], i) => (
                   <tr key={k} className={`border-t border-white/25 ${i === rows.length - 1 ? "text-[0.875rem] font-black" : ""}`}>
-                    <td className="p-2 font-bold">{k}</td><td className="whitespace-pre-line p-2">{a}</td><td className="whitespace-pre-line p-2">{b}</td><td className="whitespace-pre-line bg-[#FFD21F] p-2 font-black text-ink">{c}</td>
+                    <td className="p-2 font-bold">{k}{sub && <span className="mt-0.5 block text-[0.5625rem] font-normal text-white/60">{sub}</span>}</td><td className="whitespace-pre-line p-2">{a}</td><td className="whitespace-pre-line p-2">{b}</td><td className="whitespace-pre-line bg-[#FFD21F] p-2 font-black text-ink">{c}</td>
                   </tr>
                 ))}
               </tbody>
@@ -168,7 +178,7 @@ export function TransferCompare({ price }: { price: number }) {
       <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">같은 돈을 쓰더라도 남는 건 다릅니다</h2>
       <div className="mx-auto mt-8 max-w-[56rem] overflow-x-auto">
         <table className="w-full min-w-[28rem] border-collapse text-center text-[0.875rem] md:text-[1rem]">
-          <thead><tr className="bg-white/25 text-white/90"><th className="border border-white/70 p-3" /><th className="border border-white/70 p-3 font-medium">프랜차이즈</th><th className="border border-white/70 p-3 font-medium">기존 전수창업</th><th className="border border-white/70 bg-[#d3917f] p-3 font-black text-[#8a2a10]">구해줘창업</th></tr></thead>
+          <thead><tr className="bg-white/25 text-white/90"><th className="border border-white/70 p-3" /><th className="border border-white/70 p-3 font-medium">프랜차이즈</th><th className="border border-white/70 p-3 font-medium">기존 전수창업</th><th className="border border-white/70 p-3 font-black text-[#a3321a]">구해줘창업</th></tr></thead>
           <tbody>
             {matrix.map(([k, a, b]) => (
               <tr key={k}><td className="border border-white/70 p-3 text-white/90">{k}</td><td className="border border-white/70 font-black">{a}</td><td className="border border-white/70 font-black">{b}</td><td className="border border-white/70 bg-[#d3917f] text-[#8a2a10]">●</td></tr>
@@ -183,13 +193,16 @@ export function TransferCompare({ price }: { price: number }) {
 
       {/* 분야별 전문가 */}
       <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">분야별 전문가가 단계마다 책임집니다</h2>
-      <ul className="mx-auto mt-8 grid max-w-[60rem] gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {aio.map(([no, , t, d, tag], i) => (
-          <RevealLi i={i} key={no} className="flex flex-col rounded-3xl border border-[#F0C33F]/80 p-5">
-            <span className="font-gmarket text-[1.25rem] font-black text-[#F0C33F]">{no}</span>
-            <p className="mt-2 font-gmarket text-[1.125rem] font-black leading-snug">{t}</p>
-            <p className="mt-3 flex-1 text-[0.75rem] leading-[1.8] text-white/70">{d}</p>
-            <span className="mt-4 self-start rounded-full bg-[#4a3d12] px-3 py-1 text-[0.6875rem] font-bold text-[#F0C33F]">{tag}</span>
+      <ul className="mx-auto mt-8 grid max-w-[64rem] grid-cols-2 gap-3 md:grid-cols-5">
+        {experts.map(([role, title, lines], i) => (
+          <RevealLi i={i} key={title} className="flex flex-col items-center rounded-3xl border border-[#F0C33F]/70 px-3 pb-6 pt-6 text-center">
+            <span aria-hidden className="size-[5.5rem] rounded-full bg-[#FFD21F]" />
+            <p className="mt-4 text-[0.6875rem] text-white/60">{role}</p>
+            <p className="mt-1 font-gmarket text-[1rem] font-black leading-snug">{title}</p>
+            <p className="mt-4 self-start text-[0.6875rem] font-bold text-[#F0C33F]">주요경력</p>
+            <ul className="mt-1.5 w-full space-y-1 text-left text-[0.6875rem] leading-[1.6] text-white/75">
+              {lines.map((x) => <li key={x}>{x}</li>)}
+            </ul>
           </RevealLi>
         ))}
       </ul>

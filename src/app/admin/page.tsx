@@ -118,6 +118,16 @@ function ChangePassword({ cred, onClose }: { cred: Cred; onClose: () => void }) 
   );
 }
 
+// 왼쪽 메뉴 아이콘 (24x24 선)
+const NAV_ICON: Record<string, string> = {
+  chat: "M4 5h16v11H9l-5 4z",
+  franchise: "M4 9l1-5h14l1 5M5 9v10h14V9M9 19v-5h6v5",
+  shop: "M5 21V4h9v17M14 9h5v12M8 8h3M8 12h3M8 16h3",
+  transfer: "M7 7h12l-3-3M17 17H5l3 3",
+  startup: "M12 3l2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z",
+  accounts: "M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-4 4-6 8-6s8 2 8 6",
+};
+
 function Dashboard({ cred }: { cred: Cred }) {
   const [pwOpen, setPwOpen] = useState(false);
   const [tab, setTab] = useState<"consult" | "register" | "accounts">("consult");
@@ -129,7 +139,6 @@ function Dashboard({ cred }: { cred: Cred }) {
   const myKinds = kinds.filter(([k]) => canKind(k));
   const canConsult = myKinds.length > 1; // "전체" 말고 볼 수 있는 구분이 하나라도 있다
   const canDelete = me === "legacy" || (!!me && me.super); // 게시물(매물) 삭제는 최고 관리자만
-  const [openG, setOpenG] = useState({ consult: true, register: false }); // 메뉴 펼침
   const [reg, setReg] = useState<"franchise" | "shop" | "transfer" | "startup">("franchise"); // 등록 하위 구분
   const [rows, setRows] = useState<Row[] | null>(null);
   const [error, setError] = useState("");
@@ -167,7 +176,7 @@ function Dashboard({ cred }: { cred: Cred }) {
     if (ok) return;
     /* eslint-disable react-hooks/set-state-in-effect */
     if (canConsult) setTab("consult");
-    else { const r = (["franchise", "shop", "transfer", "startup"] as const).find((k) => can("reg_" + k)); if (r) { setTab("register"); setReg(r); setOpenG((o) => ({ ...o, register: true })); } }
+    else { const r = (["franchise", "shop", "transfer", "startup"] as const).find((k) => can("reg_" + k)); if (r) { setTab("register"); setReg(r); } }
     /* eslint-enable react-hooks/set-state-in-effect */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me]);
@@ -229,61 +238,54 @@ function Dashboard({ cred }: { cred: Cred }) {
   const tabs: [Filter, string][] = [["all", "전체"], ["todo", "대기"], ["done", "처리 완료"]];
 
   return (
-    <main className="min-h-screen bg-neutral-50">
-      <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-[68.75rem] flex-wrap items-center justify-between gap-3 px-4 py-4">
-          <div className="flex flex-wrap items-baseline gap-x-3">
-            <h1 className="text-[1.0625rem] font-black">구해줘창업 관리자</h1>
-            <span className="text-neutral-300">/</span>
-            <p className="text-[0.875rem] font-bold">{typeof me === "object" ? <><span className="text-ink">{me.name || cred.u}</span> <span className="text-brand">{me.super ? "최고 관리자" : "일반 관리자"}님</span></> : <span className="text-ink">{cred.u}</span>}</p>
-          </div>
-          <div className="flex items-center gap-2 text-[0.75rem]">
-            <Link href="/" className="rounded border border-neutral-300 px-3 py-2 font-bold hover:border-brand hover:text-brand">사이트 보기</Link>
-            <button onClick={() => setPwOpen(true)} className="rounded border border-neutral-300 px-3 py-2 font-bold hover:border-brand hover:text-brand">비밀번호 변경</button>
-            <button onClick={() => { supabase?.rpc("admin_logout", cred).then(() => save(null), () => save(null)); }} className="rounded bg-ink px-3 py-2 font-bold text-white hover:bg-black">로그아웃</button>
-          </div>
-        </div>
-      </header>
+    <main className="min-h-screen bg-[#f7f7f7] lg:flex">
       {pwOpen && <ChangePassword cred={cred} onClose={() => setPwOpen(false)} />}
 
-      <div className="mx-auto flex max-w-[77.5rem] flex-col gap-5 px-4 py-6 lg:flex-row lg:items-start">
-        <nav className="shrink-0 space-y-2 lg:sticky lg:top-6 lg:w-[14.375rem]">
-          {me !== undefined && me !== "legacy" && me.super && (
-            <button onClick={() => setTab("accounts")} className={`flex w-full items-center justify-between rounded-xl border px-4 py-4 text-[1.0625rem] font-black transition ${tab === "accounts" ? "border-ink bg-ink text-white" : "border-neutral-200 bg-white text-ink hover:text-brand"}`}>계정 관리</button>
-          )}
+      {/* 왼쪽 메뉴: 그룹 제목 + 아이콘 메뉴 */}
+      <aside className="flex shrink-0 flex-col border-b border-neutral-200 bg-white lg:sticky lg:top-0 lg:h-screen lg:w-[15rem] lg:border-b-0 lg:border-r">
+        <div className="border-b border-neutral-100 px-4 py-4">
+          <h1 className="text-[1rem] font-black">구해줘창업 관리자</h1>
+          <p className="mt-1 truncate text-[0.75rem] text-neutral-500">{typeof me === "object" ? <>{me.name || cred.u} <span className="text-brand">· {me.super ? "최고 관리자" : "일반 관리자"}</span></> : cred.u}</p>
+        </div>
+        <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-4">
           {([
-            ...(canConsult ? [["consult", "상담 관리", myKinds.map(([k, t]) => {
+            ...(canConsult ? [["consult", "상담", myKinds.map(([k, t]) => {
               const n = (rows ?? []).filter((r) => !r.done && (k === "all" || kindOf(r.type) === k)).length; // 처리 완료되면 빠진다
               return { id: "c-" + k, label: t, n, on: tab === "consult" && kind === k, go: () => { setTab("consult"); setKind(k); } };
             })]] as const : []),
-            ...(["franchise", "shop", "transfer", "startup"].some((k) => can("reg_" + k)) ? [["register", "등록 관리", ([["franchise", "프랜차이즈"], ["shop", "상가매물"], ["transfer", "전수창업"], ["startup", "신규창업"]] as const).filter(([k]) => can("reg_" + k)).map(([k, t]) => (
+            ...(["franchise", "shop", "transfer", "startup"].some((k) => can("reg_" + k)) ? [["register", "등록", ([["franchise", "프랜차이즈"], ["shop", "상가매물"], ["transfer", "전수창업"], ["startup", "신규창업"]] as const).filter(([k]) => can("reg_" + k)).map(([k, t]) => (
               { id: "r-" + k, label: t, n: 0, on: tab === "register" && reg === k, go: () => { setTab("register"); setReg(k); } }
             ))]] as const : []),
-          ] as const).map(([g, title, items]) => {
-            const isOpen = openG[g];
-            const todoN = g === "consult" ? items.reduce((a, m) => a + (m.id === "c-all" ? 0 : m.n), 0) : 0;
-            return (
-              <div key={g} className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-                <button onClick={() => setOpenG((o) => ({ ...o, [g]: !o[g] }))} aria-expanded={isOpen} className={`flex w-full items-center justify-between px-4 py-4 text-[1.0625rem] font-black transition ${tab === g ? "text-brand" : "text-ink"}`}>
-                  <span className="flex items-center gap-2">{title}{todoN > 0 && <span className="rounded-full bg-orange-50 px-2 py-0.5 text-[0.75rem] text-brand">{todoN}</span>}</span>
-                  <span className={`text-[0.8125rem] text-neutral-400 transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
-                </button>
-                {isOpen && (
-                  <ul className="space-y-1 border-t border-neutral-100 p-2">
-                    {items.map((m) => (
-                      <li key={m.id}>
-                        <button onClick={m.go} className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-[0.875rem] font-bold transition ${m.on ? "bg-ink text-white" : "text-neutral-600 hover:bg-neutral-50 hover:text-brand"}`}>
-                          {m.label}
-                          {m.n > 0 && <span className={`rounded-full px-1.5 text-[0.6875rem] ${m.on ? "bg-white/20 text-white" : "bg-orange-50 text-brand"}`}>{m.n}</span>}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            );
-          })}
+            ...(me !== undefined && me !== "legacy" && me.super ? [["accounts", "관리", [{ id: "accounts", label: "계정 관리", n: 0, on: tab === "accounts", go: () => setTab("accounts") }]]] as const : []),
+          ] as const).map(([g, title, items]) => (
+            <div key={g}>
+              <p className="mb-1 px-3 text-[0.6875rem] font-bold text-neutral-400">{title}</p>
+              <ul className="space-y-0.5">
+                {items.map((m) => (
+                  <li key={m.id}>
+                    <button onClick={m.go} aria-current={m.on ? "page" : undefined} className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[0.875rem] transition ${m.on ? "bg-neutral-100 font-bold text-ink" : "text-neutral-600 hover:bg-neutral-50 hover:text-ink"}`}>
+                      <svg viewBox="0 0 24 24" className="size-[1.125rem] shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d={NAV_ICON[m.id.startsWith("c-") ? "chat" : m.id.replace("r-", "")] ?? NAV_ICON.chat} /></svg>
+                      <span className="flex-1 truncate">{m.label}</span>
+                      {m.n > 0 && <span className="rounded-full bg-orange-50 px-1.5 text-[0.6875rem] font-bold text-brand">{m.n}</span>}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
+        <div className="space-y-1 border-t border-neutral-100 p-3 text-[0.8125rem]">
+          <Link href="/" className="block rounded-lg px-3 py-2 font-medium text-neutral-600 hover:bg-neutral-50 hover:text-ink">사이트 보기</Link>
+          <button onClick={() => setPwOpen(true)} className="block w-full rounded-lg px-3 py-2 text-left font-medium text-neutral-600 hover:bg-neutral-50 hover:text-ink">비밀번호 변경</button>
+          <button onClick={() => { supabase?.rpc("admin_logout", cred).then(() => save(null), () => save(null)); }} className="block w-full rounded-lg px-3 py-2 text-left font-medium text-neutral-600 hover:bg-neutral-50 hover:text-ink">로그아웃</button>
+        </div>
+      </aside>
+
+      <div className="min-w-0 flex-1">
+        <header className="border-b border-neutral-200 bg-white px-4 py-3 text-[0.8125rem] font-bold text-neutral-500 lg:px-8">
+          {tab === "accounts" ? "계정 관리" : tab === "register" ? `등록 / ${({ franchise: "프랜차이즈", shop: "상가매물", transfer: "전수창업", startup: "신규창업" })[reg]}` : `상담 / ${kindName[kind] ?? "전체"}`}
+        </header>
+        <div className="mx-auto max-w-[68.75rem] px-4 py-6 lg:px-8">
         <div className="min-w-0 flex-1">
         {tab === "accounts" ? <AccountAdmin cred={cred} /> : tab === "register" ? (<>
           {reg === "franchise" ? <FranchiseAdmin cred={cred} canDelete={canDelete} /> : reg === "shop" ? <ShopAdmin cred={cred} canDelete={canDelete} /> : reg === "transfer" ? <TransferAdmin cred={cred} canDelete={canDelete} /> : <StartupAdmin cred={cred} canDelete={canDelete} />}
@@ -350,6 +352,7 @@ function Dashboard({ cred }: { cred: Cred }) {
         {period.pager}
         </>)}
         </div>
+      </div>
       </div>
     </main>
   );

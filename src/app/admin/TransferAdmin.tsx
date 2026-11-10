@@ -1,4 +1,5 @@
 "use client";
+import { youtubeId } from "@/lib/youtube";
 import { PopupLink } from "./PopupLink";
 import { useEffect, useState } from "react";
 import { businessCategories, regions, won, type Listing } from "@/lib/data";
@@ -27,12 +28,6 @@ function Label({ text, req, children }: { text: string; req?: boolean; children:
 }
 
 // 전수창업 등록: 사부(전수자) 정보와 사진을 입력하면 상세 문구는 업종별 기본 문구로 만들어진다
-// 이력 년도: "2012~2019"로 저장하고, 종료를 비워 두면 "2012~현재" (지금도 이어지는 경력)
-const yearPair = (a: string, b?: string) => {
-  const x = a.replace(/[^0-9]/g, ""), y = (b ?? "").replace(/[^0-9]/g, "");
-  return x || y ? `${x}~${y || "현재"}` : "";
-};
-
 export function TransferAdmin({ cred, canDelete = true }: { cred: Cred; canDelete?: boolean }) {
   const [items, setItems] = useState<Listing[] | null>(null);
   const period = usePeriod(items, (l) => l.date, { searchOf: listingText, statuses: listingStatuses(), sorts: listingSorts({ label: "전수 비용", of: (l) => l.price }) });
@@ -103,10 +98,10 @@ export function TransferAdmin({ cred, canDelete = true }: { cred: Cred; canDelet
 }
 
 function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onDone: (saved: boolean) => void }) {
-  const [f, setF] = useState({ name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", menuNames: "", masterBio: "", sales1: "", sales3: "", sales6: "", peakNote: "", revisit: "", satisfy: "", cost1: "", cost2: "", cost3: "", simSales: "", simMargin: "" });
-  const [menuDescs, setMenuDescs] = useState<string[]>(["", "", ""]); // 대표 메뉴별 설명 (메뉴 순서대로)
+  const [f, setF] = useState({ method: "", videoUrl: "", topTitle: "", heroTitle: "", name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", masterBio: "", sales1: "", sales3: "", sales6: "", peakNote: "", revisit: "", satisfy: "", cost1: "", cost2: "", cost3: "", simSales: "", simMargin: "" });
+  const [phil, setPhil] = useState<[string, string][]>([["", ""], ["", ""], ["", ""]]); // 운영 노하우·장사 철학 3가지 [제목, 설명]
+  const [menuRows, setMenuRows] = useState<{ name: string; desc: string; tags: string }[]>([0, 1, 2].map(() => ({ name: "", desc: "", tags: "" }))); // 대표 메뉴 (메뉴명·설명·태그, 최대 3개) // 대표 메뉴별 설명 (메뉴 순서대로)
   const [reviews, setReviews] = useState<[string, string][]>([]); // 손님 후기 [내용, 출처]
-  const [history, setHistory] = useState<[string, string][]>([]); // 이력: [시기, 내용]
   const [photos, setPhotos] = useState<string[]>([]);
   const [detailPhotos, setDetailPhotos] = useState<string[]>([]); // 교육 대표 메뉴 아래에 이어 붙여 보여줄 상세 이미지 (메뉴 사진 뒤에 이어 저장)
   const [menuPhotos, setMenuPhotos] = useState<string[]>([]); // 대표 메뉴 사진 (저장할 때 사부 사진 뒤에 이어 붙인다)
@@ -123,30 +118,28 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       const t = l?.transfer;
       if (l && t) {
         setF({
-          name: t.name, store: t.store, address: t.address ?? `대구 ${l.region}`, category: l.category,
-          price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), menuNames: (t.menuNames ?? []).join(", "), masterBio: t.masterBio ?? "", revisit: String(t.revisit ?? ""), satisfy: String(t.satisfy ?? ""), cost1: String(t.startCosts?.[0] ?? ""), cost2: String(t.startCosts?.[1] ?? ""), cost3: String(t.startCosts?.[2] ?? ""), simSales: String(t.simSales ?? ""), simMargin: t.simMargin ?? "", sales1: String(t.sales?.[0] ?? ""), sales3: String(t.sales?.[1] ?? ""), sales6: String(t.sales?.[2] ?? ""), peakNote: t.peakNote ?? "",
+          method: t.method ?? "", videoUrl: t.videoUrl ?? "", topTitle: t.topTitle ?? "", heroTitle: t.heroTitle ?? "", name: t.name, store: t.store, address: t.address ?? `대구 ${l.region}`, category: l.category,
+          price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), masterBio: t.masterBio ?? "", revisit: String(t.revisit ?? ""), satisfy: String(t.satisfy ?? ""), cost1: String(t.startCosts?.[0] ?? ""), cost2: String(t.startCosts?.[1] ?? ""), cost3: String(t.startCosts?.[2] ?? ""), simSales: String(t.simSales ?? ""), simMargin: t.simMargin ?? "", sales1: String(t.sales?.[0] ?? ""), sales3: String(t.sales?.[1] ?? ""), sales6: String(t.sales?.[2] ?? ""), peakNote: t.peakNote ?? "",
         });
-        setMenuDescs([0, 1, 2].map((k) => t.menuDescs?.[k] ?? (k === 0 ? t.menuDesc : "") ?? "")); setReviews(t.reviews ?? []); setHistory(t.timeline ?? []); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
+        setPhil([0, 1, 2].map((k) => t.philosophy?.[k] ?? ["", ""]) as [string, string][]);
+        setMenuRows([0, 1, 2].map((k) => ({ name: t.menuNames?.[k] ?? "", desc: t.menuDescs?.[k] ?? (k === 0 ? t.menuDesc ?? "" : ""), tags: (t.menuTags?.[k] ?? []).join(", ") }))); setReviews(t.reviews ?? []); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
       } else setErr("전수창업을 불러오지 못했습니다.");
       setLoading(false);
     });
     return () => { alive = false; };
   }, [id]);
 
-  const menuNameList = f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean);
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!supabase) return;
+    if (f.videoUrl.trim() && !youtubeId(f.videoUrl)) return setErr("영상 링크가 올바르지 않습니다. 유튜브 주소(예: https://youtu.be/xxxxxxxxxxx)를 붙여넣어 주세요.");
     if (!menuPhotos.length) return setErr("교육 대표 메뉴 사진을 1장 이상 등록해주세요.");
+    const mrows = menuRows.map((r) => ({ name: r.name.trim(), desc: r.desc.trim(), tags: r.tags.split(/[,\n]/).map((x) => x.trim()).filter(Boolean) })).filter((r) => r.name);
     const address = f.address.trim();
     const region = regionOf(address);
     if (!region) return setErr("주소에 구·군 이름이 필요합니다. 예) 대구 중구 계양동");
-    // 이력은 항상 "년도(4자리) + 내용"이 한 쌍이어야 한다
-    const rows = history.map(([y, x]) => [y.trim(), x.trim()] as [string, string]).filter(([y, x]) => y || x);
-    if (rows.some(([y, x]) => !/^\d{4}(~(\d{4}|현재))?$/.test(y) || !x)) return setErr("이력은 시작 년도(예: 2012)와 내용을 함께 입력해주세요. 종료 년도를 비우면 현재로 표시됩니다. 한쪽만 입력된 줄이 있습니다.");
-    if (rows.some(([y]) => /~\d{4}$/.test(y) && Number(y.slice(5)) < Number(y.slice(0, 4)))) return setErr("이력의 종료 년도는 시작 년도보다 빠를 수 없습니다.");
     const reviewRows = reviews.map(([x, y]) => [x.trim(), y.trim()] as [string, string]).filter(([x]) => x).slice(0, 3); const price = Number(f.price) || 0;
     setBusy(true); setErr("");
     try {
@@ -154,7 +147,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       const d = {
         title: `${f.name.trim()} 사부 전수창업`, region, category: f.category, op: "직접운영" as const, area: 0, // 운영방식은 입력받지 않는다
          price, cost: price, date: date || today(), kind: "전수창업",
-        transfer: { name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, detailPhotos: detailPhotos.length || undefined, menuDesc: menuDescs[0]?.trim() || undefined, menuDescs: menuDescs.some((x) => x.trim()) ? menuDescs.map((x) => x.trim()) : undefined, revisit: Number(f.revisit) || undefined, satisfy: Number(f.satisfy) || undefined, startCosts: (Number(f.cost1) || Number(f.cost2) || Number(f.cost3)) ? [Number(f.cost1) || 0, Number(f.cost2) || 0, Number(f.cost3) || 0] : undefined, simSales: Number(f.simSales) || undefined, simMargin: f.simMargin.trim() || undefined, reviews: reviewRows.length ? reviewRows : undefined, masterBio: f.masterBio.trim() || undefined, sales: (Number(f.sales1) || Number(f.sales3) || Number(f.sales6)) ? [Number(f.sales1) || 0, Number(f.sales3) || 0, Number(f.sales6) || 0] : undefined, peakNote: f.peakNote.trim() || undefined, menuNames: f.menuNames.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), timeline: [...rows].sort((a, b) => parseInt(a[0]) - parseInt(b[0])) }, // 시작 년도 순으로 저장
+        transfer: { method: f.method.trim() || undefined, philosophy: phil.some(([a, b]) => a.trim() || b.trim()) ? phil.map(([a, b]) => [a.trim(), b.trim()] as [string, string]) : undefined, videoUrl: f.videoUrl.trim() || undefined, topTitle: f.topTitle.trim() || undefined, heroTitle: f.heroTitle.trim() || undefined, name: f.name.trim(), store: "", address, years: Number(f.years) || 0, days: Number(f.days) || 1, menus: Number(f.menus) || 0, menuPhotos: menuPhotos.length, detailPhotos: detailPhotos.length || undefined, menuDesc: mrows[0]?.desc || undefined, menuDescs: mrows.some((r) => r.desc) ? mrows.map((r) => r.desc) : undefined, menuTags: mrows.some((r) => r.tags.length) ? mrows.map((r) => r.tags) : undefined, revisit: Number(f.revisit) || undefined, satisfy: Number(f.satisfy) || undefined, startCosts: (Number(f.cost1) || Number(f.cost2) || Number(f.cost3)) ? [Number(f.cost1) || 0, Number(f.cost2) || 0, Number(f.cost3) || 0] : undefined, simSales: Number(f.simSales) || undefined, simMargin: f.simMargin.trim() || undefined, reviews: reviewRows.length ? reviewRows : undefined, masterBio: f.masterBio.trim() || undefined, sales: (Number(f.sales1) || Number(f.sales3) || Number(f.sales6)) ? [Number(f.sales1) || 0, Number(f.sales3) || 0, Number(f.sales6) || 0] : undefined, peakNote: f.peakNote.trim() || undefined, menuNames: mrows.map((r) => r.name) },
       };
       const { data, error } = await supabase.rpc("admin_shop_save", { ...cred, listing_id: id, d, t: thumb, photos: [...photos, ...menuPhotos, ...detailPhotos], is_sold: false });
       if (error) throw new Error(error.message);
@@ -175,37 +168,120 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
         <button type="button" onClick={() => onDone(false)} className="text-[0.75rem] font-bold text-neutral-500 hover:text-brand">← 목록으로</button>
       </div>
 
+      <div className="flex items-baseline gap-2 pt-4">
+        <span className="grid size-6 place-items-center rounded-full bg-ink text-[0.75rem] font-black text-white">1</span>
+        <h3 className="text-[1rem] font-black">기본 정보</h3>
+        <span className="text-[0.75rem] text-neutral-400">필수 · 지역, 업종, 전수 비용</span>
+      </div>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-4 text-[0.9375rem] font-black">기본 정보</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="sm:col-span-2"><Label text="지역 (구·군·동까지)" req><input required value={f.address} onChange={(e) => set("address", e.target.value)} placeholder="대구 중구 계양동" className={inputCls} /></Label></div>
+          <Label text="업종 (업종별 기본 소개 문구가 정해집니다)">
+            <select value={f.category} onChange={(e) => set("category", e.target.value)} className={inputCls}>{categories.map((c) => <option key={c}>{c}</option>)}</select>
+          </Label>
+          <Label text="전수 비용 (만원)" req><input required inputMode="numeric" value={f.price} onChange={(e) => set("price", num(e.target.value))} placeholder="1500" className={inputCls} /></Label>
+        </div>
+      </section>
+
+      <div className="flex items-baseline gap-2 pt-4">
+        <span className="grid size-6 place-items-center rounded-full bg-ink text-[0.75rem] font-black text-white">2</span>
+        <h3 className="text-[1rem] font-black">상단 영역</h3>
+        <span className="text-[0.75rem] text-neutral-400">상세 맨 위 노란 영역의 문구</span>
+      </div>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-1 text-[0.9375rem] font-black">상단 제목 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">비워두면 기본 문구가 표시됩니다</span></h2>
+        <div className="mt-4 grid gap-3">
+          <Label text="상단 제목 (제목 위의 작은 문구)"><input value={f.topTitle} onChange={(e) => set("topTitle", e.target.value)} placeholder="14년간 검증된 소금빵 맛집의 노하우" className={inputCls} /></Label>
+          <Label text="제목 (줄바꿈 가능, 밑줄 칠 곳은 [ ] 로 감싸기)"><textarea rows={3} value={f.heroTitle} onChange={(e) => set("heroTitle", e.target.value)} placeholder={"왜 맨땅에서 시작하세요?\n[14년의 맛집]\n[노하우]가 있는데 !"} className={`${inputCls} resize-none`} /></Label>
+          <p className="text-[0.6875rem] text-neutral-400">예: <b>[14년의 맛집]</b> 처럼 대괄호로 감싼 부분에 빨간 밑줄이 그어집니다. 첫 줄은 작은 글씨, 둘째 줄부터는 큰 글씨로 표시됩니다.</p>
+        </div>
+      </section>
+
+      <div className="flex items-baseline gap-2 pt-4">
+        <span className="grid size-6 place-items-center rounded-full bg-ink text-[0.75rem] font-black text-white">3</span>
+        <h3 className="text-[1rem] font-black">사부(전수자) 소개</h3>
+        <span className="text-[0.75rem] text-neutral-400">이름은 필수, 소개·사진·영상은 선택</span>
+      </div>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-1 text-[0.9375rem] font-black">사부(전수자) 소개</h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <Label text="사부(전수자) 이름" req><input required value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="이정훈" className={inputCls} /></Label>
+          <div className="sm:col-span-2"><Label text="사부 소개 본문"><textarea rows={4} maxLength={400} value={f.masterBio} onChange={(e) => set("masterBio", e.target.value)} placeholder="유명 퓨전 일식 레스토랑 헤드 셰프 출신으로, 50개 이상의 직영/가맹 매장 레시피 전수 경험을 보유하고 있습니다." className={`${inputCls} resize-none`} /></Label></div>
+        </div>
+      </section>
+
       <Photos photos={photos} setPhotos={setPhotos} title="사부(전수자) 사진 (선택, 사부님 소개에 표시)" lead={false} />
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="mb-4 text-[0.9375rem] font-black">사부(전수자) 정보</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Label text="사부(전수자) 이름" req><input required value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="이정훈" className={inputCls} /></Label>
-          <Label text="현장 경력 (년)" req><input required inputMode="numeric" value={f.years} onChange={(e) => set("years", num(e.target.value))} placeholder="14" className={inputCls} /></Label>
-          <Label text="교육 대표 메뉴 (쉼표로 구분)"><input value={f.menuNames} onChange={(e) => set("menuNames", e.target.value)} placeholder="소금빵, 크루아상, 식빵, 마들렌" className={inputCls} /></Label>
-          {menuNameList.slice(0, 3).concat(Array(Math.max(0, 1 - menuNameList.length)).fill("")).map((nm, k) => (
-            <div key={k} className="sm:col-span-2"><Label text={`${nm || `대표 메뉴 ${k + 1}`} 설명 (메뉴 카드에 표시, 한두 줄)`}><textarea rows={2} maxLength={100} value={menuDescs[k]} onChange={(e) => setMenuDescs(menuDescs.map((x, j) => (j === k ? e.target.value : x)))} placeholder="14년간 사랑받아 온 대표 메뉴, 감칠맛 나는 양념과 불향을 전수합니다" className={`${inputCls} resize-none`} /></Label></div>
-          ))}
+        <h2 className="mb-1 text-[0.9375rem] font-black">사부 영상 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">선택 · 사부 소개의 사진 자리에 영상으로 표시됩니다. 비워두면 사진이 표시됩니다</span></h2>
+        <div className="mt-4">
+          <Label text="유튜브 링크"><input value={f.videoUrl} onChange={(e) => set("videoUrl", e.target.value)} placeholder="https://www.youtube.com/watch?v=..." className={inputCls} /></Label>
+          {f.videoUrl.trim() && (youtubeId(f.videoUrl)
+            ? <p className="mt-2 text-[0.75rem] font-bold text-green-700">✓ 영상이 인식되었습니다</p>
+            : <p className="mt-2 text-[0.75rem] text-red-600">유튜브 주소를 인식하지 못했습니다. watch, youtu.be, shorts 링크를 붙여넣어 주세요.</p>)}
+        </div>
+      </section>
 
-          <div className="sm:col-span-2"><Label text="사부 소개 본문"><textarea rows={4} maxLength={400} value={f.masterBio} onChange={(e) => set("masterBio", e.target.value)} placeholder="유명 퓨전 일식 레스토랑 헤드 셰프 출신으로, 50개 이상의 직영/가맹 매장 레시피 전수 경험을 보유하고 있습니다." className={`${inputCls} resize-none`} /></Label></div>
-          <Label text="오픈 1개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales1} onChange={(e) => set("sales1", num(e.target.value))} placeholder="3800" className={inputCls} /></Label>
-          <Label text="오픈 3개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales3} onChange={(e) => set("sales3", num(e.target.value))} placeholder="6200" className={inputCls} /></Label>
-          <Label text="오픈 6개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales6} onChange={(e) => set("sales6", num(e.target.value))} placeholder="8500" className={inputCls} /></Label>
-          <div className="sm:col-span-2"><Label text="피크타임 증빙 설명 (사진 아래 문구)"><input value={f.peakNote} onChange={(e) => set("peakNote", e.target.value)} placeholder="점심 오피스 피크타임 테이블 회전율 4.5회전 완수, 평균 조리 출하시간 3분대 유지" className={inputCls} /></Label></div>          <Label text="재방문율 (%)"><input inputMode="numeric" maxLength={3} value={f.revisit} onChange={(e) => set("revisit", num(e.target.value))} placeholder="91" className={inputCls} /></Label>          <Label text="고객 만족도 (%)"><input inputMode="numeric" maxLength={3} value={f.satisfy} onChange={(e) => set("satisfy", num(e.target.value))} placeholder="96" className={inputCls} /></Label>
+      <div className="flex items-baseline gap-2 pt-4">
+        <span className="grid size-6 place-items-center rounded-full bg-ink text-[0.75rem] font-black text-white">4</span>
+        <h3 className="text-[1rem] font-black">교육 구성</h3>
+        <span className="text-[0.75rem] text-neutral-400">경력 · 기간 · 방식 · 운영 노하우</span>
+      </div>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-1 text-[0.9375rem] font-black">교육 한눈에 보기 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">사부 소개 아래 4칸 요약에 표시됩니다</span></h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <Label text="사부 현장 경력 (년)" req><input required inputMode="numeric" value={f.years} onChange={(e) => set("years", num(e.target.value))} placeholder="14" className={inputCls} /></Label>
+          <Label text="교육 기간 (일)" req><input required inputMode="numeric" value={f.days} onChange={(e) => set("days", num(e.target.value))} placeholder="10" className={inputCls} /></Label>
+          <Label text="교육 방식"><input maxLength={20} value={f.method} onChange={(e) => set("method", e.target.value)} placeholder="1:1 실습 (비우면 1:1 실습)" className={inputCls} /></Label>
+          <Label text="전수 메뉴 (종)" req><input required inputMode="numeric" value={f.menus} onChange={(e) => set("menus", num(e.target.value))} placeholder="12" className={inputCls} /></Label>
         </div>
       </section>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="mb-1 text-[0.9375rem] font-black">창업 비용 · 수익 시뮬레이션 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">비워두면 상세에 &quot;상담 시 안내&quot;로 표시됩니다 (전수 비용은 아래 전수 정보에서 가져옵니다)</span></h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <Label text="초도 식자재 (만원)"><input inputMode="numeric" value={f.cost1} onChange={(e) => set("cost1", num(e.target.value))} placeholder="300" className={inputCls} /></Label>
-          <Label text="주요 집기·설비 (만원)"><input inputMode="numeric" value={f.cost2} onChange={(e) => set("cost2", num(e.target.value))} placeholder="1500" className={inputCls} /></Label>
-          <Label text="기타 오픈 준비 비용 (만원)"><input inputMode="numeric" value={f.cost3} onChange={(e) => set("cost3", num(e.target.value))} placeholder="500" className={inputCls} /></Label>
-          <Label text="월 매출 가정 (만원, 비우면 3,000)"><input inputMode="numeric" value={f.simSales} onChange={(e) => set("simSales", num(e.target.value))} placeholder="3000" className={inputCls} /></Label>
-          <Label text="예상 순이익률 (%, 비우면 20~25)"><input value={f.simMargin} onChange={(e) => set("simMargin", e.target.value.replace(/[^0-9~]/g, ""))} placeholder="20~25" className={inputCls} /></Label>
+        <h2 className="mb-1 text-[0.9375rem] font-black">운영 노하우 · 장사 철학 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">선택 · 3가지까지 · 비워두면 기본 문구가 표시됩니다</span></h2>
+        <div className="mt-4 space-y-4">
+          {phil.map(([title, desc], k) => (
+            <div key={k} className="rounded-xl border border-neutral-200 p-4">
+              <p className="mb-2 text-[0.75rem] font-black text-neutral-500">{k + 1}번째</p>
+              <div className="grid gap-3">
+                <Label text="제목"><input maxLength={40} value={title} onChange={(e) => setPhil(phil.map((x, j) => (j === k ? [e.target.value, x[1]] : x)) as [string, string][])} placeholder="맛은 감이 아니라, 기준으로" className={inputCls} /></Label>
+                <Label text="설명"><textarea rows={2} maxLength={120} value={desc} onChange={(e) => setPhil(phil.map((x, j) => (j === k ? [x[0], e.target.value] : x)) as [string, string][])} placeholder="양념 비율, 불조절, 조리 순서를 정리해 누구나 같은 맛을 낼 수 있도록 전수합니다." className={`${inputCls} resize-none`} /></Label>
+              </div>
+            </div>
+          ))}
         </div>
-        <p className="mt-3 text-[0.6875rem] text-neutral-400">총 예상 초기 비용은 세 항목을 모두 입력하면 전수 비용과 합산해 자동 계산됩니다.</p>
       </section>
+
+      <div className="flex items-baseline gap-2 pt-4">
+        <span className="grid size-6 place-items-center rounded-full bg-ink text-[0.75rem] font-black text-white">5</span>
+        <h3 className="text-[1rem] font-black">대표 메뉴</h3>
+        <span className="text-[0.75rem] text-neutral-400">메뉴 사진은 1장 이상 필수 (최대 3장)</span>
+      </div>
+
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-1 text-[0.9375rem] font-black">대표 메뉴 등록 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">최대 3개 · 아래 사진 순서대로 메뉴 카드에 표시됩니다</span></h2>
+        <div className="mt-4 space-y-4">
+          {menuRows.map((r, k) => (
+            <div key={k} className="rounded-xl border border-neutral-200 p-4">
+              <p className="mb-2 text-[0.75rem] font-black text-neutral-500">대표 메뉴 {k + 1}</p>
+              <div className="grid gap-3">
+                <Label text="메뉴명"><input maxLength={30} value={r.name} onChange={(e) => setMenuRows(menuRows.map((x, j) => (j === k ? { ...x, name: e.target.value } : x)))} placeholder="소금빵" className={inputCls} /></Label>
+                <Label text="설명 (한두 줄)"><textarea rows={2} maxLength={100} value={r.desc} onChange={(e) => setMenuRows(menuRows.map((x, j) => (j === k ? { ...x, desc: e.target.value } : x)))} placeholder="14년간 사랑받아 온 대표 메뉴, 겉은 바삭하고 속은 촉촉한 식감을 전수합니다" className={`${inputCls} resize-none`} /></Label>
+                <Label text="태그 (쉼표로 구분, 비우면 기본 태그)"><input value={r.tags} onChange={(e) => setMenuRows(menuRows.map((x, j) => (j === k ? { ...x, tags: e.target.value } : x)))} placeholder="레시피 전수, 조리 실습, 원가 관리" className={inputCls} /></Label>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <Photos photos={menuPhotos} setPhotos={setMenuPhotos} title="교육 대표 메뉴 사진 * (최대 3장)" max={3} leadText="먼저 등록한 1장이 상단 제목과 함께 표시됩니다" />
+
+      <Photos photos={detailPhotos} setPhotos={setDetailPhotos} title="교육 상세 이미지 (선택, 교육 대표 메뉴 아래에 이어 붙여 표시)" lead={false} />
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
         <h2 className="text-[0.9375rem] font-black">손님 후기 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">최대 3개, 비워두면 후기 구간이 나타나지 않습니다</span></h2>
@@ -221,38 +297,35 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
         {reviews.length < 3 && <button type="button" onClick={() => setReviews([...reviews, ["", ""]])} className="mt-3 rounded border border-dashed border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 hover:border-brand hover:text-brand">+ 후기 추가</button>}
       </section>
 
-      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="text-[0.9375rem] font-black">이력 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">비워두면 경력없음으로 나옵니다</span></h2>
-        <p className="mb-2 mt-4 text-[0.6875rem] font-bold text-neutral-500">이력 (년도와 내용을 한 쌍으로, 종료 년도를 비우면 현재로 표시 · 저장하면 시작 년도 순으로 정렬됩니다)</p>
-        <ul className="space-y-2">
-          {history.map(([y, x], i) => (
-            <li key={i} className="flex gap-2">
-              <input value={y.split("~")[0]} inputMode="numeric" maxLength={4} onChange={(e) => setHistory(history.map((r, k) => (k === i ? [yearPair(e.target.value, y.split("~")[1]), r[1]] : r)))} placeholder="2012" className={`${inputCls} !w-[4.75rem] shrink-0`} />
-              <span className="grid shrink-0 place-items-center text-neutral-400">~</span>
-              <input value={/^\d+$/.test(y.split("~")[1] ?? "") ? y.split("~")[1] : ""} inputMode="numeric" maxLength={4} onChange={(e) => setHistory(history.map((r, k) => (k === i ? [yearPair(y.split("~")[0], e.target.value), r[1]] : r)))} placeholder="현재" className={`${inputCls} !w-[6.5rem] shrink-0`} />
-              <input value={x} onChange={(e) => setHistory(history.map((r, k) => (k === i ? [r[0], e.target.value] : r)))} placeholder="호텔 베이커리 근무" className={inputCls} />
-              <button type="button" onClick={() => setHistory(history.filter((_, k) => k !== i))} className="shrink-0 rounded border border-neutral-300 px-3 text-[0.75rem] font-bold text-red-600 hover:border-red-400">삭제</button>
-            </li>
-          ))}
-        </ul>
-        <button type="button" onClick={() => setHistory([...history, ["", ""]])} className="mt-3 rounded border border-dashed border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 hover:border-brand hover:text-brand">+ 이력 추가</button>
-      </section>
+      <div className="flex items-baseline gap-2 pt-4">
+        <span className="grid size-6 place-items-center rounded-full bg-ink text-[0.75rem] font-black text-white">6</span>
+        <h3 className="text-[1rem] font-black">매출 · 비용</h3>
+        <span className="text-[0.75rem] text-neutral-400">모두 선택 · 비우면 기본 문구 또는 상담 시 안내로 표시</span>
+      </div>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="mb-4 text-[0.9375rem] font-black">전수 정보</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="sm:col-span-2"><Label text="지역 (구·군·동까지)" req><input required value={f.address} onChange={(e) => set("address", e.target.value)} placeholder="대구 중구 계양동" className={inputCls} /></Label></div>
-          <Label text="업종 (업종별 기본 소개 문구가 정해집니다)">
-            <select value={f.category} onChange={(e) => set("category", e.target.value)} className={inputCls}>{categories.map((c) => <option key={c}>{c}</option>)}</select>
-          </Label>
-          <Label text="전수 비용 (만원)" req><input required inputMode="numeric" value={f.price} onChange={(e) => set("price", num(e.target.value))} placeholder="1500" className={inputCls} /></Label>
-          <Label text="교육 기간 (일)" req><input required inputMode="numeric" value={f.days} onChange={(e) => set("days", num(e.target.value))} placeholder="10" className={inputCls} /></Label>
-          <Label text="전수 메뉴 (종)" req><input required inputMode="numeric" value={f.menus} onChange={(e) => set("menus", num(e.target.value))} placeholder="12" className={inputCls} /></Label>
+        <h2 className="mb-1 text-[0.9375rem] font-black">오픈 후 매출 · 피크타임 증빙 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">선택 · 비우면 상세에서 해당 구간이 기본 문구로 표시됩니다</span></h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <Label text="오픈 1개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales1} onChange={(e) => set("sales1", num(e.target.value))} placeholder="3800" className={inputCls} /></Label>
+          <Label text="오픈 3개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales3} onChange={(e) => set("sales3", num(e.target.value))} placeholder="6200" className={inputCls} /></Label>
+          <Label text="오픈 6개월차 월 매출 (만원)"><input inputMode="numeric" value={f.sales6} onChange={(e) => set("sales6", num(e.target.value))} placeholder="8500" className={inputCls} /></Label>
+          <Label text="재방문율 (%)"><input inputMode="numeric" maxLength={3} value={f.revisit} onChange={(e) => set("revisit", num(e.target.value))} placeholder="72" className={inputCls} /></Label>
+          <Label text="만족도 (%)"><input inputMode="numeric" maxLength={3} value={f.satisfy} onChange={(e) => set("satisfy", num(e.target.value))} placeholder="95" className={inputCls} /></Label>
+          <div className="sm:col-span-2"><Label text="피크타임 증빙 설명 (사진 아래 문구)"><input value={f.peakNote} onChange={(e) => set("peakNote", e.target.value)} placeholder="점심 오피스 피크타임 테이블 회전율 4.5회전 완수, 평균 조리 출하시간 3분대 유지" className={inputCls} /></Label></div>          <Label text="재방문율 (%)"><input inputMode="numeric" maxLength={3} value={f.revisit} onChange={(e) => set("revisit", num(e.target.value))} placeholder="91" className={inputCls} /></Label>          <Label text="고객 만족도 (%)"><input inputMode="numeric" maxLength={3} value={f.satisfy} onChange={(e) => set("satisfy", num(e.target.value))} placeholder="96" className={inputCls} /></Label>
         </div>
       </section>
 
-      <Photos photos={menuPhotos} setPhotos={setMenuPhotos} title="교육 대표 메뉴 사진 *" />
-      <Photos photos={detailPhotos} setPhotos={setDetailPhotos} title="교육 상세 이미지 (선택, 교육 대표 메뉴 아래에 이어 붙여 표시)" lead={false} />
+      <section className="rounded-2xl border border-neutral-200 bg-white p-6">
+        <h2 className="mb-1 text-[0.9375rem] font-black">창업 비용 · 수익 시뮬레이션 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">비워두면 상세에 &quot;상담 시 안내&quot;로 표시됩니다 (전수 비용은 아래 전수 정보에서 가져옵니다)</span></h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <Label text="초도 식자재 (만원)"><input inputMode="numeric" value={f.cost1} onChange={(e) => set("cost1", num(e.target.value))} placeholder="300" className={inputCls} /></Label>
+          <Label text="주요 집기·설비 (만원)"><input inputMode="numeric" value={f.cost2} onChange={(e) => set("cost2", num(e.target.value))} placeholder="1500" className={inputCls} /></Label>
+          <Label text="기타 오픈 준비 비용 (만원)"><input inputMode="numeric" value={f.cost3} onChange={(e) => set("cost3", num(e.target.value))} placeholder="500" className={inputCls} /></Label>
+          <Label text="월 매출 가정 (만원, 비우면 3,000)"><input inputMode="numeric" value={f.simSales} onChange={(e) => set("simSales", num(e.target.value))} placeholder="3000" className={inputCls} /></Label>
+          <Label text="예상 순이익률 (%, 비우면 20~25)"><input value={f.simMargin} onChange={(e) => set("simMargin", e.target.value.replace(/[^0-9~]/g, ""))} placeholder="20~25" className={inputCls} /></Label>
+        </div>
+        <p className="mt-3 text-[0.6875rem] text-neutral-400">총 예상 초기 비용은 세 항목을 모두 입력하면 전수 비용과 합산해 자동 계산됩니다.</p>
+      </section>
 
       {err && <p className="rounded-lg bg-red-50 p-3 text-[0.75rem] leading-relaxed text-red-700">{err}</p>}
       <div className="flex gap-2">
