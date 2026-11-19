@@ -369,9 +369,9 @@ export default function TransferPage() {
               </div>
             </div>
             <div className="mt-4 grid gap-3 md:grid-cols-3">
-              {["레시피 전수", "실전 조리 실습", "오픈 전 메뉴 점검"].map((t) => (
+              {["레시피 전수", "실전 조리 실습", "오픈 전 메뉴 점검"].map((t, i) => (
                 <div key={t} className="overflow-hidden rounded-2xl border border-[#F0C33F]/70">
-                  <div className="aspect-[16/10] bg-[#333]" />
+                  <div className="relative aspect-[16/10] bg-[#333]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/case-${i + 1}.jpg`} alt={t} loading="lazy" className={`absolute inset-0 size-full object-cover`} /></div>
                   <p className="bg-[#F0C33F] py-3 text-center text-[1.125rem] font-black text-[#222] md:text-[1.125rem]">{t}</p>
                 </div>
               ))}
