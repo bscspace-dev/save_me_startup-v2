@@ -259,10 +259,12 @@ export function NewListings() {
   const today = useToday();
   const fresh = (d?: string) => !d || !today || (new Date(today).getTime() - new Date(d).getTime()) / 86400000 <= 7;
 
-  const list = withNew([...remote, ...listings])
+  const ofKind = withNew([...remote, ...listings])
     .sort(byNewest)
-    .filter((l) => !l.sold && l.kind === active && fresh(l.date))
-    .slice(0, 8);
+    .filter((l) => !l.sold && l.kind === active);
+  const recent = ofKind.filter((l) => fresh(l.date)).slice(0, 8);
+  // 7일 안에 새로 등록된 매물이 하나도 없으면 가장 최근에 등록된 4건을 대신 보여준다
+  const list = recent.length ? recent : ofKind.slice(0, 4);
 
   return (
     <section id="new" className="bg-[#f5f2f2]">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ConsultCard } from "@/components/ConsultForm";
+import { BackCrumb } from "@/components/BackNav";
 import { Reveal } from "@/components/Reveal";
 import { YoutubePopup } from "@/components/YoutubePopup";
 import { MainPopups } from "@/components/MainPopups";
@@ -99,6 +100,11 @@ export default function TransferPage() {
     <>
       <Header active="전수창업" />
       <main className="bg-[#222] text-white">
+        <div className="border-b border-white/10 bg-[#222]">
+          <div className="mx-auto max-w-[80rem] px-6">
+            <BackCrumb href="/" label="메인" current="전수창업 안내" dark className="py-4" />
+          </div>
+        </div>
         {/* 1. 전수창업이란? */}
         <section className="bg-[#F0C33F] text-[#222]">
           <div className={`${wrap} pb-14 pt-12 text-center`}>
@@ -132,7 +138,7 @@ export default function TransferPage() {
                   {[["실무 기술 전수", "조리법과 서비스 방식 등\n매장운영에 필요한\n실무 기술을 배웁니다."], ["운영 노하우 전수", "상품 구성, 거래처, 마케팅 등\n실제 매장에서 쌓인\n운영 노하우를 전수받습니다."], ["매장 운영 방식 습득", "메뉴얼과 교육을 통해\n안정적으로 매장을\n운영하는 방법을 익힙니다."]].map(([t, d]) => (
                     <div key={t} className="px-2">
                       <h3 className="text-[0.9375rem] font-black md:text-[1.375rem]">{t}</h3>
-                      <p className="mt-4 whitespace-pre-line text-[0.6875rem] leading-[1.7] md:text-[0.9375rem]">{d}</p>
+                      <p className="mt-4 md:whitespace-pre-line text-[0.75rem] leading-[1.7] md:text-[0.9375rem]">{d}</p>
                     </div>
                   ))}
                 </div>
@@ -152,7 +158,7 @@ export default function TransferPage() {
             {reasons.map(([t, d]) => (
               <li key={t}>
                 <p className="rounded-2xl bg-[#3a3118] py-3 text-[1.0625rem] font-bold text-[#F0C33F] md:text-[1.25rem]">{t}</p>
-                <p className="mt-5 whitespace-pre-line text-[0.75rem] leading-[1.6] text-white/85 md:text-[0.9375rem]">{d}</p>
+                <p className="mt-5 md:whitespace-pre-line text-[0.75rem] leading-[1.6] text-white/85 md:text-[0.9375rem]">{d}</p>
               </li>
             ))}
           </ul>
@@ -205,7 +211,7 @@ export default function TransferPage() {
                 <tbody>
                   {items.map(([k, s, a, b, c]) => (
                     <tr key={k} className="border-t border-white/20 bg-[#262626]">
-                      <th className="px-2 py-3 text-[0.8125rem] font-bold">{k}{s && <><br /><span className="text-[0.625rem] font-normal">{s}</span></>}</th>
+                      <th className="px-2 py-3 text-[0.8125rem] font-bold">{k}{s && <><br /><span className="text-[0.6875rem] font-normal">{s}</span></>}</th>
                       <td className="whitespace-pre-line border-l border-white/20 py-3">{a}</td>
                       <td className="border-l border-white/20 py-3">{b}</td>
                       <td className="border-l border-white/20 py-3 font-black text-[#F0C33F]">{c}</td>
@@ -226,7 +232,7 @@ export default function TransferPage() {
             {[["1,000만원", "가맹비 없이\n창업 준비부터 오픈까지"], ["로열티 0%", "매달 본사에 내는 돈이 없습니다"], ["SOP북 제공", "레시피부터 매장 운영까지\n실전 매뉴얼 제공"]].map(([t, d]) => (
               <li key={t} className="rounded-2xl border border-[#F0C33F]/70 px-4 py-9">
                 <p className="font-gmarket text-[1.75rem] font-black text-[#F0C33F] md:text-[2rem]">{t}</p>
-                <p className="mt-4 whitespace-pre-line text-[0.8125rem] leading-[1.6] md:text-[0.9375rem]">{d}</p>
+                <p className="mt-4 md:whitespace-pre-line text-[0.8125rem] leading-[1.6] md:text-[0.9375rem]">{d}</p>
               </li>
             ))}
           </ul>
@@ -297,7 +303,7 @@ export default function TransferPage() {
                   <div className="flex-1 rounded-3xl bg-[#222] px-3 py-5 text-white">
                     <p className="text-[1.25rem] text-[#F0C33F] md:text-[1.25rem]">{s}</p>
                     <p className="mt-3 text-[1rem] font-bold md:text-[1rem]">{t}</p>
-                    <p className="mt-3 whitespace-pre-line text-[0.75rem] leading-[1.5]">{d}</p>
+                    <p className="mt-3 md:whitespace-pre-line text-[0.75rem] leading-[1.5]">{d}</p>
                   </div>
                   {i < steps.length - 1 && <span aria-hidden className="mx-1 hidden text-[1.125rem] md:block">▶</span>}
                 </li>

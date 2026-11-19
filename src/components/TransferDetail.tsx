@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BackButton } from "./BackNav";
 import { photoSrc, type Listing } from "@/lib/data";
 import type { TransferInfo } from "@/lib/transfer";
 import { ListingConsultButton } from "./ListingConsultButton";
@@ -33,12 +34,18 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
   const consultTitle = `${m.name} 사부(전수자) ${l.title} (전수창업 상담)`;
 
   return (
-    <main className="bg-[#f7f6f4] pb-24">
-      <div className={`${wrap} space-y-5 pt-8`}>
-      <Link href="/listings?type=전수창업" className="inline-block self-start rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 목록으로</Link>
+    <main className="bg-[#222] pb-24 text-white">
+      <div className="border-b border-white/10">
+        <nav aria-label="breadcrumb" className={`${wrap} flex items-center gap-2 py-4 text-[0.8125rem] text-white/60`}>
+          <Link href="/listings?type=전수창업" className="inline-flex items-center gap-1.5 transition hover:text-white"><svg viewBox="0 0 24 24" aria-hidden className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 5l-7 7 7 7" /></svg>전수창업 목록</Link>
+          <span aria-hidden className="text-white/30">/</span>
+          <span className="text-white/90">매물 상세</span>
+        </nav>
+      </div>
 
       {/* 히어로: 좌 노랑 문구 / 우 대표 메뉴 사진 */}
-      <section className="grid overflow-hidden rounded-3xl lg:min-h-[26rem] lg:grid-cols-2">
+      <section className="bg-[#F0C33F]">
+      <div className="mx-auto grid max-w-[80rem] lg:min-h-[26rem] lg:grid-cols-2">
         <div className="flex flex-col justify-center bg-[#F0C33F] px-6 py-12 text-ink md:p-9 lg:px-10">
           <p className="self-start rounded-full bg-ink/10 px-4 py-1.5 text-[0.8125rem] font-medium">{t.topTitle || (m.years > 0 ? `${m.years}년간 검증된 ${dish} 맛집의 노하우` : `검증된 ${dish} 맛집의 노하우`)}</p>
           <h1 className="mt-6 font-gmarket text-[1.5rem] font-semibold leading-[1.25] tracking-tight md:text-[1.875rem]">
@@ -71,10 +78,11 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
           {/* eslint-disable-next-line @next/next/no-img-element */}
           {heroPhoto && <img src={heroPhoto} alt={menuText} fetchPriority="high" decoding="async" className="absolute inset-0 size-full object-cover" />}
         </div>
+      </div>
       </section>
 
       {/* 시안 구성: 흰색 → 어두움 → 밝음 → 어두움 → 밝음 → 어두움 */}
-      <div className="overflow-hidden rounded-3xl border border-neutral-200">
+      <div>
         <ShowcaseIntro name={m.name} photo={photo} videoId={videoId} philosophy={t.philosophy} bio={t.masterBio} dish={dish} names={names} years={m.years} stats={[["사부 현장 경력", `${m.years}년`], ["교육 기간", `${t.days}일`], ["교육 방식", t.method || "1:1 실습"], ["전수 메뉴", `${t.menus}종`]]} />
         <ShowcaseDarkA dish={dish} names={names} years={m.years} srcs={menuSrcs} descs={t.menuDescs ?? (t.menuDesc ? [t.menuDesc] : undefined)} tags={t.menuTags} sales={t.sales} revisit={t.revisit} satisfy={t.satisfy} reviews={t.reviews} detailSrcs={detailSrcs} />
         <ShowcaseHard dish={dish} />
@@ -84,9 +92,8 @@ export function TransferDetail({ l, t, srcs }: { l: Listing; t: TransferInfo; sr
         <TransferCompare price={l.price} />
       </div>
 
-      <div className="pt-5 text-right">
-        <Link href="/listings?type=전수창업" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
-      </div>
+      <div className={`${wrap} pt-8 text-right`}>
+        <BackButton href="/listings?type=전수창업" dark />
       </div>
     </main>
   );

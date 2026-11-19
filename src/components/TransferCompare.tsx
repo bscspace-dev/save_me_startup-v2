@@ -46,29 +46,29 @@ export function TransferCompare({ price }: { price: number }) {
     ["5년 총비용", "", `약 ${n(FR_TOTAL)}만원`, `약 ${n(OLD_AVG)}만원`, `${n(p)}만원`],
   ];
   return (
-    <section className="bg-[#222] px-6 py-14 text-white md:px-10">
+    <section className="bg-[#222] px-6 py-14 text-white md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       {/* 왜 전수창업인가 */}
       <div className="text-center">
         <h2 className="font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">왜 프랜차이즈가 아닌 &lsquo;전수창업&rsquo;인가?</h2>
         <p className="mt-3 text-[0.8125rem] text-white/80 md:text-[1rem]">가맹비, 로열티, 인테리어 중간 마진 등 불필요한 거품을 싹 빼고 전수비 하나로 해결하세요.</p>
       </div>
-      <ul className="mx-auto mt-8 grid max-w-[60rem] grid-cols-2 gap-x-3 gap-y-6 md:grid-cols-4">
+      <ul className="mx-auto mt-8 grid max-w-[77rem] grid-cols-2 gap-x-3 gap-y-6 md:grid-cols-4">
         {pills.map(([t, d]) => (
           <li key={t} className="text-center">
             <p className="rounded-full bg-[#4a3d12] px-3 py-2.5 font-gmarket text-[0.9375rem] font-black text-[#F0C33F] md:text-[1.125rem]">{t}</p>
-            <p className="mt-3 whitespace-pre-line text-[0.75rem] leading-[1.6] md:text-[0.875rem]">{d}</p>
+            <p className="mt-3 md:whitespace-pre-line text-[0.75rem] leading-[1.6] md:text-[0.875rem]">{d}</p>
           </li>
         ))}
       </ul>
       <p className="mt-12 text-center text-[1.125rem] font-medium leading-[1.6] md:text-[1.375rem]">불필요한 비용은 줄이고, 성공 노하우만 가져가는<br />가장 현실적인 창업 방법, 바로 <span className="text-[#F0C33F]">전수창업</span>입니다.</p>
-      <hr className="mx-auto mt-12 max-w-[60rem] border-white/60" />
+      <hr className="mx-auto mt-12 max-w-[77rem] border-white/60" />
 
       {/* 왜 구해줘창업인가 */}
       <div className="mt-12 text-center">
         <h2 className="font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">왜 &lsquo;구해줘 창업&rsquo;인가?</h2>
         <p className="mt-4 text-[0.875rem] leading-[1.7] md:text-[1rem]">레시피만 배우는 창업은 이제 그만하세요!<br />상권분석 · BI · 인테리어 · 마케팅 · SOP까지 전문가 팀이 함께합니다.</p>
       </div>
-      <div className="mx-auto mt-8 grid max-w-[60rem] gap-5 md:grid-cols-2">
+      <div className="mx-auto mt-8 grid max-w-[77rem] gap-5 md:grid-cols-2">
         <div className="relative rounded-2xl border border-white/10 bg-white/[0.06] p-6">
           <DrawX className="pointer-events-none absolute inset-4 z-10 size-[calc(100%-2rem)] text-[#c0392b]/80" />
           <p className="text-center text-[0.6875rem] text-white/60">일반 프랜차이즈 가맹</p>
@@ -90,7 +90,7 @@ export function TransferCompare({ price }: { price: number }) {
       </div>
 
       {/* 업종 사례 */}
-      <div className="mx-auto mt-14 max-w-[60rem]">
+      <div className="mx-auto mt-14 max-w-[77rem]">
         <h3 className="inline-block border-b-[5px] border-[#F0C33F] pb-1 font-gmarket text-[1.25rem] font-black md:text-[1.25rem]">일식 한 업종만 봐도 시작 비용이 다릅니다</h3>
         <p className="mt-3 text-[0.8125rem] text-white/80">사례 ) 일식 프랜차이즈 9개 브랜드</p>
         <div className="mt-3 grid gap-4 md:grid-cols-[1.9fr_1fr]">
@@ -122,7 +122,7 @@ export function TransferCompare({ price }: { price: number }) {
 
       {/* 경쟁력 */}
       <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">구해줘 창업만의 경쟁력</h2>
-      <div className="mx-auto mt-8 grid max-w-[60rem] gap-4 md:grid-cols-2">
+      <div className="mx-auto mt-8 grid max-w-[77rem] gap-4 md:grid-cols-2">
         <div className="rounded-2xl border border-white/15 bg-black/30 p-4">
           <p className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/70 px-4 py-1.5 text-[1rem] font-black">5년 총 창업비용 비교</span><span className="text-[0.75rem] text-white/70">(일식 업종 평균 기준)</span></p>
           <div className="mt-4 flex gap-2">
@@ -162,18 +162,18 @@ export function TransferCompare({ price }: { price: number }) {
         </div>
       </div>
 
-      <ul className="mx-auto mt-8 grid max-w-[60rem] gap-4 md:grid-cols-3">
+      <ul className="mx-auto mt-8 grid max-w-[77rem] gap-4 md:grid-cols-3">
         {[[`${n(p)}만원`, "가맹비 없이\n창업 준비부터 오픈까지"], ["로열티 0%", "매달 본사에 내는 돈이 없습니다"], ["SOP북 제공", "레시피부터 매장 운영까지\n실전 매뉴얼 제공"]].map(([t, d]) => (
           <li key={t} className="rounded-2xl border border-[#F0C33F]/70 px-4 py-7 text-center">
             <p className="font-gmarket text-[1.75rem] font-black text-[#FFD21F] md:text-[2.25rem]">{t}</p>
-            <p className="mt-3 whitespace-pre-line text-[0.8125rem] leading-[1.6]">{d}</p>
+            <p className="mt-3 md:whitespace-pre-line text-[0.8125rem] leading-[1.6]">{d}</p>
           </li>
         ))}
       </ul>
 
       {/* ●△X 비교표 */}
       <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">같은 돈을 쓰더라도 남는 건 다릅니다</h2>
-      <div className="mx-auto mt-8 max-w-[56rem] overflow-x-auto">
+      <div className="mx-auto mt-8 max-w-[77rem] overflow-x-auto">
         <table className="w-full min-w-[28rem] border-collapse text-center text-[0.875rem] md:text-[1rem]">
           <thead><tr className="bg-white/25 text-white/90"><th className="border border-white/70 p-3" /><th className="border border-white/70 p-3 font-medium">프랜차이즈</th><th className="border border-white/70 p-3 font-medium">기존 전수창업</th><th className="border border-white/70 p-3 font-black text-[#a3321a]">구해줘창업</th></tr></thead>
           <tbody>
@@ -190,7 +190,7 @@ export function TransferCompare({ price }: { price: number }) {
 
       {/* 분야별 전문가 */}
       <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">분야별 전문가가 단계마다 책임집니다</h2>
-      <ul className="mx-auto mt-8 grid max-w-[64rem] grid-cols-2 gap-3 md:grid-cols-5">
+      <ul className="mx-auto mt-8 grid max-w-[77rem] grid-cols-2 gap-3 md:grid-cols-5">
         {experts.map(([role, title, lines], i) => (
           <RevealLi i={i} key={title} className="flex flex-col items-center rounded-3xl border border-[#F0C33F]/70 px-3 pb-6 pt-6 text-center">
             <span aria-hidden className="size-[5.5rem] rounded-full bg-[#FFD21F]" />

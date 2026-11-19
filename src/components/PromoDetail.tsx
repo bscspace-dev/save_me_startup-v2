@@ -1,4 +1,5 @@
 import { RichText } from "./RichText";
+import { BackCrumb, BackButton } from "./BackNav";
 import Link from "next/link";
 import { costText, type Listing } from "@/lib/data";
 import { ListingConsultButton } from "./ListingConsultButton";
@@ -19,13 +20,15 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
 
   return (
     <main className="bg-[#f7f6f4] pb-32 md:pb-24">
-      {/* 위 요약과 아래 이미지의 폭을 같은 열(960px)에 맞춘다 */}
-      <div className="mx-auto max-w-[80rem] px-4 pt-8 sm:px-6">
-        <p className="text-[0.7188rem] text-neutral-500">
-          <Link href="/listings?type=프랜차이즈" className="inline-block rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 목록으로</Link>
-        </p>
+      <div className="border-b border-white/10 bg-[#222]">
+        <div className="mx-auto max-w-[80rem] px-4 sm:px-6">
+          <BackCrumb href="/listings?type=프랜차이즈" label="프랜차이즈 목록" dark className="py-4" />
+        </div>
+      </div>
 
-        <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white md:grid-cols-[0.8fr_1fr]">
+      {/* 히어로: 노란 바탕이 좌우 끝까지 퍼지고, 안쪽은 위 요약과 아래 이미지가 같은 열에 맞는다 */}
+      <section className="bg-[#F0C33F] text-ink">
+        <div className="mx-auto grid max-w-[80rem] md:grid-cols-[0.8fr_1fr]">
           {/* 대표 사진: 목록 카드에 쓴 이미지를 크게 보여준다 */}
           <div className="relative aspect-[16/10] bg-gradient-to-br from-[#6b4a2e] via-[#3f2a18] to-[#24170d] md:aspect-auto md:min-h-[21.25rem]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -37,34 +40,36 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
             </div>
           </div>
 
-          <div className="flex flex-col p-6 sm:p-8">
+          <div className="flex flex-col px-6 py-8 sm:px-8 md:py-10">
             {/* 카드와 같은 순서: 브랜드 → 제목·설명 → 창업비용 */}
             <h1 className="break-keep text-[2rem] font-black leading-[1.2] tracking-tight sm:text-[2.25rem] font-gmarket">{p.brand}</h1>
-            <p className="mt-3 break-keep text-[1rem] font-bold leading-snug text-neutral-800">{l.title}</p>
-            <p className="mt-2 whitespace-pre-line break-keep text-[0.8125rem] leading-relaxed text-neutral-500"><RichText text={p.desc} /></p>
+            <p className="mt-3 break-keep text-[1rem] font-bold leading-snug">{l.title}</p>
+            <p className="mt-2 whitespace-pre-line break-keep text-[0.8125rem] leading-relaxed text-ink/75"><RichText text={p.desc} /></p>
 
-            <div className="mt-5 flex items-baseline justify-between gap-3 rounded-xl bg-[#fff8dc] px-5 py-3">
-              <p className="text-[0.6875rem] font-bold text-neutral-500">창업비용</p>
-              <p className="text-[1.0625rem] font-black tracking-tight text-[#D49F12]">{costText(l.price)}</p>
+            <div className="mt-5 flex items-baseline justify-between gap-3 rounded-xl bg-white/70 px-5 py-3">
+              <p className="text-[0.6875rem] font-bold text-ink/60">창업비용</p>
+              <p className="text-[1.0625rem] font-black tracking-tight">{costText(l.price)}</p>
             </div>
-            <dl className="mt-3 divide-y divide-neutral-100 text-[0.7813rem]">
+            <dl className="mt-3 divide-y divide-ink/15 text-[0.7813rem]">
               {rows.map(([k, v]) => (
                 <div key={k} className="flex items-baseline justify-between gap-4 py-3">
-                  <dt className="shrink-0 text-neutral-400">{k}</dt>
+                  <dt className="shrink-0 text-ink/60">{k}</dt>
                   <dd className="text-right font-bold">{v}</dd>
                 </div>
               ))}
             </dl>
             <div className="mt-auto pt-5">
               {l.sold ? (
-                <p className="rounded-xl bg-neutral-100 py-4 text-center text-[0.8438rem] font-bold text-neutral-500">모집이 마감된 브랜드입니다</p>
+                <p className="rounded-xl bg-white/60 py-4 text-center text-[0.8438rem] font-bold text-ink/60">모집이 마감된 브랜드입니다</p>
               ) : (
-                <ListingConsultButton id={l.id} kind="가맹상담" title={consultTitle} label="가맹 상담 신청하기  →" className={cta} />
+                <ListingConsultButton id={l.id} kind="가맹상담" title={consultTitle} label="가맹 상담 신청하기  →" className="block w-full rounded-xl bg-ink py-4 text-center text-[0.9063rem] font-bold text-white transition hover:opacity-90" />
               )}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
+      <div className="mx-auto max-w-[80rem] px-4 pt-2 sm:px-6">
         {/* 가맹본부 홍보 이미지: 조각을 틈 없이 이어 붙여 한 장처럼 보이게 한다 */}
         <p className="mt-10 text-center text-[0.6875rem] font-bold tracking-[0.14em] text-neutral-400">BRAND STORY · 가맹본부 제공 자료</p>
         <section className="mt-3 overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm">
@@ -85,7 +90,7 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
           <p>표시된 예상 수익·비용 등 수치는 가맹본부가 제공한 자료와 예상치이며 실제와 다를 수 있습니다. 가맹계약 전 반드시 가맹본부의 정보공개서를 확인하세요. (<a href={FTC} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-[#D49F12]">가맹사업정보제공시스템 franchise.ftc.go.kr</a>)</p>
         </aside>
         <div className="mt-10 text-right">
-          <Link href="/listings?type=프랜차이즈" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 목록으로 돌아가기</Link>
+          <BackButton href="/listings?type=프랜차이즈" />
         </div>
       </div>
 

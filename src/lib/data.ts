@@ -28,7 +28,10 @@ export type Listing = {
 export type Startup = { story: string; done: string[]; address?: string };
 
 // 전수창업: 사부(전수자) 정보. 나머지 상세 문구는 업종별 기본 문구로 만든다 (관리자에서 등록)
-export type TransferData = { name: string; store: string; years: number; days: number; menus: number; address?: string; career?: string; timeline?: [string, string][]; menuNames?: string[]; menuPhotos?: number; detailPhotos?: number; topTitle?: string; heroTitle?: string; videoUrl?: string; philosophy?: [string, string][]; method?: string; menuTags?: string[][]; menuDesc?: string; masterQuote?: string; masterBio?: string; sales?: [number, number, number]; peakNote?: string; menuDescs?: string[]; revisit?: number; satisfy?: number; startCosts?: [number, number, number]; simSales?: number; simMargin?: string; reviews?: [string, string][] };
+// 손님 후기 한 건 (네이버 리뷰처럼 작성자·별점·방문·키워드·본문). 옛 형식 [내용, 출처]도 읽을 수 있다
+export type TransferReview = { text: string; name?: string; stars?: number; visits?: number; tags?: string[]; date?: string; from?: string };
+
+export type TransferData = { name: string; store: string; years: number; days: number; menus: number; address?: string; career?: string; timeline?: [string, string][]; menuNames?: string[]; menuPhotos?: number; detailPhotos?: number; topTitle?: string; heroTitle?: string; videoUrl?: string; philosophy?: [string, string][]; method?: string; menuTags?: string[][]; menuDesc?: string; masterQuote?: string; masterBio?: string; sales?: [number, number, number]; peakNote?: string; menuDescs?: string[]; revisit?: number; satisfy?: number; startCosts?: [number, number, number]; simSales?: number; simMargin?: string; reviews?: (TransferReview | [string, string])[] };
 
 // 프랜차이즈 홍보 매물: 가맹본부가 준 홍보 이미지를 상세에 그대로 보여준다 (관리자에서 등록)
 export type Promo = { brand: string; desc: string; area?: string; sponsored?: boolean };

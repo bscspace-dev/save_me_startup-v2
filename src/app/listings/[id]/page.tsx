@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Header, navLabel } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ListingConsultButton } from "@/components/ListingConsultButton";
+import { BackCrumb } from "@/components/BackNav";
 import { Reveal } from "@/components/Reveal";
 import { YoutubePopup } from "@/components/YoutubePopup";
 import { kindBadge, listings as rawListings, withNew, won, costText } from "@/lib/data";
@@ -104,7 +105,7 @@ export default async function ListingDetail({ params }: Props) {
     <>
       <Header active={navLabel(l.kind)} />
       <main className="mx-auto max-w-[80rem] px-6 py-10">
-        <Link href="/listings" className="text-[0.75rem] text-neutral-500 transition hover:text-brand">← 매물 목록으로</Link>
+        <BackCrumb href="/listings" label="매물 목록" />
 
         <div className="mt-5 grid gap-8 lg:grid-cols-[1.2fr_1fr]">
           <Reveal>

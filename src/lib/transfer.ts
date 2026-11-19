@@ -1,4 +1,4 @@
-import type { Listing } from "./data";
+import type { Listing, TransferReview } from "./data";
 
 export type TransferInfo = {
   master: { name: string; store: string; en: string; field: string; years: number; career: string };
@@ -25,7 +25,7 @@ export type TransferInfo = {
   startCosts?: [number, number, number]; // 초도 식자재·집기/설비·기타 오픈 비용(만원)
   simSales?: number; // 시뮬레이션 월 매출 가정(만원)
   simMargin?: string; // 시뮬레이션 예상 순이익률 (예: 20~25)
-  reviews?: [string, string][]; // 손님 후기 [내용, 출처]
+  reviews?: TransferReview[]; // 손님 후기 (관리자에서 입력)
   timeline: [string, string][];
   curriculum: { title: string; range: string; desc: string }[];
 };
@@ -150,7 +150,7 @@ export const transferOf = (l: Listing): TransferInfo | undefined => {
   if (r.startCosts?.some((v) => v > 0)) t.startCosts = r.startCosts;
   if (r.simSales) t.simSales = r.simSales;
   if (r.simMargin) t.simMargin = r.simMargin;
-  if (r.reviews?.length) t.reviews = r.reviews;
+  if (r.reviews?.length) t.reviews = r.reviews.map((x) => (Array.isArray(x) ? { text: x[0], from: x[1] || undefined } : x));
   return t;
 };
 

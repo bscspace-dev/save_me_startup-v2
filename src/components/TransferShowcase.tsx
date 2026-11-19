@@ -1,4 +1,5 @@
 import { Icon } from "./Icons";
+import type { TransferReview } from "@/lib/data";
 import { RevealLi, RevealDiv, GrowBar, Highlight } from "./ScrollReveal";
 
 // 전수창업 상세 (시안 버전) 섹션들. 사부 이름·경력·메뉴·매출은 매물 데이터로 채우고 나머지는 공통 문구
@@ -23,7 +24,7 @@ export function ShowcaseIntro({ name, photo, videoId, philosophy, bio, stats, di
   // 관리자가 입력한 제목·설명을 우선하고, 비어 있는 칸은 기본 문구를 쓴다
   const phil = philDefault.map(([t, d], k) => [philosophy?.[k]?.[0] || t, philosophy?.[k]?.[1] || d]);
   return (
-    <section id="expert" className="scroll-mt-24 bg-white px-6 py-10 text-ink md:px-10 md:py-12">
+    <section id="expert" className="scroll-mt-24 bg-white px-6 py-10 text-ink md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))] md:py-12">
       <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_1fr]">
         <div className="relative">
           <span aria-hidden className="absolute -bottom-3 -right-3 size-full rounded-2xl border-2 border-[#F0C33F]" />
@@ -92,7 +93,7 @@ export function ShowcaseIntro({ name, photo, videoId, philosophy, bio, stats, di
 /* ───────── 어두운 구간 A: 대표 메뉴, WHY, 운영 구조, 판매 기회 ───────── */
 const learn = ["레시피 전수", "조리 실습", "원가 관리"];
 
-export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, revisit, satisfy, reviews, detailSrcs }: Common & { srcs: string[]; descs?: string[]; tags?: string[][]; sales?: [number, number, number]; revisit?: number; satisfy?: number; reviews?: [string, string][]; detailSrcs?: string[] }) {
+export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, revisit, satisfy, reviews, detailSrcs }: Common & { srcs: string[]; descs?: string[]; tags?: string[][]; sales?: [number, number, number]; revisit?: number; satisfy?: number; reviews?: TransferReview[]; detailSrcs?: string[] }) {
   const n = Math.min(3, Math.max(names.length, srcs.length));
   const s = sales ?? [3800, 6200, 8500];
   const second = names[1];
@@ -122,13 +123,13 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
     <div className="bg-[#1c1c1c] text-white">
       {/* 대표 메뉴 */}
       {n > 0 && (
-        <section id="menus" className="scroll-mt-24 px-6 pb-4 pt-12 md:px-10">
+        <section id="menus" className="scroll-mt-24 px-6 pb-4 pt-12 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
           <div className="text-center">
             <p className={`${eyebrow} text-[#F0C33F]`}>SIGNATURE MENU</p>
             <h2 className="mt-3 font-gmarket font-black leading-[1.35] tracking-tight text-[1.75rem] md:text-[2.125rem]">손님이 줄 서는 이유,<br /><Highlight>사부의 대표 메뉴</Highlight></h2>
             <p className="mt-4 text-[0.875rem] leading-[1.8] text-white/85">가게의 중심이 되는 메뉴를 1:1 전수합니다.<br />레시피부터 조리 기준, 상차림 포인트, 운영 노하우까지 함께 배웁니다.</p>
           </div>
-          <ul className={`mx-auto mt-10 grid gap-4 ${n === 1 ? "max-w-[21rem]" : n === 2 ? "max-w-[44rem] md:grid-cols-2" : "max-w-[64rem] md:grid-cols-3"}`}>
+          <ul className={`mx-auto mt-10 grid gap-4 ${n === 1 ? "max-w-[21rem]" : n === 2 ? "max-w-[77rem] md:grid-cols-2" : "max-w-[77rem] md:grid-cols-3"}`}>
             {Array.from({ length: n }, (_, k) => (
               <RevealLi i={k} key={k} className="overflow-hidden rounded-2xl bg-[#2b2b2b]">
                 <div className="relative aspect-[4/2.5] bg-neutral-700">
@@ -149,7 +150,7 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
             ))}
           </ul>
           {!!detailSrcs?.length && (
-            <div className="mx-auto mt-8 max-w-[48rem] space-y-3">
+            <div className="mx-auto mt-8 max-w-[77rem] space-y-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {detailSrcs.map((src, i) => <img key={i} src={src} alt="" loading="lazy" decoding="async" className="w-full rounded-xl" />)}
             </div>
@@ -158,12 +159,12 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
       )}
 
       {/* WHY */}
-      <section className="px-6 py-14 md:px-10">
+      <section className="px-6 py-14 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
         <div className="text-center">
           <h2 className="font-gmarket font-black leading-tight tracking-tight text-[#FFD21F] text-[2rem] md:text-[2.375rem]">WHY {dish}?</h2>
           <p className="mt-5 text-[0.9375rem] font-light leading-[1.7] text-white/85 md:text-[1rem]">맛있는 메뉴는 많습니다. 하지만 장사가 되는 메뉴는 다릅니다.<br /><b className="font-bold">{years > 0 ? `${years - 1 > 0 ? years - 1 : years}년간` : "오랜 시간"} 실제 매장에서 판매해 온 {dish}의 경쟁력</b></p>
         </div>
-        <ol className="mx-auto mt-10 max-w-[48rem] space-y-9 rounded-[2rem] border border-white/70 px-6 py-10 text-center md:px-12">
+        <ol className="mx-auto mt-10 max-w-[77rem] space-y-9 rounded-[2rem] border border-white/70 px-6 py-10 text-center md:px-12">
           {why.map(([t, d], i) => (
             <li key={t}>
               <p className="font-gmarket text-[1.1875rem] font-black leading-snug text-[#FFD21F] md:text-[1.25rem]">{String(i + 1).padStart(2, "0")}. {t}</p>
@@ -174,13 +175,13 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
       </section>
 
       {/* 운영 구조 */}
-      <section className="px-6 pb-14 md:px-10">
+      <section className="px-6 pb-14 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
         <h2 className="text-center font-gmarket font-black leading-tight tracking-tight text-[#FFD21F] text-[1.75rem] md:text-[2.125rem]">매출로 연결되는 운영 구조</h2>
-        <div className="mx-auto mt-8 max-w-[56rem] space-y-5 text-ink">
+        <div className="mx-auto mt-8 max-w-[77rem] space-y-5 text-ink">
           <div className="overflow-x-auto rounded-3xl">
             <div className="min-w-[34rem] overflow-hidden rounded-3xl bg-white text-center text-[0.8125rem]">
               <div className="grid grid-cols-[0.8fr_1fr_1fr_1fr] bg-[#F7C416] py-2.5 font-black">
-                <span className="self-center">구분</span><span>점심 장사</span><span>저녁 장사</span><span>배달·포장</span>
+                <span className="self-center">구분</span><span><span aria-hidden className="block text-[1.25rem] leading-none">☀️</span>점심 장사</span><span><span aria-hidden className="block text-[1.25rem] leading-none">🌙</span>저녁 장사</span><span><span aria-hidden className="block text-[1.25rem] leading-none">🛵</span>배달·포장</span>
               </div>
               {t1.map(([k, v]) => (
                 <div key={k} className="grid grid-cols-[0.8fr_1fr_1fr_1fr] border-t border-neutral-300">
@@ -209,18 +210,18 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
       </section>
 
       {/* 판매 기회 + 실적 수치 */}
-      <section className="relative overflow-hidden px-6 pb-12 pt-6 md:px-10">
+      <section className="relative overflow-hidden px-6 pb-12 pt-6 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
         <h2 className="relative text-center font-gmarket font-black leading-[1.35] tracking-tight text-[1.75rem] md:text-[2.125rem]">
           <span className="text-[#FFD21F]">점심</span>에는 <span className="text-[#FFD21F]">회전율</span><br />
           <span className="text-[#FFD21F]">저녁</span>에는 <span className="text-[#FFD21F]">객단가</span><br />
           <span className="text-[#FFD21F]">배달</span>로는 <span className="text-[#FFD21F]">추가매출</span>까지 !
         </h2>
-        <div className="relative -mx-6 mt-8 grid aspect-[1/1.05] place-items-center md:mx-auto md:aspect-[16/10] md:max-w-[56rem]">
+        <div className="relative -mx-6 mt-8 grid aspect-[1/1.05] place-items-center md:mx-auto md:aspect-[16/10] md:max-w-[77rem]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/sales-bg.webp" alt="" aria-hidden loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover md:object-bottom" style={{ WebkitMaskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", WebkitMaskComposite: "source-in", maskImage: "linear-gradient(to right, transparent, #000 14%, #000 86%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)", maskComposite: "intersect" }} />
           <p className="relative px-6 text-center font-[family-name:var(--font-noto)] text-[1.375rem] font-bold leading-[1.7] [text-shadow:0_1px_10px_rgba(0,0,0,0.85)] md:text-[1.875rem]">다년간 쌓아온 맛과<br />운영 노하우를 바탕으로<br />다양한 판매 기회를 만들어 갑니다</p>
         </div>
-        <div className="mx-auto mt-8 max-w-[56rem]">
+        <div className="mx-auto mt-8 max-w-[77rem]">
           <p className="text-[0.6875rem] text-white/60">※실제 사부의 매장 운영 현황</p>
           <ul className="mt-2 grid grid-flow-col auto-cols-fr gap-2 border-y border-white/25 py-5 text-center">
             {([sales ? ["월 평균 매출", `약${s[1].toLocaleString()}`, "만원"] : null, revisit ? ["재방문율", String(revisit), "%"] : null, satisfy ? ["고객 만족도", String(satisfy), "%"] : null].filter(Boolean) as string[][]).map(([k, v, u]) => (
@@ -233,13 +234,29 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
           {!!reviews?.length && (
             <div className="mt-6 grid gap-3 md:grid-cols-[auto_repeat(3,1fr)] md:items-center">
               <p className="font-gmarket text-[1.125rem] font-black leading-snug md:max-w-[8rem]">실제 손님들이<br />직접 남겨주신<br /><span className="text-[#F0C33F]">리얼 후기</span></p>
-              {reviews.slice(0, 3).map(([text, from], i) => (
-                <div key={i} className="rounded-xl bg-white p-4 text-ink">
-                  <p aria-hidden className="text-[1rem] tracking-wider text-[#F7B500]">★★★★★</p>
-                  <p className="mt-1 text-[0.75rem] leading-[1.6]">{text}</p>
-                  {from && <p className="mt-2 text-[0.6875rem] text-neutral-500">-{from}</p>}
-                </div>
-              ))}
+              {reviews.slice(0, 3).map((r, i) => {
+                const stars = Math.min(5, Math.max(1, r.stars ?? 5));
+                const meta = [r.visits ? `방문 ${r.visits}번째` : "", r.date ?? ""].filter(Boolean).join(" · ");
+                return (
+                  <div key={i} className="flex flex-col rounded-xl bg-white p-4 text-ink shadow-sm">
+                    <div className="flex items-center gap-2.5">
+                      <span aria-hidden className="grid size-9 shrink-0 place-items-center rounded-full bg-neutral-200 text-[0.8125rem] font-bold text-neutral-500">{(r.name || "손").slice(0, 1)}</span>
+                      <div className="min-w-0">
+                        <p className="truncate text-[0.8125rem] font-bold">{r.name || "방문 손님"}</p>
+                        {meta && <p className="text-[0.6875rem] text-neutral-500">{meta}</p>}
+                      </div>
+                    </div>
+                    <p aria-label={`별점 ${stars}점`} className="mt-2.5 text-[0.875rem] tracking-wider text-[#F7B500]">{"★".repeat(stars)}<span className="text-neutral-300">{"★".repeat(5 - stars)}</span></p>
+                    <p className="mt-1.5 flex-1 whitespace-pre-line text-[0.8125rem] leading-[1.65]">{r.text}</p>
+                    {!!r.tags?.length && (
+                      <ul className="mt-3 flex flex-wrap gap-1.5">
+                        {r.tags.map((t) => <li key={t} className="rounded-md bg-neutral-100 px-2 py-1 text-[0.6875rem] text-neutral-600">{t}</li>)}
+                      </ul>
+                    )}
+                    {r.from && <p className="mt-3 text-[0.6875rem] text-neutral-400">출처: {r.from}</p>}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -265,14 +282,14 @@ const stories = [
 
 export function ShowcaseHard({ dish }: { dish: string }) {
   return (
-    <section className="bg-[#f7f6f4] px-6 py-14 text-ink md:px-10">
+    <section className="bg-[#f7f6f4] px-6 py-14 text-ink md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       <div className="text-center">
         <p className="text-[0.9375rem] md:text-[1rem]">인터넷 레시피로도 맛있는 {dish} 한 접시, 충분히 가능합니다!</p>
         <h2 className="mt-3 font-gmarket font-black leading-tight tracking-tight text-[2rem] md:text-[2.375rem]">하지만,<span className="text-[#c0262c]">장사는 망합니다.</span></h2>
         <p className="mt-10 text-[1.0625rem] leading-[1.9] md:text-[1.125rem]">맛있는 한 접시로는<br /><b className="font-black">매출도<br />단골도<br />수익도</b><br />지킬 수 없습니다.</p>
         <h3 className="mt-14 font-gmarket text-[1.5rem] font-black md:text-[1.75rem]">왜 장사가 어려울까요?</h3>
       </div>
-      <ol className="mx-auto mt-10 max-w-[48rem] space-y-8">
+      <ol className="mx-auto mt-10 max-w-[77rem] space-y-8">
         {hard.map(([t, a, hl, tail], i) => (
           <RevealLi i={i} key={t} className="flex items-start gap-5 md:gap-6">
             <span className="w-[4.25rem] shrink-0 font-gmarket text-[2.25rem] font-black leading-none text-[#F0C33F] md:w-[6rem] md:text-[3rem]">{String(i + 1).padStart(2, "0")}</span>
@@ -283,7 +300,7 @@ export function ShowcaseHard({ dish }: { dish: string }) {
           </RevealLi>
         ))}
       </ol>
-      <div className="mx-auto mt-14 max-w-[60rem] rounded-3xl bg-[#fbf3de] p-4 md:p-6">
+      <div className="mx-auto mt-14 max-w-[77rem] rounded-3xl bg-[#fbf3de] p-4 md:p-6">
         <p className="inline-block rounded-full bg-[#F7C416] px-4 py-1.5 text-[0.875rem] font-black md:text-[1rem]">실제 사장님들의 이야기</p>
         <ul className="mt-4 grid gap-4 md:grid-cols-3">
           {stories.map(([a, hl, who]) => (
@@ -311,12 +328,12 @@ const traps = [
 
 export function ShowcaseNightmare() {
   return (
-    <section className="bg-[#232323] px-6 py-12 text-white md:px-10">
+    <section className="bg-[#232323] px-6 py-12 text-white md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       <div className="text-center">
         <p className="text-[1rem] font-bold md:text-[1.0625rem]">점주 혼자 감당하는 준비 없는 오픈은</p>
         <p className="mt-2 font-gmarket text-[1.25rem] font-black text-[#d9262c] md:text-[1.75rem]">연습이 아니라 &lsquo;소문난 악재&rsquo;가 됩니다.</p>
       </div>
-      <ul className="mx-auto mt-10 grid max-w-[64rem] gap-4 md:grid-cols-3">
+      <ul className="mx-auto mt-10 grid max-w-[77rem] gap-4 md:grid-cols-3">
         {traps.map(([t, d], i) => (
           <RevealLi i={i} key={t} className="rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-5">
             <p className="flex items-center gap-2"><span className="grid size-6 place-items-center rounded-full bg-[#F0C33F] text-[0.6875rem] font-black text-ink">{String(i + 1).padStart(2, "0")}</span><span className="text-[0.6875rem] font-bold text-[#F0C33F]">현실 {String(i + 1).padStart(2, "0")}</span></p>
@@ -325,7 +342,7 @@ export function ShowcaseNightmare() {
           </RevealLi>
         ))}
       </ul>
-      <div className="mx-auto mt-6 max-w-[64rem] rounded-2xl bg-[#F0C33F] px-6 py-5 text-ink">
+      <div className="mx-auto mt-6 max-w-[77rem] rounded-2xl bg-[#F0C33F] px-6 py-5 text-ink">
         <p className="text-[1rem] font-black">구해줘창업 HQ 오픈매니저가 함께하면 현장이 완전히 달라집니다.</p>
         <p className="mt-1 text-[0.75rem]">사전 가오픈 시뮬레이션부터 3일 현장 직접 지휘까지 체계적으로 세팅합니다.</p>
       </div>
@@ -344,9 +361,9 @@ const steps = [
 
 export function ShowcaseProcess() {
   return (
-    <section className="bg-[#f7f6f4] px-6 py-14 text-ink md:px-10">
+    <section className="bg-[#f7f6f4] px-6 py-14 text-ink md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       <h2 className="text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">이런 분께 추천드립니다 !</h2>
-      <ul className="mx-auto mt-10 grid max-w-[60rem] grid-cols-2 gap-y-8 md:grid-cols-4 md:divide-x md:divide-ink">
+      <ul className="mx-auto mt-10 grid max-w-[77rem] grid-cols-2 gap-y-8 md:grid-cols-4 md:divide-x md:divide-ink">
         {picks.map((p) => (
           <li key={p} className="flex flex-col items-center px-3 text-center">
             <svg viewBox="0 0 24 24" aria-hidden className="size-14 text-[#F0C33F] md:size-16" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 13l5 5L21 5" /></svg>
@@ -358,7 +375,7 @@ export function ShowcaseProcess() {
         <p className="inline-block rounded-full bg-[#2b2b2b] px-8 py-2.5 text-[1rem] font-black text-white md:text-[1.0625rem]">사부님의 레시피</p>
         <h2 className="mt-3 font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">전수 과정 안내</h2>
       </div>
-      <ol className="mx-auto mt-10 grid max-w-[60rem] gap-6 md:grid-cols-4">
+      <ol className="mx-auto mt-10 grid max-w-[77rem] gap-6 md:grid-cols-4">
         {steps.map(([t, d], i) => (
           <RevealLi i={i} key={t} className="relative">
             <p className="text-[0.875rem] font-bold text-neutral-500">{String(i + 1).padStart(2, "0")}</p>
@@ -381,14 +398,14 @@ export function ShowcaseProven({ sales, peakNote, price, startCosts, simSales, s
   const max = Math.max(...d, 1);
   const rows = [["오픈 1개월 차", 0], ["오픈 3개월 차", 1], ["오픈 6개월 차 (안착)", 2]] as const;
   return (
-    <section className="bg-[#161616] px-6 py-14 text-white md:px-10">
+    <section className="bg-[#161616] px-6 py-14 text-white md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       <div className="text-center">
         <p className="text-[0.75rem] tracking-[0.3em] text-[#F0C33F] md:text-[0.9375rem]">PROVEN PERFORMANCE &amp; PROFITABILITY</p>
         <h2 className="mt-3 font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">검증된 매출, <span className="text-[#F0C33F]">현실적인 창업 수익</span></h2>
         <p className="mt-3 text-[0.875rem] text-white/80 md:text-[1rem]">실제 운영 성과를 확인하고, 창업에 필요한 비용과 수익 구조를 살펴보세요.</p>
       </div>
 
-      <div className="mx-auto mt-10 grid max-w-[64rem] gap-6 rounded-2xl border border-white/15 bg-white/[0.04] p-5 md:grid-cols-[1.5fr_1fr] md:p-7">
+      <div className="mx-auto mt-10 grid max-w-[77rem] gap-6 rounded-2xl border border-white/15 bg-white/[0.04] p-5 md:grid-cols-[1.5fr_1fr] md:p-7">
         <div>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="font-gmarket text-[1.25rem] font-black"><span className="text-[#F0C33F]">01.</span> 기존 매장의 매출 성과</p>
@@ -428,7 +445,7 @@ export function ShowcaseProven({ sales, peakNote, price, startCosts, simSales, s
         <span aria-hidden className="hidden h-px w-24 bg-[#F0C33F]/60 sm:block" />그렇다면, 창업하려면 얼마가 필요할까요?<span aria-hidden className="hidden h-px w-24 bg-[#F0C33F]/60 sm:block" />
       </div>
 
-      <div className="mx-auto mt-8 grid max-w-[64rem] gap-5 md:grid-cols-2">
+      <div className="mx-auto mt-8 grid max-w-[77rem] gap-5 md:grid-cols-2">
         <RevealDiv className="rounded-2xl border border-white/15 bg-white/[0.04] p-5 md:p-6">
           <p className="font-gmarket text-[1.25rem] font-black"><span className="text-[#F0C33F]">02.</span> 예상 초기 창업 비용</p>
           <ul className="mt-4 overflow-hidden rounded-lg border border-white/25 text-[0.875rem]">

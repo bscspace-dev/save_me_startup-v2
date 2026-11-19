@@ -2,12 +2,19 @@
 import { youtubeId } from "@/lib/youtube";
 import { PopupLink } from "./PopupLink";
 import { useEffect, useState } from "react";
-import { businessCategories, regions, won, type Listing } from "@/lib/data";
+import { businessCategories, regions, won, type Listing, type TransferReview } from "@/lib/data";
 import { fetchRemoteListing, fetchRemoteListings, fetchRemotePhotos } from "@/lib/remote";
 import { supabase } from "@/lib/supabase";
 import { StateBadges, listingSorts, listingStatuses, listingText, usePeriod } from "./period";
 import { dataUrlToBlob, shrink } from "./imageTools";
 import { Photos } from "./ShopAdmin";
+
+// 손님 후기 입력 폼 값 (모두 문자열)
+type ReviewForm = { name: string; stars: string; visits: string; date: string; text: string; tags: string; from: string };
+const emptyReview = (): ReviewForm => ({ name: "", stars: "5", visits: "", date: "", text: "", tags: "", from: "" });
+const reviewToForm = (r: TransferReview | [string, string]): ReviewForm => (Array.isArray(r)
+  ? { ...emptyReview(), text: r[0], from: r[1] }
+  : { name: r.name ?? "", stars: String(r.stars ?? 5), visits: r.visits ? String(r.visits) : "", date: r.date ?? "", text: r.text, tags: (r.tags ?? []).join(", "), from: r.from ?? "" });
 
 type Cred = { u: string; p: string };
 
@@ -101,7 +108,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
   const [f, setF] = useState({ method: "", videoUrl: "", topTitle: "", heroTitle: "", name: "", store: "", address: "", category: categories[0], price: "", years: "", days: "", menus: "", masterBio: "", sales1: "", sales3: "", sales6: "", peakNote: "", revisit: "", satisfy: "", cost1: "", cost2: "", cost3: "", simSales: "", simMargin: "" });
   const [phil, setPhil] = useState<[string, string][]>([["", ""], ["", ""], ["", ""]]); // 운영 노하우·장사 철학 3가지 [제목, 설명]
   const [menuRows, setMenuRows] = useState<{ name: string; desc: string; tags: string }[]>([0, 1, 2].map(() => ({ name: "", desc: "", tags: "" }))); // 대표 메뉴 (메뉴명·설명·태그, 최대 3개) // 대표 메뉴별 설명 (메뉴 순서대로)
-  const [reviews, setReviews] = useState<[string, string][]>([]); // 손님 후기 [내용, 출처]
+  const [reviews, setReviews] = useState<ReviewForm[]>([]); // 손님 후기 (네이버 리뷰 형식)
   const [photos, setPhotos] = useState<string[]>([]);
   const [detailPhotos, setDetailPhotos] = useState<string[]>([]); // 교육 대표 메뉴 아래에 이어 붙여 보여줄 상세 이미지 (메뉴 사진 뒤에 이어 저장)
   const [menuPhotos, setMenuPhotos] = useState<string[]>([]); // 대표 메뉴 사진 (저장할 때 사부 사진 뒤에 이어 붙인다)
@@ -122,7 +129,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
           price: String(l.price), years: String(t.years), days: String(t.days), menus: String(t.menus), masterBio: t.masterBio ?? "", revisit: String(t.revisit ?? ""), satisfy: String(t.satisfy ?? ""), cost1: String(t.startCosts?.[0] ?? ""), cost2: String(t.startCosts?.[1] ?? ""), cost3: String(t.startCosts?.[2] ?? ""), simSales: String(t.simSales ?? ""), simMargin: t.simMargin ?? "", sales1: String(t.sales?.[0] ?? ""), sales3: String(t.sales?.[1] ?? ""), sales6: String(t.sales?.[2] ?? ""), peakNote: t.peakNote ?? "",
         });
         setPhil([0, 1, 2].map((k) => t.philosophy?.[k] ?? ["", ""]) as [string, string][]);
-        setMenuRows([0, 1, 2].map((k) => ({ name: t.menuNames?.[k] ?? "", desc: t.menuDescs?.[k] ?? (k === 0 ? t.menuDesc ?? "" : ""), tags: (t.menuTags?.[k] ?? []).join(", ") }))); setReviews(t.reviews ?? []); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
+        setMenuRows([0, 1, 2].map((k) => ({ name: t.menuNames?.[k] ?? "", desc: t.menuDescs?.[k] ?? (k === 0 ? t.menuDesc ?? "" : ""), tags: (t.menuTags?.[k] ?? []).join(", ") }))); setReviews((t.reviews ?? []).map(reviewToForm)); const nd = Math.min(t.detailPhotos ?? 0, ph.length); const nm = Math.min(t.menuPhotos ?? 0, ph.length - nd); setPhotos(ph.slice(0, ph.length - nd - nm)); setMenuPhotos(ph.slice(ph.length - nd - nm, ph.length - nd)); setDetailPhotos(ph.slice(ph.length - nd)); setDate(l.date ?? "");
       } else setErr("전수창업을 불러오지 못했습니다.");
       setLoading(false);
     });
@@ -140,7 +147,7 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
     const address = f.address.trim();
     const region = regionOf(address);
     if (!region) return setErr("주소에 구·군 이름이 필요합니다. 예) 대구 중구 계양동");
-    const reviewRows = reviews.map(([x, y]) => [x.trim(), y.trim()] as [string, string]).filter(([x]) => x).slice(0, 3); const price = Number(f.price) || 0;
+    const reviewRows: TransferReview[] = reviews.filter((r) => r.text.trim()).slice(0, 3).map((r) => ({ text: r.text.trim(), name: r.name.trim() || undefined, stars: Number(r.stars) || undefined, visits: Number(r.visits) || undefined, tags: r.tags.split(/[,\n]/).map((x) => x.trim()).filter(Boolean), date: r.date.trim() || undefined, from: r.from.trim() || undefined })); const price = Number(f.price) || 0;
     setBusy(true); setErr("");
     try {
       const thumb = await shrink(await dataUrlToBlob(menuPhotos[0]), 480, 0.7, 40_000);
@@ -284,17 +291,31 @@ function TransferForm({ cred, id, onDone }: { cred: Cred; id: number | null; onD
       <Photos photos={detailPhotos} setPhotos={setDetailPhotos} title="교육 상세 이미지 (선택, 교육 대표 메뉴 아래에 이어 붙여 표시)" lead={false} />
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6">
-        <h2 className="text-[0.9375rem] font-black">손님 후기 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">최대 3개, 비워두면 후기 구간이 나타나지 않습니다</span></h2>
-        <ul className="mt-4 space-y-2">
-          {reviews.map(([x, y], i) => (
-            <li key={i} className="flex gap-2">
-              <input value={x} maxLength={60} onChange={(e) => setReviews(reviews.map((r, k) => (k === i ? [e.target.value, r[1]] : r)))} placeholder="고기 너무 맛있어요! 또 올게요" className={inputCls} />
-              <input value={y} maxLength={30} onChange={(e) => setReviews(reviews.map((r, k) => (k === i ? [r[0], e.target.value] : r)))} placeholder="출처 (네이버리뷰 홍**)" className={`${inputCls} !w-[12rem] shrink-0`} />
-              <button type="button" onClick={() => setReviews(reviews.filter((_, k) => k !== i))} className="shrink-0 rounded border border-neutral-300 px-3 text-[0.75rem] font-bold text-red-600 hover:border-red-400">삭제</button>
-            </li>
-          ))}
-        </ul>
-        {reviews.length < 3 && <button type="button" onClick={() => setReviews([...reviews, ["", ""]])} className="mt-3 rounded border border-dashed border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 hover:border-brand hover:text-brand">+ 후기 추가</button>}
+        <h2 className="text-[0.9375rem] font-black">손님 후기 <span className="ml-1 text-[0.75rem] font-normal text-neutral-400">최대 3개 · 비워두면 후기 구간이 나타나지 않습니다</span></h2>
+        <p className="mt-1 text-[0.6875rem] text-neutral-500">실제 손님이 남긴 후기만 입력해 주세요. 네이버 리뷰 등에서 가져왔다면 출처에 적어 주세요.</p>
+        <div className="mt-4 space-y-4">
+          {reviews.map((r, i) => {
+            const up = (patch: Partial<ReviewForm>) => setReviews(reviews.map((x, k) => (k === i ? { ...x, ...patch } : x)));
+            return (
+              <div key={i} className="rounded-xl border border-neutral-200 p-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <p className="text-[0.75rem] font-black text-neutral-500">후기 {i + 1}</p>
+                  <button type="button" onClick={() => setReviews(reviews.filter((_, k) => k !== i))} className="rounded border border-neutral-300 px-3 py-1 text-[0.75rem] font-bold text-red-600 hover:border-red-400">삭제</button>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Label text="작성자"><input maxLength={12} value={r.name} onChange={(e) => up({ name: e.target.value })} placeholder="홍**" className={inputCls} /></Label>
+                  <Label text="별점"><select value={r.stars} onChange={(e) => up({ stars: e.target.value })} className={inputCls}>{[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{"★".repeat(n)} {n}점</option>)}</select></Label>
+                  <Label text="방문 횟수 (번째)"><input inputMode="numeric" maxLength={3} value={r.visits} onChange={(e) => up({ visits: num(e.target.value) })} placeholder="2" className={inputCls} /></Label>
+                  <Label text="방문일"><input maxLength={12} value={r.date} onChange={(e) => up({ date: e.target.value })} placeholder="2026.10.12" className={inputCls} /></Label>
+                  <div className="sm:col-span-2"><Label text="후기 내용"><textarea rows={3} maxLength={120} value={r.text} onChange={(e) => up({ text: e.target.value })} placeholder="고기 너무 맛있어요! 또 올게요" className={`${inputCls} resize-none`} /></Label></div>
+                  <div className="sm:col-span-2"><Label text="키워드 태그 (쉼표로 구분)"><input value={r.tags} onChange={(e) => up({ tags: e.target.value })} placeholder="음식이 맛있어요, 재료가 신선해요" className={inputCls} /></Label></div>
+                  <div className="sm:col-span-2"><Label text="출처 (선택)"><input maxLength={30} value={r.from} onChange={(e) => up({ from: e.target.value })} placeholder="네이버 리뷰" className={inputCls} /></Label></div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {reviews.length < 3 && <button type="button" onClick={() => setReviews([...reviews, emptyReview()])} className="mt-3 rounded border border-dashed border-neutral-300 px-4 py-2 text-[0.75rem] font-bold text-neutral-500 hover:border-brand hover:text-brand">+ 후기 추가</button>}
       </section>
 
       <div className="flex items-baseline gap-2 pt-4">

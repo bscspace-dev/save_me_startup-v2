@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Consult } from "@/components/ConsultForm";
+import { BackCrumb } from "@/components/BackNav";
+import { ConsultCard } from "@/components/ConsultForm";
 import { YoutubePopup } from "@/components/YoutubePopup";
 
 export const metadata: Metadata = {
@@ -49,24 +50,24 @@ function Ico({ k, className = "size-10" }: { k: string; className?: string }) {
 
 
 function Photo({ label, className = "" }: { label: string; className?: string }) {
-  return <div className={`grid place-items-center rounded-lg bg-[#e9e6df] text-[0.75rem] text-neutral-400 ${className}`}>{label}</div>;
+  return <div className={`grid place-items-center rounded-lg bg-[#e9e6df] text-[0.8125rem] text-neutral-400 ${className}`}>{label}</div>;
 }
 
 function CardHead({ no, title, sub, desc, chapter }: { no: string; title: string; sub?: string; desc: string; chapter?: boolean }) {
   return (
     <div className="bg-[#faf9f5] px-4 pb-3 pt-4">
       <p className="flex items-center gap-2.5">
-        <span className={`rounded-md ${Y} px-2 py-0.5 text-[0.75rem] font-black text-ink`}>{chapter ? `CHAPTER ${no}` : no}</span>
+        <span className={`rounded-md ${Y} px-2 py-0.5 text-[0.8125rem] font-black text-ink`}>{chapter ? `CHAPTER ${no}` : no}</span>
         <b className="text-[1rem] font-black">{title}{sub && <span className="text-[0.8125rem] font-bold"> {sub}</span>}</b>
       </p>
-      <p className="mt-2 text-[0.75rem] leading-[1.6] text-[#2d2d2d]">{desc}</p>
+      <p className="mt-2 text-[0.8125rem] leading-[1.6] text-[#2d2d2d]">{desc}</p>
     </div>
   );
 }
 
-function KV({ rows, w = "5.5rem" }: { rows: [string, string][]; w?: string }) {
+function KV({ rows, w = "5.5rem" }: { rows: [string, React.ReactNode][]; w?: string }) {
   return (
-    <dl className="overflow-hidden rounded-md border border-neutral-200 text-[0.75rem]">
+    <dl className="overflow-hidden rounded-md border border-neutral-200 text-[0.8125rem]">
       {rows.map(([k, v]) => (
         <div key={k} className="grid border-t border-neutral-200 first:border-t-0" style={{ gridTemplateColumns: `${w} 1fr` }}>
           <dt className="bg-[#efefef] px-2.5 py-1.5 font-bold">{k}</dt>
@@ -81,7 +82,7 @@ function Donut({ pct, label, size = "7rem" }: { pct: number; label: string; size
   return (
     <div className="relative grid place-items-center rounded-full" style={{ width: size, height: size, background: `conic-gradient(#F0C33F ${pct * 3.6}deg, #ececec 0)` }}>
       <div className="grid size-[72%] place-items-center rounded-full bg-white text-center">
-        <p className="text-[0.6875rem] font-bold leading-none">{label}<br /><b className="font-gmarket text-[1.375rem] font-black">{pct}%</b></p>
+        <p className="text-[0.8125rem] font-bold leading-none">{label}<br /><b className="font-gmarket text-[1.375rem] font-black">{pct}%</b></p>
       </div>
     </div>
   );
@@ -92,9 +93,9 @@ function Bars({ data, max, unit, hi }: { data: [string, number, string?][]; max:
     <div className="flex h-[10rem] items-end justify-around gap-3 border-b border-l border-neutral-300 px-3 pt-6">
       {data.map(([l, v, s], i) => (
         <div key={l} className="relative flex w-full max-w-[3.5rem] flex-col items-center justify-end">
-          <b className="mb-1 text-[0.75rem]">{v.toLocaleString()}{unit}</b>
+          <b className="mb-1 text-[0.8125rem]">{v.toLocaleString()}{unit}</b>
           <div className={`w-full ${i === hi ? Y : "bg-[#d4d4d4]"}`} style={{ height: `${(v / max) * 6.5}rem` }} />
-          <span className="absolute top-full mt-1 whitespace-nowrap text-center text-[0.6875rem] leading-tight">{l}{s && <><br />{s}</>}</span>
+          <span className="absolute top-full mt-1 whitespace-nowrap text-center text-[0.8125rem] leading-tight">{l}{s && <><br />{s}</>}</span>
         </div>
       ))}
     </div>
@@ -118,15 +119,15 @@ function Block({ no, title, worry, support, note, children }: { no: string; titl
   return (
     <section className="mt-20">
       <h3 className="flex items-center gap-3 font-gmarket text-[1.5rem] font-black md:text-[1.5rem]"><span className="grid size-10 place-items-center rounded-full bg-ink text-[1rem] text-[#F0C33F]">{no}</span>{title}</h3>
-      <div className="mt-5 grid grid-cols-2 text-center text-[0.9375rem] md:text-[1rem]">
+      <div className="mt-5 hidden grid-cols-2 text-center text-[0.9375rem] md:grid md:text-[1rem]">
         <p className="pr-8 font-medium">사장님의 고민</p>
         <p className="font-black">구해줘 창업의 지원</p>
       </div>
-      <div className="relative mt-3 grid min-h-[6.5rem] grid-cols-[1fr_1.2fr] items-center">
-        <p className="whitespace-pre-line rounded-l-full bg-[#d9d9d9] py-5 pl-8 pr-10 text-center text-[0.9375rem] leading-[1.5] md:text-[1rem]">&ldquo;{worry}&rdquo;</p>
-        <p className={`-ml-8 whitespace-pre-line rounded-full ${Y} px-8 py-5 text-center text-[0.9375rem] leading-[1.5] shadow-[0_6px_14px_-6px_rgba(0,0,0,0.35)] md:text-[1rem]`}>{support}</p>
+      <div className="relative mt-5 grid grid-cols-1 gap-3 md:mt-3 md:min-h-[6.5rem] md:grid-cols-[1fr_1.2fr] md:items-center md:gap-0">
+        <p className="rounded-2xl bg-[#d9d9d9] px-6 py-4 text-center text-[0.9375rem] leading-[1.5] lg:whitespace-pre-line md:rounded-l-full md:rounded-r-none md:py-5 md:pl-8 md:pr-10 md:text-[1rem]"><b className="mb-1 block text-[0.8125rem] font-black md:hidden">사장님의 고민</b>&ldquo;{worry}&rdquo;</p>
+        <p className={`rounded-2xl ${Y} px-6 py-4 text-center text-[0.9375rem] leading-[1.5] shadow-[0_6px_14px_-6px_rgba(0,0,0,0.35)] md:-ml-8 lg:whitespace-pre-line md:rounded-full md:px-8 md:py-5 md:text-[1rem]`}><b className="mb-1 block text-[0.8125rem] font-black md:hidden">구해줘 창업의 지원</b>{support}</p>
       </div>
-      {note && <p className="mt-4 text-center"><span className="inline-block bg-ink px-2 py-0.5 text-[0.75rem] text-white">{note}</span></p>}
+      {note && <p className="mt-4 text-center"><span className="inline-block bg-ink px-2 py-0.5 text-[0.8125rem] text-white">{note}</span></p>}
       <div className="mt-6">{children}</div>
     </section>
   );
@@ -188,11 +189,42 @@ const after = [["shop", "업체 노출", "5곳 이상", "1곳 집중 운영으�
 const interiorSteps = [["clip", "STEP 01", "현장 실측·분석"], ["ruler", "STEP 02", "공간 설계(평면도)"], ["cube", "STEP 03", "3D 시뮬레이션"], ["helmet", "STEP 04", "시공 및 현장 관리"], ["shop", "STEP 05", "오픈 준비·완료"]];
 const interiorPoints = [["route", "효율적인\n운영 동선 설계"], ["layers", "공간 활용을 극대화한\n좌석 구성"], ["monitor", "3D 시뮬레이션으로\n사전 확인"], ["helmet", "전문 시공 및\n현장 관리"], ["shield", "오픈까지\n원스톱 지원"]];
 
+const compareRows = [
+  ["진행 방식", "업체마다 따로 계약", "한번의 상담으로 통합 진행"],
+  ["비 용", "중복 비용 발생 가능", "패키지 운영으로 합리적인 비용"],
+  ["일 정", "각 업체 일정이 달라 지연 위험", "전체 일정 통합 관리로 빠른 오픈"],
+  ["관 리", "업체별 커뮤니케이션 부담", "전담 컨설턴트가 끝까지 관리"],
+  ["오픈 이후", "별도 관리 필요", "운영·마케팅까지 지속 지원"],
+];
+
+const principles = [
+  ["01", "예산에 맞는 설계", "창업 조건과 우선순위를 먼저 검토해\n현실적인 예산과 운영 구조를 설계합니다"],
+  ["02", "투명한 진행 과정", "업무 범위와 주요 결정 사항을\n단계별로 안내하며 함께 진행합니다"],
+  ["03", "분야별 전문성", "상권·브랜드·공간·마케팅까지\n각 분야의 전문성을 바탕으로\n실행 가능성을 검토합니다"],
+  ["04", "오픈 이후까지", "매장 오픈 이후에도 운영점검과\n개선방향을 함께 살펴\n지속 가능한 성장을 지원합니다"],
+];
+
+const faqs = [
+  ["창업이 처음인데, 아무것도 몰라도 괜찮을까요?", "물론입니다! 창업 경험이 없어도 괜찮습니다. 희망 업종, 예산, 지역 등 현재 상황을\n함께 확인하고, 창업 방향부터 필요한 준비 과정을 단계별로 안내해 드립니다."],
+  ["창업 비용은 어느 정도 준비해야 하나요?", "창업 비용은 업종, 매장 규모, 입지, 인테리어 범위 등에 따라 달라집니다.\n구해줘창업은 희망 예산과 운영 조건을 검토하고, 필요한 투자 항목과 우선순위를 바탕으로\n현실적인 창업 계획 수립을 지원합니다."],
+  ["아이템이나 매장이 정해지지 않아도 상담할 수 있나요?", "네. 구체적인 아이템이나 점포가 없어도 상담할 수 있습니다.\n관심 업종과 예산, 희망 지역 등을 바탕으로 창업 방향을 함께 검토합니다.\n이미 점포를 확보한 경우에도 현재 조건에 맞춰 필요한 서비스를 안내해 드립니다."],
+  ["창업이 처음인데, 아무것도 몰라도 괜찮을까요?", "물론입니다. 창업 경험이 없어도 괜찮습니다.\n희망 업종, 예산, 지역 등 현재 상황을 함께 확인하고\n창업 방향부터 필요한 준비 과정을 단계별로 안내해 드립니다."],
+  ["필요한 서비스만 선택해서 진행할 수 있나요?", "창업 준비 상황에 따라 상권분석, 브랜딩, 인테리어, 마케팅 등\n필요한 분야를 중심으로 상담할 수 있습니다.\n실제 개별 진행 가능 여부와 비용은 업무 범위 확인 후 안내합니다."],
+  ["상담부터 오픈까지 얼마나 걸리나요?", "진행 기간은 업종, 점포 계약 여부, 인테리어 규모 및\n인허가 절차에 따라 달라집니다. 초기 상담을 통해 현재 준비 단계를 확인하고,\n예상 일정과 단계별 진행 계획을 안내합니다."],
+  ["상담을 받으면 반드시 계약해야 하나요?", "아니요. 초기 상담은 창업 방향과 지원 범위를 확인하는 과정입니다.\n상담 내용을 검토한 후 진행 여부를 결정할 수 있으며,\n계약 조건과 비용은 별도로 안내합니다."],
+  ["매장 오픈 이후에도 도움을 받을 수 있나요?", "오픈 이후에도 마케팅, 매장 운영 점검, 개선 방향 등에 대한 지원을 상담할 수 있습니다.\n구체적인 사후관리 항목과 기간은 선택한 서비스 및 계약 조건에 따라 달라집니다."],
+];
+
 export default function IdentityPage() {
   return (
     <>
       <Header active="신규창업" />
       <main className="overflow-x-clip bg-white">
+        <div className="border-b border-white/10 bg-[#222]">
+          <div className="mx-auto max-w-[80rem] px-6">
+            <BackCrumb href="/" label="메인" current="신규창업 안내" dark className="py-4" />
+          </div>
+        </div>
         {/* 히어로 */}
         <section className="relative overflow-hidden bg-[#222] text-center text-white">
           <div className={`${wrap} pt-10 md:pt-12`}>
@@ -221,7 +253,7 @@ export default function IdentityPage() {
           <div className="relative mx-auto hidden aspect-[520/395] w-full max-w-[44rem] md:block">
             {BUBBLE_POS.map((p, i) => (
               <div key={i}>
-                <p className="absolute flex items-center justify-center whitespace-pre-line rounded-[1.25rem] border border-neutral-200 bg-white text-center text-[0.875rem] leading-[1.55] shadow-[0_3px_8px_rgba(0,0,0,0.18)]" style={{ left: p.bx, top: p.by, width: p.bw, height: p.bh }}>&ldquo;{bubbles[i][1]}&rdquo;</p>
+                <p className="absolute flex items-center justify-center lg:whitespace-pre-line rounded-[1.25rem] border border-neutral-200 bg-white text-center text-[0.875rem] leading-[1.55] shadow-[0_3px_8px_rgba(0,0,0,0.18)]" style={{ left: p.bx, top: p.by, width: p.bw, height: p.bh }}>&ldquo;{bubbles[i][1]}&rdquo;</p>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={`/identity/memoji-${i + 1}.png`} alt="" className="absolute object-contain" style={{ left: p.ax, top: p.ay, width: p.aw }} />
               </div>
@@ -235,7 +267,7 @@ export default function IdentityPage() {
               <div key={i} className="flex items-center gap-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={`/identity/memoji-${face + 1}.png`} alt="" className="size-20 shrink-0 object-contain" />
-                <p className="flex-1 whitespace-pre-line rounded-2xl border border-neutral-200 bg-white px-5 py-5 text-[0.875rem] leading-[1.55] shadow-[0_3px_8px_rgba(0,0,0,0.15)]">&ldquo;{t}&rdquo;</p>
+                <p className="flex-1 lg:whitespace-pre-line rounded-2xl border border-neutral-200 bg-white px-5 py-5 text-[0.875rem] leading-[1.55] shadow-[0_3px_8px_rgba(0,0,0,0.15)]">&ldquo;{t}&rdquo;</p>
               </div>
             ))}
             <h2 className="pt-4 text-center font-gmarket text-[1.75rem] font-black leading-[1.3] tracking-tight">사장님, 혹시 이런 실수<br /><span className="bg-[linear-gradient(transparent_62%,#F0C33F_62%)]">놓치고 계시진 않나요?</span></h2>
@@ -243,13 +275,14 @@ export default function IdentityPage() {
           <Chev />
 
           <p className={`inline-block rounded-full ${Y} px-8 py-3 font-gmarket text-[1.25rem] font-black md:px-16 md:text-[1.5rem]`}>창업 전, 가장 많이 놓치는 4가지 실수</p>
-          <ul className="mx-auto mt-12 grid max-w-[66rem] gap-4 text-left md:grid-cols-2">
-            {mistakes.map(([n, t, ic, d]) => (
+          <ul className="mx-auto mt-12 grid max-w-[77rem] gap-4 text-left md:grid-cols-2">
+            {mistakes.map(([n, t, , d]) => (
               <li key={n} className="rounded-[1.5rem] border border-ink bg-white px-7 pb-4 pt-4">
                 <p className="flex items-baseline gap-4 font-gmarket text-[1.375rem] font-black md:text-[1.5rem]"><span className="text-[#F0C33F]">{n}</span><span className="mr-6 flex-1 border-b border-ink pb-3">{t}</span></p>
                 <div className="mt-4 flex items-center gap-6">
-                  <span className="grid w-20 shrink-0 place-items-center text-[#F0C33F]"><Ico k={ic} className="size-12" /></span>
-                  <p className="whitespace-pre-line text-[0.8125rem] leading-[1.6] md:text-[0.875rem]">{d}</p>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`/identity/mistake-${Number(n)}.png`} alt="" className="-my-3 size-[5.5rem] shrink-0 object-contain md:size-24" />
+                  <p className="lg:whitespace-pre-line text-[0.8125rem] leading-[1.6] md:text-[0.875rem]">{d}</p>
                 </div>
               </li>
             ))}
@@ -262,7 +295,7 @@ export default function IdentityPage() {
 
           <h2 className="font-gmarket text-[1.375rem] font-black tracking-tight md:text-[2.125rem]">구해줘창업의 <span className="inline-block bg-[#fdc928] px-3">ALL-IN-ONE 창업 솔루션</span></h2>
           <p className="mt-4 text-[0.875rem] md:text-[1rem]">기획부터 오픈, 운영까지 하나의 흐름으로 완성하는 토탈 창업 시스템</p>
-          <ul className="mx-auto mt-10 grid max-w-[66rem] gap-x-10 gap-y-4 md:grid-cols-2">
+          <ul className="mx-auto mt-10 grid max-w-[77rem] gap-x-10 gap-y-4 md:grid-cols-2">
             {solutions.map(([n, t, d]) => (
               <li key={n} className="relative rounded-2xl border border-ink bg-white pb-3 pt-2">
                 <span className={`absolute left-3 -top-2 grid h-[3.25rem] w-[3rem] place-items-start rounded-b-[1.5rem] rounded-t-sm ${Y} pl-1.5 pt-1 font-gmarket text-[1.5rem] font-black leading-none`}>{n}</span>
@@ -287,13 +320,13 @@ export default function IdentityPage() {
                 <CardHead no="01" title="창업자 조건 분석" desc={"창업자의 상황과 목표를 진단하여\n가장 적합한 창업 방향을 도출합니다."} />
                 <div className="flex items-center gap-3 p-4">
                   <div className="flex-1"><KV rows={[["가용 예산", "약 1억원"], ["희망 업종", "한식(주물럭 전문점)"], ["운영 형태", "직접 운영(오너 1인)"], ["운영 목표", "월 순이익 800만원 이상"]]} w="4.5rem" /></div>
-                  <div className="shrink-0 rounded-xl bg-[#fff6d8] p-2 text-center"><p className="text-[0.75rem] font-bold">종합 적합도</p><Donut pct={86} label="적합" size="6rem" /></div>
+                  <div className="shrink-0 rounded-xl bg-[#fff6d8] p-2 text-center"><p className="text-[0.8125rem] font-bold">종합 적합도</p><Donut pct={86} label="적합" size="6rem" /></div>
                 </div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="02" title="초기 투자비용 계획" desc={"업종과 매장 규모에 맞춰\n실제 필요한 초기 투자비용을 설계합니다."} />
                 <div className="p-4">
-                  <table className="w-full text-[0.75rem]">
+                  <table className="w-full text-[0.8125rem]">
                     <thead><tr className="bg-[#efefef]"><th className="py-1.5 text-left pl-2">항목</th><th>예상 비용</th><th>비중</th></tr></thead>
                     <tbody>{invest.map(([a, b, c]) => <tr key={a} className="border-t border-neutral-200"><td className="py-1.5 pl-2">{a}</td><td className="text-right">{b}</td><td className="text-right">{c}</td></tr>)}</tbody>
                   </table>
@@ -303,7 +336,7 @@ export default function IdentityPage() {
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="03" title="예상 매출 시뮬레이션" desc={"운영 형태(점심·저녁·배달)를 기준으로\n월 매출을 예측합니다."} />
                 <div className="p-4 pb-10">
-                  <p className="mb-2 ml-auto w-fit rounded-lg border border-[#F0C33F] px-3 py-1 text-[0.75rem] font-bold">월 예상 매출 <b className="text-[1rem]">약 5,625만원</b></p>
+                  <p className="mb-2 ml-auto w-fit rounded-lg border border-[#F0C33F] px-3 py-1 text-[0.8125rem] font-bold">월 예상 매출 <b className="text-[1rem]">약 5,625만원</b></p>
                   <Bars data={[["점심", 1485, "(11:00~15:00)"], ["저녁", 3240, "(17:00~22:00)"], ["배달/포장", 900, "(전체 시간)"]]} max={3240} unit="만원" hi={1} />
                 </div>
               </div>
@@ -313,9 +346,9 @@ export default function IdentityPage() {
                 <CardHead no="04" title="예상 수익구조" sub="(월 기준)" desc={"매출 대비 고정비와 변동비를 분석하고,\n예상 영업이익을 산출합니다."} />
                 <div className="flex flex-wrap items-center gap-4 p-4">
                   <div className="relative grid size-36 shrink-0 place-items-center rounded-full" style={{ background: "conic-gradient(#F0C33F 0 126deg, #f7dd8a 0 209deg, #ececec 0 252deg, #bdbdbd 0 288deg, #6b6b6b 0 360deg)" }}>
-                    <div className="grid size-[58%] place-items-center rounded-full bg-white text-center text-[0.75rem] font-bold leading-tight">매출<br /><b className="text-[1rem]">5,625만원</b><br />기준</div>
+                    <div className="grid size-[58%] place-items-center rounded-full bg-white text-center text-[0.8125rem] font-bold leading-tight">매출<br /><b className="text-[1rem]">5,625만원</b><br />기준</div>
                   </div>
-                  <ul className="min-w-[14rem] flex-1 space-y-1.5 text-[0.75rem]">
+                  <ul className="min-w-[14rem] flex-1 space-y-1.5 text-[0.8125rem]">
                     {profit.map(([a, b, c]) => <li key={a} className="flex items-center justify-between gap-3 border-b border-neutral-100 pb-1"><span className="flex items-center gap-2"><i className="inline-block size-3" style={{ background: c }} />{a}</span><span>{b}</span></li>)}
                   </ul>
                 </div>
@@ -323,7 +356,7 @@ export default function IdentityPage() {
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="05" title="창업 운영 로드맵" desc="준비부터 오픈, 안정 운영까지 단계별로 체계적으로 지원합니다." />
-                <div className="grid grid-cols-2 gap-px p-4 text-center text-[0.75rem] md:grid-cols-4">
+                <div className="grid grid-cols-2 gap-px p-4 text-center text-[0.8125rem] md:grid-cols-4">
                   {road.map(([s, t, w, bs], i) => (
                     <div key={s as string}>
                       <p className={`py-2 font-bold ${i === 3 ? Y : "bg-[#e3e3e3]"}`}>{s}<br />{t}</p>
@@ -343,24 +376,24 @@ export default function IdentityPage() {
                 <CardHead no="01" title="상권 핵심 데이터" desc="지역의 기본 상권 현황을 수치로 파악합니다." />
                 <div className="flex items-center gap-3 p-4">
                   <div className="flex-1"><KV rows={[["분석 지역", "도심 상권 인근"], ["일 평균\n유동인구", "19,200명"], ["주요 방문층", "20~40대"], ["주 이용\n시간대", "점심·저녁 중심"]]} w="5rem" /></div>
-                  <div className="shrink-0 text-center"><Donut pct={84} label="적합도" size="6rem" /><p className="mt-2 rounded bg-[#fde58f] px-2 py-0.5 text-[0.75rem] font-bold">상권 적합</p></div>
+                  <div className="shrink-0 text-center"><Donut pct={84} label="적합도" size="6rem" /><p className="mt-2 rounded bg-[#fde58f] px-2 py-0.5 text-[0.8125rem] font-bold">상권 적합</p></div>
                 </div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="02" title="유동인구 분석" desc="시간대별 유입 흐름과 소비 가능성을 분석합니다." />
                 <div className="p-4 pb-10">
-                  <p className="mb-2 ml-auto w-fit rounded-lg border border-[#F0C33F] px-3 py-1 text-[0.75rem] font-bold">피크 시간 저녁</p>
+                  <p className="mb-2 ml-auto w-fit rounded-lg border border-[#F0C33F] px-3 py-1 text-[0.8125rem] font-bold">피크 시간 저녁</p>
                   <Bars data={[["오전", 120], ["점심", 280], ["오후", 190], ["저녁", 310]]} max={310} hi={3} />
                 </div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="03" title="경쟁 점포 분석" desc="인근 경쟁 업종과 포화도를 검토합니다." />
                 <div className="flex items-center gap-3 p-4">
-                  <table className="flex-1 text-center text-[0.75rem]">
+                  <table className="flex-1 text-center text-[0.8125rem]">
                     <thead><tr className="bg-[#efefef]"><th className="py-1.5">업종</th><th>점포 수</th><th>특징</th></tr></thead>
                     <tbody>{compete.map(([a, b, c]) => <tr key={a} className="border-t border-neutral-200"><td className="py-1.5 font-bold">{a}</td><td>{b}</td><td>{c}</td></tr>)}</tbody>
                   </table>
-                  <div className="shrink-0 rounded-xl bg-[#fff6d8] p-3 text-center text-[0.75rem] font-bold">경쟁 강도<span className="mx-auto mt-2 grid size-14 place-items-center rounded-full border-4 border-[#F0C33F] bg-white text-[0.9375rem] font-black">보통</span></div>
+                  <div className="shrink-0 rounded-xl bg-[#fff6d8] p-3 text-center text-[0.8125rem] font-bold">경쟁 강도<span className="mx-auto mt-2 grid size-14 place-items-center rounded-full border-4 border-[#F0C33F] bg-white text-[0.9375rem] font-black">보통</span></div>
                 </div>
               </div>
             </div>
@@ -381,7 +414,7 @@ export default function IdentityPage() {
                   <div className={`${Y} rounded-2xl p-4 text-center`}>
                     <p className="mx-auto w-fit rounded-full bg-white px-5 py-1 text-[0.9375rem] font-black">추천 업종</p>
                     <p className="mt-3 font-gmarket text-[1.5rem] font-black">한식·소형 외식업</p>
-                    <p className="mt-3 border-t border-ink/50 pt-2 text-[0.75rem]">점심·저녁 복합 운영에 유리한 상권입니다.</p>
+                    <p className="mt-3 border-t border-ink/50 pt-2 text-[0.8125rem]">점심·저녁 복합 운영에 유리한 상권입니다.</p>
                   </div>
                 </div>
               </div>
@@ -393,19 +426,19 @@ export default function IdentityPage() {
             <div className="grid gap-3 lg:grid-cols-[1fr_1.35fr_1.2fr]">
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="01" title="브랜드 전략 수립" desc={"업종 특성과 타깃에 맞는\n브랜드 방향성과 콘셉트를 설계합니다."} />
-                <div className="p-4"><KV rows={[["업종", "돼지고기 전문점"], ["타깃 고객", "가족, 직장인, 지역주민"], ["브랜드 키워드", "#정겨움  #푸근함  #활기찬"], ["디자인 방향", "전통적 감성 + 현대적 실용성"]]} w="5.5rem" /></div>
+                <div className="p-4"><KV rows={[["업종", "돼지고기 전문점"], ["타깃 고객", "가족, 직장인, 지역주민"], ["브랜드 키워드", <span key="kw" className="flex flex-wrap gap-1.5">{["정겨움", "푸근함", "활기찬"].map((t) => <span key={t} className="rounded-full bg-[#fde58f] px-2.5 py-0.5 text-[0.8125rem] font-bold">#{t}</span>)}</span>], ["디자인 방향", "전통적 감성 + 현대적 실용성"]]} w="5.5rem" /></div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="02" title="네이밍 & 로고 개발" desc={"브랜드 콘셉트에 맞는 상호명과\n차별화된 로고를 개발합니다."} />
-                <div className="grid grid-cols-3 gap-2 p-4 text-center text-[0.75rem]">
+                <div className="grid grid-cols-3 gap-5 p-4 text-center text-[0.8125rem]">
                   {["초안 스케치", "시안 보완", "최종 로고"].map((t, i) => (
-                    <div key={t}><div className={`grid aspect-square place-items-center rounded-lg ${i === 2 ? "bg-white font-gmarket text-[1.25rem] font-black" : "bg-[#f2f2f2] text-neutral-400"}`}>{i === 2 ? "민|수|네" : "로고"}</div><p className="mt-2 rounded-full bg-[#efefef] px-2 py-0.5 font-bold">{t}</p></div>
+                    <div key={t}><div className="relative"><div className="relative aspect-square overflow-hidden rounded-lg bg-white">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={["/identity/logo-1.jpg", "/identity/logo-2.png", "/identity/logo-3.png"][i]} alt={t} className="absolute inset-0 size-full object-contain p-1.5" /></div>{i < 2 && <svg aria-hidden viewBox="0 0 24 24" className="absolute -right-[1.0625rem] top-1/2 z-10 size-4 -translate-y-1/2 text-[#F0C33F]" fill="currentColor"><path d="M8 3l11 9-11 9z" /></svg>}</div><p className="mt-2 rounded-full bg-[#efefef] px-2 py-0.5 font-bold">{t}</p></div>
                   ))}
                 </div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="03" title="브랜드 아이덴티티(BI·CI)" desc={"로고를 기반으로 매장에서 사용하는\n모든 브랜드 요소를 일관되게 제작합니다."} />
-                <div className="grid grid-cols-[1fr_1fr] gap-3 p-4 text-[0.6875rem]">
+                <div className="grid grid-cols-[1fr_1fr] gap-3 p-4 text-[0.8125rem]">
                   <div><p className="rounded bg-[#efefef] px-2 py-1 font-bold">브랜드 컬러</p><div className="mt-2 flex gap-1.5">{["#1A1A1A", "#D62828", "#FFF4E6"].map((c) => <span key={c} className="size-9 rounded-full border border-neutral-200" style={{ background: c }} />)}</div><p className="mt-1.5">#1A1A1A #D62828 #FFF4E6</p></div>
                   <div><p className="rounded bg-[#efefef] px-2 py-1 font-bold">지정 폰트</p><p className="mt-1 font-gmarket text-[1.5rem] font-black">가나다Aa</p><p>제목 : 프리텐다드 Bold<br />본문 : 프리텐다드 Regular</p></div>
                 </div>
@@ -415,7 +448,7 @@ export default function IdentityPage() {
               {[["04", "공간 브랜딩", "(인테리어)", "브랜드 콘셉트를 공간에 반영하여\n매장의 분위기와 경험 가치를 높입니다.", "매장 인테리어 이미지"], ["05", "매장 사인물 & 메뉴 디자인", "", "매장 운영에 필요한 사인물과 메뉴판을\n통일감 있게 디자인합니다.", "사인물·메뉴판 이미지"], ["06", "브랜드 적용 확장", "", "포장, 유니폼, 집기 등 매장 운영 전반에\n브랜드를 일관되게 적용합니다.", "포장·유니폼 이미지"]].map(([n, t, s, d, p]) => (
                 <div key={n} className={`${card} overflow-hidden`}>
                   <CardHead no={n} title={t} sub={s} desc={d} />
-                  <div className="p-3"><Photo label={p} className="aspect-[16/10]" /></div>
+                  <div className="p-3"><div className={`relative aspect-[4/3] overflow-hidden rounded-lg ${n === "06" ? "bg-[#1c1510]" : "bg-[#e9e6df]"}`}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/brand-${Number(n)}.jpg`} alt={p} loading="lazy" className={`absolute inset-0 size-full ${n === "06" ? "object-contain" : "object-cover"}`} /></div></div>
                 </div>
               ))}
             </div>
@@ -428,23 +461,39 @@ export default function IdentityPage() {
               <b className="shrink-0 rounded-lg bg-[#fde58f] px-4 py-3 text-[0.9375rem] font-black">인테리어 시공<br />진행 과정</b>
               <ol className="grid flex-1 gap-2 sm:grid-cols-2 lg:grid-cols-5">
                 {interiorSteps.map(([ic, s, t]) => (
-                  <li key={s} className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-[0.75rem] font-bold shadow-sm"><span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#fff1bd]"><Ico k={ic} className="size-5" /></span><span><span className="block text-[0.75rem] font-black">{s}</span>{t}</span></li>
+                  <li key={s} className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-[0.8125rem] font-bold shadow-sm"><span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#fff1bd]"><Ico k={ic} className="size-5" /></span><span><span className="block text-[0.8125rem] font-black">{s}</span>{t}</span></li>
                 ))}
               </ol>
             </div>
             <div className="mt-3 grid gap-3 lg:grid-cols-3">
-              {[["공간 설계", "(평면도)", "운영 동선과 좌석 효율을 고려한 최적의 공간 구성을 설계합니다.", "평면도 이미지"], ["3D 시뮬레이션", "", "실제 시공 전, 3D로 매장의 전체 분위기와 공간 구성을 미리 확인할 수 있습니다.", "3D 도면 이미지"], ["시공 및 현장 관리", "", "설계한 플랜을 바탕으로 시공부터 현장 관리까지 체계적으로 진행합니다.", "시공 현장 이미지"]].map(([t, s, d, p]) => (
+              {[["공간 설계", "(평면도)", "운영 동선과 좌석 효율을 고려한 최적의 공간 구성을 설계합니다.", "평면도 이미지"], ["3D 시뮬레이션", "", "실제 시공 전, 3D로 매장의 전체 분위기와 공간 구성을 미리 확인할 수 있습니다.", "3D 도면 이미지"], ["시공 및 현장 관리", "", "설계한 플랜을 바탕으로 시공부터 현장 관리까지 체계적으로 진행합니다.", "시공 현장 이미지"]].map(([t, s, d, p], i) => (
                 <div key={t} className={`${card} overflow-hidden p-4`}>
                   <p className="flex items-center gap-2 text-[1.125rem] font-black"><span className={`h-5 w-1.5 ${Y}`} />{t}{s && <span className="text-[0.8125rem]">{s}</span>}</p>
-                  <p className="mt-2 text-[0.75rem] leading-[1.6]">{d}</p>
-                  <Photo label={p} className="mt-3 aspect-[4/3]" />
+                  <p className="mt-2 min-h-[2.6rem] text-[0.8125rem] leading-[1.6]">{d}</p>
+                  {i < 2 ? (
+                    <div className="relative mt-3 aspect-[4/3] overflow-hidden rounded-lg border border-neutral-200 bg-white">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={i === 0 ? "/identity/interior-plan.jpg" : "/identity/interior-3d.jpg"} alt={p} loading="lazy" className="absolute inset-0 size-full scale-110 object-contain" />
+                    </div>
+                  ) : (
+                    <div className="mt-3 grid aspect-[4/3] grid-rows-[3fr_2fr] gap-1.5 rounded-lg border border-neutral-200 bg-white p-1.5">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/identity/interior-site-1.jpg" alt={p} loading="lazy" className="size-full min-h-0 rounded-lg object-cover" />
+                      <div className="grid min-h-0 grid-cols-2 gap-1.5">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/identity/interior-site-2.jpg" alt={p} loading="lazy" className="size-full min-h-0 rounded-lg object-cover" />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/identity/interior-site-3.jpg" alt={p} loading="lazy" className="size-full min-h-0 rounded-lg object-cover" />
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
             <div className="mt-4 flex flex-col gap-3 rounded-xl bg-[#fffaea] p-2 lg:flex-row lg:items-center">
               <b className={`${Y} shrink-0 rounded-lg px-5 py-3 text-center text-[1.125rem] font-black`}>인테리어 시공 지원 포인트</b>
-              <ul className="grid flex-1 grid-cols-2 gap-3 px-2 text-[0.75rem] md:grid-cols-5">
-                {interiorPoints.map(([ic, t]) => <li key={t} className="flex items-center gap-2"><span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#fff1bd]"><Ico k={ic} className="size-5" /></span><span className="whitespace-pre-line">{t}</span></li>)}
+              <ul className="grid flex-1 grid-cols-2 gap-3 px-2 text-[0.8125rem] md:grid-cols-5">
+                {interiorPoints.map(([ic, t]) => <li key={t} className="flex items-center gap-2"><span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#fff1bd]"><Ico k={ic} className="size-5" /></span><span className="lg:whitespace-pre-line">{t}</span></li>)}
               </ul>
             </div>
           </Block>
@@ -454,28 +503,25 @@ export default function IdentityPage() {
             <div className="grid gap-3 lg:grid-cols-[1fr_1.2fr_1fr]">
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="01" title="집기·설비 선정 및 세팅" desc="업종과 매장 규모에 맞는 핵심 집기와 설비를 선정하고, 배치와 세팅까지 지원합니다." />
-                <div className="p-3"><Photo label="주방 설비 이미지" className="aspect-[4/3]" /></div>
+                <div className="p-3"><div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-[#e9e6df]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/identity/open-kitchen.jpg" alt="주방 설비 세팅" loading="lazy" className="absolute inset-0 size-full object-cover" /></div></div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="02" title="운영 매뉴얼(SOP) 제작·제공" desc="매장 운영, 조리, 서비스, 위생, 고객응대 등 실무에 바로 적용 가능한 표준 운영 절차(SOP)를 제공합니다." />
-                <div className="grid grid-cols-[1fr_1fr] gap-2 p-3">
-                  <div className="grid place-items-center rounded-lg bg-ink p-4 text-center text-white"><p><Ico k="clip" className="mx-auto size-12 text-[#F0C33F]" /><b className="mt-2 block text-[1.25rem]">매장 운영<br />SOP</b><span className="text-[0.625rem]">(Standard Operating Procedure)</span></p></div>
-                  <div className="rounded-lg border border-neutral-200 p-3"><p className="text-[0.75rem] font-bold">운영 SOP 목차</p><ul className="mt-2 space-y-1.5 text-[0.75rem]">{sopList.map((t) => <li key={t} className="flex items-center gap-2"><span className={`grid size-4 place-items-center rounded ${Y}`}><Ico k="check" className="size-3" /></span>{t}</li>)}</ul></div>
-                </div>
+                <div className="p-3">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/identity/open-sop.jpg" alt="매장 운영 SOP와 운영 SOP 목차" loading="lazy" className="h-auto w-full rounded-lg" /></div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="03" title="오픈 준비 체크리스트" desc="오픈 일정에 맞춰 인허가, 물품준비, 인력세팅, 마케팅까지 모든 준비사항을 단계별로 점검합니다." />
                 <ul className="space-y-1.5 p-3">
                   {checklist.map(([ic, t, d]) => (
-                    <li key={t} className="flex items-center gap-3 rounded-lg bg-[#fffaea] px-3 py-2"><Ico k={ic} className="size-7 shrink-0" /><span className="flex-1"><b className="block text-[0.8125rem]">{t}</b><span className="text-[0.6875rem]">{d}</span></span><span className={`grid size-6 place-items-center rounded-full ${Y}`}><Ico k="check" className="size-4" /></span></li>
+                    <li key={t} className="flex items-center gap-3 rounded-lg bg-[#fffaea] px-3 py-2"><Ico k={ic} className="size-7 shrink-0" /><span className="flex-1"><b className="block text-[0.8125rem]">{t}</b><span className="text-[0.8125rem]">{d}</span></span><span className={`grid size-6 place-items-center rounded-full ${Y}`}><Ico k="check" className="size-4" /></span></li>
                   ))}
                 </ul>
               </div>
             </div>
             <div className={`${card} mt-3 p-4`}>
-              <p className="flex flex-wrap items-center gap-3"><b className={`${Y} rounded-lg px-4 py-1.5 text-[1.0625rem] font-black`}>주요 집기·설비 예시</b><span className="text-[0.75rem]">*업종(한식, 고깃집, 주점 등)과 매장 규모에 따라 실제 구성은 달라집니다.</span></p>
-              <ul className="mt-4 grid grid-cols-2 gap-3 text-center text-[0.75rem] font-medium sm:grid-cols-5 lg:grid-cols-10">
-                {items.map((t) => <li key={t}><div className="aspect-square rounded-lg bg-[#efefef]" /><p className="mt-1.5 leading-tight">{t}</p></li>)}
+              <p className="flex flex-wrap items-center gap-3"><b className={`${Y} rounded-lg px-4 py-1.5 text-[1.0625rem] font-black`}>주요 집기·설비 예시</b><span className="text-[0.8125rem]">*업종(한식, 고깃집, 주점 등)과 매장 규모에 따라 실제 구성은 달라집니다.</span></p>
+              <ul className="mt-4 grid grid-cols-2 gap-3 text-center text-[0.8125rem] font-medium sm:grid-cols-5 lg:grid-cols-10">
+                {items.map((t, i) => <li key={t}><div className="relative aspect-[260/248] bg-white">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/open-item-${i + 1}.jpg`} alt={t} loading="lazy" className="absolute inset-0 size-full object-contain" /></div><p className="mt-1.5 leading-tight">{t}</p></li>)}
               </ul>
             </div>
             <Effect label="오픈 준비 지원 효과" items={["빠짐없는 오픈 준비", "표준화된 매장 운영(SOP)", "효율적인 인력 관리", "안정적인 초기 운영", "오픈 후 지속 지원"]} />
@@ -488,26 +534,26 @@ export default function IdentityPage() {
               {chapters.map(([n, t, d, p]) => (
                 <div key={n} className={`${card} overflow-hidden`}>
                   <div className="bg-[#faf9f5] px-4 pb-3 pt-4">
-                    <p className="flex items-center gap-2"><span className={`rounded-md ${Y} px-2 py-0.5 text-[0.75rem] font-black`}>CHAPTER {n}</span><b className="text-[1rem] font-black">{t}</b></p>
-                    <p className="mt-2 whitespace-pre-line text-[0.75rem] leading-[1.6]">{d}</p>
+                    <p className="flex items-center gap-2"><span className={`rounded-md ${Y} px-2 py-0.5 text-[0.8125rem] font-black`}>CHAPTER {n}</span><b className="text-[1rem] font-black">{t}</b></p>
+                    <p className="mt-2 lg:whitespace-pre-line text-[0.8125rem] leading-[1.6]">{d}</p>
                   </div>
-                  <div className="p-3"><Photo label={p} className="aspect-[4/3]" /></div>
+                  <div className="p-3"><div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-white">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/marketing-${Number(n)}.jpg`} alt={p} loading="lazy" className={`absolute inset-0 size-full ${n === "1" ? "object-cover object-left" : "object-contain"}`} /></div></div>
                 </div>
               ))}
             </div>
             <div className="mt-3 grid gap-3 lg:grid-cols-2">
-              <div className={`${card} p-5`}>
+              <div className={`${card} min-w-0 p-5`}>
                 <p className="flex items-center gap-2"><span className={`h-5 w-1.5 ${Y}`} /><b className="text-[1.125rem] font-black">운영 모니터링 &amp; 성과 분석</b></p>
-                <p className="mt-2 text-[0.75rem] leading-[1.6]">오픈 이후에도 매출, 유입, 리뷰 등 주요 지표를 분석해<br />지속적인 개선 방향을 제안합니다.</p>
+                <p className="mt-2 text-[0.8125rem] leading-[1.6]">오픈 이후에도 매출, 유입, 리뷰 등 주요 지표를 분석해<br />지속적인 개선 방향을 제안합니다.</p>
                 <div className="mt-4 grid gap-4 md:grid-cols-[1.4fr_1fr]">
                   <div>
-                    <p className="flex items-center gap-1.5 text-[0.75rem] font-bold"><i className={`inline-block size-2.5 rounded-full ${Y}`} />플레이스 조회수</p>
+                    <p className="flex items-center gap-1.5 text-[0.8125rem] font-bold"><i className={`inline-block size-2.5 rounded-full ${Y}`} />플레이스 조회수</p>
                     <div className="relative mt-2 flex h-36 items-end justify-between border-b border-l border-neutral-300 px-3 pb-0">
                       {views.map(([l, v]) => (
                         <div key={l} className="relative flex-1">
                           <div className="mx-auto w-px bg-[#F0C33F]/60" style={{ height: `${(v / 350) * 7}rem` }} />
-                          <span className="absolute left-1/2 -translate-x-1/2 text-[0.75rem] font-bold" style={{ bottom: `${(v / 350) * 7 + 0.3}rem` }}>{v}<i className={`mx-auto mt-0.5 block size-2.5 rounded-full ${Y}`} /></span>
-                          <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap text-[0.6875rem]">{l}</span>
+                          <span className="absolute left-1/2 -translate-x-1/2 text-[0.8125rem] font-bold" style={{ bottom: `${(v / 350) * 7 + 0.3}rem` }}>{v}<i className={`mx-auto mt-0.5 block size-2.5 rounded-full ${Y}`} /></span>
+                          <span className="absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap text-[0.8125rem]">{l}</span>
                         </div>
                       ))}
                     </div>
@@ -515,16 +561,16 @@ export default function IdentityPage() {
                   </div>
                   <ul className="space-y-2">
                     {[["users", "전화 문의", "6건", "19건"], ["cursor", "플레이스 클릭", "18건", "72건"], ["bars", "리뷰 · 후기 수", "42건", "148건"]].map(([ic, t, a, b]) => (
-                      <li key={t} className="flex items-center gap-3 rounded-xl bg-[#fff6d8] px-3 py-2"><Ico k={ic} className="size-7 shrink-0" /><span className="text-[0.75rem]">{t}<b className="block text-[0.9375rem]">{a} <span className="text-[#F0A800]">→</span> {b}</b></span></li>
+                      <li key={t} className="flex items-center gap-3 rounded-xl bg-[#fff6d8] px-3 py-2"><Ico k={ic} className="size-7 shrink-0" /><span className="text-[0.8125rem]">{t}<b className="block text-[0.9375rem]">{a} <span className="text-[#F0A800]">→</span> {b}</b></span></li>
                     ))}
                   </ul>
                 </div>
               </div>
-              <div className={`${card} p-5`}>
+              <div className={`${card} min-w-0 p-5`}>
                 <p className="flex items-center gap-2"><span className={`h-5 w-1.5 ${Y}`} /><b className="text-[1.125rem] font-black">사후관리 &amp; 운영 개선 제안</b></p>
-                <p className="mt-2 text-[0.75rem] leading-[1.6]">운영 데이터를 기반으로 매출 유지와 효율적인 매장 운영을 위한<br />지속적인 케어를 제공합니다.</p>
+                <p className="mt-2 text-[0.8125rem] leading-[1.6]">운영 데이터를 기반으로 매출 유지와 효율적인 매장 운영을 위한<br />지속적인 케어를 제공합니다.</p>
                 <div className="mt-4 overflow-x-auto">
-                  <table className="w-full min-w-[26rem] border-separate border-spacing-y-1.5 text-[0.75rem]">
+                  <table className="w-full min-w-[26rem] border-separate border-spacing-y-1.5 text-[0.8125rem]">
                     <thead><tr><th className="rounded bg-[#efefef] py-1.5">운영 항목</th><th className="rounded bg-[#efefef] py-1.5">기존 운영</th><th /><th className={`rounded ${Y} py-1.5`}>개선 제안</th></tr></thead>
                     <tbody>
                       {after.map(([ic, a, b, c]) => (
@@ -544,7 +590,79 @@ export default function IdentityPage() {
           </Block>
         </div>
 
-        <Consult title="신규창업 상담신청" only="신규창업" />
+        {/* 차별점 · 원칙 · Q&A · 상담 */}
+        <section className="bg-[#222] text-center text-white">
+          <div className={`${wrap} pb-24 pt-14 md:pt-16`}>
+            <h2 className="font-gmarket text-[1.75rem] font-light leading-[1.35] md:text-[2.375rem]">
+              창업의 <b className="font-black text-[#F0C33F]">차이</b>는,<br />
+              <b className="font-black text-[#F0C33F]">준비</b>의 <b className="font-black">디테일</b>에서 <b className="font-black text-[#F0C33F]">시작됩니다.</b>
+            </h2>
+            <p className="mt-8 text-[0.875rem] leading-[1.7] text-white/90 md:text-[1.0625rem]">
+              <b>구해줘창업</b>은 개별 서비스의 제공을 넘어,<br />창업 전 과정을 <b>하나의 전략으로 연결</b>합니다.
+            </p>
+
+            <div className="mx-auto mt-10 max-w-[77rem] overflow-x-auto">
+              <table className="w-full min-w-[32rem] border-collapse text-[0.875rem] text-ink md:text-[1rem]">
+                <thead>
+                  <tr>
+                    <th className="w-[5.5rem] bg-[#b9b9b9] py-3" />
+                    <th className="border border-[#222] bg-[#e3e3e3] py-3 font-medium">개별 업체 진행</th>
+                    <th className={`border border-[#222] ${Y} py-3 font-black`}>구해줘창업 올인원 시스템</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {compareRows.map(([k, a, b]) => (
+                    <tr key={k}>
+                      <th className="border border-[#222] bg-[#f1f1f1] py-3 font-black">{k}</th>
+                      <td className="border border-[#222] bg-white py-3">{a}</td>
+                      <td className="border border-[#222] bg-[#fff3cf] py-3 font-medium">{b}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* TRUST */}
+            <p className="mt-20 font-gmarket text-[1.125rem] font-bold tracking-wide text-[#F0C33F]">TRUST</p>
+            <h2 className="mt-5 font-gmarket text-[1.75rem] font-black leading-[1.4] md:text-[2.375rem]">
+              구해줘 창업이<br />
+              <span className="mt-2 inline-flex items-center gap-3 md:gap-4">지키는 <b className="text-[5rem] font-black leading-none text-[#F0C33F] md:text-[6.5rem]">4</b> 가지 원칙</span>
+            </h2>
+            <ul className="relative mx-auto mt-10 grid max-w-[77rem] md:grid-cols-2">
+              <span aria-hidden className="absolute inset-y-0 left-1/2 hidden w-px bg-white/30 md:block" />
+              <span aria-hidden className="absolute inset-x-0 top-1/2 hidden h-px bg-white/30 md:block" />
+              {principles.map(([n, t, d]) => (
+                <li key={n} className="px-6 py-8 md:py-10">
+                  <p className="text-[1rem] font-bold text-[#F0C33F]">{n}</p>
+                  <p className="mt-3 font-gmarket text-[1.375rem] font-black md:text-[1.5rem]">{t}</p>
+                  <p className="mt-6 lg:whitespace-pre-line text-[0.875rem] leading-[1.7] text-white/80 md:text-[0.9375rem]">{d}</p>
+                </li>
+              ))}
+            </ul>
+
+            {/* Q&A */}
+            <h2 className="mt-20 font-gmarket text-[2.75rem] font-black leading-none text-[#F0C33F] md:text-[3.75rem]">Q&amp;A</h2>
+            <p className="mt-6 text-[1.125rem] font-bold md:text-[1.25rem]">창업 전에 가장 많이 궁금해하는 질문</p>
+            <p className="mt-1 text-[0.875rem] text-white/80">예비창업자가 자주 묻는 질문을 모았습니다!</p>
+            <ul className="mx-auto mt-8 max-w-[77rem] space-y-3 text-left">
+              {faqs.map(([q, a]) => (
+                <li key={q} className="overflow-hidden rounded-2xl bg-white text-ink">
+                  <p className="flex items-center gap-3 bg-[#fdecb0] px-4 py-3 text-[0.9375rem] font-black md:text-[1.0625rem]"><span className="font-gmarket text-[1.5rem] font-black text-[#F0C33F]">Q.</span>{q}</p>
+                  <p className="flex items-center gap-3 px-4 py-4 text-[0.875rem] leading-[1.65] md:text-[0.9375rem] text-[#2d2d2d]"><span className="font-gmarket text-[2rem] font-black leading-none">A.</span><span className="lg:whitespace-pre-line">{a}</span></p>
+                </li>
+              ))}
+            </ul>
+
+            {/* 상담 */}
+            <div id="consult" className="scroll-mt-24">
+              <p className="mt-20 font-gmarket text-[1.125rem] font-bold tracking-wide text-[#F0C33F]">FREE CONSULTAITON</p>
+              <h2 className="mt-3 font-gmarket text-[1.75rem] font-black md:text-[2.375rem]">무료 상담으로 창업의 방향을 구체화하세요!</h2>
+              <div className="mx-auto mt-10 max-w-[77rem] text-left">
+                <ConsultCard title="간편 상담 신청" only="신규창업" wide />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
       <YoutubePopup />

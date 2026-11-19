@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import Link from "next/link";
+import { BackCrumb, HomeButton } from "@/components/BackNav";
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -17,13 +17,13 @@ export default function ListingsPage() {
       </Suspense>
       <main className="min-h-[70vh] bg-[#f5f2f2]">
         <div className="mx-auto max-w-[80rem] px-6 pt-8">
-          <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-4 py-2 text-[0.8125rem] font-bold text-ink transition hover:brightness-95">← 메인으로</Link>
+          <BackCrumb href="/" label="메인" current="어떤 창업을 찾고 계신가요?" />
         </div>
         <Suspense>
           <ListingsView />
         </Suspense>
         <div className="mx-auto max-w-[80rem] px-6 pb-12 text-right">
-          <Link href="/" className="inline-block rounded-lg bg-[#F0C33F] px-10 py-4 text-[0.875rem] font-bold text-ink transition hover:brightness-95">← 메인으로 돌아가기</Link>
+          <HomeButton />
         </div>
       </main>
       <Footer />
