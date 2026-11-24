@@ -37,7 +37,7 @@ export function MainPopups() {
               {popups.map((p, i) => shown[i] && (
                 <motion.div
                   key={p.src}
-                  className="relative w-full max-w-[27.5rem] overflow-hidden rounded-2xl bg-white shadow-2xl"
+                  className="relative w-fit max-w-full overflow-hidden rounded-2xl bg-white shadow-2xl"
                   initial={{ scale: 0.92, y: 20 }}
                   animate={{ scale: 1, y: 0 }}
                   exit={{ scale: 0.92, opacity: 0 }}
@@ -46,7 +46,7 @@ export function MainPopups() {
                 >
                   <button onClick={() => close(i)} aria-label="닫기" className="absolute right-3 top-3 z-10 grid size-10 place-items-center rounded-full bg-white text-[1.125rem] font-bold text-ink shadow-lg ring-2 ring-black/20 transition hover:bg-neutral-100">✕</button>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.src} alt={p.alt} className="block w-full" />
+                  <img src={p.src} alt={p.alt} className="block h-auto max-h-[calc(100svh-11.5rem)] w-auto max-w-[min(24rem,calc(100vw-2rem))]" />
                   <div className="flex border-t border-neutral-200 text-[0.8125rem] font-bold">
                     <button onClick={() => { hideFor24h(p.src); close(i); }} className="flex-1 py-3 text-neutral-500 hover:bg-neutral-50">24시간 동안 보지 않기</button>
                     <button onClick={() => close(i)} className="flex-1 border-l border-neutral-200 py-3 hover:bg-neutral-50">닫기</button>
