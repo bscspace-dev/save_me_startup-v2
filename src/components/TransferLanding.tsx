@@ -38,7 +38,7 @@ function SecHead({ eyebrow, title, side, dark, center }: { eyebrow: string; titl
         <p className={`text-[0.6875rem] font-bold tracking-[0.14em] text-[#A97C0A]`}>
           {eyebrow}
         </p>
-        <h2 className={`mt-3 text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket text-ink`}>{title}</h2>
+        <h2 className={`mt-3 text-[1.5rem] md:text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket text-ink`}>{title}</h2>
       </div>
       {side && <p className={`max-w-[22rem] text-[0.75rem] leading-relaxed text-neutral-600`}>{side}</p>}
     </div>
@@ -73,7 +73,7 @@ export function MasterSection({ name, photo, quote, bio, sales, peakNote, middle
           </div>
           <div>
             <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>THE MASTER</p>
-            <h2 className="mt-4 font-black leading-[1.35] tracking-tight font-gmarket text-[1.75rem] md:text-[2.125rem]">맛의 기준을 나누는<br /><Highlight>{name} 사부</Highlight></h2>
+            <h2 className="mt-4 font-black leading-[1.35] tracking-tight font-gmarket text-[1.5rem] md:text-[2.125rem]">맛의 기준을 나누는<br /><Highlight>{name} 사부</Highlight></h2>
             {quote || bio ? (
               <div className="mt-6">
                 {quote && <p className="whitespace-pre-line text-[1.0625rem] font-black leading-[1.6] text-ink">&ldquo;{quote}&rdquo;</p>}
@@ -178,7 +178,7 @@ export function MenuSection({ name, names, srcs, desc, embedded }: { name: strin
   const content = (<>
         <div className="text-center">
           <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>SIGNATURE MENU</p>
-          <h2 className="mt-3 text-[1.75rem] font-black leading-[1.35] tracking-tight font-gmarket md:text-[2.125rem]">손님이 줄 서는 이유,<br /><Highlight>{name} 사부</Highlight>의 대표메뉴</h2>
+          <h2 className="mt-3 text-[1.5rem] font-black leading-[1.35] tracking-tight font-gmarket md:text-[2.125rem]">손님이 줄 서는 이유,<br /><Highlight>{name} 사부</Highlight>의 대표메뉴</h2>
           <p className="mt-3 text-[0.8125rem] leading-relaxed text-neutral-600">가게의 중심이 되는 메뉴를 <b className="text-ink">사부가 직접 1:1로 전수</b>합니다.<br /><b className="text-ink">레시피부터 조리 기준, 원가 관리까지</b> 한 번에 배웁니다.</p>
         </div>
         <ul className={`mx-auto mt-10 grid gap-5 ${n === 1 ? "max-w-[21rem]" : n === 2 ? "max-w-[42rem] md:grid-cols-2" : "max-w-[64rem] md:grid-cols-3"}`}>
@@ -231,7 +231,7 @@ export function CostComparison() {
       <div className="px-8 md:px-10">
         <div className="text-center">
           <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>COST COMPARISON</p>
-          <h2 className="mt-3 text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">왜 프랜차이즈가 아닌 &apos;전수창업&apos; 인가?</h2>
+          <h2 className="mt-3 text-[1.5rem] md:text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">왜 프랜차이즈가 아닌 &apos;전수창업&apos; 인가?</h2>
           <p className="mt-3 text-[0.8125rem] text-neutral-600">가맹비, 로열티, 인테리어 중간 마진 등 불필요한 거품을 싹 <b className={YEL}>빼</b>고 전수비 하나로 해결하세요.</p>
         </div>
         <div className="mx-auto mt-10 grid max-w-[56rem] gap-5 md:grid-cols-2">
@@ -298,7 +298,7 @@ export function AllInOne() {
       <div className="px-8 md:px-10">
         <div className="text-center">
           <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>ALL-IN-ONE BRAND LAUNCH</p>
-          <h2 className="mt-3 text-[1.75rem] font-black leading-[1.35] tracking-tight font-gmarket md:text-[2.125rem]">외주 전달용 겉치레가 아닙니다.<br /><Highlight>분야별 실전 전문가 집단</Highlight>이 만드는 원스톱 브랜딩</h2>
+          <h2 className="mt-3 text-[1.5rem] font-black leading-[1.35] tracking-tight font-gmarket md:text-[2.125rem]">외주 전달용 겉치레가 아닙니다.<br /><Highlight>분야별 실전 전문가 집단</Highlight>이 만드는 원스톱 브랜딩</h2>
           <p className="mt-4 text-[0.8125rem] leading-[1.9] text-neutral-600">각기 다른 외주업체를 찾느라 시간을 낭비하지 마세요.<br />구해줘창업의 분야별 전담 전문가 팀이 기획부터 마케팅까지 하나로 유기적으로 연결합니다.</p>
         </div>
         <ul className="mx-auto mt-10 max-w-[68rem] space-y-4">
@@ -451,7 +451,7 @@ export function CalendarSection() {
       <div className="px-8 md:px-10">
         <div className="text-center">
           <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${YEL}`}>FROM PLAN TO OPEN</p>
-          <h2 className="mt-3 text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">D-30 ~ D-Day 당신의 오픈을 위한 30일 캘린더</h2>
+          <h2 className="mt-3 text-[1.5rem] md:text-[1.625rem] font-black leading-[1.3] tracking-tight font-gmarket">D-30 ~ D-Day 당신의 오픈을 위한 30일 캘린더</h2>
           <p className="mt-3 text-[0.8125rem] text-neutral-600">핵심 1단계 과정을 공개합니다. 이후 단계의 상세 일정은 1:1 창업 상담 시 자세히 안내해 드립니다.</p>
         </div>
         <div className="mx-auto mt-10 max-w-[64rem] space-y-4">

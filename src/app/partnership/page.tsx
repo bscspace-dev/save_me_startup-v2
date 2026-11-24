@@ -22,7 +22,7 @@ export default function PartnershipPage() {
       <main className="bg-[#f7f6f4]">
         <div className="mx-auto max-w-[53.75rem] px-6 py-14">
           <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-[#D49F12]">PARTNERSHIP</p>
-          <h1 className="mt-2 font-gmarket text-[1.875rem] font-black tracking-tight md:text-[2.25rem]">광고·제휴 문의</h1>
+          <h1 className="mt-2 font-gmarket text-[1.625rem] font-black tracking-tight md:text-[2.25rem]">광고·제휴 문의</h1>
           <p className="mt-4 text-[0.875rem] leading-relaxed text-neutral-600">
             구해줘창업과 함께 창업 시장의 신뢰를 만들어갈 파트너를 기다립니다. 아래 양식으로 문의를 남겨주시면 검토 후 연락드립니다.
           </p>

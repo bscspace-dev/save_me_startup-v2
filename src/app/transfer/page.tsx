@@ -13,39 +13,10 @@ export const metadata: Metadata = {
 };
 
 const wrap = "mx-auto max-w-[80rem] px-6";
-const h2 = "font-gmarket font-black tracking-tight text-[1.75rem] leading-[1.3] md:text-[2.375rem]";
-const hl = "inline bg-[linear-gradient(transparent_62%,#fdd981_62%)]";
+const h2 = "font-gmarket font-black tracking-tight text-[1.5rem] leading-[1.3] md:text-[2.375rem]";
 
-const reasons = [
-  ["낮은 초기비용", "불필요한 가맹비·인테리어\n마진 없이 시작 가능"],
-  ["로열티 0%", "매월 납부하는\n고정 비용이 없어\n수익을 그대로 확보"],
-  ["검증된 노하우 전수", "14년 운영으로 검증된\n레시피와 매장 운영 노하우를\n그대로 전수"],
-  ["유연한 운영", "브랜드 제약 없이\n내 상권과 스타일에 맞춰\n자유롭게 운영 가능"],
-];
-
-const items = [
-  ["초기비용", "(가맹비·교육비 등)", "약 1,593만원", "약 1,840만원", "1,000만원"],
-  ["로열티", "", "월 매출 0~3%", "0%", "0%"],
-  ["5년간 로열티", "(월매출 3,000만원 가정)", "약 3,600만원", "0원", "0원"],
-  ["차액가맹금", "(유통마진)", "브랜드별 상이\n(연간 수백만원)", "없음", "없음"],
-];
-
-const rows = [
-  ["상권분석·점포선정", "△", "X"],
-  ["브랜드 기획 및 BI 개발", "X", "X"],
-  ["인테리어·3D 설계", "△", "X"],
-  ["마케팅·홍보 세팅", "△", "X"],
-  ["내 매장 전용 SOP북", "X", "X"],
-  ["사부님 직접 전수·평가", "△", "△"],
-];
-
-const worries = [
-  ["01", "요리 경험이 없어도 창업할 수 있을까요?", "레시피 교육부터 조리 실습, 재료 관리까지. 초보자도 단계별로 익힐 수 있도록 전수 과정을 설계합니다.", "레시피·조리 교육"],
-  ["02", "맛은 배워도 매장 운영은 처음인데요?", "식재료 발주, 원가 관리, 고객 응대, 매장 운영까지. 실무에 필요한 운영 노하우를 SOP북과 함께 전달합니다.", "실전 운영 시스템"],
-  ["03", "좋은 상권을 어떻게 선택해야 하죠?", "희망 지역과 예산, 업종 특성을 종합적으로 검토해 매장에 적합한 입지와 상권을 함께 분석합니다.", "상권 분석·입지 컨설팅"],
-  ["04", "인테리어와 브랜딩도 따로 준비해야 하나요?", "브랜드 기획부터 공간 디자인, 간판, 메뉴판까지. 오픈에 필요한 디자인 요소를 통합적으로 지원합니다.", "원스톱 브랜딩"],
-  ["05", "오픈하고 손님이 없으면 어떡하죠?", "오픈 전 홍보 전략부터 플레이스 관리, 지역 마케팅까지. 초기 고객 유입을 위한 실행 계획을 함께 수립합니다.", "오픈 마케팅 지원"],
-];
+const recommend = ["외식업 창업이 처음이라 준비가 막막한 분", "검증된 레시피와 조리 기술을 배우고 싶은 분", "메뉴 구성부터 매장 운영까지 체계적으로 배우고 싶은 분", "나만의 브랜드로 매장을 운영하고 싶은 분"];
+const learn = [["레시피 및 조리 기술", "대표 메뉴 레시피, 조리 실습"], ["식재료·원가 관리", "식재료 수급 / 원가 계산 / 손익 관리"], ["주방 운영 노하우", "조리 동선 / 인력 운영 / 품질 관리"], ["매장 운영 실무", "오픈 준비 / 운영 관리 / 고객 응대"]];
 
 const steps = [
   ["STEP 01", "상담 신청", "희망 업종·지역·예산 등\n창업 상담"],
@@ -93,8 +64,6 @@ function Pict({ k, className = "size-8" }: { k: string; className?: string }) {
   return <svg viewBox="0 0 24 24" aria-hidden className={className} fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{P[k]}</svg>;
 }
 
-const mark = (v: string) => v === "●" ? <span className="inline-block size-3 rounded-full bg-[#8a2a0c]" /> : v;
-
 export default function TransferPage() {
   return (
     <>
@@ -110,7 +79,7 @@ export default function TransferPage() {
           <div className={`${wrap} pb-14 pt-12 text-center`}>
             <Reveal>
               <p className="font-gmarket text-[1.25rem] font-bold md:text-[1.375rem]">구해줘 창업 <span className="mx-2 font-light">|</span> <span className="font-medium">전수창업</span></p>
-              <h1 className="mt-4 font-gmarket text-[3rem] font-black leading-none tracking-tight md:text-[3.5rem]">전수창업<span className="font-light">이란?</span></h1>
+              <h1 className="mt-4 font-gmarket text-[2.25rem] font-black leading-none tracking-tight md:text-[3.5rem]">전수창업<span className="font-light">이란?</span></h1>
               <p className="mt-6 text-[0.9375rem] md:text-[1.125rem]">검증된 사부의 기술과 운영 노하우를 직접 배워 내 가게로 시작하는 실전형 창업 방식입니다.</p>
             </Reveal>
 
@@ -127,7 +96,7 @@ export default function TransferPage() {
                   {[[165, 262, "기술"], [480, 190, "노하우"], [795, 133, "운영방식"]].map(([x, y, t]) => (
                     <g key={t as string}>
                       <circle cx={x as number} cy={y as number} r="18" fill="#222" stroke="#b98a1c" strokeWidth="6" />
-                      <rect x={(x as number) - 52} y={(y as number) - 72} width="104" height="46" rx="23" fill="#fff" stroke="#b98a1c" strokeWidth="3" />
+                      <rect x={(x as number) - 70} y={(y as number) - 72} width="140" height="46" rx="23" fill="#fff" stroke="#b98a1c" strokeWidth="3" />
                       <text x={x as number} y={(y as number) - 40} textAnchor="middle" fontSize="28" fontWeight="800" fill="#222">{t}</text>
                     </g>
                   ))}
@@ -137,7 +106,7 @@ export default function TransferPage() {
                 <div className="grid grid-cols-3 gap-2 text-center">
                   {[["실무 기술 전수", "조리법과 서비스 방식 등\n매장운영에 필요한\n실무 기술을 배웁니다."], ["운영 노하우 전수", "상품 구성, 거래처, 마케팅 등\n실제 매장에서 쌓인\n운영 노하우를 전수받습니다."], ["매장 운영 방식 습득", "메뉴얼과 교육을 통해\n안정적으로 매장을\n운영하는 방법을 익힙니다."]].map(([t, d]) => (
                     <div key={t} className="px-2">
-                      <h3 className="text-[0.9375rem] font-black md:text-[1.375rem]">{t}</h3>
+                      <h3 className="font-gmarket text-[0.9375rem] font-black md:text-[1.375rem]">{t}</h3>
                       <p className="mt-4 md:whitespace-pre-line text-[0.75rem] leading-[1.7] md:text-[0.9375rem]">{d}</p>
                     </div>
                   ))}
@@ -148,189 +117,109 @@ export default function TransferPage() {
           </div>
         </section>
 
-        {/* 2. 왜 프랜차이즈가 아닌 전수창업인가 */}
-        <section className={`${wrap} pb-16 pt-20 text-center`}>
+        {/* 2. 이런 분들께 추천 */}
+        <section className={`${wrap} pb-14 pt-16 text-center`}>
           <Reveal>
-            <h2 className={`${h2} text-white`}>왜 프랜차이즈가 아닌 &lsquo;전수창업&rsquo;인가?</h2>
-            <p className="mt-5 text-[0.8125rem] text-white/70 md:text-[0.9375rem]">가맹비, 로열티, 인테리어 중간 마진 등 불필요한 거품을 싹 빼고 전수비 하나로 해결하세요.</p>
+            <h2 className="font-gmarket text-[1.5rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]">이런분들께 <span className="text-[#F0C33F]">추천</span>합니다!</h2>
           </Reveal>
-          <ul className="mx-auto mt-12 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-4">
-            {reasons.map(([t, d]) => (
-              <li key={t}>
-                <p className="rounded-2xl bg-[#3a3118] py-3 text-[1.0625rem] font-bold text-[#F0C33F] md:text-[1.25rem]">{t}</p>
-                <p className="mt-5 md:whitespace-pre-line text-[0.75rem] leading-[1.6] text-white/85 md:text-[0.9375rem]">{d}</p>
-              </li>
-            ))}
-          </ul>
-          <div className="mx-auto mt-10 border-y border-white/40 py-8">
-            <p className="font-gmarket text-[1.125rem] font-medium leading-[1.6] md:text-[1.625rem]">불필요한 비용은 줄이고, 성공 노하우만 가져가는<br />가장 현실적인 창업 방법, 바로 <span className="text-[#F0C33F]">전수창업</span>입니다.</p>
-          </div>
-        </section>
-
-        {/* 3. 경쟁력 */}
-        <section className={`${wrap} pb-20 text-center`}>
-          <Reveal>
-            <h2 className={`${h2} text-white`}>&lsquo;구해줘 창업&rsquo;<span className="font-light">만의</span> 경쟁력</h2>
-          </Reveal>
-          <div className="mt-10 grid gap-3 lg:grid-cols-2">
-            {/* 5년 총 창업비용 비교 */}
-            <div className="rounded-[1.75rem] border border-white/15 bg-[#161616] p-5 text-left">
-              <p className="flex flex-wrap items-center gap-3"><span className="rounded-full border border-[#F0C33F] px-5 py-1.5 text-[1.125rem] font-black text-[#F0C33F]">5년 총 창업비용 비교</span><span className="text-[0.75rem] text-white/80">(일식 업종 평균 기준)</span></p>
-              <div className="relative mt-6 flex h-[19rem] items-end gap-6 pb-14 pl-14 pr-2">
-                <span className="absolute left-0 top-0 text-[0.75rem] text-white/70">(만원)</span>
-                <div className="absolute bottom-14 left-12 top-6 w-px bg-white/60" />
-                <div className="absolute bottom-14 left-12 right-0 h-px bg-white/60" />
-                <div className="absolute bottom-14 left-0 top-6 flex w-11 flex-col justify-between text-right text-[0.6875rem] text-white/80">
-                  {[20000, 18000, 16000, 14000, 12000, 10000, 8000, 6000, 4000, 2000, 0].map((n) => <span key={n}>{n.toLocaleString()}</span>)}
-                </div>
-                {[["18,193만원", 90, "bg-[#9a9a9a]", "프랜차이즈", "(평균)"], ["1,840만원", 9, "bg-[#9a9a9a]", "기존 전수창업", "(평균)"], ["1,000만원", 5, "bg-[#F0C33F]", "구해줘창업", "(전수창업)"]].map(([v, h, c, a, b]) => (
-                  <div key={a as string} className="relative flex-1 text-center">
-                    <p className="absolute inset-x-0 text-[0.8125rem] font-bold" style={{ bottom: `calc(${h}% * 1.0 + 0.25rem)` }}>{v}</p>
-                    <div className={`${c} mx-auto w-full`} style={{ height: `${(h as number) * 2.3}%` , maxHeight: "13rem" }} />
-                    <p className="absolute inset-x-0 top-full pt-2 text-[0.75rem] font-bold leading-snug">{a}<br /><span className="font-normal">{b}</span></p>
-                  </div>
-                ))}
-                <div className="absolute right-4 top-2 grid size-36 place-items-center rounded-full border-2 border-[#F0C33F] bg-black/60 text-center">
-                  <div><p className="text-[0.6875rem]">기존 전수창업 대비</p><p className="text-[0.875rem] font-bold text-[#F0C33F]">약 <b className="text-[1.75rem]">46%</b></p><p className="text-[0.8125rem] font-bold text-[#F0C33F]">비용 절감</p></div>
-                </div>
-              </div>
-            </div>
-
-            {/* 항목별 비교 */}
-            <div className="rounded-[1.75rem] border border-white/15 bg-[#161616] p-5 text-left">
-              <p className="inline-block rounded-full border border-[#F0C33F] px-5 py-1.5 text-[1.125rem] font-black text-[#F0C33F]">항목별 비교</p>
-              <table className="mt-4 w-full border-collapse text-center text-[0.75rem] md:text-[0.875rem]">
-                <thead>
-                  <tr className="bg-[#3c3c3c] text-[0.75rem]">
-                    <th className="py-2">구분</th>
-                    <th className="border-l border-white/20 py-2">프랜차이즈<br /><span className="font-normal">(평균)</span></th>
-                    <th className="border-l border-white/20 py-2">기존 전수창업<br /><span className="font-normal">(평균)</span></th>
-                    <th className="bg-[#F0C33F] py-2 text-[#222]">구해줘창업<br /><span className="font-normal">(전수창업)</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map(([k, s, a, b, c]) => (
-                    <tr key={k} className="border-t border-white/20 bg-[#262626]">
-                      <th className="px-2 py-3 text-[0.8125rem] font-bold">{k}{s && <><br /><span className="text-[0.6875rem] font-normal">{s}</span></>}</th>
-                      <td className="whitespace-pre-line border-l border-white/20 py-3">{a}</td>
-                      <td className="border-l border-white/20 py-3">{b}</td>
-                      <td className="border-l border-white/20 py-3 font-black text-[#F0C33F]">{c}</td>
-                    </tr>
-                  ))}
-                  <tr className="border-t border-white/20 bg-[#3c3c3c]">
-                    <th className="py-4 text-[1rem] font-black">5년 총비용</th>
-                    <td className="border-l border-white/20 py-4 font-bold">약 18,193만원</td>
-                    <td className="border-l border-white/20 py-4 font-bold">약 1,840만원</td>
-                    <td className="bg-[#F0C33F] py-4 text-[1.125rem] font-black text-[#222]">1,000만원</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <ul className="mx-auto mt-10 grid gap-4 md:grid-cols-3">
-            {[["1,000만원", "가맹비 없이\n창업 준비부터 오픈까지"], ["로열티 0%", "매달 본사에 내는 돈이 없습니다"], ["SOP북 제공", "레시피부터 매장 운영까지\n실전 매뉴얼 제공"]].map(([t, d]) => (
-              <li key={t} className="rounded-2xl border border-[#F0C33F]/70 px-4 py-9">
-                <p className="font-gmarket text-[1.75rem] font-black text-[#F0C33F] md:text-[2rem]">{t}</p>
-                <p className="mt-4 md:whitespace-pre-line text-[0.8125rem] leading-[1.6] md:text-[0.9375rem]">{d}</p>
+          <div className="mt-8 border-t-2 border-[#F0C33F]" />
+          <ul className="mx-auto mt-8 max-w-[56rem] space-y-3 text-left">
+            {recommend.map((t) => (
+              <li key={t} className="flex items-center gap-4 rounded-full bg-[#faf6ee] px-5 py-3 text-[#222] md:gap-4 md:px-6 md:py-3.5">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#F0C33F] md:size-10"><svg viewBox="0 0 24 24" className="size-5 md:size-6" fill="none" stroke="#111" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 12.5l5 5L20 6" /></svg></span>
+                <span className="text-[0.9375rem] font-bold md:text-[1.25rem]">{t}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        {/* 4. 같은 돈을 쓰더라도 */}
-        <section className={`${wrap} pb-20 text-center`}>
-          <h2 className={`${h2} text-white`}>같은 돈을 쓰더라도 남는 건 다릅니다</h2>
-          <div className="mx-auto mt-10 overflow-x-auto">
-            <table className="w-full min-w-[32rem] border-collapse text-[0.875rem] md:text-[1rem]">
-              <thead>
-                <tr className="bg-[#9a9a9a] text-[#222]">
-                  <th className="w-[30%] border border-white/70 py-4" />
-                  <th className="border border-white/70 py-4 font-medium">프랜차이즈</th>
-                  <th className="border border-white/70 py-4 font-medium">기존 전수창업</th>
-                  <th className="border border-white/70 py-4 font-medium text-[#8a2a0c]">구해줘창업</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map(([k, a, b]) => (
-                  <tr key={k}>
-                    <th className="border border-white/70 py-5 font-medium">{k}</th>
-                    <td className="border border-white/70 py-5">{a}</td>
-                    <td className="border border-white/70 py-5">{b}</td>
-                    <td className="border border-white/70 bg-[#d39583] py-5">{mark("●")}</td>
-                  </tr>
+        {/* 3. 현장의 전문가가 전수합니다 */}
+        <section className={`${wrap} pb-14 text-center`}>
+          <Reveal>
+            <h2 className="font-gmarket text-[1.375rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]"><span className="text-[#F0C33F]">현장의 전문가</span>가 전수합니다</h2>
+          </Reveal>
+          <div className="mt-6 border-t-2 border-[#F0C33F]" />
+          <div className="mx-auto mt-8 grid max-w-[60rem] items-center gap-6 text-left md:grid-cols-[1fr_1fr] md:gap-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/identity/experts.webp" alt="현장 전문가 사부님들" className="mx-auto w-full max-w-[28rem] md:max-w-none md:border-r-2 md:border-white/30 md:pr-4" />
+            <div className="md:pl-8">
+              <p className="text-[0.9375rem] leading-[1.5] md:text-[1.25rem]">실제 매장 운영 경험이 있는<br />전문가에게 배우는</p>
+              <p className="mt-3 font-gmarket text-[1.5rem] font-black text-[#F0C33F] md:text-[2.375rem]">실전 노하우</p>
+              <ul className="mt-6 divide-y divide-white/30 border-t border-white/30 text-[0.875rem] font-bold md:text-[1.0625rem]">
+                {["다년간의 매장 운영 경험", "검증된 메뉴와 조리 노하우", "현장에서 바로 적용 가능한 실무 교육"].map((t) => (
+                  <li key={t} className="flex items-center gap-3 py-3 md:py-4">
+                    <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#F0C33F] md:size-8"><svg viewBox="0 0 24 24" className="size-4 md:size-5" fill="none" stroke="#111" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 12.5l5 5L20 6" /></svg></span>{t}
+                  </li>
                 ))}
-              </tbody>
-            </table>
-            <p className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-1 text-left text-[0.75rem] md:text-[0.875rem]">
-              <span><span className="mr-2 inline-block size-3.5 rounded-full bg-white align-middle" />포함</span>
-              <span>△ 일부·본사 방식</span>
-              <span>X 별도 또는 없음</span>
-              <span className="ml-auto">기존 전수창업은 레시피 중심 전수 방식 기준입니다.</span>
-            </p>
+              </ul>
+            </div>
           </div>
         </section>
 
-        {/* 5. 걱정되시나요 */}
-        <section className={`${wrap} pb-20`}>
-          <h2 className="text-center font-gmarket text-[1.75rem] font-black leading-[1.3] tracking-tight text-[#F0C33F] md:text-[2.375rem]">전수창업, 이런 부분이 걱정되시나요?</h2>
-          <ul className="mx-auto mt-10 space-y-3">
-            {worries.map(([n, q, a, tag]) => (
-              <Reveal key={n}>
-                <li className="rounded-2xl bg-[#333] px-5 py-5 md:px-6">
-                  <p className="flex items-baseline gap-3 text-[1rem] font-bold md:text-[1rem]"><span className="text-[0.9375rem] text-[#F0C33F]">{n}</span>{q}</p>
-                  <p className="mt-3 text-[0.8125rem] text-white/75 md:text-[0.9375rem]">{a}</p>
-                  <span className="mt-3 inline-block rounded-md bg-[#4a3f1e] px-3 py-1 text-[0.75rem] font-bold text-[#F0C33F]">{tag}</span>
-                </li>
-              </Reveal>
+        {/* 4. 무엇을 배우게 되나요 */}
+        <section className={`${wrap} pb-16 text-center`}>
+          <Reveal>
+            <h2 className="font-gmarket text-[1.5rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]">무엇을 배우게 되나요?</h2>
+          </Reveal>
+          <div className="mt-6 border-t-2 border-[#F0C33F]" />
+          <p className="mt-4 text-[0.875rem] md:text-[1rem]">레시피만이 아닌, 매장 운영에 필요한 실전 노하우까지 배울 수 있습니다.</p>
+          <ul className="mx-auto mt-6 grid max-w-[60rem] gap-3 sm:grid-cols-2">
+            {learn.map(([t, d]) => (
+              <li key={t} className="rounded-xl bg-white px-4 py-4 text-[#222]">
+                <p className="font-gmarket text-[1.125rem] font-black md:text-[1.375rem]">{t}</p>
+                <p className="mt-1 text-[0.8125rem] md:text-[0.9375rem]">{d}</p>
+              </li>
             ))}
           </ul>
-          <p className="mt-20 text-center font-gmarket text-[1.5rem] font-bold leading-[1.45] md:text-[2.375rem]">
-            <span className="font-light">창업</span>의 고민<span className="font-light">은</span> 줄이고,<br />
-            <span className="font-light">준비</span>의 완성도<span className="font-light">는</span> 높이고 !<br />
-            구해줘창업<span className="font-light">이</span> 시작<span className="font-light">부터</span> 오픈<span className="font-light">까지</span> 함께합니다.
-          </p>
         </section>
+
 
         {/* 6. 진행과정 (노랑) */}
         <section className="bg-[#F0C33F] text-[#222]">
-          <div className={`${wrap} py-16 text-center`}>
-            <h2 className={`${h2}`}><span className={hl}>구해줘창업 진행과정</span></h2>
-            <p className="mt-5 text-[1rem] font-medium md:text-[1.125rem]">상담부터 오픈까지, 체계적인 절차로 함께합니다.</p>
-            <ol className="mt-10 flex flex-col items-stretch gap-3 md:flex-row md:items-center md:gap-0">
+          <div className={`${wrap} py-12 text-center md:py-16`}>
+            <h2 className="font-gmarket text-[1.5rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]">구해줘창업만의 지원 서비스</h2>
+            <p className="mt-4 text-[0.875rem] md:text-[1rem]">기술 전수부터 오픈 이후 운영까지, 창업에 필요한 전 과정을 함께 지원합니다.</p>
+            <div className="mt-4 border-t-2 border-[#222]" />
+            <ol className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 text-left md:grid-cols-5 md:gap-x-0">
+              {oneStep.map(([n, t, ds], i) => (
+                <li key={n} className="relative md:px-2">
+                  <p className="text-[1rem] font-bold">{n}</p>
+                  <p className="font-gmarket mt-1 border-b border-[#222] pb-1 text-center text-[1.125rem] font-black md:text-[1.375rem]">{t}</p>
+                  <ul className="mt-3 space-y-1.5 text-center text-[0.8125rem] md:text-[0.9375rem]">{ds.map((d) => <li key={d}>{d}</li>)}</ul>
+                  {i < oneStep.length - 1 && <span aria-hidden className="absolute -right-1.5 top-7 hidden text-[0.75rem] md:block">▶</span>}
+                </li>
+              ))}
+            </ol>
+
+            <h2 className="mt-12 font-gmarket text-[1.5rem] font-black leading-[1.3] tracking-tight md:mt-20 md:text-[2.375rem]">전수창업 진행과정</h2>
+            <div className="mt-4 border-t-2 border-[#222]" />
+            <ol className="mt-6 flex flex-col items-stretch gap-2 md:mt-10 md:flex-row md:items-center md:gap-0">
               {steps.map(([s, t, d], i) => (
                 <li key={s} className="flex flex-1 items-center">
-                  <div className="flex-1 rounded-3xl bg-[#222] px-3 py-5 text-white">
-                    <p className="text-[1.25rem] text-[#F0C33F] md:text-[1.25rem]">{s}</p>
-                    <p className="mt-3 text-[1rem] font-bold md:text-[1rem]">{t}</p>
-                    <p className="mt-3 md:whitespace-pre-line text-[0.75rem] leading-[1.5]">{d}</p>
+                  <div className="grid flex-1 grid-cols-[4.5rem_1fr] items-center gap-x-3 rounded-2xl bg-[#222] px-4 py-3 text-left text-white md:block md:rounded-3xl md:px-3 md:py-5 md:text-center">
+                    <p className="row-span-2 text-[0.875rem] font-bold leading-tight text-[#F0C33F] md:text-[1.25rem] md:font-normal">{s}</p>
+                    <p className="text-[0.9375rem] font-bold md:mt-3 md:text-[1rem]">{t}</p>
+                    <p className="mt-0.5 text-[0.75rem] leading-[1.45] md:mt-3 md:whitespace-pre-line">{d}</p>
                   </div>
                   {i < steps.length - 1 && <span aria-hidden className="mx-1 hidden text-[1.125rem] md:block">▶</span>}
                 </li>
               ))}
             </ol>
 
-            <h2 className={`${h2} mt-20`}><span className={hl}>창업은 처음이어도 준비는 전문가 답게</span></h2>
-            <p className="mt-5 text-[1rem] font-medium md:text-[1.125rem]">구해줘창업이 전수창업의 전 과정을 ONE-STEP으로 도와드립니다.</p>
-            <ol className="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 text-left md:grid-cols-5">
-              {oneStep.map(([n, t, ds]) => (
-                <li key={n}>
-                  <p className="text-[1.125rem] font-bold text-[#222]/60">{n}</p>
-                  <p className="mt-1 border-b border-[#222] pb-2 text-[1.375rem] font-black">{t}</p>
-                  <ul className="mt-3 space-y-1.5 text-center text-[0.9375rem]">{ds.map((d) => <li key={d}>{d}</li>)}</ul>
-                </li>
-              ))}
-            </ol>
-
-            <h2 className={`${h2} mt-20`}><span className={hl}>분야별 전문가가 단계마다 책임집니다</span></h2>
-            <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <h2 className="mt-12 font-gmarket text-[1.25rem] font-black leading-[1.3] tracking-tight md:mt-20 md:text-[2.375rem]">분야별 전문가가 단계마다 책임집니다</h2>
+            <div className="mt-4 border-t-2 border-[#222]" />
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2 md:mt-10 lg:grid-cols-5">
               {experts.map(([role, t, ds]) => (
-                <li key={role} className="rounded-3xl border border-[#222] px-4 pb-6 pt-5 text-center">
-                  <div className="mx-auto size-40 rounded-full bg-[#222]" />
-                  <p className="mt-6 text-[0.9375rem]">{role}</p>
-                  <p className="mt-2 text-[1.125rem] font-bold">{t}</p>
-                  <p className="mt-6 text-left text-[0.8125rem] font-bold">주요경력</p>
-                  <ul className="mt-2 space-y-1 text-left text-[0.8125rem] leading-[1.5]">{ds.map((d) => <li key={d}>·{d}</li>)}</ul>
+                <li key={role} className="grid grid-cols-[4rem_1fr] items-center gap-x-4 rounded-2xl border border-[#222] px-4 py-4 text-left md:block md:rounded-3xl md:px-4 md:pb-6 md:pt-5 md:text-center">
+                  <div className="size-16 rounded-full bg-[#222] md:mx-auto md:size-40" />
+                  <div className="md:contents">
+                    <p className="text-[0.8125rem] text-[#222]/70 md:mt-6 md:block md:text-[0.9375rem] md:text-[#222]">{role}</p>
+                    <p className="mt-0.5 text-[1rem] font-bold md:mt-2 md:text-[1.125rem]">{t}</p>
+                  </div>
+                  <div className="col-span-2 mt-3 border-t border-[#222]/30 pt-3 md:mt-0 md:border-0 md:pt-0">
+                    <p className="text-[0.8125rem] font-bold md:mt-6">주요경력</p>
+                    <ul className="mt-1.5 space-y-0.5 text-[0.8125rem] leading-[1.5] md:mt-2 md:space-y-1">{ds.map((d) => <li key={d}>·{d}</li>)}</ul>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -339,7 +228,7 @@ export default function TransferPage() {
 
         {/* 7. 실제 전수 사례 */}
         <section className={`${wrap} py-20 text-center`}>
-          <h2 className="font-gmarket text-[2rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]">구해줘 창업의<br /><span className="text-[#F0C33F]">실제 전수 사례</span></h2>
+          <h2 className="font-gmarket text-[1.5rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]">구해줘 창업의<br /><span className="text-[#F0C33F]">실제 전수 사례</span></h2>
           <p className="mt-8 text-[0.9375rem] leading-[1.7] text-white/90 md:text-[1.0625rem]">구해줘 창업의 전수창업은 레시피 전수로 끝나지 않습니다.<br />실제 매장에서 검증된 노하우와 운영 시스템을 그대로 전수해<br />오픈 이후에도 안정적인 성과로 이어집니다.</p>
 
           <div className="mt-10 rounded-xl bg-black p-4 text-left md:p-6">
@@ -354,13 +243,13 @@ export default function TransferPage() {
                     </div>
                   ))}
                 </dl>
-                <p className="mt-5 flex gap-4 rounded-xl bg-[#3a3118] px-5 py-5 text-[1.125rem] font-bold leading-[1.5] md:text-[1.375rem]">
+                <p className="font-gmarket mt-5 flex gap-4 rounded-xl bg-[#3a3118] px-5 py-5 text-[1.125rem] font-bold leading-[1.5] md:text-[1.375rem]">
                   <span aria-hidden className="w-1.5 shrink-0 rounded bg-[#F0C33F]" />
                   <span>요리 경험이 없어도, 검증된 레시피와 운영 시스템을 전수받아 <span className="text-[#F0C33F]">안정적으로 오픈할 수 있었습니다.</span></span>
                 </p>
               </div>
               <div className="rounded-3xl border border-[#F0C33F]/70 p-5">
-                <p className="border-b-4 border-[#F0C33F] pb-3 text-center text-[1.375rem] font-black md:text-[1.5rem]">오픈 후 운영 포인트</p>
+                <p className="font-gmarket border-b-4 border-[#F0C33F] pb-3 text-center text-[1.375rem] font-black md:text-[1.5rem]">오픈 후 운영 포인트</p>
                 <ul className="divide-y divide-white/20 text-[1.0625rem] font-bold md:text-[1.125rem]">
                   {[["calendar", "점심·저녁 운영 가능"], ["utensils", "메뉴 구성 빠른 정착"], ["clipboard", "SOP 기반\n운영 안정화"]].map(([ic, t]) => (
                     <li key={t} className="flex items-center gap-5 py-8"><span className="grid size-14 shrink-0 place-items-center text-[#F0C33F]"><Pict k={ic} className="size-12" /></span><span className="whitespace-pre-line">{t}</span></li>
@@ -368,11 +257,11 @@ export default function TransferPage() {
                 </ul>
               </div>
             </div>
-            <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <div className="mt-4 grid grid-cols-3 gap-2 md:gap-3">
               {["레시피 전수", "실전 조리 실습", "오픈 전 메뉴 점검"].map((t, i) => (
                 <div key={t} className="overflow-hidden rounded-2xl border border-[#F0C33F]/70">
-                  <div className="relative aspect-[16/10] bg-[#333]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/case-${i + 1}.jpg`} alt={t} loading="lazy" className={`absolute inset-0 size-full object-cover`} /></div>
-                  <p className="bg-[#F0C33F] py-3 text-center text-[1.125rem] font-black text-[#222] md:text-[1.125rem]">{t}</p>
+                  <div className="relative aspect-[4/5] bg-[#333] md:aspect-[16/10]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/case-${i + 1}.jpg`} alt={t} loading="lazy" className={`absolute inset-0 size-full object-cover`} /></div>
+                  <p className="bg-[#F0C33F] px-1 py-2 text-center text-[0.75rem] font-black leading-tight text-[#222] md:py-3 md:text-[1.125rem]">{t}</p>
                 </div>
               ))}
             </div>

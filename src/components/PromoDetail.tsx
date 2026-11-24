@@ -42,7 +42,7 @@ export function PromoDetail({ l, srcs }: { l: Listing; srcs: string[] }) {
 
           <div className="flex flex-col px-6 py-8 sm:px-8 md:py-10">
             {/* 카드와 같은 순서: 브랜드 → 제목·설명 → 창업비용 */}
-            <h1 className="break-keep text-[2rem] font-black leading-[1.2] tracking-tight sm:text-[2.25rem] font-gmarket">{p.brand}</h1>
+            <h1 className="break-keep text-[1.625rem] font-black leading-[1.2] tracking-tight sm:text-[2.25rem] font-gmarket">{p.brand}</h1>
             <p className="mt-3 break-keep text-[1rem] font-bold leading-snug">{l.title}</p>
             <p className="mt-2 whitespace-pre-line break-keep text-[0.8125rem] leading-relaxed text-ink/75"><RichText text={p.desc} /></p>
 

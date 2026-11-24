@@ -23,7 +23,7 @@ function SectionHead({ eyebrow, title, sub, more, badge, href = "/listings" }: {
     <div className="flex items-end justify-between">
       <div>
         {badge ?? <p className="text-[0.75rem] font-bold text-brand">{eyebrow}</p>}
-        <h2 className="mt-2 text-[1.875rem] font-black tracking-tight font-gmarket">{title}</h2>
+        <h2 className="mt-2 text-[1.625rem] md:text-[1.875rem] font-black tracking-tight font-gmarket">{title}</h2>
         {sub && <p className="mt-2 text-[0.875rem] text-neutral-500">{sub}</p>}
       </div>
       {more && <Link href={href} className="pb-1 text-[0.75rem] font-bold text-brand">{more} →</Link>}
@@ -39,7 +39,7 @@ export function Categories() {
           <p className="flex items-center gap-2.5 text-[0.75rem] font-bold tracking-[0.16em] text-[#2d2d2d] md:text-[0.875rem]">
             <span className="h-[1.1em] w-[0.25rem] rounded-sm" style={{ background: NEON }} />STARTUP CATEGORY
           </p>
-          <h2 className="mt-2 font-gmarket text-[1.75rem] font-bold leading-[1.25] tracking-tight md:text-[2.125rem]">
+          <h2 className="mt-2 font-gmarket text-[1.5rem] font-bold leading-[1.25] tracking-tight md:text-[2.125rem]">
             어떤 <span style={{ color: "#D49F12" }}>창업</span>을 찾고 계신가요?
           </h2>
           <p className="mt-3 font-gmarket text-[0.9375rem] font-medium leading-relaxed text-[#2d2d2d] md:text-[0.9375rem]">관심 있는 분야를 선택하고, 내게 맞는 창업 정보를 확인해보세요.</p>
@@ -47,8 +47,8 @@ export function Categories() {
         </Reveal>
         {/* 큰 화면은 4칸, 작은 화면은 옆으로 밀어서 본다 */}
         <div className="-mx-6 mt-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0 lg:pb-0">
-          {categories.map((c, i) => (
-            <Reveal key={c.title} delay={i * 0.08} className="w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto">
+          {categories.map((c) => (
+            <div key={c.title} className="w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto">
               <motion.a href={`/listings?type=${c.tag}`} className="flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition-[box-shadow,translate] duration-200 lg:hover:-translate-y-1.5 hover:shadow-xl">
                 <span className="self-start rounded bg-ink px-2 py-1 text-[0.75rem] font-black tracking-wider" style={{ color: NEON }}>{c.en}</span>
                 <div className="grid h-[8rem] place-items-center">
@@ -62,7 +62,7 @@ export function Categories() {
                   <span className="shrink-0 rounded-full px-3 py-1 text-[0.75rem] font-black text-ink" style={{ background: NEON }}>둘러보기 →</span>
                 </div>
               </motion.a>
-            </Reveal>
+            </div>
           ))}
         </div>
       </div>
@@ -112,8 +112,8 @@ export function Picks() {
             {[
               { img: "pick-1", tag: "전수창업", loc: "달서구", title: "분위기 좋은 베이커리 카페", desc: "소규모 제조·카페 겸업. 레시피 및 인테리어 가이드 포함", cta: "상담 문의" },
               { img: "pick-2", tag: "상가매물", loc: "중구", title: "대구 도심 코너 상가 1층", desc: "유동인구 多, 카페·음식점 적합. 즉시 입점 가능", cta: "상담 문의" },
-            ].map((p, i) => (
-              <Reveal key={p.title} delay={0.1 + i * 0.1} className="flex-1">
+            ].map((p) => (
+              <div key={p.title} className="flex-1">
                 <motion.article whileHover={{ x: 4 }} className="flex h-full overflow-hidden rounded-lg bg-white shadow-sm">
                   <div className="w-[7.5rem] shrink-0"><Placeholder /></div>
                   <div className="flex flex-col justify-center p-4">
@@ -126,7 +126,7 @@ export function Picks() {
                     <a href="#consult" className="mt-2 text-[0.75rem] font-bold text-brand">{p.cta} →</a>
                   </div>
                 </motion.article>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -162,7 +162,7 @@ function cardInfo(l: Listing) {
 export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?: boolean }) {
   const { title, desc, brand, address } = cardInfo(l);
   return (
-    <Reveal delay={Math.min(i, 8) * 0.05} className={fluid ? "" : "w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto"}>
+    <div className={fluid ? "" : "w-[16.25rem] shrink-0 snap-start sm:w-[17.5rem] lg:w-auto"}>
       <motion.a href={`/listings/${l.id}`} className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-[box-shadow,translate] duration-200 lg:hover:-translate-y-1.5 hover:shadow-xl">
         <div className={`relative bg-neutral-100 ${fluid ? "h-[9.375rem] sm:h-[13rem]" : "h-[9.375rem] sm:h-[10.625rem]"}`}>
           {l.photos ? (
@@ -196,7 +196,7 @@ export function NewCard({ l, i, fluid = false }: { l: Listing; i: number; fluid?
           })()}
         </div>
       </motion.a>
-    </Reveal>
+    </div>
   );
 }
 
@@ -218,7 +218,7 @@ export function ListingRow({ l, i }: { l: Listing; i: number }) {
   const meta = [address ?? l.region, l.category].filter(Boolean).join(" · ");
   const price = priceInfo(l);
   return (
-    <Reveal delay={Math.min(i, 8) * 0.04}>
+    <div>
       <motion.a href={`/listings/${l.id}`} whileHover={{ y: -2 }} className="group flex h-[8.375rem] items-stretch overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:border-[#F0C33F] hover:shadow-lg sm:h-[9.375rem]">
         <div className="relative w-[6.5rem] shrink-0 bg-neutral-100 sm:w-[10rem]">
           {l.photos ? (
@@ -246,7 +246,7 @@ export function ListingRow({ l, i }: { l: Listing; i: number }) {
           </div>
         </div>
       </motion.a>
-    </Reveal>
+    </div>
   );
 }
 
@@ -275,7 +275,7 @@ export function NewListings() {
             <span className="rounded bg-[#F0C33F] px-2.5 py-0.5 text-[0.75rem] font-black tracking-wider text-ink md:text-[0.875rem]">NEW</span>LATEST UPDATES
           </p>
           <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
-            <h2 className="font-gmarket text-[1.75rem] font-bold leading-[1.25] tracking-tight md:text-[2.125rem]">
+            <h2 className="font-gmarket text-[1.5rem] font-bold leading-[1.25] tracking-tight md:text-[2.125rem]">
               새롭게 등록된 <span style={{ color: "#D49F12" }}>창업</span> 정보
             </h2>
             <Link href={`/listings?type=${active}`} className="inline-flex items-center gap-2 rounded-full border border-ink px-5 py-1.5 font-gmarket text-[0.875rem] font-bold text-ink transition hover:bg-ink hover:text-white">

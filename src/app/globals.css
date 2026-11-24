@@ -97,3 +97,6 @@ body {
 .card-soft { border-radius: 1rem; border: 1px solid #e5e5e5; background: #faf9f7; box-shadow: 0 10px 20px -16px rgba(27, 27, 27, 0.28); transition: transform 0.3s; }
 .card-soft:hover { transform: translateY(-2px); }
 .tone-dark .card-soft { border-color: rgba(255, 255, 255, 0.1); background: linear-gradient(to bottom, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)); box-shadow: 0 10px 20px -14px rgba(0, 0, 0, 0.6); }
+
+/* 가로 스크롤 카드를 끌 때 이미지가 따로 떠다니는(드래그 고스트) 현상 방지 */
+img { -webkit-user-drag: none; user-select: none; }

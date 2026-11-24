@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { hideFor24h, isHidden } from "@/lib/popupHide";
 
 const popups = [
-  { src: "/main-popup-1.png", alt: "사부님 참여는 이렇게 진행돼요" },
+  { src: "/main-popup-sabu.jpg", alt: "사부님 모집 - 당신의 레시피가 새로운 수익이 됩니다" },
 ];
 
 // 테스트 안내 팝업(z-120) 아래에 깔려, 안내를 닫으면 이어서 보인다

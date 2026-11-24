@@ -47,7 +47,7 @@ export function Hero() {
 
       <div className="relative mx-auto grid max-w-[80rem] items-center gap-10 px-6 py-10 lg:grid-cols-[1fr_25rem] lg:py-12">
         <div className="text-white">
-          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="font-gmarket text-[1.875rem] font-medium leading-[1.25] tracking-tight md:text-[2.875rem]">
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="font-gmarket text-[1.625rem] font-medium leading-[1.25] tracking-tight md:text-[2.875rem]">
             {/* G마켓 산스 굵기: 창업 M · 을 L · 찾는 가장 M · SMART B · 한 L · 방법 M (M=500, L=300, B=700) */}
             창업<span className="font-light">을</span> 찾는<br />
             가장 <span className="font-bold" style={{ color: NEON }}>SMART</span><span className="font-light">한</span> 방법

@@ -149,7 +149,7 @@ export default function TermsPage() {
       <Header />
       <main className="mx-auto max-w-[53.75rem] px-6 py-14">
         <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-[#D49F12]">TERMS OF SERVICE</p>
-        <h1 className="mt-2 font-gmarket text-[1.875rem] font-black tracking-tight md:text-[2.25rem]">이용약관</h1>
+        <h1 className="mt-2 font-gmarket text-[1.625rem] font-black tracking-tight md:text-[2.25rem]">이용약관</h1>
 
         <div className="mt-10 space-y-9">
           {articles.map((a) => (

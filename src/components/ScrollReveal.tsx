@@ -43,11 +43,10 @@ export function GrowBar({ pct, className, i = 0 }: { pct: number; className?: st
 
 // 카드 위에 큰 X 표시가 그려지듯 나타나는 효과
 export function DrawX({ className }: { className?: string }) {
-  const reduce = useReducedMotion();
   const p = (d: string, delay: number) => (
     <motion.path
       d={d}
-      initial={reduce ? false : { pathLength: 0, opacity: 0 }}
+      initial={false}
       whileInView={{ pathLength: 1, opacity: 1 }}
       viewport={{ once: true, amount: 0.6 }}
       transition={{ duration: 0.25, delay, ease: "easeOut" }}
@@ -63,13 +62,12 @@ export function DrawX({ className }: { className?: string }) {
 
 // 형광펜이 왼쪽에서 오른쪽으로 칠해지는 강조 텍스트
 export function Highlight({ children }: { children: ReactNode }) {
-  const reduce = useReducedMotion();
   return (
     <span className="relative isolate inline-block px-1.5 text-[#1b1b1b]">
       <motion.span
         aria-hidden
         className="absolute inset-x-0 bottom-0.5 top-1.5 -z-10 origin-left rounded-md bg-[#F0C33F]"
-        initial={reduce ? false : { scaleX: 0 }}
+        initial={false}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true, amount: 0.8 }}
         transition={{ duration: 0.4, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}

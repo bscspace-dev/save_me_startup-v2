@@ -59,7 +59,7 @@ export function ShopDetail({ l, s, srcs }: { l: Listing; s: ShopInfo; srcs?: str
         <section className="mt-4 grid overflow-hidden rounded-3xl border border-neutral-200 bg-white lg:grid-cols-[1.35fr_1fr]">
           <FranchiseGallery yellow slides={s.gallery ?? GALLERY} badges={[l.rec ? "추천 상가" : "상가매물", "실매물 확인"]} photos={{ id: l.id, count: srcs ? srcs.length : l.photos ?? 0, srcs }} />
           <div className="p-8 md:p-10">
-            <h1 className="text-[1.875rem] font-black leading-[1.25] tracking-tight font-gmarket">{s.headline[0]}{s.headline[1] && <><br />{s.headline[1]}</>}</h1>
+            <h1 className="text-[1.625rem] md:text-[1.875rem] font-black leading-[1.25] tracking-tight font-gmarket">{s.headline[0]}{s.headline[1] && <><br />{s.headline[1]}</>}</h1>
             <p className="mt-4 text-[0.8125rem] leading-relaxed text-neutral-500">{s.desc}</p>
             <div className="mt-5 rounded-xl bg-[#fff8dc] px-5 py-4">
               <p className="text-[0.6563rem] font-bold text-[#D49F12]">임대 조건</p>

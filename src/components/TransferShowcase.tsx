@@ -43,7 +43,7 @@ export function ShowcaseIntro({ name, photo, videoId, philosophy, bio, stats, di
         </div>
         <div>
           <p className={`${eyebrow} text-[#A97C0A]`}>THE MASTER</p>
-          <h2 className="mt-3 font-gmarket font-black leading-[1.4] tracking-tight text-[1.75rem] md:text-[2.125rem]">
+          <h2 className="mt-3 font-gmarket font-black leading-[1.4] tracking-tight text-[1.5rem] md:text-[2.125rem]">
             {years > 0 ? `${years}년의 맛과` : "검증된 맛과"}<br />노하우를 전하는<br /><Highlight>{name} 사부</Highlight>
           </h2>
           <p className="mt-5 whitespace-pre-line text-[0.8125rem] leading-[1.9] text-neutral-700">
@@ -126,7 +126,7 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
         <section id="menus" className="scroll-mt-24 px-6 pb-4 pt-12 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
           <div className="text-center">
             <p className={`${eyebrow} text-[#F0C33F]`}>SIGNATURE MENU</p>
-            <h2 className="mt-3 font-gmarket font-black leading-[1.35] tracking-tight text-[1.75rem] md:text-[2.125rem]">손님이 줄 서는 이유,<br /><Highlight>사부의 대표 메뉴</Highlight></h2>
+            <h2 className="mt-3 font-gmarket font-black leading-[1.35] tracking-tight text-[1.5rem] md:text-[2.125rem]">손님이 줄 서는 이유,<br /><Highlight>사부의 대표 메뉴</Highlight></h2>
             <p className="mt-4 text-[0.875rem] leading-[1.8] text-white/85">가게의 중심이 되는 메뉴를 1:1 전수합니다.<br />레시피부터 조리 기준, 상차림 포인트, 운영 노하우까지 함께 배웁니다.</p>
           </div>
           <ul className={`mx-auto mt-10 grid gap-4 ${n === 1 ? "max-w-[21rem]" : n === 2 ? "max-w-[77rem] md:grid-cols-2" : "max-w-[77rem] md:grid-cols-3"}`}>
@@ -161,7 +161,7 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
       {/* WHY */}
       <section className="px-6 py-14 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
         <div className="text-center">
-          <h2 className="font-gmarket font-black leading-tight tracking-tight text-[#FFD21F] text-[2rem] md:text-[2.375rem]">WHY {dish}?</h2>
+          <h2 className="font-gmarket font-black leading-tight tracking-tight text-[#FFD21F] text-[1.625rem] md:text-[2.375rem]">WHY {dish}?</h2>
           <p className="mt-5 text-[0.9375rem] font-light leading-[1.7] text-white/85 md:text-[1rem]">맛있는 메뉴는 많습니다. 하지만 장사가 되는 메뉴는 다릅니다.<br /><b className="font-bold">{years > 0 ? `${years - 1 > 0 ? years - 1 : years}년간` : "오랜 시간"} 실제 매장에서 판매해 온 {dish}의 경쟁력</b></p>
         </div>
         <ol className="mx-auto mt-10 max-w-[77rem] space-y-9 rounded-[2rem] border border-white/70 px-6 py-10 text-center md:px-12">
@@ -176,7 +176,7 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
 
       {/* 운영 구조 */}
       <section className="px-6 pb-14 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
-        <h2 className="text-center font-gmarket font-black leading-tight tracking-tight text-[#FFD21F] text-[1.75rem] md:text-[2.125rem]">매출로 연결되는 운영 구조</h2>
+        <h2 className="text-center font-gmarket font-black leading-tight tracking-tight text-[#FFD21F] text-[1.5rem] md:text-[2.125rem]">매출로 연결되는 운영 구조</h2>
         <div className="mx-auto mt-8 max-w-[77rem] space-y-5 text-ink">
           <div className="overflow-x-auto rounded-3xl">
             <div className="min-w-[34rem] overflow-hidden rounded-3xl bg-white text-center text-[0.8125rem]">
@@ -211,7 +211,7 @@ export function ShowcaseDarkA({ dish, names, years, srcs, descs, tags, sales, re
 
       {/* 판매 기회 + 실적 수치 */}
       <section className="relative overflow-hidden px-6 pb-12 pt-6 md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
-        <h2 className="relative text-center font-gmarket font-black leading-[1.35] tracking-tight text-[1.75rem] md:text-[2.125rem]">
+        <h2 className="relative text-center font-gmarket font-black leading-[1.35] tracking-tight text-[1.5rem] md:text-[2.125rem]">
           <span className="text-[#FFD21F]">점심</span>에는 <span className="text-[#FFD21F]">회전율</span><br />
           <span className="text-[#FFD21F]">저녁</span>에는 <span className="text-[#FFD21F]">객단가</span><br />
           <span className="text-[#FFD21F]">배달</span>로는 <span className="text-[#FFD21F]">추가매출</span>까지 !
@@ -285,7 +285,7 @@ export function ShowcaseHard({ dish }: { dish: string }) {
     <section className="bg-[#f7f6f4] px-6 py-14 text-ink md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       <div className="text-center">
         <p className="text-[0.9375rem] md:text-[1rem]">인터넷 레시피로도 맛있는 {dish} 한 접시, 충분히 가능합니다!</p>
-        <h2 className="mt-3 font-gmarket font-black leading-tight tracking-tight text-[2rem] md:text-[2.375rem]">하지만,<span className="text-[#c0262c]">장사는 망합니다.</span></h2>
+        <h2 className="mt-3 font-gmarket font-black leading-tight tracking-tight text-[1.625rem] md:text-[2.375rem]">하지만,<span className="text-[#c0262c]">장사는 망합니다.</span></h2>
         <p className="mt-10 text-[1.0625rem] leading-[1.9] md:text-[1.125rem]">맛있는 한 접시로는<br /><b className="font-black">매출도<br />단골도<br />수익도</b><br />지킬 수 없습니다.</p>
         <h3 className="mt-14 font-gmarket text-[1.5rem] font-black md:text-[1.75rem]">왜 장사가 어려울까요?</h3>
       </div>
@@ -362,7 +362,7 @@ const steps = [
 export function ShowcaseProcess() {
   return (
     <section className="bg-[#f7f6f4] px-6 py-14 text-ink md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
-      <h2 className="text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">이런 분께 추천드립니다 !</h2>
+      <h2 className="text-center font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">이런 분께 추천드립니다 !</h2>
       <ul className="mx-auto mt-10 grid max-w-[77rem] grid-cols-2 gap-y-8 md:grid-cols-4 md:divide-x md:divide-ink">
         {picks.map((p) => (
           <li key={p} className="flex flex-col items-center px-3 text-center">
@@ -373,7 +373,7 @@ export function ShowcaseProcess() {
       </ul>
       <div className="mt-16 text-center">
         <p className="inline-block rounded-full bg-[#2b2b2b] px-8 py-2.5 text-[1rem] font-black text-white md:text-[1.0625rem]">사부님의 레시피</p>
-        <h2 className="mt-3 font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">전수 과정 안내</h2>
+        <h2 className="mt-3 font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">전수 과정 안내</h2>
       </div>
       <ol className="mx-auto mt-10 grid max-w-[77rem] gap-6 md:grid-cols-4">
         {steps.map(([t, d], i) => (
@@ -401,7 +401,7 @@ export function ShowcaseProven({ sales, peakNote, price, startCosts, simSales, s
     <section className="bg-[#161616] px-6 py-14 text-white md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       <div className="text-center">
         <p className="text-[0.75rem] tracking-[0.3em] text-[#F0C33F] md:text-[0.9375rem]">PROVEN PERFORMANCE &amp; PROFITABILITY</p>
-        <h2 className="mt-3 font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">검증된 매출, <span className="text-[#F0C33F]">현실적인 창업 수익</span></h2>
+        <h2 className="mt-3 font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">검증된 매출, <span className="text-[#F0C33F]">현실적인 창업 수익</span></h2>
         <p className="mt-3 text-[0.875rem] text-white/80 md:text-[1rem]">실제 운영 성과를 확인하고, 창업에 필요한 비용과 수익 구조를 살펴보세요.</p>
       </div>
 

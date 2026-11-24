@@ -40,7 +40,7 @@ export default function AboutPage() {
         <section className="bg-[#f7f6f4]">
           <div className="mx-auto max-w-[53.75rem] px-6 py-16">
             <p className="text-[0.6875rem] font-bold tracking-[0.14em] text-[#D49F12]">ABOUT US</p>
-            <h1 className="mt-2 font-gmarket text-[1.875rem] font-bold leading-[1.3] tracking-tight md:text-[2.375rem]">
+            <h1 className="mt-2 font-gmarket text-[1.625rem] font-bold leading-[1.3] tracking-tight md:text-[2.375rem]">
               창업, 이제 <span className="text-[#D49F12]">구해줘창업</span>에 맡기세요.
             </h1>
             <p className="mt-5 text-[0.9375rem] leading-relaxed text-neutral-600">

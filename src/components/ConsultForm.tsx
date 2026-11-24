@@ -102,25 +102,25 @@ export function ConsultCard({ title = "간편 상담 신청", only, wide = false
 export function Consult({ title, only }: { title?: string; only?: string }) {
   return (
     <section id="consult" className="bg-[#2d2d2d] text-white">
-      <div className="mx-auto max-w-[80rem] px-6 py-16">
+      <div className="mx-auto max-w-[80rem] px-6 py-10 md:py-16">
         <Reveal>
-          <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-center md:gap-10 md:text-left">
+          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:justify-center md:gap-10 md:text-left">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-footer.svg" alt="구해줘창업" className="h-[7.5rem] w-auto md:h-[9.375rem]" />
+            <img src="/logo-footer.svg" alt="구해줘창업" className="h-[5rem] w-auto md:h-[9.375rem]" />
             <div className="hidden self-stretch border-l-2 border-[#F0C33F] md:my-3 md:block" />
             <div>
-              <h2 className="font-gmarket text-[1.625rem] font-bold leading-[1.3] tracking-tight md:text-[2.125rem]">창업, 이제<br /><span style={{ color: "#F0C33F" }}>구해줘창업</span>에 맡기세요.</h2>
-              <p className="mt-3 text-[0.9375rem] font-medium leading-relaxed text-white/90 md:text-[0.9375rem]">업종·지역·예산이 아직 미정이라도 괜찮습니다.<br />지금의 고민을 들려주시면 전문 컨설턴트가 함께 방향을 잡아드립니다.</p>
+              <h2 className="font-gmarket text-[1.375rem] font-bold leading-[1.3] tracking-tight md:text-[2.125rem]">창업, 이제<br /><span style={{ color: "#F0C33F" }}>구해줘창업</span>에 맡기세요.</h2>
+              <p className="mt-2 text-[0.8125rem] font-medium leading-relaxed text-white/90 md:mt-3 md:text-[0.9375rem]">업종·지역·예산이 아직 미정이라도 괜찮습니다.<br />지금의 고민을 들려주시면 전문 컨설턴트가 함께 방향을 잡아드립니다.</p>
             </div>
           </div>
-          <ul className="mx-auto mt-12 grid max-w-[53.75rem] gap-6 md:grid-cols-3 md:gap-10">
+          <ul className="mx-auto mt-8 grid max-w-[53.75rem] grid-cols-3 gap-2 md:mt-12 md:gap-10">
             {[["전문 컨설턴트", "1:1 매칭"], ["프랜차이즈·전수창업", "신규창업 전 유형 상담"], ["상담 신청 후", "24시간 내 연락"]].map(([a, b]) => (
-              <li key={a} className="border-b-[0.1875rem] border-[#F0C33F] pb-2 text-center text-[1.25rem] font-medium leading-snug">{a}<br />{b}</li>
+              <li key={a} className="border-b-[0.1875rem] border-[#F0C33F] pb-1.5 text-center text-[0.75rem] md:pb-2 md:text-[1.25rem] font-medium leading-snug"><span className="block">{a}</span><span className="block">{b}</span></li>
             ))}
           </ul>
         </Reveal>
 
-        <Reveal delay={0.15} className="mt-10">
+        <Reveal delay={0.15} className="mt-8 md:mt-10">
           <ConsultCard title={title} only={only} wide />
         </Reveal>
       </div>

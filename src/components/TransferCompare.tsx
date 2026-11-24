@@ -49,7 +49,7 @@ export function TransferCompare({ price }: { price: number }) {
     <section className="bg-[#222] px-6 py-14 text-white md:px-10 xl:px-[max(1.5rem,calc((100%-77rem)/2))]">
       {/* 왜 전수창업인가 */}
       <div className="text-center">
-        <h2 className="font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">왜 프랜차이즈가 아닌 &lsquo;전수창업&rsquo;인가?</h2>
+        <h2 className="font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">왜 프랜차이즈가 아닌 &lsquo;전수창업&rsquo;인가?</h2>
         <p className="mt-3 text-[0.8125rem] text-white/80 md:text-[1rem]">가맹비, 로열티, 인테리어 중간 마진 등 불필요한 거품을 싹 빼고 전수비 하나로 해결하세요.</p>
       </div>
       <ul className="mx-auto mt-8 grid max-w-[77rem] grid-cols-2 gap-x-3 gap-y-6 md:grid-cols-4">
@@ -65,7 +65,7 @@ export function TransferCompare({ price }: { price: number }) {
 
       {/* 왜 구해줘창업인가 */}
       <div className="mt-12 text-center">
-        <h2 className="font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">왜 &lsquo;구해줘 창업&rsquo;인가?</h2>
+        <h2 className="font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">왜 &lsquo;구해줘 창업&rsquo;인가?</h2>
         <p className="mt-4 text-[0.875rem] leading-[1.7] md:text-[1rem]">레시피만 배우는 창업은 이제 그만하세요!<br />상권분석 · BI · 인테리어 · 마케팅 · SOP까지 전문가 팀이 함께합니다.</p>
       </div>
       <div className="mx-auto mt-8 grid max-w-[77rem] gap-5 md:grid-cols-2">
@@ -121,7 +121,7 @@ export function TransferCompare({ price }: { price: number }) {
       </div>
 
       {/* 경쟁력 */}
-      <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">구해줘 창업만의 경쟁력</h2>
+      <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">구해줘 창업만의 경쟁력</h2>
       <div className="mx-auto mt-8 grid max-w-[77rem] gap-4 md:grid-cols-2">
         <div className="rounded-2xl border border-white/15 bg-black/30 p-4">
           <p className="flex flex-wrap items-center gap-2"><span className="rounded-full border border-white/70 px-4 py-1.5 text-[1rem] font-black">5년 총 창업비용 비교</span><span className="text-[0.75rem] text-white/70">(일식 업종 평균 기준)</span></p>
@@ -172,7 +172,7 @@ export function TransferCompare({ price }: { price: number }) {
       </ul>
 
       {/* ●△X 비교표 */}
-      <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">같은 돈을 쓰더라도 남는 건 다릅니다</h2>
+      <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">같은 돈을 쓰더라도 남는 건 다릅니다</h2>
       <div className="mx-auto mt-8 max-w-[77rem] overflow-x-auto">
         <table className="w-full min-w-[28rem] border-collapse text-center text-[0.875rem] md:text-[1rem]">
           <thead><tr className="bg-white/25 text-white/90"><th className="border border-white/70 p-3" /><th className="border border-white/70 p-3 font-medium">프랜차이즈</th><th className="border border-white/70 p-3 font-medium">기존 전수창업</th><th className="border border-white/70 p-3 font-black text-[#a3321a]">구해줘창업</th></tr></thead>
@@ -189,7 +189,7 @@ export function TransferCompare({ price }: { price: number }) {
       </div>
 
       {/* 분야별 전문가 */}
-      <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.75rem] md:text-[2.125rem]">분야별 전문가가 단계마다 책임집니다</h2>
+      <h2 className="mt-16 text-center font-gmarket font-black tracking-tight text-[1.5rem] md:text-[2.125rem]">분야별 전문가가 단계마다 책임집니다</h2>
       <ul className="mx-auto mt-8 grid max-w-[77rem] grid-cols-2 gap-3 md:grid-cols-5">
         {experts.map(([role, title, lines], i) => (
           <RevealLi i={i} key={title} className="flex flex-col items-center rounded-3xl border border-[#F0C33F]/70 px-3 pb-6 pt-6 text-center">

@@ -8,7 +8,7 @@ export function Head({ eyebrow, title, eyebrowClass = "text-[#D49F12]" }: { eyeb
   return (
     <>
       {eyebrow && <p className={`text-[0.6875rem] font-bold tracking-[0.14em] ${eyebrowClass}`}>{eyebrow}</p>}
-      <h2 className="mt-2 text-[1.625rem] font-black tracking-tight font-gmarket">{title}</h2>
+      <h2 className="mt-2 text-[1.5rem] md:text-[1.625rem] font-black tracking-tight font-gmarket">{title}</h2>
     </>
   );
 }

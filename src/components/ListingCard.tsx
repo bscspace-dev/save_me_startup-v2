@@ -30,8 +30,6 @@ export function ListingCard({ l, i = 0, wide = false }: { l: Listing; i?: number
   return (
     <motion.a
       href={`/listings/${l.id}`}
-      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, delay: Math.min(i, 8) * 0.04 }}
       whileHover={{ y: -5 }}
       className={`block overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-lg ${wide ? "flex" : ""}`}
     >

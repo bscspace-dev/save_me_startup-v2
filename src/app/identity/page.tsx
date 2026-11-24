@@ -228,7 +228,7 @@ export default function IdentityPage() {
         {/* 히어로 */}
         <section className="relative overflow-hidden bg-[#222] text-center text-white">
           <div className={`${wrap} pt-10 md:pt-12`}>
-            <h1 className="font-gmarket text-[2.5rem] font-black leading-none tracking-tight text-[#F0C33F] md:text-[4rem]">신규창업</h1>
+            <h1 className="font-gmarket text-[2rem] font-black leading-none tracking-tight text-[#F0C33F] md:text-[4rem]">신규창업</h1>
             <p className="mt-8 font-gmarket text-[1.75rem] font-light leading-[1.35] md:mt-10 md:text-[2.75rem]">어디서부터 시작해야 할지<br />막막하시죠?</p>
           </div>
           <div className="relative mt-10 md:mt-14">
@@ -258,7 +258,7 @@ export default function IdentityPage() {
                 <img src={`/identity/memoji-${i + 1}.png`} alt="" className="absolute object-contain" style={{ left: p.ax, top: p.ay, width: p.aw }} />
               </div>
             ))}
-            <h2 className="absolute left-1/2 top-[44%] -translate-x-1/2 whitespace-nowrap text-center font-gmarket text-[2rem] font-black leading-[1.3] tracking-tight lg:text-[2.375rem]">
+            <h2 className="absolute left-1/2 top-[44%] -translate-x-1/2 whitespace-nowrap text-center font-gmarket text-[1.625rem] font-black md:text-[2rem] leading-[1.3] tracking-tight lg:text-[2.375rem]">
               사장님, 혹시 이런 실수<br /><span className="bg-[linear-gradient(transparent_62%,#F0C33F_62%)]">놓치고 계시진 않나요?</span>
             </h2>
           </div>
@@ -270,7 +270,7 @@ export default function IdentityPage() {
                 <p className="flex-1 lg:whitespace-pre-line rounded-2xl border border-neutral-200 bg-white px-5 py-5 text-[0.875rem] leading-[1.55] shadow-[0_3px_8px_rgba(0,0,0,0.15)]">&ldquo;{t}&rdquo;</p>
               </div>
             ))}
-            <h2 className="pt-4 text-center font-gmarket text-[1.75rem] font-black leading-[1.3] tracking-tight">사장님, 혹시 이런 실수<br /><span className="bg-[linear-gradient(transparent_62%,#F0C33F_62%)]">놓치고 계시진 않나요?</span></h2>
+            <h2 className="pt-4 text-center font-gmarket text-[1.5rem] md:text-[1.75rem] font-black leading-[1.3] tracking-tight">사장님, 혹시 이런 실수<br /><span className="bg-[linear-gradient(transparent_62%,#F0C33F_62%)]">놓치고 계시진 않나요?</span></h2>
           </div>
           <Chev />
 
@@ -289,7 +289,7 @@ export default function IdentityPage() {
           </ul>
           <Chev />
 
-          <h2 className="font-gmarket text-[1.75rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]">이 모든 준비를<br />사장님 혼자 감당할 필요 없습니다!</h2>
+          <h2 className="font-gmarket text-[1.5rem] font-black leading-[1.3] tracking-tight md:text-[2.375rem]">이 모든 준비를<br />사장님 혼자 감당할 필요 없습니다!</h2>
           <p className="mt-6"><span className="inline-block bg-ink px-3 py-1 font-gmarket text-[1.125rem] text-white md:text-[1.5rem]"><b className="font-black">구해줘창업</b><span className="font-light">이</span> <b className="font-black">함께 준비</b><span className="font-light">합니다</span></span></p>
           <Chev />
 
@@ -306,7 +306,7 @@ export default function IdentityPage() {
           </ul>
           <Chev />
 
-          <h2 className="font-gmarket text-[1.75rem] font-black tracking-tight md:text-[2.375rem]">HOW WE MAKE IT HAPPEN</h2>
+          <h2 className="font-gmarket text-[1.5rem] font-black tracking-tight md:text-[2.375rem]">HOW WE MAKE IT HAPPEN</h2>
           <p className="mt-3 text-[0.9375rem] md:text-[1.0625rem]">상담부터 오픈 이후 관리까지, 구해줘창업의 실전 프로세스</p>
           <p className={`mt-10 inline-block rounded-full ${Y} px-5 py-1 text-[0.875rem] font-bold`}>서비스 설명</p>
         </section>
@@ -448,7 +448,7 @@ export default function IdentityPage() {
               {[["04", "공간 브랜딩", "(인테리어)", "브랜드 콘셉트를 공간에 반영하여\n매장의 분위기와 경험 가치를 높입니다.", "매장 인테리어 이미지"], ["05", "매장 사인물 & 메뉴 디자인", "", "매장 운영에 필요한 사인물과 메뉴판을\n통일감 있게 디자인합니다.", "사인물·메뉴판 이미지"], ["06", "브랜드 적용 확장", "", "포장, 유니폼, 집기 등 매장 운영 전반에\n브랜드를 일관되게 적용합니다.", "포장·유니폼 이미지"]].map(([n, t, s, d, p]) => (
                 <div key={n} className={`${card} overflow-hidden`}>
                   <CardHead no={n} title={t} sub={s} desc={d} />
-                  <div className="p-3"><div className={`relative aspect-[4/3] overflow-hidden rounded-lg ${n === "06" ? "bg-[#1c1510]" : "bg-[#e9e6df]"}`}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/brand-${Number(n)}.jpg`} alt={p} loading="lazy" className={`absolute inset-0 size-full ${n === "06" ? "object-contain" : "object-cover"}`} /></div></div>
+                  <div className="p-3"><div className={`relative mx-auto aspect-[16/10] max-w-[20rem] overflow-hidden md:aspect-[4/3] md:max-w-none rounded-lg ${n === "06" ? "bg-[#1c1510]" : "bg-[#e9e6df]"}`}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/brand-${Number(n)}.jpg`} alt={p} loading="lazy" className={`absolute inset-0 size-full ${n === "06" ? "object-contain" : "object-cover"}`} /></div></div>
                 </div>
               ))}
             </div>
@@ -471,12 +471,12 @@ export default function IdentityPage() {
                   <p className="flex items-center gap-2 text-[1.125rem] font-black"><span className={`h-5 w-1.5 ${Y}`} />{t}{s && <span className="text-[0.8125rem]">{s}</span>}</p>
                   <p className="mt-2 min-h-[2.6rem] text-[0.8125rem] leading-[1.6]">{d}</p>
                   {i < 2 ? (
-                    <div className="relative mt-3 aspect-[4/3] overflow-hidden rounded-lg border border-neutral-200 bg-white">
+                    <div className="relative mx-auto mt-3 aspect-[16/10] max-w-[20rem] overflow-hidden md:aspect-[4/3] md:max-w-none rounded-lg border border-neutral-200 bg-white">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={i === 0 ? "/identity/interior-plan.jpg" : "/identity/interior-3d.jpg"} alt={p} loading="lazy" className="absolute inset-0 size-full scale-110 object-contain" />
                     </div>
                   ) : (
-                    <div className="mt-3 grid aspect-[4/3] grid-rows-[3fr_2fr] gap-1.5 rounded-lg border border-neutral-200 bg-white p-1.5">
+                    <div className="mx-auto mt-3 grid aspect-[16/10] max-w-[20rem] grid-rows-[3fr_2fr] md:aspect-[4/3] md:max-w-none gap-1.5 rounded-lg border border-neutral-200 bg-white p-1.5">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src="/identity/interior-site-1.jpg" alt={p} loading="lazy" className="size-full min-h-0 rounded-lg object-cover" />
                       <div className="grid min-h-0 grid-cols-2 gap-1.5">
@@ -503,11 +503,11 @@ export default function IdentityPage() {
             <div className="grid gap-3 lg:grid-cols-[1fr_1.2fr_1fr]">
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="01" title="집기·설비 선정 및 세팅" desc="업종과 매장 규모에 맞는 핵심 집기와 설비를 선정하고, 배치와 세팅까지 지원합니다." />
-                <div className="p-3"><div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-[#e9e6df]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/identity/open-kitchen.jpg" alt="주방 설비 세팅" loading="lazy" className="absolute inset-0 size-full object-cover" /></div></div>
+                <div className="p-3"><div className="relative mx-auto aspect-[16/10] max-w-[20rem] overflow-hidden md:aspect-[4/3] md:max-w-none rounded-lg bg-[#e9e6df]">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/identity/open-kitchen.jpg" alt="주방 설비 세팅" loading="lazy" className="absolute inset-0 size-full object-cover" /></div></div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="02" title="운영 매뉴얼(SOP) 제작·제공" desc="매장 운영, 조리, 서비스, 위생, 고객응대 등 실무에 바로 적용 가능한 표준 운영 절차(SOP)를 제공합니다." />
-                <div className="p-3">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/identity/open-sop.jpg" alt="매장 운영 SOP와 운영 SOP 목차" loading="lazy" className="h-auto w-full rounded-lg" /></div>
+                <div className="p-3">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/identity/open-sop.jpg" alt="매장 운영 SOP와 운영 SOP 목차" loading="lazy" className="mx-auto h-auto w-full max-w-[20rem] rounded-lg md:max-w-none" /></div>
               </div>
               <div className={`${card} overflow-hidden`}>
                 <CardHead no="03" title="오픈 준비 체크리스트" desc="오픈 일정에 맞춰 인허가, 물품준비, 인력세팅, 마케팅까지 모든 준비사항을 단계별로 점검합니다." />
@@ -520,7 +520,7 @@ export default function IdentityPage() {
             </div>
             <div className={`${card} mt-3 p-4`}>
               <p className="flex flex-wrap items-center gap-3"><b className={`${Y} rounded-lg px-4 py-1.5 text-[1.0625rem] font-black`}>주요 집기·설비 예시</b><span className="text-[0.8125rem]">*업종(한식, 고깃집, 주점 등)과 매장 규모에 따라 실제 구성은 달라집니다.</span></p>
-              <ul className="mt-4 grid grid-cols-2 gap-3 text-center text-[0.8125rem] font-medium sm:grid-cols-5 lg:grid-cols-10">
+              <ul className="mt-4 grid grid-cols-3 gap-x-2 gap-y-3 text-center text-[0.75rem] font-medium sm:grid-cols-5 sm:gap-3 sm:text-[0.8125rem] lg:grid-cols-10">
                 {items.map((t, i) => <li key={t}><div className="relative aspect-[260/248] bg-white">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/open-item-${i + 1}.jpg`} alt={t} loading="lazy" className="absolute inset-0 size-full object-contain" /></div><p className="mt-1.5 leading-tight">{t}</p></li>)}
               </ul>
             </div>
@@ -537,7 +537,7 @@ export default function IdentityPage() {
                     <p className="flex items-center gap-2"><span className={`rounded-md ${Y} px-2 py-0.5 text-[0.8125rem] font-black`}>CHAPTER {n}</span><b className="text-[1rem] font-black">{t}</b></p>
                     <p className="mt-2 lg:whitespace-pre-line text-[0.8125rem] leading-[1.6]">{d}</p>
                   </div>
-                  <div className="p-3"><div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-white">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/marketing-${Number(n)}.jpg`} alt={p} loading="lazy" className={`absolute inset-0 size-full ${n === "1" ? "object-cover object-left" : "object-contain"}`} /></div></div>
+                  <div className="p-3"><div className="relative mx-auto aspect-[16/10] max-w-[20rem] overflow-hidden md:aspect-[4/3] md:max-w-none rounded-lg bg-white">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={`/identity/marketing-${Number(n)}.jpg`} alt={p} loading="lazy" className={`absolute inset-0 size-full ${n === "1" ? "object-cover object-left" : "object-contain"}`} /></div></div>
                 </div>
               ))}
             </div>
@@ -593,7 +593,7 @@ export default function IdentityPage() {
         {/* 차별점 · 원칙 · Q&A · 상담 */}
         <section className="bg-[#222] text-center text-white">
           <div className={`${wrap} pb-24 pt-14 md:pt-16`}>
-            <h2 className="font-gmarket text-[1.75rem] font-light leading-[1.35] md:text-[2.375rem]">
+            <h2 className="font-gmarket text-[1.5rem] font-light leading-[1.35] md:text-[2.375rem]">
               창업의 <b className="font-black text-[#F0C33F]">차이</b>는,<br />
               <b className="font-black text-[#F0C33F]">준비</b>의 <b className="font-black">디테일</b>에서 <b className="font-black text-[#F0C33F]">시작됩니다.</b>
             </h2>
@@ -624,7 +624,7 @@ export default function IdentityPage() {
 
             {/* TRUST */}
             <p className="mt-20 font-gmarket text-[1.125rem] font-bold tracking-wide text-[#F0C33F]">TRUST</p>
-            <h2 className="mt-5 font-gmarket text-[1.75rem] font-black leading-[1.4] md:text-[2.375rem]">
+            <h2 className="mt-5 font-gmarket text-[1.5rem] font-black leading-[1.4] md:text-[2.375rem]">
               구해줘 창업이<br />
               <span className="mt-2 inline-flex items-center gap-3 md:gap-4">지키는 <b className="text-[5rem] font-black leading-none text-[#F0C33F] md:text-[6.5rem]">4</b> 가지 원칙</span>
             </h2>
@@ -641,7 +641,7 @@ export default function IdentityPage() {
             </ul>
 
             {/* Q&A */}
-            <h2 className="mt-20 font-gmarket text-[2.75rem] font-black leading-none text-[#F0C33F] md:text-[3.75rem]">Q&amp;A</h2>
+            <h2 className="mt-20 font-gmarket text-[2rem] font-black leading-none text-[#F0C33F] md:text-[3.75rem]">Q&amp;A</h2>
             <p className="mt-6 text-[1.125rem] font-bold md:text-[1.25rem]">창업 전에 가장 많이 궁금해하는 질문</p>
             <p className="mt-1 text-[0.875rem] text-white/80">예비창업자가 자주 묻는 질문을 모았습니다!</p>
             <ul className="mx-auto mt-8 max-w-[77rem] space-y-3 text-left">
@@ -656,7 +656,7 @@ export default function IdentityPage() {
             {/* 상담 */}
             <div id="consult" className="scroll-mt-24">
               <p className="mt-20 font-gmarket text-[1.125rem] font-bold tracking-wide text-[#F0C33F]">FREE CONSULTAITON</p>
-              <h2 className="mt-3 font-gmarket text-[1.75rem] font-black md:text-[2.375rem]">무료 상담으로 창업의 방향을 구체화하세요!</h2>
+              <h2 className="mt-3 font-gmarket text-[1.5rem] font-black md:text-[2.375rem]">무료 상담으로 창업의 방향을 구체화하세요!</h2>
               <div className="mx-auto mt-10 max-w-[77rem] text-left">
                 <ConsultCard title="간편 상담 신청" only="신규창업" wide />
               </div>
